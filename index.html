@@ -9,6 +9,14 @@
         });
     </script>
     <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/SyntaxHighlighter/3.0.83/styles/shCore.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/SyntaxHighlighter/3.0.83/styles/shCoreDefault.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/SyntaxHighlighter/3.0.83/scripts/shCore.min.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/SyntaxHighlighter/3.0.83/scripts/shBrushPython.min.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/SyntaxHighlighter/3.0.83/scripts/shAutoloader.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        SyntaxHighlighter.all()
+    </script>
 </head>
 
 <body>
@@ -32,14 +40,36 @@ implementiation errors.</p>
 <p>pymanopt is modular and hence easy to use. Usually only the following
 steps are required:</p>
 <ol>
-    <li>defininition of the function $f:\mathcal{M}\to \mathbb{R}$ to 
-    minimise</li>
-    <li>instantiation of the pymanopt manifold $\mathcal{M}$ to optimise
+    <li>defininition of the cost function $f:\mathcal{M}\to \mathbb{R}$
+    to minimise</li>
+    <li>instantiation of the respective manifold $\mathcal{M}$ to optimise
     over</li>
     <li>instantiation of a pymanopt solver</li>
 </ol>
 <p>If needed by the solver, pymanopt will compute the gradient and
 hessian automatically.</p>
+
+<pre class="brush: py">
+import autograd.numpy as np
+
+from pymanopt import Problem
+from pymanopt.solvers import SteepestDescent
+from pymanopt.manifolds import Stiefel
+
+# (1) definition of the cost function (here using theano)
+def cost(X): return np.sum(np.sum(X))
+
+# (2) instantiation of the respective manifold
+manifold = Stiefel(5, 2)
+
+# (3) instantiation of a pymanopt solver
+solver = SteepestDescent()
+
+# let pymanopt do the rest
+problem = Problem(man=manifold, ad_cost=cost, ad_arg=X)
+Xopt = solver.solve(problem)
+print(Xopt)
+</pre>
 
 
 <h2>Manifolds</h2>
