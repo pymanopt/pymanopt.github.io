@@ -72,7 +72,7 @@ manifold = Stiefel(5, 2)
 solver = SteepestDescent()
 
 # let pymanopt do the rest
-problem = Problem(man=manifold, cost=cost, arg=X)
+problem = Problem(man=manifold, cost=cost)
 Xopt = solver.solve(problem)
 print(Xopt)
 </pre>
