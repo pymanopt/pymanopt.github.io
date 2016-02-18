@@ -13,9 +13,40 @@
 
 <body>
 
+<p>This site is under construction. Please refer to this
+<a href="https://github.com/pymanopt/pymanopt">github repository</a> in
+the meanwhile.</p>
+
+
 <h1>pymanopt</h1>
 
-<p>This site is under construction. Please refer to this <a href="https://github.com/pymanopt/pymanopt">github repository</a> in the meanwhile.</p>
+<p>pymanopt is a python toolbox for manifold optimization that computes
+gradients and hessians automatically. It builds upon the MATLAB package
+<a href="http://manopt.org/">Manopt</a> but is otherwise independent of
+it. Pymanopt aims to lower the barriers for users wishing to use state
+of the art manifold optimization techniques even further, by relying on
+automatic differentiation for computing gradients and hessians, saving
+users time and saving them from potential calculation and
+implementiation errors.</p>
+
+<p>pymanopt is modular and hence easy to use. Usually only the following
+steps are required:</p>
+<ol>
+    <li>defininition of the function $f:\mathcal{M}\to \mathbb{R}$ to 
+    minimise</li>
+    <li>instantiation of the pymanopt manifold $\mathcal{M}$ to optimise
+    over</li>
+    <li>instantiation of a pymanopt solver</li>
+</ol>
+<p>If needed by the solver, pymanopt will compute the gradient and
+hessian automatically.</p>
+
+
+<h2>Manifolds</h2>
+
+
+<h2>Solvers</h2>
+
 
 </body>
 
