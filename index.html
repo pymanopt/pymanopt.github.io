@@ -74,11 +74,13 @@ print(Xopt)
 <h2>Manifolds</h2>
 
 <table id="manifolds">
+
 <tr>
     <th>manifold</th>
     <th>description</th>
     <th>required codelines</th>
 </tr>
+
 <tr>
     <td>Euclidian manifold $\mathbb{R}^{m\times n}$</td>
     <td>Euclidian space of $m\times n$ matrices equipped with the
@@ -90,11 +92,18 @@ manifold = Euclidian(m,n)
 </code></pre>
     </td>
 </tr>
+
 <tr>
-    <td>...</td>
-    <td></td>
-    <td></td>
+    <td>Sphere manifold $\mathcal{S}^n=\{x\in\mathbb{R}^{n}:||x||_2=1\}$</td>
+    <td>Unit sphere</td>
+    <td>
+<pre class="prettyprint"><code class="language-py">
+from pymanopt.manifolds import Sphere
+manifold = Sphere(n)
+</code></pre>
+    </td>
 </tr>
+
 </table>
 
 <h2>Solvers</h2>
