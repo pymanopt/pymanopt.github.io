@@ -1,0 +1,21 @@
+pre.prettyprint, code.prettyprint {
+  font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+  background-color: #f7f7f7;
+  border-width: 0;
+  -moz-border-radius: .5em;
+  -webkit-border-radius: .5em;
+  -o-border-radius: .5em;
+  -ms-border-radius: .5em;
+  -khtml-border-radius: .5em;
+  border-radius: .5em;
+}
+
+pre.prettyprint {
+  width: 95%;
+  padding: 0em 1em 1em 1em ;
+  white-space: pre-wrap;
+}
+
+pre.prettyprint a, code.prettyprint a {
+   text-decoration: none;
+}
