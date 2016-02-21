@@ -108,6 +108,27 @@ manifold = Sphere(n)
 
 <h2>Solvers</h2>
 
+<table id="solvers">
+
+<tr>
+    <th>solver</th>
+    <th>description</th>
+    <th>required codelines</th>
+</tr>
+
+<tr>
+    <td>SteepestDescent</td>
+    <td>Classical first-order steepest descent algorithm</td>
+    <td>
+<pre class="prettyprint"><code class="language-py">
+from pymanopt.solvers import SteepestDescent
+solver = SteepestDescent()
+Xopt = solver.solve(problem)
+</code></pre>
+    </td>
+</tr>
+
+</table>
 
 </body>
 
