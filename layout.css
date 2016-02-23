@@ -1,9 +1,11 @@
 th, td {
-    border-bottom: 1px solid #eee;
+    border-bottom: 2px solid #ccc;
     padding: .5em 1em;
     text-align: left;
 }
-
+tr.topborder td {
+    border-top: 2px solid #ccc;
+}
 
 pre.prettyprint, code.prettyprint {
   font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace;

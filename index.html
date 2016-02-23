@@ -82,24 +82,95 @@ print(Xopt)
 </tr>
 
 <tr>
-    <td>Euclidian manifold $\mathbb{R}^{m\times n}$</td>
-    <td>Euclidian space of $m\times n$ matrices equipped with the
+    <td>Euclidean manifold $\mathbb{R}^{m\times n}$</td>
+    <td>Euclidean space of $m\times n$ matrices equipped with the
     Frobenius distance and trace inner product.</td>
     <td>
 <pre class="prettyprint"><code class="language-py">
-from pymanopt.manifolds import Euclidian
-manifold = Euclidian(m,n)
+from pymanopt.manifolds import Euclidean
+manifold = Euclidean(m,n)
 </code></pre>
     </td>
 </tr>
 
 <tr>
-    <td>Sphere manifold $\mathcal{S}^n=\{x\in\mathbb{R}^{n}:||x||_2=1\}$</td>
-    <td>Unit sphere</td>
+    <td>Sphere manifold $\mathcal{S}^m=\{x\in\mathbb{R}^{m}:||x||_2=1\}$</td>
+    <td>$m\times n$ matrices of unit Frobenius norm, i.e., the unit Sphere for $n=1$ (the default value).</td>
     <td>
 <pre class="prettyprint"><code class="language-py">
 from pymanopt.manifolds import Sphere
 manifold = Sphere(n)
+</code></pre>
+    </td>
+</tr>
+
+<tr>
+    <td>Stiefel manifold $\mathcal{St}^{m\times n}=\{P\in\mathbb{R}^{m\times n}: P^\top P=\mathbb{1}\}$</td>
+    <td>This is the manifold of projection matrices. For optional argument $k>1$ this instantiates the product $\mathcal{St}^{m\times n}\times\cdots\times\mathcal{St}^{m\times n}$ of $k$ Stiefel manifolds.</td>
+    <td>
+<pre class="prettyprint"><code class="language-py">
+from pymanopt.manifolds import Stiefel
+manifold = Stiefel(m,n)
+</code></pre>
+    </td>
+</tr>
+
+<tr>
+    <td>Grassmann manifold $\mathcal{Gr}^{m\times n}$</td>
+    <td>This is the manifold of $n$-dimensional subspaces of $\mathbb{R}^m$. For optional argument $k>1$ this instantiates the product $\mathcal{Gr}^{m\times n}\times\cdots\times\mathcal{Gr}^{m\times n}$ of $k$ Grassmann manifolds.</td>
+    <td>
+<pre class="prettyprint"><code class="language-py">
+from pymanopt.manifolds import Grassmann
+manifold = Grassmann(m,n)
+</code></pre>
+    </td>
+</tr>
+
+<tr>
+    <td>SymFixedRankYY manifold</td>
+    <td>Manifold of $n$-by-$n$ symmetric/hermitian positive semidefinite matrices of rank $k$.</td>
+    <td>
+<pre class="prettyprint"><code class="language-py">
+# real
+from pymanopt.manifolds import SymFixedRankYY
+manifold = SymFixedRankYY(n,k)
+
+# complex
+from pymanopt.manifolds import SymFixedRankYYComplex
+manifold = SymFixedRankYYComplex(n,k)
+</code></pre>
+    </td>
+</tr>
+
+<tr>
+    <td>Elliptope manifold</td>
+    <td>Manifold of $n$-by-$n$ psd matrices of rank $k$ with unit diagonal elements.</td>
+    <td>
+<pre class="prettyprint"><code class="language-py">
+from pymanopt.manifolds import Elliptope
+manifold = Elliptope(n,k)
+</code></pre>
+    </td>
+</tr>
+
+<tr>
+    <td>Oblique manifold</td>
+    <td>Manifold of matrices with unit-norm columns.</td>
+    <td>
+<pre class="prettyprint"><code class="language-py">
+from pymanopt.manifolds import Oblique
+manifold = Oblique(m,n)
+</code></pre>
+    </td>
+</tr>
+
+<tr class="topborder">
+    <td>Product manifold</td>
+    <td>Product manifold of any of the manifolds listed above, e.g. $\mathcal{St}^{m\times n}\times\mathbb{R}^{k\times l}$.</td>
+    <td>
+<pre class="prettyprint"><code class="language-py">
+from pymanopt.manifolds import Product, Stiefel, Euclidean
+manifold = Product([Stiefel(m,n), Euclidean(k,l)])
 </code></pre>
     </td>
 </tr>
