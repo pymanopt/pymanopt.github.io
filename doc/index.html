@@ -1,0 +1,1830 @@
+
+
+<!doctype html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>pymanopt. &mdash; Pymanopt dev documentation</title>
+    
+    <link rel="stylesheet" href="_static/bizstyle.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     'dev',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/bizstyle.js"></script>
+    <link rel="top" title="Pymanopt dev documentation" href="#" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">Pymanopt dev documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">pymanopt.</a><ul>
+<li><a class="reference internal" href="#core">core.</a><ul>
+<li><a class="reference internal" href="#module-pymanopt.core.problem">problem</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#manifolds">manifolds.</a><ul>
+<li><a class="reference internal" href="#module-pymanopt.manifolds.manifold">manifold (abc)</a></li>
+<li><a class="reference internal" href="#module-pymanopt.manifolds.euclidean">euclidean</a></li>
+<li><a class="reference internal" href="#module-pymanopt.manifolds.fixed_rank">fixed_rank</a></li>
+<li><a class="reference internal" href="#module-pymanopt.manifolds.grassmann">grassmann</a></li>
+<li><a class="reference internal" href="#module-pymanopt.manifolds.oblique">oblique</a></li>
+<li><a class="reference internal" href="#module-pymanopt.manifolds.product">product</a></li>
+<li><a class="reference internal" href="#module-pymanopt.manifolds.sphere">sphere</a></li>
+<li><a class="reference internal" href="#module-pymanopt.manifolds.stiefel">stiefel</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#solvers">solvers.</a><ul>
+<li><a class="reference internal" href="#module-pymanopt.solvers.solver">solver (abc)</a></li>
+<li><a class="reference internal" href="#module-pymanopt.solvers.conjugate_gradient">conjugate_gradient</a></li>
+<li><a class="reference internal" href="#module-pymanopt.solvers.linesearch">linesearch</a></li>
+<li><a class="reference internal" href="#module-pymanopt.solvers.nelder_mead">nelder_mead</a></li>
+<li><a class="reference internal" href="#module-pymanopt.solvers.particle_swarm">particle_swarm</a></li>
+<li><a class="reference internal" href="#module-pymanopt.solvers.steepest_descent">steepest_descent</a></li>
+<li><a class="reference internal" href="#module-pymanopt.solvers.trust_regions">trust_regions</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#tools">tools.</a><ul>
+<li><a class="reference internal" href="#module-pymanopt.tools.autodiff">autodiff</a></li>
+<li><a class="reference internal" href="#module-pymanopt.tools.multi">multi</a></li>
+<li><a class="reference internal" href="#module-pymanopt.tools.testing">testing</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="pymanopt">
+<h1>pymanopt.<a class="headerlink" href="#pymanopt" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="core">
+<h2>core.<a class="headerlink" href="#core" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-pymanopt.core.problem">
+<span id="problem"></span><h3>problem<a class="headerlink" href="#module-pymanopt.core.problem" title="Permalink to this headline">¶</a></h3>
+<p>Module containing pymanopt problem class. Use this to build a problem
+object to feed to one of the solvers.</p>
+<dl class="class">
+<dt id="pymanopt.core.problem.Problem">
+<em class="property">class </em><code class="descclassname">pymanopt.core.problem.</code><code class="descname">Problem</code><span class="sig-paren">(</span><em>man</em>, <em>cost</em>, <em>egrad=None</em>, <em>ehess=None</em>, <em>grad=None</em>, <em>hess=None</em>, <em>arg=None</em>, <em>precon=None</em>, <em>verbosity=2</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.core.problem.Problem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Problem class for setting up a problem to feed to one of the
+pymanopt solvers.</p>
+<dl class="docutils">
+<dt>Attributes:</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt>man</dt>
+<dd><p class="first last">Manifold to optimize over.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>cost</dt>
+<dd><p class="first last">A callable which takes an element of man and returns a real number,
+or a symbolic Theano or TensorFlow expression. In case of a
+symbolic expression, the gradient (and if necessary the Hessian)
+are computed automatically if they are not explicitly given. We
+recommend you take this approach rather than calculating gradients
+and Hessians by hand.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>grad</dt>
+<dd><p class="first last">grad(x) is the gradient of cost at x. This must take an
+element X of man and return an element of the tangent space
+to man at X. This is usually computed automatically and
+doesn&#8217;t need to be set by the user.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>hess</dt>
+<dd><p class="first last">hess(x, a) is the directional derivative of grad at x, in
+direction a. It should return an element of the tangent
+space to man at x.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>egrad</dt>
+<dd><p class="first last">The &#8216;Euclidean gradient&#8217;, egrad(x) should return the grad of
+cost in the usual sense, i.e. egrad(x) need not lie in the
+tangent space.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>ehess</dt>
+<dd><p class="first last">The &#8216;Euclidean Hessian&#8217;, ehess(x, a) should return the
+directional derivative of egrad at x in direction a. This
+need not lie in the tangent space.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>arg</dt>
+<dd><p class="first last">A symbolic (tensor) variable with respect to which you would like
+to optimize. Its type (together with the type of the cost argument)
+defines the autodiff backend used.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>verbosity (2)</dt>
+<dd><p class="first last">Level of information printed by the solver while it operates, 0
+is silent, 2 is most information.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="pymanopt.core.problem.Problem.backend">
+<code class="descname">backend</code><a class="headerlink" href="#pymanopt.core.problem.Problem.backend" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymanopt.core.problem.Problem.cost">
+<code class="descname">cost</code><a class="headerlink" href="#pymanopt.core.problem.Problem.cost" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymanopt.core.problem.Problem.egrad">
+<code class="descname">egrad</code><a class="headerlink" href="#pymanopt.core.problem.Problem.egrad" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymanopt.core.problem.Problem.ehess">
+<code class="descname">ehess</code><a class="headerlink" href="#pymanopt.core.problem.Problem.ehess" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymanopt.core.problem.Problem.grad">
+<code class="descname">grad</code><a class="headerlink" href="#pymanopt.core.problem.Problem.grad" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymanopt.core.problem.Problem.hess">
+<code class="descname">hess</code><a class="headerlink" href="#pymanopt.core.problem.Problem.hess" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="manifolds">
+<h2>manifolds.<a class="headerlink" href="#manifolds" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-pymanopt.manifolds.manifold">
+<span id="manifold-abc"></span><h3>manifold (abc)<a class="headerlink" href="#module-pymanopt.manifolds.manifold" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="pymanopt.manifolds.manifold.Manifold">
+<em class="property">class </em><code class="descclassname">pymanopt.manifolds.manifold.</code><code class="descname">Manifold</code><a class="headerlink" href="#pymanopt.manifolds.manifold.Manifold" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="attribute">
+<dt id="pymanopt.manifolds.manifold.Manifold.dim">
+<code class="descname">dim</code><a class="headerlink" href="#pymanopt.manifolds.manifold.Manifold.dim" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.manifold.Manifold.dist">
+<code class="descname">dist</code><span class="sig-paren">(</span><em>X</em>, <em>Y</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.manifold.Manifold.dist" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.manifold.Manifold.egrad2rgrad">
+<code class="descname">egrad2rgrad</code><span class="sig-paren">(</span><em>X</em>, <em>G</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.manifold.Manifold.egrad2rgrad" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.manifold.Manifold.ehess2rhess">
+<code class="descname">ehess2rhess</code><span class="sig-paren">(</span><em>X</em>, <em>Hess</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.manifold.Manifold.ehess2rhess" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.manifold.Manifold.exp">
+<code class="descname">exp</code><span class="sig-paren">(</span><em>X</em>, <em>U</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.manifold.Manifold.exp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.manifold.Manifold.inner">
+<code class="descname">inner</code><span class="sig-paren">(</span><em>X</em>, <em>G</em>, <em>H</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.manifold.Manifold.inner" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.manifold.Manifold.log">
+<code class="descname">log</code><span class="sig-paren">(</span><em>X</em>, <em>Y</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.manifold.Manifold.log" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymanopt.manifolds.manifold.Manifold.name">
+<code class="descname">name</code><a class="headerlink" href="#pymanopt.manifolds.manifold.Manifold.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.manifold.Manifold.norm">
+<code class="descname">norm</code><span class="sig-paren">(</span><em>X</em>, <em>G</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.manifold.Manifold.norm" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.manifold.Manifold.pairmean">
+<code class="descname">pairmean</code><span class="sig-paren">(</span><em>X</em>, <em>Y</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.manifold.Manifold.pairmean" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.manifold.Manifold.proj">
+<code class="descname">proj</code><span class="sig-paren">(</span><em>X</em>, <em>G</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.manifold.Manifold.proj" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.manifold.Manifold.rand">
+<code class="descname">rand</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.manifold.Manifold.rand" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.manifold.Manifold.randvec">
+<code class="descname">randvec</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.manifold.Manifold.randvec" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.manifold.Manifold.retr">
+<code class="descname">retr</code><span class="sig-paren">(</span><em>X</em>, <em>G</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.manifold.Manifold.retr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.manifold.Manifold.transp">
+<code class="descname">transp</code><span class="sig-paren">(</span><em>x1</em>, <em>x2</em>, <em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.manifold.Manifold.transp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymanopt.manifolds.manifold.Manifold.typicaldist">
+<code class="descname">typicaldist</code><a class="headerlink" href="#pymanopt.manifolds.manifold.Manifold.typicaldist" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.manifold.Manifold.zerovec">
+<code class="descname">zerovec</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.manifold.Manifold.zerovec" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the zero tangent vector at X.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pymanopt.manifolds.euclidean">
+<span id="euclidean"></span><h3>euclidean<a class="headerlink" href="#module-pymanopt.manifolds.euclidean" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="pymanopt.manifolds.euclidean.Euclidean">
+<em class="property">class </em><code class="descclassname">pymanopt.manifolds.euclidean.</code><code class="descname">Euclidean</code><span class="sig-paren">(</span><em>m</em>, <em>n</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.euclidean.Euclidean" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pymanopt.manifolds.manifold.Manifold" title="pymanopt.manifolds.manifold.Manifold"><code class="xref py py-class docutils literal"><span class="pre">pymanopt.manifolds.manifold.Manifold</span></code></a></p>
+<p>Euclidean manifold, i.e. the euclidean space of m-by-n matrices
+equipped with the Frobenius distance and trace inner product.
+Use for solving unconstrained problems with pymanopt.</p>
+<dl class="attribute">
+<dt id="pymanopt.manifolds.euclidean.Euclidean.dim">
+<code class="descname">dim</code><a class="headerlink" href="#pymanopt.manifolds.euclidean.Euclidean.dim" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.euclidean.Euclidean.dist">
+<code class="descname">dist</code><span class="sig-paren">(</span><em>X</em>, <em>Y</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.euclidean.Euclidean.dist" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.euclidean.Euclidean.egrad2rgrad">
+<code class="descname">egrad2rgrad</code><span class="sig-paren">(</span><em>X</em>, <em>U</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.euclidean.Euclidean.egrad2rgrad" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.euclidean.Euclidean.ehess2rhess">
+<code class="descname">ehess2rhess</code><span class="sig-paren">(</span><em>X</em>, <em>egrad</em>, <em>ehess</em>, <em>H</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.euclidean.Euclidean.ehess2rhess" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.euclidean.Euclidean.exp">
+<code class="descname">exp</code><span class="sig-paren">(</span><em>X</em>, <em>U</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.euclidean.Euclidean.exp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.euclidean.Euclidean.inner">
+<code class="descname">inner</code><span class="sig-paren">(</span><em>X</em>, <em>G</em>, <em>H</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.euclidean.Euclidean.inner" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.euclidean.Euclidean.log">
+<code class="descname">log</code><span class="sig-paren">(</span><em>X</em>, <em>Y</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.euclidean.Euclidean.log" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymanopt.manifolds.euclidean.Euclidean.name">
+<code class="descname">name</code><a class="headerlink" href="#pymanopt.manifolds.euclidean.Euclidean.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.euclidean.Euclidean.norm">
+<code class="descname">norm</code><span class="sig-paren">(</span><em>X</em>, <em>G</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.euclidean.Euclidean.norm" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.euclidean.Euclidean.pairmean">
+<code class="descname">pairmean</code><span class="sig-paren">(</span><em>X</em>, <em>Y</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.euclidean.Euclidean.pairmean" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.euclidean.Euclidean.proj">
+<code class="descname">proj</code><span class="sig-paren">(</span><em>X</em>, <em>U</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.euclidean.Euclidean.proj" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.euclidean.Euclidean.rand">
+<code class="descname">rand</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.euclidean.Euclidean.rand" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.euclidean.Euclidean.randvec">
+<code class="descname">randvec</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.euclidean.Euclidean.randvec" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.euclidean.Euclidean.retr">
+<code class="descname">retr</code><span class="sig-paren">(</span><em>X</em>, <em>U</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.euclidean.Euclidean.retr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.euclidean.Euclidean.transp">
+<code class="descname">transp</code><span class="sig-paren">(</span><em>X1</em>, <em>X2</em>, <em>G</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.euclidean.Euclidean.transp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymanopt.manifolds.euclidean.Euclidean.typicaldist">
+<code class="descname">typicaldist</code><a class="headerlink" href="#pymanopt.manifolds.euclidean.Euclidean.typicaldist" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pymanopt.manifolds.fixed_rank">
+<span id="fixed-rank"></span><h3>fixed_rank<a class="headerlink" href="#module-pymanopt.manifolds.fixed_rank" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="pymanopt.manifolds.fixed_rank.Elliptope">
+<em class="property">class </em><code class="descclassname">pymanopt.manifolds.fixed_rank.</code><code class="descname">Elliptope</code><span class="sig-paren">(</span><em>n</em>, <em>k</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.fixed_rank.Elliptope" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pymanopt.manifolds.manifold.Manifold" title="pymanopt.manifolds.manifold.Manifold"><code class="xref py py-class docutils literal"><span class="pre">pymanopt.manifolds.manifold.Manifold</span></code></a></p>
+<p>Manifold of n-by-n psd matrices of rank k with unit diagonal elements.</p>
+<p>A point X on the manifold is parameterized as YY^T where Y is a matrix of
+size nxk. As such, X is symmetric, positive semidefinite. We restrict to
+full-rank Y&#8217;s, such that X has rank exactly k. The point X is numerically
+represented by Y (this is more efficient than working with X, which may be
+big). Tangent vectors are represented as matrices of the same size as Y,
+call them Ydot, so that Xdot = Y Ydot&#8217; + Ydot Y and diag(Xdot) == 0. The
+metric is the canonical Euclidean metric on Y.</p>
+<p>The diagonal constraints on X (X(i, i) == 1 for all i) translate to
+unit-norm constraints on the rows of Y: norm(Y(i, :)) == 1 for all i.  The
+set of such Y&#8217;s forms the oblique manifold. But because for any orthogonal
+Q of size k, it holds that (YQ)(YQ)&#8217; = YY&#8217;, we &#8220;group&#8221; all matrices of the
+form YQ in an equivalence class. The set of equivalence classes is a
+Riemannian quotient manifold, implemented here.</p>
+<p>Note that this geometry formally breaks down at rank-deficient Y&#8217;s.  This
+does not appear to be a major issue in practice when optimization
+algorithms converge to rank-deficient Y&#8217;s, but convergence theorems no
+longer hold. As an alternative, you may use the oblique manifold (it has
+larger dimension, but does not break down at rank drop.)</p>
+<p>The geometry is taken from the 2010 paper:
+M. Journee, P.-A. Absil, F. Bach and R. Sepulchre,
+&#8220;Low-Rank Optimization on the Cone of Positive Semidefinite Matrices&#8221;.
+Paper link: <a class="reference external" href="http://www.di.ens.fr/~fbach/journee2010_sdp.pdf">http://www.di.ens.fr/~fbach/journee2010_sdp.pdf</a></p>
+<dl class="attribute">
+<dt id="pymanopt.manifolds.fixed_rank.Elliptope.dim">
+<code class="descname">dim</code><a class="headerlink" href="#pymanopt.manifolds.fixed_rank.Elliptope.dim" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.fixed_rank.Elliptope.dist">
+<code class="descname">dist</code><span class="sig-paren">(</span><em>U</em>, <em>V</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.fixed_rank.Elliptope.dist" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.fixed_rank.Elliptope.egrad2rgrad">
+<code class="descname">egrad2rgrad</code><span class="sig-paren">(</span><em>Y</em>, <em>egrad</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.fixed_rank.Elliptope.egrad2rgrad" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.fixed_rank.Elliptope.ehess2rhess">
+<code class="descname">ehess2rhess</code><span class="sig-paren">(</span><em>Y</em>, <em>egrad</em>, <em>ehess</em>, <em>U</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.fixed_rank.Elliptope.ehess2rhess" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.fixed_rank.Elliptope.exp">
+<code class="descname">exp</code><span class="sig-paren">(</span><em>Y</em>, <em>U</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.fixed_rank.Elliptope.exp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.fixed_rank.Elliptope.inner">
+<code class="descname">inner</code><span class="sig-paren">(</span><em>Y</em>, <em>U</em>, <em>V</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.fixed_rank.Elliptope.inner" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.fixed_rank.Elliptope.log">
+<code class="descname">log</code><span class="sig-paren">(</span><em>Y</em>, <em>U</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.fixed_rank.Elliptope.log" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymanopt.manifolds.fixed_rank.Elliptope.name">
+<code class="descname">name</code><a class="headerlink" href="#pymanopt.manifolds.fixed_rank.Elliptope.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.fixed_rank.Elliptope.norm">
+<code class="descname">norm</code><span class="sig-paren">(</span><em>Y</em>, <em>U</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.fixed_rank.Elliptope.norm" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.fixed_rank.Elliptope.pairmean">
+<code class="descname">pairmean</code><span class="sig-paren">(</span><em>U</em>, <em>V</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.fixed_rank.Elliptope.pairmean" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.fixed_rank.Elliptope.proj">
+<code class="descname">proj</code><span class="sig-paren">(</span><em>Y</em>, <em>H</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.fixed_rank.Elliptope.proj" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.fixed_rank.Elliptope.rand">
+<code class="descname">rand</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.fixed_rank.Elliptope.rand" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.fixed_rank.Elliptope.randvec">
+<code class="descname">randvec</code><span class="sig-paren">(</span><em>Y</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.fixed_rank.Elliptope.randvec" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.fixed_rank.Elliptope.retr">
+<code class="descname">retr</code><span class="sig-paren">(</span><em>Y</em>, <em>U</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.fixed_rank.Elliptope.retr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.fixed_rank.Elliptope.transp">
+<code class="descname">transp</code><span class="sig-paren">(</span><em>Y</em>, <em>Z</em>, <em>U</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.fixed_rank.Elliptope.transp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymanopt.manifolds.fixed_rank.Elliptope.typicaldist">
+<code class="descname">typicaldist</code><a class="headerlink" href="#pymanopt.manifolds.fixed_rank.Elliptope.typicaldist" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pymanopt.manifolds.fixed_rank.SymFixedRankYY">
+<em class="property">class </em><code class="descclassname">pymanopt.manifolds.fixed_rank.</code><code class="descname">SymFixedRankYY</code><span class="sig-paren">(</span><em>n</em>, <em>k</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.fixed_rank.SymFixedRankYY" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pymanopt.manifolds.manifold.Manifold" title="pymanopt.manifolds.manifold.Manifold"><code class="xref py py-class docutils literal"><span class="pre">pymanopt.manifolds.manifold.Manifold</span></code></a></p>
+<p>Manifold of n-by-n symmetric positive semidefinite matrices of rank k.</p>
+<p>A point X on the manifold is parameterized as YY^T where Y is a matrix of
+size nxk. As such, X is symmetric, positive semidefinite. We restrict to
+full-rank Y&#8217;s, such that X has rank exactly k. The point X is numerically
+represented by Y (this is more efficient than working with X, which may
+be big). Tangent vectors are represented as matrices of the same size as
+Y, call them Ydot, so that Xdot = Y Ydot&#8217; + Ydot Y. The metric is the
+canonical Euclidean metric on Y.</p>
+<p>Since for any orthogonal Q of size k, it holds that (YQ)(YQ)&#8217; = YY&#8217;,
+we &#8220;group&#8221; all matrices of the form YQ in an equivalence class. The set
+of equivalence classes is a Riemannian quotient manifold, implemented
+here.</p>
+<p>Notice that this manifold is not complete: if optimization leads Y to be
+rank-deficient, the geometry will break down. Hence, this geometry should
+only be used if it is expected that the points of interest will have rank
+exactly k. Reduce k if that is not the case.</p>
+<p>An alternative, complete, geometry for positive semidefinite matrices of
+rank k is described in Bonnabel and Sepulchre 2009, &#8220;Riemannian Metric
+and Geometric Mean for Positive Semidefinite Matrices of Fixed Rank&#8221;,
+SIAM Journal on Matrix Analysis and Applications.</p>
+<p>The geometry implemented here is the simplest case of the 2010 paper:
+M. Journee, P.-A. Absil, F. Bach and R. Sepulchre,
+&#8220;Low-Rank Optimization on the Cone of Positive Semidefinite Matrices&#8221;.
+Paper link: <a class="reference external" href="http://www.di.ens.fr/~fbach/journee2010_sdp.pdf">http://www.di.ens.fr/~fbach/journee2010_sdp.pdf</a></p>
+<dl class="attribute">
+<dt id="pymanopt.manifolds.fixed_rank.SymFixedRankYY.dim">
+<code class="descname">dim</code><a class="headerlink" href="#pymanopt.manifolds.fixed_rank.SymFixedRankYY.dim" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.fixed_rank.SymFixedRankYY.dist">
+<code class="descname">dist</code><span class="sig-paren">(</span><em>U</em>, <em>V</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.fixed_rank.SymFixedRankYY.dist" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.fixed_rank.SymFixedRankYY.egrad2rgrad">
+<code class="descname">egrad2rgrad</code><span class="sig-paren">(</span><em>Y</em>, <em>egrad</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.fixed_rank.SymFixedRankYY.egrad2rgrad" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.fixed_rank.SymFixedRankYY.ehess2rhess">
+<code class="descname">ehess2rhess</code><span class="sig-paren">(</span><em>Y</em>, <em>egrad</em>, <em>ehess</em>, <em>U</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.fixed_rank.SymFixedRankYY.ehess2rhess" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.fixed_rank.SymFixedRankYY.exp">
+<code class="descname">exp</code><span class="sig-paren">(</span><em>Y</em>, <em>U</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.fixed_rank.SymFixedRankYY.exp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.fixed_rank.SymFixedRankYY.inner">
+<code class="descname">inner</code><span class="sig-paren">(</span><em>Y</em>, <em>U</em>, <em>V</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.fixed_rank.SymFixedRankYY.inner" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.fixed_rank.SymFixedRankYY.log">
+<code class="descname">log</code><span class="sig-paren">(</span><em>Y</em>, <em>U</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.fixed_rank.SymFixedRankYY.log" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymanopt.manifolds.fixed_rank.SymFixedRankYY.name">
+<code class="descname">name</code><a class="headerlink" href="#pymanopt.manifolds.fixed_rank.SymFixedRankYY.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.fixed_rank.SymFixedRankYY.norm">
+<code class="descname">norm</code><span class="sig-paren">(</span><em>Y</em>, <em>U</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.fixed_rank.SymFixedRankYY.norm" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.fixed_rank.SymFixedRankYY.pairmean">
+<code class="descname">pairmean</code><span class="sig-paren">(</span><em>X</em>, <em>Y</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.fixed_rank.SymFixedRankYY.pairmean" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.fixed_rank.SymFixedRankYY.proj">
+<code class="descname">proj</code><span class="sig-paren">(</span><em>Y</em>, <em>H</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.fixed_rank.SymFixedRankYY.proj" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.fixed_rank.SymFixedRankYY.rand">
+<code class="descname">rand</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.fixed_rank.SymFixedRankYY.rand" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.fixed_rank.SymFixedRankYY.randvec">
+<code class="descname">randvec</code><span class="sig-paren">(</span><em>Y</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.fixed_rank.SymFixedRankYY.randvec" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.fixed_rank.SymFixedRankYY.retr">
+<code class="descname">retr</code><span class="sig-paren">(</span><em>Y</em>, <em>U</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.fixed_rank.SymFixedRankYY.retr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.fixed_rank.SymFixedRankYY.transp">
+<code class="descname">transp</code><span class="sig-paren">(</span><em>Y</em>, <em>Z</em>, <em>U</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.fixed_rank.SymFixedRankYY.transp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymanopt.manifolds.fixed_rank.SymFixedRankYY.typicaldist">
+<code class="descname">typicaldist</code><a class="headerlink" href="#pymanopt.manifolds.fixed_rank.SymFixedRankYY.typicaldist" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pymanopt.manifolds.fixed_rank.SymFixedRankYYComplex">
+<em class="property">class </em><code class="descclassname">pymanopt.manifolds.fixed_rank.</code><code class="descname">SymFixedRankYYComplex</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.fixed_rank.SymFixedRankYYComplex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pymanopt.manifolds.fixed_rank.SymFixedRankYY" title="pymanopt.manifolds.fixed_rank.SymFixedRankYY"><code class="xref py py-class docutils literal"><span class="pre">pymanopt.manifolds.fixed_rank.SymFixedRankYY</span></code></a></p>
+<p>Manifold of n x n complex Hermitian pos. semidefinite matrices of rank k.</p>
+<p>Manifold of n-by-n complex Hermitian positive semidefinite matrices of
+fixed rank k. This follows the quotient geometry described
+in Sarod Yatawatta&#8217;s 2013 paper:
+&#8220;Radio interferometric calibration using a Riemannian manifold&#8221;, ICASSP.</p>
+<p>Paper link: <a class="reference external" href="http://dx.doi.org/10.1109/ICASSP.2013.6638382">http://dx.doi.org/10.1109/ICASSP.2013.6638382</a>.</p>
+<p>A point X on the manifold M is parameterized as YY^*, where
+Y is a complex matrix of size nxk. For any point Y on the manifold M,
+given any kxk complex unitary matrix U, we say Y*U  is equivalent to Y,
+i.e., YY^* does not change. Therefore, M is the set of equivalence
+classes and is a Riemannian quotient manifold C^{nk}/SU(k).
+The metric is the usual real-trace inner product, that is,
+it is the usual metric for the complex plane identified with R^2.</p>
+<p>Notice that this manifold is not complete: if optimization leads Y to be
+rank-deficient, the geometry will break down. Hence, this geometry should
+only be used if it is expected that the points of interest will have rank
+exactly k. Reduce k if that is not the case.</p>
+<dl class="attribute">
+<dt id="pymanopt.manifolds.fixed_rank.SymFixedRankYYComplex.dim">
+<code class="descname">dim</code><a class="headerlink" href="#pymanopt.manifolds.fixed_rank.SymFixedRankYYComplex.dim" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.fixed_rank.SymFixedRankYYComplex.dist">
+<code class="descname">dist</code><span class="sig-paren">(</span><em>U</em>, <em>V</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.fixed_rank.SymFixedRankYYComplex.dist" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.fixed_rank.SymFixedRankYYComplex.exp">
+<code class="descname">exp</code><span class="sig-paren">(</span><em>Y</em>, <em>U</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.fixed_rank.SymFixedRankYYComplex.exp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.fixed_rank.SymFixedRankYYComplex.inner">
+<code class="descname">inner</code><span class="sig-paren">(</span><em>Y</em>, <em>U</em>, <em>V</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.fixed_rank.SymFixedRankYYComplex.inner" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.fixed_rank.SymFixedRankYYComplex.norm">
+<code class="descname">norm</code><span class="sig-paren">(</span><em>Y</em>, <em>U</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.fixed_rank.SymFixedRankYYComplex.norm" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.fixed_rank.SymFixedRankYYComplex.pairmean">
+<code class="descname">pairmean</code><span class="sig-paren">(</span><em>X</em>, <em>Y</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.fixed_rank.SymFixedRankYYComplex.pairmean" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.fixed_rank.SymFixedRankYYComplex.rand">
+<code class="descname">rand</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.fixed_rank.SymFixedRankYYComplex.rand" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pymanopt.manifolds.grassmann">
+<span id="grassmann"></span><h3>grassmann<a class="headerlink" href="#module-pymanopt.manifolds.grassmann" title="Permalink to this headline">¶</a></h3>
+<p>Factory class for the Grassmann manifold. This is the manifold of p-
+dimensional subspaces of n dimensional real vector space. Initiation requires
+the dimensions n, p to be specified. Optional argument k allows the user
+to optimize over the product of k Grassmanns.</p>
+<p>Elements are represented as n x p matrices (if k == 1), and as k x n x p
+matrices if k &gt; 1 (Note that this is different to manopt!).</p>
+<dl class="class">
+<dt id="pymanopt.manifolds.grassmann.Grassmann">
+<em class="property">class </em><code class="descclassname">pymanopt.manifolds.grassmann.</code><code class="descname">Grassmann</code><span class="sig-paren">(</span><em>height</em>, <em>width</em>, <em>k=1</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.grassmann.Grassmann" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pymanopt.manifolds.manifold.Manifold" title="pymanopt.manifolds.manifold.Manifold"><code class="xref py py-class docutils literal"><span class="pre">pymanopt.manifolds.manifold.Manifold</span></code></a></p>
+<dl class="attribute">
+<dt id="pymanopt.manifolds.grassmann.Grassmann.dim">
+<code class="descname">dim</code><a class="headerlink" href="#pymanopt.manifolds.grassmann.Grassmann.dim" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.grassmann.Grassmann.dist">
+<code class="descname">dist</code><span class="sig-paren">(</span><em>X</em>, <em>Y</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.grassmann.Grassmann.dist" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.grassmann.Grassmann.egrad2rgrad">
+<code class="descname">egrad2rgrad</code><span class="sig-paren">(</span><em>X</em>, <em>U</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.grassmann.Grassmann.egrad2rgrad" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.grassmann.Grassmann.ehess2rhess">
+<code class="descname">ehess2rhess</code><span class="sig-paren">(</span><em>X</em>, <em>egrad</em>, <em>ehess</em>, <em>H</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.grassmann.Grassmann.ehess2rhess" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.grassmann.Grassmann.exp">
+<code class="descname">exp</code><span class="sig-paren">(</span><em>X</em>, <em>U</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.grassmann.Grassmann.exp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.grassmann.Grassmann.inner">
+<code class="descname">inner</code><span class="sig-paren">(</span><em>X</em>, <em>G</em>, <em>H</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.grassmann.Grassmann.inner" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.grassmann.Grassmann.log">
+<code class="descname">log</code><span class="sig-paren">(</span><em>X</em>, <em>Y</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.grassmann.Grassmann.log" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymanopt.manifolds.grassmann.Grassmann.name">
+<code class="descname">name</code><a class="headerlink" href="#pymanopt.manifolds.grassmann.Grassmann.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.grassmann.Grassmann.norm">
+<code class="descname">norm</code><span class="sig-paren">(</span><em>X</em>, <em>G</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.grassmann.Grassmann.norm" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.grassmann.Grassmann.pairmean">
+<code class="descname">pairmean</code><span class="sig-paren">(</span><em>X</em>, <em>Y</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.grassmann.Grassmann.pairmean" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.grassmann.Grassmann.proj">
+<code class="descname">proj</code><span class="sig-paren">(</span><em>X</em>, <em>U</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.grassmann.Grassmann.proj" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.grassmann.Grassmann.rand">
+<code class="descname">rand</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.grassmann.Grassmann.rand" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.grassmann.Grassmann.randvec">
+<code class="descname">randvec</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.grassmann.Grassmann.randvec" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.grassmann.Grassmann.retr">
+<code class="descname">retr</code><span class="sig-paren">(</span><em>X</em>, <em>G</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.grassmann.Grassmann.retr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.grassmann.Grassmann.transp">
+<code class="descname">transp</code><span class="sig-paren">(</span><em>x1</em>, <em>x2</em>, <em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.grassmann.Grassmann.transp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymanopt.manifolds.grassmann.Grassmann.typicaldist">
+<code class="descname">typicaldist</code><a class="headerlink" href="#pymanopt.manifolds.grassmann.Grassmann.typicaldist" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pymanopt.manifolds.oblique">
+<span id="oblique"></span><h3>oblique<a class="headerlink" href="#module-pymanopt.manifolds.oblique" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="pymanopt.manifolds.oblique.Oblique">
+<em class="property">class </em><code class="descclassname">pymanopt.manifolds.oblique.</code><code class="descname">Oblique</code><span class="sig-paren">(</span><em>m</em>, <em>n</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.oblique.Oblique" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pymanopt.manifolds.manifold.Manifold" title="pymanopt.manifolds.manifold.Manifold"><code class="xref py py-class docutils literal"><span class="pre">pymanopt.manifolds.manifold.Manifold</span></code></a></p>
+<p>Manifold of matrices w/ unit-norm columns.</p>
+<p>Oblique manifold: deals with matrices of size m-by-n such that each column
+has unit 2-norm, i.e., is a point on the unit sphere in R^m. The metric
+is such that the oblique manifold is a Riemannian submanifold of the
+space of m-by-n matrices with the usual trace inner product, i.e., the
+usual metric.</p>
+<dl class="attribute">
+<dt id="pymanopt.manifolds.oblique.Oblique.dim">
+<code class="descname">dim</code><a class="headerlink" href="#pymanopt.manifolds.oblique.Oblique.dim" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.oblique.Oblique.dist">
+<code class="descname">dist</code><span class="sig-paren">(</span><em>X</em>, <em>Y</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.oblique.Oblique.dist" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.oblique.Oblique.egrad2rgrad">
+<code class="descname">egrad2rgrad</code><span class="sig-paren">(</span><em>X</em>, <em>H</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.oblique.Oblique.egrad2rgrad" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.oblique.Oblique.ehess2rhess">
+<code class="descname">ehess2rhess</code><span class="sig-paren">(</span><em>X</em>, <em>egrad</em>, <em>ehess</em>, <em>U</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.oblique.Oblique.ehess2rhess" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.oblique.Oblique.exp">
+<code class="descname">exp</code><span class="sig-paren">(</span><em>X</em>, <em>U</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.oblique.Oblique.exp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.oblique.Oblique.inner">
+<code class="descname">inner</code><span class="sig-paren">(</span><em>X</em>, <em>U</em>, <em>V</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.oblique.Oblique.inner" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.oblique.Oblique.log">
+<code class="descname">log</code><span class="sig-paren">(</span><em>X</em>, <em>Y</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.oblique.Oblique.log" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymanopt.manifolds.oblique.Oblique.name">
+<code class="descname">name</code><a class="headerlink" href="#pymanopt.manifolds.oblique.Oblique.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.oblique.Oblique.norm">
+<code class="descname">norm</code><span class="sig-paren">(</span><em>X</em>, <em>U</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.oblique.Oblique.norm" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.oblique.Oblique.pairmean">
+<code class="descname">pairmean</code><span class="sig-paren">(</span><em>X</em>, <em>Y</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.oblique.Oblique.pairmean" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.oblique.Oblique.proj">
+<code class="descname">proj</code><span class="sig-paren">(</span><em>X</em>, <em>H</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.oblique.Oblique.proj" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.oblique.Oblique.rand">
+<code class="descname">rand</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.oblique.Oblique.rand" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.oblique.Oblique.randvec">
+<code class="descname">randvec</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.oblique.Oblique.randvec" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.oblique.Oblique.retr">
+<code class="descname">retr</code><span class="sig-paren">(</span><em>X</em>, <em>U</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.oblique.Oblique.retr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.oblique.Oblique.transp">
+<code class="descname">transp</code><span class="sig-paren">(</span><em>X</em>, <em>Y</em>, <em>U</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.oblique.Oblique.transp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymanopt.manifolds.oblique.Oblique.typicaldist">
+<code class="descname">typicaldist</code><a class="headerlink" href="#pymanopt.manifolds.oblique.Oblique.typicaldist" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pymanopt.manifolds.product">
+<span id="product"></span><h3>product<a class="headerlink" href="#module-pymanopt.manifolds.product" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="pymanopt.manifolds.product.Product">
+<em class="property">class </em><code class="descclassname">pymanopt.manifolds.product.</code><code class="descname">Product</code><span class="sig-paren">(</span><em>manifolds</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.product.Product" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pymanopt.manifolds.manifold.Manifold" title="pymanopt.manifolds.manifold.Manifold"><code class="xref py py-class docutils literal"><span class="pre">pymanopt.manifolds.manifold.Manifold</span></code></a></p>
+<p>Product manifold, i.e. the cartesian product of multiple manifolds.</p>
+<dl class="attribute">
+<dt id="pymanopt.manifolds.product.Product.dim">
+<code class="descname">dim</code><a class="headerlink" href="#pymanopt.manifolds.product.Product.dim" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.product.Product.dist">
+<code class="descname">dist</code><span class="sig-paren">(</span><em>X</em>, <em>Y</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.product.Product.dist" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.product.Product.egrad2rgrad">
+<code class="descname">egrad2rgrad</code><span class="sig-paren">(</span><em>X</em>, <em>U</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.product.Product.egrad2rgrad" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.product.Product.ehess2rhess">
+<code class="descname">ehess2rhess</code><span class="sig-paren">(</span><em>X</em>, <em>egrad</em>, <em>ehess</em>, <em>H</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.product.Product.ehess2rhess" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.product.Product.exp">
+<code class="descname">exp</code><span class="sig-paren">(</span><em>X</em>, <em>U</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.product.Product.exp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.product.Product.inner">
+<code class="descname">inner</code><span class="sig-paren">(</span><em>X</em>, <em>G</em>, <em>H</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.product.Product.inner" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.product.Product.log">
+<code class="descname">log</code><span class="sig-paren">(</span><em>X</em>, <em>U</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.product.Product.log" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymanopt.manifolds.product.Product.name">
+<code class="descname">name</code><a class="headerlink" href="#pymanopt.manifolds.product.Product.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.product.Product.norm">
+<code class="descname">norm</code><span class="sig-paren">(</span><em>X</em>, <em>G</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.product.Product.norm" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.product.Product.pairmean">
+<code class="descname">pairmean</code><span class="sig-paren">(</span><em>X</em>, <em>Y</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.product.Product.pairmean" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.product.Product.proj">
+<code class="descname">proj</code><span class="sig-paren">(</span><em>X</em>, <em>U</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.product.Product.proj" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.product.Product.rand">
+<code class="descname">rand</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.product.Product.rand" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.product.Product.randvec">
+<code class="descname">randvec</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.product.Product.randvec" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.product.Product.retr">
+<code class="descname">retr</code><span class="sig-paren">(</span><em>X</em>, <em>U</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.product.Product.retr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.product.Product.transp">
+<code class="descname">transp</code><span class="sig-paren">(</span><em>X1</em>, <em>X2</em>, <em>G</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.product.Product.transp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymanopt.manifolds.product.Product.typicaldist">
+<code class="descname">typicaldist</code><a class="headerlink" href="#pymanopt.manifolds.product.Product.typicaldist" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.product.Product.zerovec">
+<code class="descname">zerovec</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.product.Product.zerovec" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pymanopt.manifolds.sphere">
+<span id="sphere"></span><h3>sphere<a class="headerlink" href="#module-pymanopt.manifolds.sphere" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="pymanopt.manifolds.sphere.Sphere">
+<em class="property">class </em><code class="descclassname">pymanopt.manifolds.sphere.</code><code class="descname">Sphere</code><span class="sig-paren">(</span><em>m</em>, <em>n=1</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.sphere.Sphere" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pymanopt.manifolds.manifold.Manifold" title="pymanopt.manifolds.manifold.Manifold"><code class="xref py py-class docutils literal"><span class="pre">pymanopt.manifolds.manifold.Manifold</span></code></a></p>
+<p>Manifold of m-by-n real matrices of unit Frobenius norm. By default, n =
+1, which corresponds to the unit sphere in R^m. The metric is such that the
+sphere is a Riemannian submanifold of the space of m-by-n matrices with the
+usual trace inner product, i.e., the usual metric.</p>
+<dl class="attribute">
+<dt id="pymanopt.manifolds.sphere.Sphere.dim">
+<code class="descname">dim</code><a class="headerlink" href="#pymanopt.manifolds.sphere.Sphere.dim" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.sphere.Sphere.dist">
+<code class="descname">dist</code><span class="sig-paren">(</span><em>U</em>, <em>V</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.sphere.Sphere.dist" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.sphere.Sphere.egrad2rgrad">
+<code class="descname">egrad2rgrad</code><span class="sig-paren">(</span><em>X</em>, <em>H</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.sphere.Sphere.egrad2rgrad" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.sphere.Sphere.ehess2rhess">
+<code class="descname">ehess2rhess</code><span class="sig-paren">(</span><em>X</em>, <em>egrad</em>, <em>ehess</em>, <em>U</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.sphere.Sphere.ehess2rhess" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.sphere.Sphere.exp">
+<code class="descname">exp</code><span class="sig-paren">(</span><em>X</em>, <em>U</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.sphere.Sphere.exp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.sphere.Sphere.inner">
+<code class="descname">inner</code><span class="sig-paren">(</span><em>X</em>, <em>U</em>, <em>V</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.sphere.Sphere.inner" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.sphere.Sphere.log">
+<code class="descname">log</code><span class="sig-paren">(</span><em>X</em>, <em>Y</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.sphere.Sphere.log" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymanopt.manifolds.sphere.Sphere.name">
+<code class="descname">name</code><a class="headerlink" href="#pymanopt.manifolds.sphere.Sphere.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.sphere.Sphere.norm">
+<code class="descname">norm</code><span class="sig-paren">(</span><em>X</em>, <em>U</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.sphere.Sphere.norm" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.sphere.Sphere.pairmean">
+<code class="descname">pairmean</code><span class="sig-paren">(</span><em>X</em>, <em>Y</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.sphere.Sphere.pairmean" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.sphere.Sphere.proj">
+<code class="descname">proj</code><span class="sig-paren">(</span><em>X</em>, <em>H</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.sphere.Sphere.proj" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.sphere.Sphere.rand">
+<code class="descname">rand</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.sphere.Sphere.rand" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.sphere.Sphere.randvec">
+<code class="descname">randvec</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.sphere.Sphere.randvec" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.sphere.Sphere.retr">
+<code class="descname">retr</code><span class="sig-paren">(</span><em>X</em>, <em>U</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.sphere.Sphere.retr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.sphere.Sphere.transp">
+<code class="descname">transp</code><span class="sig-paren">(</span><em>X</em>, <em>Y</em>, <em>U</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.sphere.Sphere.transp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymanopt.manifolds.sphere.Sphere.typicaldist">
+<code class="descname">typicaldist</code><a class="headerlink" href="#pymanopt.manifolds.sphere.Sphere.typicaldist" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pymanopt.manifolds.stiefel">
+<span id="stiefel"></span><h3>stiefel<a class="headerlink" href="#module-pymanopt.manifolds.stiefel" title="Permalink to this headline">¶</a></h3>
+<p>Factory class for the Stiefel manifold. Initiation requires the dimensions
+n, p to be specified. Optional argument k allows the user to optimize over
+the product of k Stiefels.</p>
+<p>Elements are represented as n x p matrices (if k == 1), and as k x n x p
+matrices if k &gt; 1 (Note that this is different to manopt!).</p>
+<dl class="class">
+<dt id="pymanopt.manifolds.stiefel.Stiefel">
+<em class="property">class </em><code class="descclassname">pymanopt.manifolds.stiefel.</code><code class="descname">Stiefel</code><span class="sig-paren">(</span><em>height</em>, <em>width</em>, <em>k=1</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.stiefel.Stiefel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pymanopt.manifolds.manifold.Manifold" title="pymanopt.manifolds.manifold.Manifold"><code class="xref py py-class docutils literal"><span class="pre">pymanopt.manifolds.manifold.Manifold</span></code></a></p>
+<dl class="attribute">
+<dt id="pymanopt.manifolds.stiefel.Stiefel.dim">
+<code class="descname">dim</code><a class="headerlink" href="#pymanopt.manifolds.stiefel.Stiefel.dim" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.stiefel.Stiefel.dist">
+<code class="descname">dist</code><span class="sig-paren">(</span><em>X</em>, <em>Y</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.stiefel.Stiefel.dist" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.stiefel.Stiefel.egrad2rgrad">
+<code class="descname">egrad2rgrad</code><span class="sig-paren">(</span><em>X</em>, <em>U</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.stiefel.Stiefel.egrad2rgrad" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.stiefel.Stiefel.ehess2rhess">
+<code class="descname">ehess2rhess</code><span class="sig-paren">(</span><em>X</em>, <em>egrad</em>, <em>ehess</em>, <em>H</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.stiefel.Stiefel.ehess2rhess" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.stiefel.Stiefel.exp">
+<code class="descname">exp</code><span class="sig-paren">(</span><em>X</em>, <em>U</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.stiefel.Stiefel.exp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.stiefel.Stiefel.inner">
+<code class="descname">inner</code><span class="sig-paren">(</span><em>X</em>, <em>G</em>, <em>H</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.stiefel.Stiefel.inner" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.stiefel.Stiefel.log">
+<code class="descname">log</code><span class="sig-paren">(</span><em>X</em>, <em>Y</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.stiefel.Stiefel.log" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymanopt.manifolds.stiefel.Stiefel.name">
+<code class="descname">name</code><a class="headerlink" href="#pymanopt.manifolds.stiefel.Stiefel.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.stiefel.Stiefel.norm">
+<code class="descname">norm</code><span class="sig-paren">(</span><em>X</em>, <em>G</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.stiefel.Stiefel.norm" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.stiefel.Stiefel.pairmean">
+<code class="descname">pairmean</code><span class="sig-paren">(</span><em>X</em>, <em>Y</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.stiefel.Stiefel.pairmean" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.stiefel.Stiefel.proj">
+<code class="descname">proj</code><span class="sig-paren">(</span><em>X</em>, <em>U</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.stiefel.Stiefel.proj" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.stiefel.Stiefel.rand">
+<code class="descname">rand</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.stiefel.Stiefel.rand" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.stiefel.Stiefel.randvec">
+<code class="descname">randvec</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.stiefel.Stiefel.randvec" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.stiefel.Stiefel.retr">
+<code class="descname">retr</code><span class="sig-paren">(</span><em>X</em>, <em>G</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.stiefel.Stiefel.retr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.stiefel.Stiefel.transp">
+<code class="descname">transp</code><span class="sig-paren">(</span><em>x1</em>, <em>x2</em>, <em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.stiefel.Stiefel.transp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymanopt.manifolds.stiefel.Stiefel.typicaldist">
+<code class="descname">typicaldist</code><a class="headerlink" href="#pymanopt.manifolds.stiefel.Stiefel.typicaldist" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="solvers">
+<h2>solvers.<a class="headerlink" href="#solvers" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-pymanopt.solvers.solver">
+<span id="solver-abc"></span><h3>solver (abc)<a class="headerlink" href="#module-pymanopt.solvers.solver" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="pymanopt.solvers.solver.Solver">
+<em class="property">class </em><code class="descclassname">pymanopt.solvers.solver.</code><code class="descname">Solver</code><span class="sig-paren">(</span><em>maxtime=1000</em>, <em>maxiter=1000</em>, <em>mingradnorm=1e-06</em>, <em>minstepsize=1e-10</em>, <em>maxcostevals=5000</em>, <em>logverbosity=0</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.solvers.solver.Solver" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="attribute">
+<dt id="pymanopt.solvers.solver.Solver.name">
+<code class="descname">name</code><a class="headerlink" href="#pymanopt.solvers.solver.Solver.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pymanopt.solvers.conjugate_gradient">
+<span id="conjugate-gradient"></span><h3>conjugate_gradient<a class="headerlink" href="#module-pymanopt.solvers.conjugate_gradient" title="Permalink to this headline">¶</a></h3>
+<p>Module containing conjugate gradient algorithm based on conjugategradient.m
+from the manopt MATLAB package.</p>
+<dl class="class">
+<dt id="pymanopt.solvers.conjugate_gradient.ConjugateGradient">
+<em class="property">class </em><code class="descclassname">pymanopt.solvers.conjugate_gradient.</code><code class="descname">ConjugateGradient</code><span class="sig-paren">(</span><em>beta_type=2</em>, <em>orth_value=inf</em>, <em>linesearch=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.solvers.conjugate_gradient.ConjugateGradient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pymanopt.solvers.solver.Solver" title="pymanopt.solvers.solver.Solver"><code class="xref py py-class docutils literal"><span class="pre">pymanopt.solvers.solver.Solver</span></code></a></p>
+<p>Conjugate gradient solver class.
+Variable attributes (defaults in brackets):</p>
+<blockquote>
+<div><ul>
+<li><dl class="first docutils">
+<dt>beta_type (BetaTypes.HestenesStiefel)</dt>
+<dd><p class="first last">Conjugate gradient beta rule used to construct the new search
+direction</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>orth_value (numpy.inf)</dt>
+<dd><p class="first last">Parameter for Powell&#8217;s restart strategy. An infinite value disables
+this strategy. See in code formula for the specific criterion used.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+<dl class="method">
+<dt id="pymanopt.solvers.conjugate_gradient.ConjugateGradient.solve">
+<code class="descname">solve</code><span class="sig-paren">(</span><em>problem</em>, <em>x=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.solvers.conjugate_gradient.ConjugateGradient.solve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform optimization using nonlinear conjugate gradient method with
+linesearch.
+This method first computes the gradient of obj w.r.t. arg, and then
+optimizes by moving in a direction that is conjugate to all previous
+search directions.
+Arguments:</p>
+<blockquote>
+<div><ul>
+<li><dl class="first docutils">
+<dt>problem</dt>
+<dd><p class="first last">Pymanopt problem setup using the Problem class, this must
+have a .man attribute specifying the manifold to optimize
+over, as well as a cost and enough information to compute
+the gradient of that cost.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>x=None</dt>
+<dd><p class="first last">Optional parameter. Starting point on the manifold. If none
+then a starting point will be randomly generated.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt>x</dt>
+<dd><p class="first last">Local minimum of obj, or if algorithm terminated before
+convergence x will be the point at which it terminated.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pymanopt.solvers.linesearch">
+<span id="linesearch"></span><h3>linesearch<a class="headerlink" href="#module-pymanopt.solvers.linesearch" title="Permalink to this headline">¶</a></h3>
+<p>Line-search based on linesearch.m and linesearch_adaptive.m in the manopt
+MATLAB package.</p>
+<dl class="class">
+<dt id="pymanopt.solvers.linesearch.LineSearch">
+<em class="property">class </em><code class="descclassname">pymanopt.solvers.linesearch.</code><code class="descname">LineSearch</code><span class="sig-paren">(</span><em>contraction_factor=0.5</em>, <em>optimism=2</em>, <em>suff_decr=0.0001</em>, <em>maxiter=25</em>, <em>initial_stepsize=1</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.solvers.linesearch.LineSearch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="pymanopt.solvers.linesearch.LineSearch.search">
+<code class="descname">search</code><span class="sig-paren">(</span><em>objective</em>, <em>manifold</em>, <em>x</em>, <em>d</em>, <em>f0</em>, <em>df0</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.solvers.linesearch.LineSearch.search" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to perform backtracking line-search.
+Arguments:</p>
+<blockquote>
+<div><ul>
+<li><dl class="first docutils">
+<dt>objective</dt>
+<dd><p class="first last">objective function to optimise</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>manifold</dt>
+<dd><p class="first last">manifold to optimise over</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>x</dt>
+<dd><p class="first last">starting point on the manifold</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>d</dt>
+<dd><p class="first last">tangent vector at x (descent direction)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>df0</dt>
+<dd><p class="first last">directional derivative at x along d</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt>stepsize</dt>
+<dd><p class="first last">norm of the vector retracted to reach newx from x</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>newx</dt>
+<dd><p class="first last">next iterate suggested by the line-search</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pymanopt.solvers.linesearch.LineSearchAdaptive">
+<em class="property">class </em><code class="descclassname">pymanopt.solvers.linesearch.</code><code class="descname">LineSearchAdaptive</code><span class="sig-paren">(</span><em>contraction_factor=0.5</em>, <em>suff_decr=0.5</em>, <em>maxiter=10</em>, <em>initial_stepsize=1</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.solvers.linesearch.LineSearchAdaptive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="pymanopt.solvers.linesearch.LineSearchAdaptive.search">
+<code class="descname">search</code><span class="sig-paren">(</span><em>objective</em>, <em>man</em>, <em>x</em>, <em>d</em>, <em>f0</em>, <em>df0</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.solvers.linesearch.LineSearchAdaptive.search" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pymanopt.solvers.nelder_mead">
+<span id="nelder-mead"></span><h3>nelder_mead<a class="headerlink" href="#module-pymanopt.solvers.nelder_mead" title="Permalink to this headline">¶</a></h3>
+<p>Module containing a Nelder-Mead minimization alglorithm for derivative-free
+minimization based on neldermead.m and centroid.m from the manopt MATLAB
+package.</p>
+<dl class="class">
+<dt id="pymanopt.solvers.nelder_mead.NelderMead">
+<em class="property">class </em><code class="descclassname">pymanopt.solvers.nelder_mead.</code><code class="descname">NelderMead</code><span class="sig-paren">(</span><em>maxcostevals=None</em>, <em>maxiter=None</em>, <em>reflection=1</em>, <em>expansion=2</em>, <em>contraction=0.5</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.solvers.nelder_mead.NelderMead" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pymanopt.solvers.solver.Solver" title="pymanopt.solvers.solver.Solver"><code class="xref py py-class docutils literal"><span class="pre">pymanopt.solvers.solver.Solver</span></code></a></p>
+<p>Nelder-Mead method solver class.
+Variable attributes (defaults in brackets):</p>
+<blockquote>
+<div><ul>
+<li><dl class="first docutils">
+<dt>maxcostevals (max(5000, 2 * dim))</dt>
+<dd><p class="first last">Maximum number of allowed cost evaluations</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>maxiter (max(500, 4 * dim))</dt>
+<dd><p class="first last">Maximum number of allowed iterations</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>reflection (1)</dt>
+<dd><p class="first last">Determines how far to reflect away from the worst vertex;
+stretched (reflection &gt; 1), compressed (0 &lt; reflection &lt; 1),
+or exact (reflection = 1)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>expansion (2)</dt>
+<dd><p class="first last">Factor by which to expand the reflected simplex</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>contraction (0.5)</dt>
+<dd><p class="first last">Factor by which to contract the reflected simplex</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+<dl class="method">
+<dt id="pymanopt.solvers.nelder_mead.NelderMead.solve">
+<code class="descname">solve</code><span class="sig-paren">(</span><em>problem</em>, <em>x=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.solvers.nelder_mead.NelderMead.solve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform optimization using a Nelder-Mead minimization algorithm.
+Arguments:</p>
+<blockquote>
+<div><ul>
+<li><dl class="first docutils">
+<dt>problem</dt>
+<dd><p class="first last">Pymanopt problem setup using the Problem class, this must
+have a .man attribute specifying the manifold to optimize
+over, as well as a cost and enough information to compute
+the gradient of that cost.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>x=None</dt>
+<dd><p class="first last">Optional parameter. Initial population of elements on the
+manifold. If None then an initial population will be randomly
+generated</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt>x</dt>
+<dd><p class="first last">Local minimum of obj, or if algorithm terminated before
+convergence x will be the point at which it terminated</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="pymanopt.solvers.nelder_mead.compute_centroid">
+<code class="descclassname">pymanopt.solvers.nelder_mead.</code><code class="descname">compute_centroid</code><span class="sig-paren">(</span><em>man</em>, <em>x</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.solvers.nelder_mead.compute_centroid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the centroid as Karcher mean of points x belonging to the manifold
+man.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pymanopt.solvers.particle_swarm">
+<span id="particle-swarm"></span><h3>particle_swarm<a class="headerlink" href="#module-pymanopt.solvers.particle_swarm" title="Permalink to this headline">¶</a></h3>
+<p>Module containing the particle swarm optimization method based on pso.m from
+the manopt MATLAB package.</p>
+<dl class="class">
+<dt id="pymanopt.solvers.particle_swarm.ParticleSwarm">
+<em class="property">class </em><code class="descclassname">pymanopt.solvers.particle_swarm.</code><code class="descname">ParticleSwarm</code><span class="sig-paren">(</span><em>maxcostevals=None</em>, <em>maxiter=None</em>, <em>populationsize=None</em>, <em>nostalgia=1.4</em>, <em>social=1.4</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.solvers.particle_swarm.ParticleSwarm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pymanopt.solvers.solver.Solver" title="pymanopt.solvers.solver.Solver"><code class="xref py py-class docutils literal"><span class="pre">pymanopt.solvers.solver.Solver</span></code></a></p>
+<p>Particle Swarm Optimization (PSO) solver class.
+Variable attributes (defaults in brackets):</p>
+<blockquote>
+<div><ul>
+<li><dl class="first docutils">
+<dt>maxcostevals (max(5000, 2 * dim))</dt>
+<dd><p class="first last">Maximum number of allowed cost evaluations</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>maxiter (max(500, 4 * dim))</dt>
+<dd><p class="first last">Maximum number of allowed iterations</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>populationsize (min(40, 10 * dim))</dt>
+<dd><p class="first last">Size of the considered swarm population</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>nostalgia (1.4)</dt>
+<dd><p class="first last">Quantifies performance relative to past performances</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>social (1.4)</dt>
+<dd><p class="first last">Quantifies performance relative to neighbors</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+<dl class="method">
+<dt id="pymanopt.solvers.particle_swarm.ParticleSwarm.solve">
+<code class="descname">solve</code><span class="sig-paren">(</span><em>problem</em>, <em>x=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.solvers.particle_swarm.ParticleSwarm.solve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform optimization using the particle swarm optimization algorithm.
+Arguments:</p>
+<blockquote>
+<div><ul>
+<li><dl class="first docutils">
+<dt>problem</dt>
+<dd><p class="first last">Pymanopt problem setup using the Problem class, this must
+have a .man attribute specifying the manifold to optimize
+over, as well as a cost (specified using a theano graph
+or as a python function).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>x=None</dt>
+<dd><p class="first last">Optional parameter. Initial population of elements on the
+manifold. If None then an initial population will be randomly
+generated</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt>x</dt>
+<dd><p class="first last">Local minimum of obj, or if algorithm terminated before
+convergence x will be the point at which it terminated</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pymanopt.solvers.steepest_descent">
+<span id="steepest-descent"></span><h3>steepest_descent<a class="headerlink" href="#module-pymanopt.solvers.steepest_descent" title="Permalink to this headline">¶</a></h3>
+<p>Module containing steepest descent (gradient descent) algorithm based on
+steepestdescent.m from the manopt MATLAB package.</p>
+<dl class="class">
+<dt id="pymanopt.solvers.steepest_descent.SteepestDescent">
+<em class="property">class </em><code class="descclassname">pymanopt.solvers.steepest_descent.</code><code class="descname">SteepestDescent</code><span class="sig-paren">(</span><em>linesearch=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.solvers.steepest_descent.SteepestDescent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pymanopt.solvers.solver.Solver" title="pymanopt.solvers.solver.Solver"><code class="xref py py-class docutils literal"><span class="pre">pymanopt.solvers.solver.Solver</span></code></a></p>
+<dl class="method">
+<dt id="pymanopt.solvers.steepest_descent.SteepestDescent.solve">
+<code class="descname">solve</code><span class="sig-paren">(</span><em>problem</em>, <em>x=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.solvers.steepest_descent.SteepestDescent.solve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform optimization using gradient descent with linesearch.
+This method first computes the gradient (derivative) of obj
+w.r.t. arg, and then optimizes by moving in the direction of
+steepest descent (which is the opposite direction to the gradient).
+Arguments:</p>
+<blockquote>
+<div><ul>
+<li><dl class="first docutils">
+<dt>problem</dt>
+<dd><p class="first last">Pymanopt problem setup using the Problem class, this must
+have a .man attribute specifying the manifold to optimize
+over, as well as a cost and enough information to compute
+the gradient of that cost.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>x=None</dt>
+<dd><p class="first last">Optional parameter. Starting point on the manifold. If none
+then a starting point will be randomly generated.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt>x</dt>
+<dd><p class="first last">Local minimum of obj, or if algorithm terminated before
+convergence x will be the point at which it terminated.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pymanopt.solvers.trust_regions">
+<span id="trust-regions"></span><h3>trust_regions<a class="headerlink" href="#module-pymanopt.solvers.trust_regions" title="Permalink to this headline">¶</a></h3>
+<p>Module containing trust regions algorithm based on trustregions.m from the
+Manopt MATLAB package.</p>
+<p>Also included is the Truncated (Steihaug-Toint) Conjugate-Gradient algorithm,
+based on tCG.m from the Manopt MATLAB package.</p>
+<dl class="class">
+<dt id="pymanopt.solvers.trust_regions.TrustRegions">
+<em class="property">class </em><code class="descclassname">pymanopt.solvers.trust_regions.</code><code class="descname">TrustRegions</code><span class="sig-paren">(</span><em>miniter=3</em>, <em>kappa=0.1</em>, <em>theta=1.0</em>, <em>rho_prime=0.1</em>, <em>use_rand=False</em>, <em>rho_regularization=1000.0</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.solvers.trust_regions.TrustRegions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pymanopt.solvers.solver.Solver" title="pymanopt.solvers.solver.Solver"><code class="xref py py-class docutils literal"><span class="pre">pymanopt.solvers.solver.Solver</span></code></a></p>
+<dl class="attribute">
+<dt id="pymanopt.solvers.trust_regions.TrustRegions.EXCEEDED_TR">
+<code class="descname">EXCEEDED_TR</code><em class="property"> = 1</em><a class="headerlink" href="#pymanopt.solvers.trust_regions.TrustRegions.EXCEEDED_TR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymanopt.solvers.trust_regions.TrustRegions.MAX_INNER_ITER">
+<code class="descname">MAX_INNER_ITER</code><em class="property"> = 4</em><a class="headerlink" href="#pymanopt.solvers.trust_regions.TrustRegions.MAX_INNER_ITER" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymanopt.solvers.trust_regions.TrustRegions.MODEL_INCREASED">
+<code class="descname">MODEL_INCREASED</code><em class="property"> = 5</em><a class="headerlink" href="#pymanopt.solvers.trust_regions.TrustRegions.MODEL_INCREASED" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymanopt.solvers.trust_regions.TrustRegions.NEGATIVE_CURVATURE">
+<code class="descname">NEGATIVE_CURVATURE</code><em class="property"> = 0</em><a class="headerlink" href="#pymanopt.solvers.trust_regions.TrustRegions.NEGATIVE_CURVATURE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymanopt.solvers.trust_regions.TrustRegions.REACHED_TARGET_LINEAR">
+<code class="descname">REACHED_TARGET_LINEAR</code><em class="property"> = 2</em><a class="headerlink" href="#pymanopt.solvers.trust_regions.TrustRegions.REACHED_TARGET_LINEAR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymanopt.solvers.trust_regions.TrustRegions.REACHED_TARGET_SUPERLINEAR">
+<code class="descname">REACHED_TARGET_SUPERLINEAR</code><em class="property"> = 3</em><a class="headerlink" href="#pymanopt.solvers.trust_regions.TrustRegions.REACHED_TARGET_SUPERLINEAR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymanopt.solvers.trust_regions.TrustRegions.TCG_STOP_REASONS">
+<code class="descname">TCG_STOP_REASONS</code><em class="property"> = {0: 'negative curvature', 1: 'exceeded trust region', 2: 'reached target residual-kappa (linear)', 3: 'reached target residual-theta (superlinear)', 4: 'maximum inner iterations', 5: 'model increased'}</em><a class="headerlink" href="#pymanopt.solvers.trust_regions.TrustRegions.TCG_STOP_REASONS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.solvers.trust_regions.TrustRegions.solve">
+<code class="descname">solve</code><span class="sig-paren">(</span><em>problem</em>, <em>x=None</em>, <em>mininner=1</em>, <em>maxinner=None</em>, <em>Delta_bar=None</em>, <em>Delta0=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.solvers.trust_regions.TrustRegions.solve" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="tools">
+<h2>tools.<a class="headerlink" href="#tools" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-pymanopt.tools.autodiff">
+<span id="autodiff"></span><h3>autodiff<a class="headerlink" href="#module-pymanopt.tools.autodiff" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="pymanopt.tools.autodiff.TheanoBackend">
+<em class="property">class </em><code class="descclassname">pymanopt.tools.autodiff.</code><code class="descname">TheanoBackend</code><a class="headerlink" href="#pymanopt.tools.autodiff.TheanoBackend" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">pymanopt.tools.autodiff._backend.Backend</span></code></p>
+<dl class="method">
+<dt id="pymanopt.tools.autodiff.TheanoBackend.compile_function">
+<code class="descname">compile_function</code><span class="sig-paren">(</span><em>backend</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.tools.autodiff.TheanoBackend.compile_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrapper for the theano.function(). Compiles a theano graph into a
+python function.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.tools.autodiff.TheanoBackend.compute_gradient">
+<code class="descname">compute_gradient</code><span class="sig-paren">(</span><em>backend</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.tools.autodiff.TheanoBackend.compute_gradient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrapper for theano.tensor.grad(). Computes the gradient of &#8216;objective&#8217;
+with respect to &#8216;argument&#8217; and returns compiled version.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.tools.autodiff.TheanoBackend.compute_hessian">
+<code class="descname">compute_hessian</code><span class="sig-paren">(</span><em>backend</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.tools.autodiff.TheanoBackend.compute_hessian" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the directional derivative of the gradient (which is equal to
+the Hessian multiplied by direction).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.tools.autodiff.TheanoBackend.is_available">
+<code class="descname">is_available</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.tools.autodiff.TheanoBackend.is_available" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.tools.autodiff.TheanoBackend.is_compatible">
+<code class="descname">is_compatible</code><span class="sig-paren">(</span><em>backend</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.tools.autodiff.TheanoBackend.is_compatible" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymanopt.tools.autodiff.TheanoBackend.name">
+<code class="descname">name</code><a class="headerlink" href="#pymanopt.tools.autodiff.TheanoBackend.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pymanopt.tools.autodiff.AutogradBackend">
+<em class="property">class </em><code class="descclassname">pymanopt.tools.autodiff.</code><code class="descname">AutogradBackend</code><a class="headerlink" href="#pymanopt.tools.autodiff.AutogradBackend" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">pymanopt.tools.autodiff._backend.Backend</span></code></p>
+<dl class="method">
+<dt id="pymanopt.tools.autodiff.AutogradBackend.compute_gradient">
+<code class="descname">compute_gradient</code><span class="sig-paren">(</span><em>backend</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.tools.autodiff.AutogradBackend.compute_gradient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the gradient of &#8216;objective&#8217; with respect to the first
+argument and return as a function.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.tools.autodiff.AutogradBackend.compute_hessian">
+<code class="descname">compute_hessian</code><span class="sig-paren">(</span><em>backend</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.tools.autodiff.AutogradBackend.compute_hessian" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.tools.autodiff.AutogradBackend.is_available">
+<code class="descname">is_available</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.tools.autodiff.AutogradBackend.is_available" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.tools.autodiff.AutogradBackend.is_compatible">
+<code class="descname">is_compatible</code><span class="sig-paren">(</span><em>backend</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.tools.autodiff.AutogradBackend.is_compatible" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pymanopt.tools.autodiff.AutogradBackend.name">
+<code class="descname">name</code><a class="headerlink" href="#pymanopt.tools.autodiff.AutogradBackend.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pymanopt.tools.multi">
+<span id="multi"></span><h3>multi<a class="headerlink" href="#module-pymanopt.tools.multi" title="Permalink to this headline">¶</a></h3>
+<p>Operations on multiple matrices.</p>
+<dl class="function">
+<dt id="pymanopt.tools.multi.multieye">
+<code class="descclassname">pymanopt.tools.multi.</code><code class="descname">multieye</code><span class="sig-paren">(</span><em>k</em>, <em>n</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.tools.multi.multieye" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pymanopt.tools.multi.multiprod">
+<code class="descclassname">pymanopt.tools.multi.</code><code class="descname">multiprod</code><span class="sig-paren">(</span><em>A</em>, <em>B</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.tools.multi.multiprod" title="Permalink to this definition">¶</a></dt>
+<dd><p>Inspired by MATLAB multiprod function by Paolo de Leva. A and B are
+assumed to be arrays containing M matrices, that is, A and B have
+dimensions A: (M, N, P), B:(M, P, Q). multiprod multiplies each matrix
+in A with the corresponding matrix in B, using matrix multiplication.
+so multiprod(A, B) has dimensions (M, N, Q).</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pymanopt.tools.multi.multisym">
+<code class="descclassname">pymanopt.tools.multi.</code><code class="descname">multisym</code><span class="sig-paren">(</span><em>A</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.tools.multi.multisym" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pymanopt.tools.multi.multitransp">
+<code class="descclassname">pymanopt.tools.multi.</code><code class="descname">multitransp</code><span class="sig-paren">(</span><em>A</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.tools.multi.multitransp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Inspired by MATLAB multitransp function by Paolo de Leva. A is assumed to
+be an array containing M matrices, each of which has dimension N x P.
+That is, A is an M x N x P array. Multitransp then returns an array
+containing the M matrix transposes of the matrices in A, each of which
+will be P x N.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pymanopt.tools.testing">
+<span id="testing"></span><h3>testing<a class="headerlink" href="#module-pymanopt.tools.testing" title="Permalink to this headline">¶</a></h3>
+<p>Module containing tools for testing correctness in Pymanopt. Note, these
+currently require autograd.</p>
+<p>Note: the methods for generating rgrad, egrad2rgrad, ehess and ehess2rhess
+will only be correct if the manifold is a submanifold of Euclidean space,
+that is if the projection is an orthogonal projection onto the tangent space.</p>
+<dl class="function">
+<dt id="pymanopt.tools.testing.egrad2rgrad">
+<code class="descclassname">pymanopt.tools.testing.</code><code class="descname">egrad2rgrad</code><span class="sig-paren">(</span><em>proj</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.tools.testing.egrad2rgrad" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates an egrad2rgrad function.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pymanopt.tools.testing.ehess2rhess">
+<code class="descclassname">pymanopt.tools.testing.</code><code class="descname">ehess2rhess</code><span class="sig-paren">(</span><em>proj</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.tools.testing.ehess2rhess" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates an ehess2rhess function for a manifold which is a sub-manifold
+of Euclidean space.
+ehess2rhess(proj)(x, egrad, ehess, u) converts the Euclidean hessian ehess
+at the point x to a Riemannian hessian. That is the directional
+derivatative of the gradient in the direction u.
+proj must be defined using autograd.numpy.
+This will not be an efficient implementation because of missing support
+for efficient jacobian-vector products in autograd.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pymanopt.tools.testing.rgrad">
+<code class="descclassname">pymanopt.tools.testing.</code><code class="descname">rgrad</code><span class="sig-paren">(</span><em>cost</em>, <em>proj</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.tools.testing.rgrad" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates the Riemannain gradient of cost. Cost must be defined using
+autograd.numpy.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pymanopt.tools.testing.rhess">
+<code class="descclassname">pymanopt.tools.testing.</code><code class="descname">rhess</code><span class="sig-paren">(</span><em>cost</em>, <em>proj</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.tools.testing.rhess" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates the Riemannian hessian of the cost. Specifically, rhess(cost,
+proj)(x, u) is the directional derivatative of cost at point X on the
+manifold, in direction u.
+cost and proj must be defined using autograd.numpy.
+See <a class="reference external" href="http://sites.uclouvain.be/absil/2013-01/Weingarten_07PA_techrep.pdf">http://sites.uclouvain.be/absil/2013-01/Weingarten_07PA_techrep.pdf</a>
+for some discussion.
+proj and cost must be defined using autograd.
+Currently this is correct but not efficient, because of the jacobian-
+vector product. Hopefully this can be fixed in future.</p>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">Pymanopt dev documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+    </div>
+  </body>
+</html>
