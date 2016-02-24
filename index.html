@@ -13,7 +13,7 @@
     <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 
     <!-- code-prettify -->
-    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=py"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=py"></script>
 
     <link href="layout.css" rel="stylesheet" type="text/css" />
 </head>
@@ -41,12 +41,16 @@ steps are required:</p>
 <ol>
     <li>defininition of the cost function $f:\mathcal{M}\to \mathbb{R}$
     to minimise</li>
-    <li>instantiation of the respective manifold $\mathcal{M}$ to optimise
-    over</li>
+    <li>instantiation of the respective manifold $\mathcal{M}$ to
+    optimise over</li>
     <li>instantiation of a pymanopt solver</li>
 </ol>
-<p>If needed by the solver, pymanopt will compute the gradient and
-hessian automatically.</p>
+
+<p>Experimenting with Riemannian optimisation is simple with pymanopt
+and gradients and hessians are computed automatically if needed by the
+chosen solver. The following example demonstrates the ease of use while
+the steps will be discussed in more detail in the subsequent three
+sections.</p>
 
 <pre class="prettyprint"><code class="language-py">
 import autograd.numpy as np
@@ -71,7 +75,20 @@ print(Xopt)
 </code></pre>
 
 
-<h2>Manifolds</h2>
+<h2>(1) Cost Functions</h2>
+
+
+<h2>(2) Manifolds</h2>
+
+<p>The pymanopt Manifold class provides manifold specific routines like
+computing the intrinsic mean of two points on the manifold or computing
+the geodesic distance. The user will only need to instantiate the
+correct manifold and need not worry about the internal workings. We plan
+on implementing further manifolds as needed by the users. Developers
+wanting to implement a new manifold for pymanopt are referred to the
+abstract base class Manifold.</p>
+
+<h3>List of Manifolds</h3>
 
 <table id="manifolds">
 
@@ -82,9 +99,12 @@ print(Xopt)
 </tr>
 
 <tr>
-    <td>Euclidean manifold $\mathbb{R}^{m\times n}$</td>
+    <td>Euclidean manifold<br />
+    $\mathbb{R}^{m\times n}$</td>
     <td>Euclidean space of $m\times n$ matrices equipped with the
-    Frobenius distance and trace inner product.</td>
+    Frobenius distance and trace inner product. Helpful for
+    unconstrained problems or, when used as part of a product manifold,
+    for unconstrained hyperparameters.</td>
     <td>
 <pre class="prettyprint"><code class="language-py">
 from pymanopt.manifolds import Euclidean
@@ -94,19 +114,25 @@ manifold = Euclidean(m,n)
 </tr>
 
 <tr>
-    <td>Sphere manifold $\mathcal{S}^m=\{x\in\mathbb{R}^{m}:||x||_2=1\}$</td>
-    <td>$m\times n$ matrices of unit Frobenius norm, i.e., the unit Sphere for $n=1$ (the default value).</td>
+    <td>Sphere manifold<br />
+    $\mathcal{S}^{m\times n} \triangleq \{M\in\mathbb{R}^{m\times n}:||M||_F=1\}$</td>
+    <td>$m\times n$ matrices of unit Frobenius norm, i.e., the unit
+    Sphere for $n=1$ (the default value of this optional argument).</td>
     <td>
 <pre class="prettyprint"><code class="language-py">
 from pymanopt.manifolds import Sphere
-manifold = Sphere(n)
+manifold = Sphere(m)
 </code></pre>
     </td>
 </tr>
 
 <tr>
-    <td>Stiefel manifold $\mathcal{St}^{m\times n}=\{P\in\mathbb{R}^{m\times n}: P^\top P=\mathbb{1}\}$</td>
-    <td>This is the manifold of projection matrices. For optional argument $k>1$ this instantiates the product $\mathcal{St}^{m\times n}\times\cdots\times\mathcal{St}^{m\times n}$ of $k$ Stiefel manifolds.</td>
+    <td>Stiefel manifold<br />
+    $V_{m,n} \triangleq \{P\in\mathbb{R}^{m\times n}: P^\top P=\mathbf{1}_{n\times n}\}$</td>
+    <td>This is the manifold of projection matrices. For optional
+    argument $k>1$ this instantiates the product manifold
+    $\mathcal{St}^{m\times n}\times\cdots\times\mathcal{St}^{m\times n}$
+    of $k$ Stiefel manifolds.</td>
     <td>
 <pre class="prettyprint"><code class="language-py">
 from pymanopt.manifolds import Stiefel
@@ -116,7 +142,8 @@ manifold = Stiefel(m,n)
 </tr>
 
 <tr>
-    <td>Grassmann manifold $\mathcal{Gr}^{m\times n}$</td>
+    <td>Grassmann manifold<br />
+    $G_{m,n} \triangleq \{\operatorname{Span}\{M\}:M\in\mathbb{R}^{m\times n}\}$</td>
     <td>This is the manifold of $n$-dimensional subspaces of $\mathbb{R}^m$. For optional argument $k>1$ this instantiates the product $\mathcal{Gr}^{m\times n}\times\cdots\times\mathcal{Gr}^{m\times n}$ of $k$ Grassmann manifolds.</td>
     <td>
 <pre class="prettyprint"><code class="language-py">
@@ -127,7 +154,8 @@ manifold = Grassmann(m,n)
 </tr>
 
 <tr>
-    <td>SymFixedRankYY manifold</td>
+    <td>SymFixedRankYY manifold<br />
+    $\operatorname{PSD}_k^n \triangleq \{M\in\mathbb{R}^{n\times n}: M \succeq \mathbf{0}, \operatorname{rank}(M)=k\}$</td>
     <td>Manifold of $n$-by-$n$ symmetric/hermitian positive semidefinite matrices of rank $k$.</td>
     <td>
 <pre class="prettyprint"><code class="language-py">
@@ -143,7 +171,8 @@ manifold = SymFixedRankYYComplex(n,k)
 </tr>
 
 <tr>
-    <td>Elliptope manifold</td>
+    <td>Elliptope manifold<br />
+    $E_k^n \triangleq \{M\in\mathbb{R}^{n\times n}: M \succeq \mathbf{0}, \operatorname{rank}(M)=k, ||M_{i,:}||_2=1 \ \forall i\in\mathbb{N}_1^n\}$</td>
     <td>Manifold of $n$-by-$n$ psd matrices of rank $k$ with unit diagonal elements.</td>
     <td>
 <pre class="prettyprint"><code class="language-py">
@@ -154,7 +183,8 @@ manifold = Elliptope(n,k)
 </tr>
 
 <tr>
-    <td>Oblique manifold</td>
+    <td>Oblique manifold<br />
+    $O_{m,n} \triangleq \{M\in\mathbb{R}^{m\times n}: ||M_{:,j}||_2=1 \ \forall j\in\mathbb{N}_1^n\}$</td>
     <td>Manifold of matrices with unit-norm columns.</td>
     <td>
 <pre class="prettyprint"><code class="language-py">
@@ -165,8 +195,9 @@ manifold = Oblique(m,n)
 </tr>
 
 <tr class="topborder">
-    <td>Product manifold</td>
-    <td>Product manifold of any of the manifolds listed above, e.g. $\mathcal{St}^{m\times n}\times\mathbb{R}^{k\times l}$.</td>
+    <td>Product manifold<br />
+    $\mathcal{M_1}\times \cdots \times \mathcal{M_l}$ for manifolds $\mathcal{M_1},...,\mathcal{M_l}$</td>
+    <td>Product manifold of any of the manifolds listed above, e.g. $V_{m\times n}\times\mathbb{R}^{k\times l}$.</td>
     <td>
 <pre class="prettyprint"><code class="language-py">
 from pymanopt.manifolds import Product, Stiefel, Euclidean
@@ -177,7 +208,9 @@ manifold = Product([Stiefel(m,n), Euclidean(k,l)])
 
 </table>
 
-<h2>Solvers</h2>
+<h2>(3) Solvers</h2>
+
+<h3>List of Solvers</h3>
 
 <table id="solvers">
 
