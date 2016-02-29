@@ -30,15 +30,6 @@ euclidean
 
 .. automodule:: pymanopt.manifolds.euclidean
     :members:
-    :undoc-members:
-    :show-inheritance:
-
-fixed_rank
-~~~~~~~~~~
-
-.. automodule:: pymanopt.manifolds.fixed_rank
-    :members:
-    :undoc-members:
     :show-inheritance:
 
 grassmann
@@ -46,7 +37,6 @@ grassmann
 
 .. automodule:: pymanopt.manifolds.grassmann
     :members:
-    :undoc-members:
     :show-inheritance:
 
 oblique
@@ -54,7 +44,6 @@ oblique
 
 .. automodule:: pymanopt.manifolds.oblique
     :members:
-    :undoc-members:
     :show-inheritance:
 
 product
@@ -62,7 +51,13 @@ product
 
 .. automodule:: pymanopt.manifolds.product
     :members:
-    :undoc-members:
+    :show-inheritance:
+
+psd
+~~~
+
+.. automodule:: pymanopt.manifolds.psd
+    :members:
     :show-inheritance:
 
 sphere
@@ -70,7 +65,6 @@ sphere
 
 .. automodule:: pymanopt.manifolds.sphere
     :members:
-    :undoc-members:
     :show-inheritance:
 
 stiefel
@@ -78,7 +72,6 @@ stiefel
 
 .. automodule:: pymanopt.manifolds.stiefel
     :members:
-    :undoc-members:
     :show-inheritance:
 
 
