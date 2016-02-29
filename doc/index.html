@@ -285,12 +285,6 @@ vector U at X.</p>
 inverse of exp.</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="pymanopt.manifolds.manifold.Manifold.name">
-<code class="descname">name</code><a class="headerlink" href="#pymanopt.manifolds.manifold.Manifold.name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Name of the manifold</p>
-</dd></dl>
-
 <dl class="method">
 <dt id="pymanopt.manifolds.manifold.Manifold.norm">
 <code class="descname">norm</code><span class="sig-paren">(</span><em>X</em>, <em>G</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.manifold.Manifold.norm" title="Permalink to this definition">¶</a></dt>
@@ -527,42 +521,25 @@ matrices if k &gt; 1 (Note that this is different to manopt!).</p>
 <dt id="pymanopt.solvers.solver.Solver">
 <em class="property">class </em><code class="descclassname">pymanopt.solvers.solver.</code><code class="descname">Solver</code><span class="sig-paren">(</span><em>maxtime=1000</em>, <em>maxiter=1000</em>, <em>mingradnorm=1e-06</em>, <em>minstepsize=1e-10</em>, <em>maxcostevals=5000</em>, <em>logverbosity=0</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.solvers.solver.Solver" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
-<dl class="attribute">
-<dt id="pymanopt.solvers.solver.Solver.name">
-<code class="descname">name</code><a class="headerlink" href="#pymanopt.solvers.solver.Solver.name" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<p>Abstract base class setting out template for solver classes.</p>
+<dl class="method">
+<dt id="pymanopt.solvers.solver.Solver.solve">
+<code class="descname">solve</code><span class="sig-paren">(</span><em>problem</em>, <em>x=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.solvers.solver.Solver.solve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solve the given problem (starting from a random initial guess if
+the optional argument x is not provided)</p>
+</dd></dl>
 
 </dd></dl>
 
 </div>
 <div class="section" id="module-pymanopt.solvers.conjugate_gradient">
 <span id="conjugate-gradient"></span><h3>conjugate_gradient<a class="headerlink" href="#module-pymanopt.solvers.conjugate_gradient" title="Permalink to this headline">¶</a></h3>
-<p>Module containing conjugate gradient algorithm based on conjugategradient.m
-from the manopt MATLAB package.</p>
 <dl class="class">
 <dt id="pymanopt.solvers.conjugate_gradient.ConjugateGradient">
 <em class="property">class </em><code class="descclassname">pymanopt.solvers.conjugate_gradient.</code><code class="descname">ConjugateGradient</code><span class="sig-paren">(</span><em>beta_type=2</em>, <em>orth_value=inf</em>, <em>linesearch=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.solvers.conjugate_gradient.ConjugateGradient" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pymanopt.solvers.solver.Solver" title="pymanopt.solvers.solver.Solver"><code class="xref py py-class docutils literal"><span class="pre">pymanopt.solvers.solver.Solver</span></code></a></p>
-<p>Conjugate gradient solver class.
-Variable attributes (defaults in brackets):</p>
-<blockquote>
-<div><ul>
-<li><dl class="first docutils">
-<dt>beta_type (BetaTypes.HestenesStiefel)</dt>
-<dd><p class="first last">Conjugate gradient beta rule used to construct the new search
-direction</p>
-</dd>
-</dl>
-</li>
-<li><dl class="first docutils">
-<dt>orth_value (numpy.inf)</dt>
-<dd><p class="first last">Parameter for Powell&#8217;s restart strategy. An infinite value disables
-this strategy. See in code formula for the specific criterion used.</p>
-</dd>
-</dl>
-</li>
-</ul>
-</div></blockquote>
+<p>Module containing conjugate gradient algorithm based on
+conjugategradient.m from the manopt MATLAB package.</p>
 <dl class="method">
 <dt id="pymanopt.solvers.conjugate_gradient.ConjugateGradient.solve">
 <code class="descname">solve</code><span class="sig-paren">(</span><em>problem</em>, <em>x=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.solvers.conjugate_gradient.ConjugateGradient.solve" title="Permalink to this definition">¶</a></dt>
@@ -612,12 +589,12 @@ convergence x will be the point at which it terminated.</p>
 </div>
 <div class="section" id="module-pymanopt.solvers.linesearch">
 <span id="linesearch"></span><h3>linesearch<a class="headerlink" href="#module-pymanopt.solvers.linesearch" title="Permalink to this headline">¶</a></h3>
-<p>Line-search based on linesearch.m and linesearch_adaptive.m in the manopt
-MATLAB package.</p>
 <dl class="class">
 <dt id="pymanopt.solvers.linesearch.LineSearch">
 <em class="property">class </em><code class="descclassname">pymanopt.solvers.linesearch.</code><code class="descname">LineSearch</code><span class="sig-paren">(</span><em>contraction_factor=0.5</em>, <em>optimism=2</em>, <em>suff_decr=0.0001</em>, <em>maxiter=25</em>, <em>initial_stepsize=1</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.solvers.linesearch.LineSearch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Line-search based on linesearch.m and linesearch_adaptive.m in the manopt
+MATLAB package.</p>
 <dl class="method">
 <dt id="pymanopt.solvers.linesearch.LineSearch.search">
 <code class="descname">search</code><span class="sig-paren">(</span><em>objective</em>, <em>manifold</em>, <em>x</em>, <em>d</em>, <em>f0</em>, <em>df0</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.solvers.linesearch.LineSearch.search" title="Permalink to this definition">¶</a></dt>
@@ -683,6 +660,7 @@ Arguments:</p>
 <dt id="pymanopt.solvers.linesearch.LineSearchAdaptive">
 <em class="property">class </em><code class="descclassname">pymanopt.solvers.linesearch.</code><code class="descname">LineSearchAdaptive</code><span class="sig-paren">(</span><em>contraction_factor=0.5</em>, <em>suff_decr=0.5</em>, <em>maxiter=10</em>, <em>initial_stepsize=1</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.solvers.linesearch.LineSearchAdaptive" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Adaptive line-search</p>
 <dl class="method">
 <dt id="pymanopt.solvers.linesearch.LineSearchAdaptive.search">
 <code class="descname">search</code><span class="sig-paren">(</span><em>objective</em>, <em>man</em>, <em>x</em>, <em>d</em>, <em>f0</em>, <em>df0</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.solvers.linesearch.LineSearchAdaptive.search" title="Permalink to this definition">¶</a></dt>
@@ -693,51 +671,12 @@ Arguments:</p>
 </div>
 <div class="section" id="module-pymanopt.solvers.nelder_mead">
 <span id="nelder-mead"></span><h3>nelder_mead<a class="headerlink" href="#module-pymanopt.solvers.nelder_mead" title="Permalink to this headline">¶</a></h3>
-<p>Module containing a Nelder-Mead minimization alglorithm for derivative-free
-minimization based on neldermead.m and centroid.m from the manopt MATLAB
-package.</p>
 <dl class="class">
 <dt id="pymanopt.solvers.nelder_mead.NelderMead">
 <em class="property">class </em><code class="descclassname">pymanopt.solvers.nelder_mead.</code><code class="descname">NelderMead</code><span class="sig-paren">(</span><em>maxcostevals=None</em>, <em>maxiter=None</em>, <em>reflection=1</em>, <em>expansion=2</em>, <em>contraction=0.5</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.solvers.nelder_mead.NelderMead" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pymanopt.solvers.solver.Solver" title="pymanopt.solvers.solver.Solver"><code class="xref py py-class docutils literal"><span class="pre">pymanopt.solvers.solver.Solver</span></code></a></p>
-<p>Nelder-Mead method solver class.
-Variable attributes (defaults in brackets):</p>
-<blockquote>
-<div><ul>
-<li><dl class="first docutils">
-<dt>maxcostevals (max(5000, 2 * dim))</dt>
-<dd><p class="first last">Maximum number of allowed cost evaluations</p>
-</dd>
-</dl>
-</li>
-<li><dl class="first docutils">
-<dt>maxiter (max(500, 4 * dim))</dt>
-<dd><p class="first last">Maximum number of allowed iterations</p>
-</dd>
-</dl>
-</li>
-<li><dl class="first docutils">
-<dt>reflection (1)</dt>
-<dd><p class="first last">Determines how far to reflect away from the worst vertex;
-stretched (reflection &gt; 1), compressed (0 &lt; reflection &lt; 1),
-or exact (reflection = 1)</p>
-</dd>
-</dl>
-</li>
-<li><dl class="first docutils">
-<dt>expansion (2)</dt>
-<dd><p class="first last">Factor by which to expand the reflected simplex</p>
-</dd>
-</dl>
-</li>
-<li><dl class="first docutils">
-<dt>contraction (0.5)</dt>
-<dd><p class="first last">Factor by which to contract the reflected simplex</p>
-</dd>
-</dl>
-</li>
-</ul>
-</div></blockquote>
+<p>Nelder-Mead minimization alglorithm for derivative-free minimization
+based on neldermead.m and centroid.m from the manopt MATLAB package.</p>
 <dl class="method">
 <dt id="pymanopt.solvers.nelder_mead.NelderMead.solve">
 <code class="descname">solve</code><span class="sig-paren">(</span><em>problem</em>, <em>x=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.solvers.nelder_mead.NelderMead.solve" title="Permalink to this definition">¶</a></dt>
@@ -791,48 +730,12 @@ man.</p>
 </div>
 <div class="section" id="module-pymanopt.solvers.particle_swarm">
 <span id="particle-swarm"></span><h3>particle_swarm<a class="headerlink" href="#module-pymanopt.solvers.particle_swarm" title="Permalink to this headline">¶</a></h3>
-<p>Module containing the particle swarm optimization method based on pso.m from
-the manopt MATLAB package.</p>
 <dl class="class">
 <dt id="pymanopt.solvers.particle_swarm.ParticleSwarm">
 <em class="property">class </em><code class="descclassname">pymanopt.solvers.particle_swarm.</code><code class="descname">ParticleSwarm</code><span class="sig-paren">(</span><em>maxcostevals=None</em>, <em>maxiter=None</em>, <em>populationsize=None</em>, <em>nostalgia=1.4</em>, <em>social=1.4</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.solvers.particle_swarm.ParticleSwarm" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pymanopt.solvers.solver.Solver" title="pymanopt.solvers.solver.Solver"><code class="xref py py-class docutils literal"><span class="pre">pymanopt.solvers.solver.Solver</span></code></a></p>
-<p>Particle Swarm Optimization (PSO) solver class.
-Variable attributes (defaults in brackets):</p>
-<blockquote>
-<div><ul>
-<li><dl class="first docutils">
-<dt>maxcostevals (max(5000, 2 * dim))</dt>
-<dd><p class="first last">Maximum number of allowed cost evaluations</p>
-</dd>
-</dl>
-</li>
-<li><dl class="first docutils">
-<dt>maxiter (max(500, 4 * dim))</dt>
-<dd><p class="first last">Maximum number of allowed iterations</p>
-</dd>
-</dl>
-</li>
-<li><dl class="first docutils">
-<dt>populationsize (min(40, 10 * dim))</dt>
-<dd><p class="first last">Size of the considered swarm population</p>
-</dd>
-</dl>
-</li>
-<li><dl class="first docutils">
-<dt>nostalgia (1.4)</dt>
-<dd><p class="first last">Quantifies performance relative to past performances</p>
-</dd>
-</dl>
-</li>
-<li><dl class="first docutils">
-<dt>social (1.4)</dt>
-<dd><p class="first last">Quantifies performance relative to neighbors</p>
-</dd>
-</dl>
-</li>
-</ul>
-</div></blockquote>
+<p>Particle swarm optimization method based on pso.m from the manopt
+MATLAB package.</p>
 <dl class="method">
 <dt id="pymanopt.solvers.particle_swarm.ParticleSwarm.solve">
 <code class="descname">solve</code><span class="sig-paren">(</span><em>problem</em>, <em>x=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.solvers.particle_swarm.ParticleSwarm.solve" title="Permalink to this definition">¶</a></dt>
@@ -879,12 +782,12 @@ convergence x will be the point at which it terminated</p>
 </div>
 <div class="section" id="module-pymanopt.solvers.steepest_descent">
 <span id="steepest-descent"></span><h3>steepest_descent<a class="headerlink" href="#module-pymanopt.solvers.steepest_descent" title="Permalink to this headline">¶</a></h3>
-<p>Module containing steepest descent (gradient descent) algorithm based on
-steepestdescent.m from the manopt MATLAB package.</p>
 <dl class="class">
 <dt id="pymanopt.solvers.steepest_descent.SteepestDescent">
 <em class="property">class </em><code class="descclassname">pymanopt.solvers.steepest_descent.</code><code class="descname">SteepestDescent</code><span class="sig-paren">(</span><em>linesearch=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.solvers.steepest_descent.SteepestDescent" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pymanopt.solvers.solver.Solver" title="pymanopt.solvers.solver.Solver"><code class="xref py py-class docutils literal"><span class="pre">pymanopt.solvers.solver.Solver</span></code></a></p>
+<p>Steepest descent (gradient descent) algorithm based on
+steepestdescent.m from the manopt MATLAB package.</p>
 <dl class="method">
 <dt id="pymanopt.solvers.steepest_descent.SteepestDescent.solve">
 <code class="descname">solve</code><span class="sig-paren">(</span><em>problem</em>, <em>x=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.solvers.steepest_descent.SteepestDescent.solve" title="Permalink to this definition">¶</a></dt>
@@ -933,10 +836,6 @@ convergence x will be the point at which it terminated.</p>
 </div>
 <div class="section" id="module-pymanopt.solvers.trust_regions">
 <span id="trust-regions"></span><h3>trust_regions<a class="headerlink" href="#module-pymanopt.solvers.trust_regions" title="Permalink to this headline">¶</a></h3>
-<p>Module containing trust regions algorithm based on trustregions.m from the
-Manopt MATLAB package.</p>
-<p>Also included is the Truncated (Steihaug-Toint) Conjugate-Gradient algorithm,
-based on tCG.m from the Manopt MATLAB package.</p>
 <dl class="class">
 <dt id="pymanopt.solvers.trust_regions.TrustRegions">
 <em class="property">class </em><code class="descclassname">pymanopt.solvers.trust_regions.</code><code class="descname">TrustRegions</code><span class="sig-paren">(</span><em>miniter=3</em>, <em>kappa=0.1</em>, <em>theta=1.0</em>, <em>rho_prime=0.1</em>, <em>use_rand=False</em>, <em>rho_regularization=1000.0</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.solvers.trust_regions.TrustRegions" title="Permalink to this definition">¶</a></dt>
@@ -1024,11 +923,6 @@ the Hessian multiplied by direction).</p>
 <code class="descname">is_compatible</code><span class="sig-paren">(</span><em>backend</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.tools.autodiff.TheanoBackend.is_compatible" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="attribute">
-<dt id="pymanopt.tools.autodiff.TheanoBackend.name">
-<code class="descname">name</code><a class="headerlink" href="#pymanopt.tools.autodiff.TheanoBackend.name" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 </dd></dl>
 
 <dl class="class">
@@ -1055,11 +949,6 @@ argument and return as a function.</p>
 <dl class="method">
 <dt id="pymanopt.tools.autodiff.AutogradBackend.is_compatible">
 <code class="descname">is_compatible</code><span class="sig-paren">(</span><em>backend</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.tools.autodiff.AutogradBackend.is_compatible" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pymanopt.tools.autodiff.AutogradBackend.name">
-<code class="descname">name</code><a class="headerlink" href="#pymanopt.tools.autodiff.AutogradBackend.name" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
