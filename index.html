@@ -22,30 +22,27 @@
 
 <h1>Pymanopt</h1>
 
-<p>Pymanopt is a python toolbox for manifold optimization that computes
-gradients and hessians automatically. It builds upon the MATLAB package
-<a href="http://manopt.org/">Manopt</a> but is otherwise independent of
-it. Pymanopt aims to lower the barriers for users wishing to use state
-of the art manifold optimization techniques even further, by relying on
-automatic differentiation for computing gradients and hessians, saving
-users time and saving them from potential calculation and
-implementiation errors.</p>
+<p>Pymanopt is a Python package for doing manifold optimization, that computes
+gradients and hessians automatically. It builds upon the MATLAB toolbox
+<a href="http://manopt.org/">Manopt</a> but is otherwise independent of it.
+Pymanopt aims to lower the barriers for users wishing to use state of the art
+manifold optimization techniques, by relying on automatic differentiation for
+computing gradients and hessians, saving users time and saving them from
+potential calculation and implementiation errors.</p>
 
-<p>Pymanopt is modular and hence easy to use. Usually only the following
-steps are required:</p>
+<p>Pymanopt is modular and hence easy to use. All of the automatic
+differentiation is done behind the scenes, so that the amount of setup the user
+needs to do is minimal. Usually only the following steps are required:</p>
 <ol>
-    <li>defininition of the cost function $f:\mathcal{M}\to \mathbb{R}$
-    to minimise</li>
-    <li>instantiation of the respective manifold $\mathcal{M}$ to
-    optimise over</li>
-    <li>instantiation of a Pymanopt solver</li>
+    <li>Defininition of a cost function $f:\mathcal{M}\to \mathbb{R}$ to
+      minimise</li>
+    <li>Instantiation of a manifold $\mathcal{M}$ to optimise over</li>
+    <li>Instantiation of a Pymanopt solver</li>
 </ol>
 
-<p>Experimenting with Riemannian optimisation is simple with Pymanopt
-and gradients and hessians are computed automatically if needed by the
-chosen solver. The following example demonstrates the ease of use while
-the steps will be discussed in more detail in the subsequent three
-sections.</p>
+<p>Experimenting with manifold optimisation is simple with Pymanopt. The
+following example demonstrates this. The steps will be discussed in more detail
+in the subsequent three sections.</p>
 
 <pre class="prettyprint"><code class="language-py">
 import autograd.numpy as np
@@ -54,13 +51,13 @@ from pymanopt import Problem
 from pymanopt.solvers import SteepestDescent
 from pymanopt.manifolds import Stiefel
 
-# (1) definition of the cost function (here using theano)
+# (1) Define the cost function (here using autograd.numpy)
 def cost(X): return np.sum(X)
 
-# (2) instantiation of the respective manifold
+# (2) Instantiate of the manifold
 manifold = Stiefel(5, 2)
 
-# (3) instantiation of a Pymanopt solver
+# (3) Instantiate a Pymanopt solver
 solver = SteepestDescent()
 
 # let Pymanopt do the rest
@@ -69,96 +66,114 @@ Xopt = solver.solve(problem)
 print(Xopt)
 </code></pre>
 
-<p><strong>We explicitly encourage users to report problems, request features,
-ask for help, or leave general comments either on
+<p><strong>We encourage users to report problems, request features, ask for
+help, or leave general comments either on
 <a href="https://github.com/pymanopt/pymanopt">github</a>,
 <a href="https://gitter.im/pymanopt/pymanopt">gitter</a>, or via email to
 one of the maintainers.</strong></p>
 
 
 <h2>(0) Installing Pymanopt</h2>
+<h3>Dependencies</h3>
+<p>Pymanopt is compatible with Python 2.7 and Python 3.3+, and depends on
+NumPy and SciPy. Additionally, to use Pymanopt's built-in automatic
+differentiation, which we strongly recommend, you need to setup your cost
+functions using either
+<a href="http://www.deeplearning.net/software/theano/">Theano</a> or
+<a href="https://github.com/HIPS/autograd">Autograd</a>. If you're unfamiliar
+with both packages and not sure which to go for, it's probably best to start
+with Autograd. Autograd wraps thinly around NumPy, and is very simple to use,
+particularly if you're already familiar with NumPy (see
+<a href="#autograd-example">below</a>).</p>
 
+<p>Instructions for installing NumPy, SciPy, and Theano on different operating
+systems can be found
+<a href="http://deeplearning.net/software/theano/install.html">here</a>,
+for installing Autograd
+<a href="https://github.com/HIPS/autograd#how-to-install">here</a>.</p>
+
+<h3>Pymanopt installation</h3>
 <p>Pymanopt can be installed with the following command:</p>
 <pre class="prettyprint"><code class="language-bash">
 pip install --user git+https://github.com/pymanopt/pymanopt.git
 </code></pre>
 
-<p>Pymanopt is compatible with Python 2.7 and Python 3.3+, and depends on
-numpy, scipy (and theano or autograd). Instructions for installing numpy,
-scipy, and theano on different operating systems can be found
-<a href="http://deeplearning.net/software/theano/install.html">here</a>,
-for installing autograd
-<a href="https://github.com/HIPS/autograd#how-to-install">here</a>.</p>
-
 
 <h2>(1) Cost Functions</h2>
 
-<p>The python cost function passed to Pymanopt should take a single input,
-a point on the manifold, and return a scalar. There are the following three
-alternatives as to how to optimise, i.e. minimise, this cost function
-using Pymanopt:</p>
-<ol class="alpha">
-    <li>Rely on Pymanopt's autodiff backend to automatically compute the gradient and hessian</li>
-    <li>Implement the gradient and hessian manually and pass it over to Pymanopt</li>
-    <li>Use one of the derivative-free solver algorithms</li>
-</ol>
+<p>The cost function passed to Pymanopt should take a single input (a point on
+the manifold), and return a scalar. You have three options for how to define
+the cost function:</p>
+<table id="cost-setup">
+  <tr>
+    <th>Method</th><th>Extra work required</th>
+  </tr>
+  <tr>
+    <td>Use Autograd</td><td>None</td>
+  </tr>
+  <tr>
+    <td>Use Theano</td><td>None</td>
+  </tr>
+  <tr>
+    <td>Use a regular Python function</td><td>Calculate and implement
+    derivatives (gradient and hessian) by hand.</td>
+  </tr>
+</table>
 
-<p>The first approach is recommended – indeed, it is what makes experimenting
-with Riemannian optimisation so easy!</p>
+<p>The first two options are recommended – indeed, they are what makes
+manifold optimization with Pymanopt so easy!</p>
 
-<h3>(a) Rely on Pymanopt's autodiff backend</h3>
+<h3>(1a/b) Use Autograd or Theano</h3>
 
-<p>Currently Pymanopt supports theano and autograd as autodiff backends
-and we plan on implementing a tensorflow backend.
-How the cost function has to be implemented depends on which backend,
-autograd or theano, is to be used.</p>
+<p>Currently Pymanopt supports Theano and Autograd as autodiff backends. We
+plan to implement support for
+<a href="https://www.tensorflow.org">Google TensorFlow</a>.</p>
 
-<h4>Setting up the cost function for using the autograd autodiff backend</h4>
-
+<h4 id="autograd-example">Setup the cost function using Autograd</h4>
+If you already know how to use NumPy, then this approach will be easy. Just
+import autograd.numpy and setup your cost as a Python function, using the
+autograd numpy to perform the computation.
 <pre class="prettyprint"><code class="language-python">
 import autograd.numpy as np
-def cost(X): return np.sum(X)
-problem = Problem(manifold=manifold, cost=cost)
+
+def cost(X):
+    return np.exp(-np.sum(X**2))
 </code></pre>
 
 
-<h4>Setting up the cost function for using the theano autodiff backend</h4>
-
+<h4>Setup the cost function using Theano</h4>
+This approach requires you to setup your cost as a Theano graph. A tutorial
+on using Theano can be found
+<a href="http://deeplearning.net/software/theano/tutorial/">here</a>.
 <pre class="prettyprint"><code class="language-python">
 import theano.tensor as T
+
 X = T.matrix()
-cost = T.sum(X)
-problem = Problem(manifold=manifold, cost=cost, arg=[X])
+cost = T.exp(-T.sum(X**2))
+
+problem = Problem(manifold=manifold, cost=cost, arg=X)
 </code></pre>
 
 
-<h3>(b) Implement gradient and hessian manually</h3>
+<h3>(c) Use a regular Python function</h3>
 
-<p>The free gradient and, if needed by the chosen solver, the hessian need
-to be implemented as python function that take as input a point on the
-manifold and returns the gradient or hessian at that point respectively.
-These then need to be passed over to Pymanopt's Problem class:</p>
+<p>If you wish to use one of the derivative free solvers (perhaps your cost
+function is nowhere smooth), then this approach makes sense. If you want to use
+a solver which requires derivatives (these solvers generally perform far better
+than derivative free methods) this approach enables you to calculate and
+implement gradients and hessians by hand.</p>
+
+<p>Using Pymanopt in this way is similar to Manopt. You can refer to the Manopt
+<a href="http://www.manopt.org/tutorial.html">tutorial</a> and
+<a href="https://groups.google.com/forum/#!forum/manopttoolbox">forum</a> for
+advice on calculating gradients/hessians by hand.
+However, we would like to stress that there is <i>little or no advantage</i> to
+doing things in this way. The gradients and hessians calculated by Pymanopt
+should be both correct and efficient.
+</p>
 <pre class="prettyprint"><code class="language-python">
 problem = Problem(manifold=manifold, cost=cost, egrad=egrad, ehess=ehess)
 </code></pre>
-<p>Again, we recommend the first approach that save you time deriving and
-implementing the gradient and hessian. If you need the gradient and hessian
-for analytical reasons, you can check your manually derived derivatives
-using <a href="doc/index.html#module-pymanopt.tools.testing">Pymanopt's
-testing module</a>.</p>
-
-
-<h3>(c) Use a derivative-free solver</h3>
-
-<p>Currently NelderMead and ParticleSwarm are available as derivative-free
-solvers. If using one of those, only the manifold and cost function need
-to be passed over to Pymanopt's Problem class:</p>
-<pre class="prettyprint"><code class="language-python">
-problem = Problem(manifold=manifold, cost=cost)
-</code></pre>
-<p>Again, Pymanopt's autodiff backend makes it really easy to also use
-solvers that rely on the gradient and hessian.</p>
-
 
 <h2>(2) Manifolds</h2>
 
