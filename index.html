@@ -368,6 +368,64 @@ Xopt = solver.solve(problem)
 
 </table>
 
+
+<h2>Examples</h2>
+
+<p>Several examples that demonstrate how to use Pymanopt can be found
+<a href="https://github.com/pymanopt/pymanopt/tree/master/examples">here</a>.
+Below are some examples that demonstrate certain use-cases that may be of
+general interest and give an idea of what can be done with Pymanopt.</p>
+
+<table>
+
+<tr>
+    <th>example</th>
+    <th>notes</th>
+    <th>file(s)</th>
+</tr>
+
+<tr id="example-optlog-1">
+    <td>Log optimisation behaviour</td>
+    <td>Demonstrates how to log and inspect the optimisation behaviour,
+    i.e. how the cost function's value changes over iterations, which of
+    the stopping criterions caused the solver to stop, etc.</td>
+    <td>
+        <a href="https://github.com/pymanopt/pymanopt/blob/master/examples/optlog_example.py">
+        optlog_example.py</a>
+    </td>
+</tr>
+
+<tr id="example-productmanifold-1">
+    <td>Linear regression as optimisation over the product manifold</td>
+    <td>Optimises the weights $w$ and the offset $b$ in the linear regression
+    problem $\min_{w,b} ||Y-w^\top X-b||_2^2$, for given label vector $Y$ and
+    covariates matrix $X$ over the product manifold
+    $\mathbb{R}^3 \times \mathbb{R}$ to demonstrate optimisation over
+    product manifolds.</td>
+    <td>
+        <a href="https://github.com/pymanopt/pymanopt/blob/master/examples/regression_offset_autograd.py">
+        regression_offset_autograd.py</a> /
+        <a href="https://github.com/pymanopt/pymanopt/blob/master/examples/regression_offset_theano.py">
+        regression_offset_theano.py</a>
+    </td>
+</tr>
+
+<tr id="example-multiple-1">
+    <td>Solve the same optimisation problems for several data instances</td>
+    <td>Demonstrates how to solve the same optimisation problems for several
+    data instances, i.e., in this case solving a regression problem for five
+    different datasets.</td>
+    <td>
+        <a href="https://github.com/pymanopt/pymanopt/blob/master/examples/linreg_multiple_autograd.py">
+        linreg_multiple_autograd.py</a> /
+        <a href="https://github.com/pymanopt/pymanopt/blob/master/examples/linreg_multiple_theano.py">
+        linreg_multiple_theano.py</a>
+    </td>
+</tr>
+
+</table>
+
+
 </body>
 
 </html>
