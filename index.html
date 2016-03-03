@@ -78,26 +78,26 @@ one of the maintainers.</strong></p>
 
 <h2>(0) Installing Pymanopt</h2>
 
-Pymanopt can be installed with the following command:
+<p>Pymanopt can be installed with the following command:</p>
 <pre class="prettyprint"><code class="language-bash">
 pip install --user git+https://github.com/pymanopt/pymanopt.git
 </code></pre>
 
-Pymanopt is compatible with Python 2.7 and Python 3.3+, and depends on
+<p>Pymanopt is compatible with Python 2.7 and Python 3.3+, and depends on
 numpy, scipy (and theano or autograd). Instructions for installing numpy,
 scipy, and theano on different operating systems can be found
 <a href="http://deeplearning.net/software/theano/install.html">here</a>,
 for installing autograd
-<a href="https://github.com/HIPS/autograd#how-to-install">here</a>.
+<a href="https://github.com/HIPS/autograd#how-to-install">here</a>.</p>
 
 
 <h2>(1) Cost Functions</h2>
 
-The python cost function passed to Pymanopt should take a single input,
+<p>The python cost function passed to Pymanopt should take a single input,
 a point on the manifold, and return a scalar. There are the following three
 alternatives as to how to optimise, i.e. minimise, this cost function
-using Pymanopt:
-<ol type="a">
+using Pymanopt:</p>
+<ol class="alpha">
     <li>Rely on Pymanopt's autodiff backend to automatically compute the gradient and hessian</li>
     <li>Implement the gradient and hessian manually and pass it over to Pymanopt</li>
     <li>Use one of the derivative-free solver algorithms</li>
@@ -108,10 +108,10 @@ with Riemannian optimisation so easy!</p>
 
 <h3>(a) Rely on Pymanopt's autodiff backend</h3>
 
-Currently Pymanopt supports theano and autograd as autodiff backends and
-we plan on implementing a tensorflow backend.
+<p>Currently Pymanopt supports theano and autograd as autodiff backends
+and we plan on implementing a tensorflow backend.
 How the cost function has to be implemented depends on which backend,
-autograd or theano, is to be used.
+autograd or theano, is to be used.</p>
 
 <h4>Setting up the cost function for using the autograd autodiff backend</h4>
 
@@ -137,25 +137,27 @@ problem = Problem(manifold=manifold, cost=cost, arg=[X])
 <p>The free gradient and, if needed by the chosen solver, the hessian need
 to be implemented as python function that take as input a point on the
 manifold and returns the gradient or hessian at that point respectively.
-These then need to be passed over to Pymanopt's Problem class:
+These then need to be passed over to Pymanopt's Problem class:</p>
 <pre class="prettyprint"><code class="language-python">
 problem = Problem(manifold=manifold, cost=cost, egrad=egrad, ehess=ehess)
 </code></pre>
-Again, we recommend the first approach that save you time deriving and
+<p>Again, we recommend the first approach that save you time deriving and
 implementing the gradient and hessian. If you need the gradient and hessian
 for analytical reasons, you can check your manually derived derivatives
 using <a href="doc/index.html#module-pymanopt.tools.testing">Pymanopt's
-testing module</a></p>.
+testing module</a>.</p>
 
 
 <h3>(c) Use a derivative-free solver</h3>
 
-Currently NelderMead and ParticleSwarm are available as derivative-free
+<p>Currently NelderMead and ParticleSwarm are available as derivative-free
 solvers. If using one of those, only the manifold and cost function need
-to be passed over to Pymanopt's Problem class:
+to be passed over to Pymanopt's Problem class:</p>
 <pre class="prettyprint"><code class="language-python">
 problem = Problem(manifold=manifold, cost=cost)
 </code></pre>
+<p>Again, Pymanopt's autodiff backend makes it really easy to also use
+solvers that rely on the gradient and hessian.</p>
 
 
 <h2>(2) Manifolds</h2>
