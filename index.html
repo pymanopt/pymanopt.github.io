@@ -73,7 +73,7 @@ help, or leave general comments either on
 one of the maintainers.</strong></p>
 
 
-<h2>(0) Installing Pymanopt</h2>
+<h2>0. Installing Pymanopt</h2>
 <h3>Dependencies</h3>
 <p>Pymanopt is compatible with Python 2.7 and Python 3.3+, and depends on
 NumPy and SciPy. Additionally, to use Pymanopt's built-in automatic
@@ -99,7 +99,7 @@ pip install --user git+https://github.com/pymanopt/pymanopt.git
 </code></pre>
 
 
-<h2>(1) Cost Functions</h2>
+<h2>1. Cost Functions</h2>
 
 <p>The cost function passed to Pymanopt should take a single input (a point on
 the manifold), and return a scalar. You have three options for how to define
@@ -109,13 +109,13 @@ the cost function:</p>
     <th></th><th>Method</th><th>Extra work required</th>
   </tr>
   <tr>
-    <td>a</td><td>Use Autograd</td><td>None</td>
+    <td>(a)</td><td>Use Autograd</td><td>None</td>
   </tr>
   <tr>
-    <td>b</td><td>Use Theano</td><td>None</td>
+    <td>(b)</td><td>Use Theano</td><td>None</td>
   </tr>
   <tr>
-    <td>c</td><td>Use a regular Python function</td><td>Calculate and implement
+    <td>(c)</td><td>Use a regular Python function</td><td>Calculate and implement
     derivatives (gradient and hessian) by hand.</td>
   </tr>
 </table>
@@ -127,7 +127,7 @@ manifold optimization with Pymanopt so easy!</p>
 
 <p>Currently Pymanopt supports Theano and Autograd as autodiff backends. We
 plan to implement support for
-<a href="https://www.tensorflow.org">Google TensorFlow</a>.</p>
+<a href="https://www.tensorflow.org">TensorFlow</a>.</p>
 
 <h4 id="autograd-example">Setup the cost function using Autograd</h4>
 <p>If you already know how to use NumPy, then this approach will be easy. Just
@@ -173,7 +173,7 @@ should be both correct and efficient.
 problem = Problem(manifold=manifold, cost=cost, egrad=egrad, ehess=ehess)
 </code></pre>
 
-<h2>(2) Manifolds</h2>
+<h2>2. Manifolds</h2>
 
 <p>The Pymanopt Manifold class provides manifold specific routines like
 computing the intrinsic mean of two points on the manifold or computing
@@ -305,7 +305,7 @@ manifold = Product([Stiefel(m,n), Euclidean(k,l)])
 </table>
 
 
-<h2>(3) Solvers</h2>
+<h2>3. Solvers</h2>
 
 <h3>List of Solvers</h3>
 
