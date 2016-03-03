@@ -1,3 +1,11 @@
+html {
+    font-family: Helvetica, Arial, Sans-Serif;
+}
+
+ol.alpha {
+    list-style-type: lower-alpha;
+}
+
 th, td {
     border-bottom: 2px solid #ccc;
     padding: .5em 1em;
