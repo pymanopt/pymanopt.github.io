@@ -20,10 +20,6 @@
 
 <body>
 
-<p><strong>This site is under construction. Please refer to this
-<a href="https://github.com/pymanopt/pymanopt">github repository</a> or
-the <a href="doc/index.html">developer documentation</a> in the meanwhile.</strong></p>
-
 <h1>Pymanopt</h1>
 
 <p>Pymanopt is a python toolbox for manifold optimization that computes
@@ -59,7 +55,7 @@ from pymanopt.solvers import SteepestDescent
 from pymanopt.manifolds import Stiefel
 
 # (1) definition of the cost function (here using theano)
-def cost(X): return np.sum(np.sum(X))
+def cost(X): return np.sum(X)
 
 # (2) instantiation of the respective manifold
 manifold = Stiefel(5, 2)
@@ -68,13 +64,98 @@ manifold = Stiefel(5, 2)
 solver = SteepestDescent()
 
 # let Pymanopt do the rest
-problem = Problem(man=manifold, cost=cost)
+problem = Problem(manifold=manifold, cost=cost)
 Xopt = solver.solve(problem)
 print(Xopt)
 </code></pre>
 
+<p><strong>We explicitly encourage users to report problems, request features,
+ask for help, or leave general comments either on
+<a href="https://github.com/pymanopt/pymanopt">github</a>,
+<a href="https://gitter.im/pymanopt/pymanopt">gitter</a>, or via email to
+one of the maintainers.</strong></p>
+
+
+<h2>(0) Installing Pymanopt</h2>
+
+Pymanopt can be installed with the following command:
+<pre class="prettyprint"><code class="language-bash">
+pip install --user git+https://github.com/pymanopt/pymanopt.git
+</code></pre>
+
+Pymanopt is compatible with Python 2.7 and Python 3.3+, and depends on
+numpy, scipy (and theano or autograd). Instructions for installing numpy,
+scipy, and theano on different operating systems can be found
+<a href="http://deeplearning.net/software/theano/install.html">here</a>,
+for installing autograd
+<a href="https://github.com/HIPS/autograd#how-to-install">here</a>.
+
 
 <h2>(1) Cost Functions</h2>
+
+The python cost function passed to Pymanopt should take a single input,
+a point on the manifold, and return a scalar. There are the following three
+alternatives as to how to optimise, i.e. minimise, this cost function
+using Pymanopt:
+<ol type="a">
+    <li>Rely on Pymanopt's autodiff backend to automatically compute the gradient and hessian</li>
+    <li>Implement the gradient and hessian manually and pass it over to Pymanopt</li>
+    <li>Use one of the derivative-free solver algorithms</li>
+</ol>
+
+<p>The first approach is recommended – indeed, it is what makes experimenting
+with Riemannian optimisation so easy!</p>
+
+<h3>(a) Rely on Pymanopt's autodiff backend</h3>
+
+Currently Pymanopt supports theano and autograd as autodiff backends and
+we plan on implementing a tensorflow backend.
+How the cost function has to be implemented depends on which backend,
+autograd or theano, is to be used.
+
+<h4>Setting up the cost function for using the autograd autodiff backend</h4>
+
+<pre class="prettyprint"><code class="language-python">
+import autograd.numpy as np
+def cost(X): return np.sum(X)
+problem = Problem(manifold=manifold, cost=cost)
+</code></pre>
+
+
+<h4>Setting up the cost function for using the theano autodiff backend</h4>
+
+<pre class="prettyprint"><code class="language-python">
+import theano.tensor as T
+X = T.matrix()
+cost = T.sum(X)
+problem = Problem(manifold=manifold, cost=cost, arg=[X])
+</code></pre>
+
+
+<h3>(b) Implement gradient and hessian manually</h3>
+
+<p>The free gradient and, if needed by the chosen solver, the hessian need
+to be implemented as python function that take as input a point on the
+manifold and returns the gradient or hessian at that point respectively.
+These then need to be passed over to Pymanopt's Problem class:
+<pre class="prettyprint"><code class="language-python">
+problem = Problem(manifold=manifold, cost=cost, egrad=egrad, ehess=ehess)
+</code></pre>
+Again, we recommend the first approach that save you time deriving and
+implementing the gradient and hessian. If you need the gradient and hessian
+for analytical reasons, you can check your manually derived derivatives
+using <a href="doc/index.html#module-pymanopt.tools.testing">Pymanopt's
+testing module</a></p>.
+
+
+<h3>(c) Use a derivative-free solver</h3>
+
+Currently NelderMead and ParticleSwarm are available as derivative-free
+solvers. If using one of those, only the manifold and cost function need
+to be passed over to Pymanopt's Problem class:
+<pre class="prettyprint"><code class="language-python">
+problem = Problem(manifold=manifold, cost=cost)
+</code></pre>
 
 
 <h2>(2) Manifolds</h2>
@@ -208,6 +289,7 @@ manifold = Product([Stiefel(m,n), Euclidean(k,l)])
 
 </table>
 
+
 <h2>(3) Solvers</h2>
 
 <h3>List of Solvers</h3>
@@ -221,12 +303,62 @@ manifold = Product([Stiefel(m,n), Euclidean(k,l)])
 </tr>
 
 <tr>
+    <td>TrustRegions</td>
+    <td>Second-order method that approximates the objective function by
+    a quadratic surface and then updates the current estimate based on
+    that</td>
+    <td>
+<pre class="prettyprint"><code class="language-py">
+from pymanopt.solvers import TrustRegions
+solver = TrustRegions()
+Xopt = solver.solve(problem)
+</code></pre>
+    </td>
+</tr>
+
+<tr>
     <td>SteepestDescent</td>
     <td>Classical first-order steepest descent algorithm</td>
     <td>
 <pre class="prettyprint"><code class="language-py">
 from pymanopt.solvers import SteepestDescent
 solver = SteepestDescent()
+Xopt = solver.solve(problem)
+</code></pre>
+    </td>
+</tr>
+
+<tr>
+    <td>ConjugateGradient</td>
+    <td>Classical first-order conjugate gradient descent algorithm</td>
+    <td>
+<pre class="prettyprint"><code class="language-py">
+from pymanopt.solvers import ConjugateGradient
+solver = ConjugateGradient()
+Xopt = solver.solve(problem)
+</code></pre>
+    </td>
+</tr>
+
+<tr>
+    <td>NelderMead</td>
+    <td>Derivative-free optimisation</td>
+    <td>
+<pre class="prettyprint"><code class="language-py">
+from pymanopt.solvers import NelderMead
+solver = NelderMead()
+Xopt = solver.solve(problem)
+</code></pre>
+    </td>
+</tr>
+
+<tr>
+    <td>ParticleSwarm</td>
+    <td>Derivative-free optimisation</td>
+    <td>
+<pre class="prettyprint"><code class="language-py">
+from pymanopt.solvers import ParticleSwarm
+solver = ParticleSwarm()
 Xopt = solver.solve(problem)
 </code></pre>
     </td>

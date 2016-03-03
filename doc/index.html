@@ -122,7 +122,7 @@
 object to feed to one of the solvers.</p>
 <dl class="class">
 <dt id="pymanopt.core.problem.Problem">
-<em class="property">class </em><code class="descclassname">pymanopt.core.problem.</code><code class="descname">Problem</code><span class="sig-paren">(</span><em>man</em>, <em>cost</em>, <em>egrad=None</em>, <em>ehess=None</em>, <em>grad=None</em>, <em>hess=None</em>, <em>arg=None</em>, <em>precon=None</em>, <em>verbosity=2</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.core.problem.Problem" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pymanopt.core.problem.</code><code class="descname">Problem</code><span class="sig-paren">(</span><em>manifold</em>, <em>cost</em>, <em>egrad=None</em>, <em>ehess=None</em>, <em>grad=None</em>, <em>hess=None</em>, <em>arg=None</em>, <em>precon=None</em>, <em>verbosity=2</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.core.problem.Problem" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Problem class for setting up a problem to feed to one of the
 pymanopt solvers.</p>
@@ -130,27 +130,27 @@ pymanopt solvers.</p>
 <dt>Attributes:</dt>
 <dd><ul class="first last">
 <li><dl class="first docutils">
-<dt>man</dt>
+<dt>manifold</dt>
 <dd><p class="first last">Manifold to optimize over.</p>
 </dd>
 </dl>
 </li>
 <li><dl class="first docutils">
 <dt>cost</dt>
-<dd><p class="first last">A callable which takes an element of man and returns a real number,
-or a symbolic Theano or TensorFlow expression. In case of a
-symbolic expression, the gradient (and if necessary the Hessian)
-are computed automatically if they are not explicitly given. We
-recommend you take this approach rather than calculating gradients
-and Hessians by hand.</p>
+<dd><p class="first last">A callable which takes an element of manifold and returns a
+real number, or a symbolic Theano or TensorFlow expression.
+In case of a symbolic expression, the gradient (and if
+necessary the Hessian) are computed automatically if they are
+not explicitly given. We recommend you take this approach
+rather than calculating gradients and Hessians by hand.</p>
 </dd>
 </dl>
 </li>
 <li><dl class="first docutils">
 <dt>grad</dt>
 <dd><p class="first last">grad(x) is the gradient of cost at x. This must take an
-element X of man and return an element of the tangent space
-to man at X. This is usually computed automatically and
+element X of manifold and return an element of the tangent space
+to manifold at X. This is usually computed automatically and
 doesn&#8217;t need to be set by the user.</p>
 </dd>
 </dl>
@@ -159,7 +159,7 @@ doesn&#8217;t need to be set by the user.</p>
 <dt>hess</dt>
 <dd><p class="first last">hess(x, a) is the directional derivative of grad at x, in
 direction a. It should return an element of the tangent
-space to man at x.</p>
+space to manifold at x.</p>
 </dd>
 </dl>
 </li>
@@ -554,7 +554,7 @@ Arguments:</p>
 <li><dl class="first docutils">
 <dt>problem</dt>
 <dd><p class="first last">Pymanopt problem setup using the Problem class, this must
-have a .man attribute specifying the manifold to optimize
+have a .manifold attribute specifying the manifold to optimize
 over, as well as a cost and enough information to compute
 the gradient of that cost.</p>
 </dd>
@@ -687,7 +687,7 @@ Arguments:</p>
 <li><dl class="first docutils">
 <dt>problem</dt>
 <dd><p class="first last">Pymanopt problem setup using the Problem class, this must
-have a .man attribute specifying the manifold to optimize
+have a .manifold attribute specifying the manifold to optimize
 over, as well as a cost and enough information to compute
 the gradient of that cost.</p>
 </dd>
@@ -746,7 +746,7 @@ Arguments:</p>
 <li><dl class="first docutils">
 <dt>problem</dt>
 <dd><p class="first last">Pymanopt problem setup using the Problem class, this must
-have a .man attribute specifying the manifold to optimize
+have a .manifold attribute specifying the manifold to optimize
 over, as well as a cost (specified using a theano graph
 or as a python function).</p>
 </dd>
@@ -801,7 +801,7 @@ Arguments:</p>
 <li><dl class="first docutils">
 <dt>problem</dt>
 <dd><p class="first last">Pymanopt problem setup using the Problem class, this must
-have a .man attribute specifying the manifold to optimize
+have a .manifold attribute specifying the manifold to optimize
 over, as well as a cost and enough information to compute
 the gradient of that cost.</p>
 </dd>
