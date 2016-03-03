@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" dir="ltr" id="index">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <title>pymanopt</title>
+    <title>Pymanopt</title>
 
     <!-- mathjax -->
     <script type="text/x-mathjax-config">
@@ -24,9 +24,9 @@
 <a href="https://github.com/pymanopt/pymanopt">github repository</a> or
 the <a href="doc/index.html">developer documentation</a> in the meanwhile.</strong></p>
 
-<h1>pymanopt</h1>
+<h1>Pymanopt</h1>
 
-<p>pymanopt is a python toolbox for manifold optimization that computes
+<p>Pymanopt is a python toolbox for manifold optimization that computes
 gradients and hessians automatically. It builds upon the MATLAB package
 <a href="http://manopt.org/">Manopt</a> but is otherwise independent of
 it. Pymanopt aims to lower the barriers for users wishing to use state
@@ -35,17 +35,17 @@ automatic differentiation for computing gradients and hessians, saving
 users time and saving them from potential calculation and
 implementiation errors.</p>
 
-<p>pymanopt is modular and hence easy to use. Usually only the following
+<p>Pymanopt is modular and hence easy to use. Usually only the following
 steps are required:</p>
 <ol>
     <li>defininition of the cost function $f:\mathcal{M}\to \mathbb{R}$
     to minimise</li>
     <li>instantiation of the respective manifold $\mathcal{M}$ to
     optimise over</li>
-    <li>instantiation of a pymanopt solver</li>
+    <li>instantiation of a Pymanopt solver</li>
 </ol>
 
-<p>Experimenting with Riemannian optimisation is simple with pymanopt
+<p>Experimenting with Riemannian optimisation is simple with Pymanopt
 and gradients and hessians are computed automatically if needed by the
 chosen solver. The following example demonstrates the ease of use while
 the steps will be discussed in more detail in the subsequent three
@@ -64,10 +64,10 @@ def cost(X): return np.sum(np.sum(X))
 # (2) instantiation of the respective manifold
 manifold = Stiefel(5, 2)
 
-# (3) instantiation of a pymanopt solver
+# (3) instantiation of a Pymanopt solver
 solver = SteepestDescent()
 
-# let pymanopt do the rest
+# let Pymanopt do the rest
 problem = Problem(man=manifold, cost=cost)
 Xopt = solver.solve(problem)
 print(Xopt)
@@ -79,13 +79,14 @@ print(Xopt)
 
 <h2>(2) Manifolds</h2>
 
-<p>The pymanopt Manifold class provides manifold specific routines like
+<p>The Pymanopt Manifold class provides manifold specific routines like
 computing the intrinsic mean of two points on the manifold or computing
 the geodesic distance. The user will only need to instantiate the
 correct manifold and need not worry about the internal workings. We plan
 on implementing further manifolds as needed by the users. Developers
-wanting to implement a new manifold for pymanopt are referred to the
-abstract base class Manifold.</p>
+wanting to implement a new manifold for Pymanopt are referred to the
+<a href="doc/index.html#module-pymanopt.manifolds.manifold">Manifold
+abstract base class</a>.</p>
 
 <h3>List of Manifolds</h3>
 
@@ -108,6 +109,59 @@ abstract base class Manifold.</p>
 <pre class="prettyprint"><code class="language-py">
 from pymanopt.manifolds import Euclidean
 manifold = Euclidean(m,n)
+</code></pre>
+    </td>
+</tr>
+
+<tr>
+    <td>Grassmann manifold<br />
+    $G_{m,n} \triangleq \{\operatorname{Span}\{M\}:M\in\mathbb{R}^{m\times n}\}$</td>
+    <td>This is the manifold of $n$-dimensional subspaces of $\mathbb{R}^m$. For optional argument $k>1$ this instantiates the product $\mathcal{Gr}^{m\times n}\times\cdots\times\mathcal{Gr}^{m\times n}$ of $k$ Grassmann manifolds.</td>
+    <td>
+<pre class="prettyprint"><code class="language-py">
+from pymanopt.manifolds import Grassmann
+manifold = Grassmann(m,n)
+</code></pre>
+    </td>
+</tr>
+
+<tr>
+    <td>Oblique manifold<br />
+    $O_{m,n} \triangleq \{M\in\mathbb{R}^{m\times n}: ||M_{:,j}||_2=1 \ \forall j\in\mathbb{N}_1^n\}$</td>
+    <td>Manifold of matrices with unit-norm columns.</td>
+    <td>
+<pre class="prettyprint"><code class="language-py">
+from pymanopt.manifolds import Oblique
+manifold = Oblique(m,n)
+</code></pre>
+    </td>
+</tr>
+
+<tr>
+    <td>Elliptope manifold<br />
+    $E_k^n \triangleq \{M\in\mathbb{R}^{n\times n}: M \succeq \mathbf{0}, \operatorname{rank}(M)=k, ||M_{i,:}||_2=1 \ \forall i\in\mathbb{N}_1^n\}$</td>
+    <td>Manifold of $n$-by-$n$ psd matrices of rank $k$ with unit diagonal elements.</td>
+    <td>
+<pre class="prettyprint"><code class="language-py">
+from pymanopt.manifolds import Elliptope
+manifold = Elliptope(n,k)
+</code></pre>
+    </td>
+</tr>
+
+<tr>
+    <td>PSDFixedRank manifold<br />
+    $\operatorname{PSD}_k^n \triangleq \{M\in\mathbb{R}^{n\times n}: M \succeq \mathbf{0}, \operatorname{rank}(M)=k\}$</td>
+    <td>Manifold of $n$-by-$n$ symmetric/hermitian positive semidefinite matrices of rank $k$.</td>
+    <td>
+<pre class="prettyprint"><code class="language-py">
+# real
+from pymanopt.manifolds import PSDFixedRank
+manifold = PSDFixedRank(n,k)
+
+# complex
+from pymanopt.manifolds import PSDFixedRankComplex
+manifold = PSDFixedRankComplex(n,k)
 </code></pre>
     </td>
 </tr>
@@ -136,59 +190,6 @@ manifold = Sphere(m)
 <pre class="prettyprint"><code class="language-py">
 from pymanopt.manifolds import Stiefel
 manifold = Stiefel(m,n)
-</code></pre>
-    </td>
-</tr>
-
-<tr>
-    <td>Grassmann manifold<br />
-    $G_{m,n} \triangleq \{\operatorname{Span}\{M\}:M\in\mathbb{R}^{m\times n}\}$</td>
-    <td>This is the manifold of $n$-dimensional subspaces of $\mathbb{R}^m$. For optional argument $k>1$ this instantiates the product $\mathcal{Gr}^{m\times n}\times\cdots\times\mathcal{Gr}^{m\times n}$ of $k$ Grassmann manifolds.</td>
-    <td>
-<pre class="prettyprint"><code class="language-py">
-from pymanopt.manifolds import Grassmann
-manifold = Grassmann(m,n)
-</code></pre>
-    </td>
-</tr>
-
-<tr>
-    <td>SymFixedRankYY manifold<br />
-    $\operatorname{PSD}_k^n \triangleq \{M\in\mathbb{R}^{n\times n}: M \succeq \mathbf{0}, \operatorname{rank}(M)=k\}$</td>
-    <td>Manifold of $n$-by-$n$ symmetric/hermitian positive semidefinite matrices of rank $k$.</td>
-    <td>
-<pre class="prettyprint"><code class="language-py">
-# real
-from pymanopt.manifolds import SymFixedRankYY
-manifold = SymFixedRankYY(n,k)
-
-# complex
-from pymanopt.manifolds import SymFixedRankYYComplex
-manifold = SymFixedRankYYComplex(n,k)
-</code></pre>
-    </td>
-</tr>
-
-<tr>
-    <td>Elliptope manifold<br />
-    $E_k^n \triangleq \{M\in\mathbb{R}^{n\times n}: M \succeq \mathbf{0}, \operatorname{rank}(M)=k, ||M_{i,:}||_2=1 \ \forall i\in\mathbb{N}_1^n\}$</td>
-    <td>Manifold of $n$-by-$n$ psd matrices of rank $k$ with unit diagonal elements.</td>
-    <td>
-<pre class="prettyprint"><code class="language-py">
-from pymanopt.manifolds import Elliptope
-manifold = Elliptope(n,k)
-</code></pre>
-    </td>
-</tr>
-
-<tr>
-    <td>Oblique manifold<br />
-    $O_{m,n} \triangleq \{M\in\mathbb{R}^{m\times n}: ||M_{:,j}||_2=1 \ \forall j\in\mathbb{N}_1^n\}$</td>
-    <td>Manifold of matrices with unit-norm columns.</td>
-    <td>
-<pre class="prettyprint"><code class="language-py">
-from pymanopt.manifolds import Oblique
-manifold = Oblique(m,n)
 </code></pre>
     </td>
 </tr>
