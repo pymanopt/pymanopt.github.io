@@ -54,7 +54,7 @@ from pymanopt.manifolds import Stiefel
 # (1) Define the cost function (here using autograd.numpy)
 def cost(X): return np.sum(X)
 
-# (2) Instantiate of the manifold
+# (2) Instantiate a manifold
 manifold = Stiefel(5, 2)
 
 # (3) Instantiate a Pymanopt solver
@@ -106,16 +106,16 @@ the manifold), and return a scalar. You have three options for how to define
 the cost function:</p>
 <table id="cost-setup">
   <tr>
-    <th>Method</th><th>Extra work required</th>
+    <th></th><th>Method</th><th>Extra work required</th>
   </tr>
   <tr>
-    <td>Use Autograd</td><td>None</td>
+    <td>a</td><td>Use Autograd</td><td>None</td>
   </tr>
   <tr>
-    <td>Use Theano</td><td>None</td>
+    <td>b</td><td>Use Theano</td><td>None</td>
   </tr>
   <tr>
-    <td>Use a regular Python function</td><td>Calculate and implement
+    <td>c</td><td>Use a regular Python function</td><td>Calculate and implement
     derivatives (gradient and hessian) by hand.</td>
   </tr>
 </table>
@@ -123,16 +123,16 @@ the cost function:</p>
 <p>The first two options are recommended – indeed, they are what makes
 manifold optimization with Pymanopt so easy!</p>
 
-<h3>(1a/b) Use Autograd or Theano</h3>
+<h3>(a/b) Use Autograd or Theano</h3>
 
 <p>Currently Pymanopt supports Theano and Autograd as autodiff backends. We
 plan to implement support for
 <a href="https://www.tensorflow.org">Google TensorFlow</a>.</p>
 
 <h4 id="autograd-example">Setup the cost function using Autograd</h4>
-If you already know how to use NumPy, then this approach will be easy. Just
+<p>If you already know how to use NumPy, then this approach will be easy. Just
 import autograd.numpy and setup your cost as a Python function, using the
-autograd numpy to perform the computation.
+autograd numpy to perform the computation.</p>
 <pre class="prettyprint"><code class="language-python">
 import autograd.numpy as np
 
@@ -142,16 +142,14 @@ def cost(X):
 
 
 <h4>Setup the cost function using Theano</h4>
-This approach requires you to setup your cost as a Theano graph. A tutorial
-on using Theano can be found
-<a href="http://deeplearning.net/software/theano/tutorial/">here</a>.
+<p>This approach requires you to setup your cost as a Theano graph. A
+tutorial on using Theano can be found
+<a href="http://deeplearning.net/software/theano/tutorial/">here</a>.</p>
 <pre class="prettyprint"><code class="language-python">
 import theano.tensor as T
 
 X = T.matrix()
 cost = T.exp(-T.sum(X**2))
-
-problem = Problem(manifold=manifold, cost=cost, arg=X)
 </code></pre>
 
 
