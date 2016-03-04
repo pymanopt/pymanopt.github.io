@@ -34,9 +34,9 @@ potential calculation and implementiation errors.</p>
 differentiation is done behind the scenes, so that the amount of setup the user
 needs to do is minimal. Usually only the following steps are required:</p>
 <ol>
+    <li>Instantiation of a manifold $\mathcal{M}$ to optimise over</li>
     <li>Defininition of a cost function $f:\mathcal{M}\to \mathbb{R}$ to
       minimise</li>
-    <li>Instantiation of a manifold $\mathcal{M}$ to optimise over</li>
     <li>Instantiation of a Pymanopt solver</li>
 </ol>
 
@@ -44,33 +44,34 @@ needs to do is minimal. Usually only the following steps are required:</p>
 following example demonstrates this. The steps will be discussed in more detail
 in the subsequent three sections.</p>
 
-<pre class="prettyprint"><code class="language-py">
-import autograd.numpy as np
-
-from pymanopt import Problem
-from pymanopt.solvers import SteepestDescent
-from pymanopt.manifolds import Stiefel
-
-# (1) Define the cost function (here using autograd.numpy)
-def cost(X): return np.sum(X)
-
-# (2) Instantiate a manifold
-manifold = Stiefel(5, 2)
-
-# (3) Instantiate a Pymanopt solver
-solver = SteepestDescent()
-
-# let Pymanopt do the rest
-problem = Problem(manifold=manifold, cost=cost)
-Xopt = solver.solve(problem)
-print(Xopt)
-</code></pre>
-
 <p><strong>We encourage users to report problems, request features, ask for
 help, or leave general comments either on
 <a href="https://github.com/pymanopt/pymanopt">github</a>,
 <a href="https://gitter.im/pymanopt/pymanopt">gitter</a>, or via email to
 one of the maintainers.</strong></p>
+
+<pre class="prettyprint"><code class="language-py">
+import autograd.numpy as np
+
+from pymanopt.manifolds import Stiefel
+from pymanopt import Problem
+from pymanopt.solvers import SteepestDescent
+
+# (1) Instantiate a manifold
+manifold = Stiefel(5, 2)
+
+# (2) Define the cost function (here using autograd.numpy)
+def cost(X): return np.sum(X)
+
+problem = Problem(manifold=manifold, cost=cost)
+
+# (3) Instantiate a Pymanopt solver
+solver = SteepestDescent()
+
+# let Pymanopt do the rest
+Xopt = solver.solve(problem)
+print(Xopt)
+</code></pre>
 
 
 <h2>0. Installing Pymanopt</h2>
@@ -99,83 +100,9 @@ pip install --user git+https://github.com/pymanopt/pymanopt.git
 </code></pre>
 
 
-<h2>1. Cost Functions</h2>
+<h2>1. Manifolds</h2>
 
-<p>The cost function passed to Pymanopt should take a single input (a point on
-the manifold), and return a scalar. You have three options for how to define
-the cost function:</p>
-<table id="cost-setup">
-  <tr>
-    <th></th><th>Method</th><th>Extra work required</th>
-  </tr>
-  <tr>
-    <td>(a)</td><td>Use Autograd</td><td>None</td>
-  </tr>
-  <tr>
-    <td>(b)</td><td>Use Theano</td><td>None</td>
-  </tr>
-  <tr>
-    <td>(c)</td><td>Use a regular Python function</td><td>Calculate and implement
-    derivatives (gradient and hessian) by hand.</td>
-  </tr>
-</table>
-
-<p>The first two options are recommended – indeed, they are what makes
-manifold optimization with Pymanopt so easy!</p>
-
-<h3>(a/b) Use Autograd or Theano</h3>
-
-<p>Currently Pymanopt supports Theano and Autograd as autodiff backends. We
-plan to implement support for
-<a href="https://www.tensorflow.org">TensorFlow</a>.</p>
-
-<h4 id="autograd-example">Setup the cost function using Autograd</h4>
-<p>If you already know how to use NumPy, then this approach will be easy. Just
-import autograd.numpy and setup your cost as a Python function, using the
-autograd numpy to perform the computation.</p>
-<pre class="prettyprint"><code class="language-python">
-import autograd.numpy as np
-
-def cost(X):
-    return np.exp(-np.sum(X**2))
-</code></pre>
-
-
-<h4>Setup the cost function using Theano</h4>
-<p>This approach requires you to setup your cost as a Theano graph. A
-tutorial on using Theano can be found
-<a href="http://deeplearning.net/software/theano/tutorial/">here</a>.</p>
-<pre class="prettyprint"><code class="language-python">
-import theano.tensor as T
-
-X = T.matrix()
-cost = T.exp(-T.sum(X**2))
-</code></pre>
-
-
-<h3>(c) Use a regular Python function</h3>
-
-<p>If you wish to use one of the derivative free solvers (perhaps your cost
-function is nowhere smooth), then this approach makes sense. If you want to use
-a solver which requires derivatives (these solvers generally perform far better
-than derivative free methods) this approach enables you to calculate and
-implement gradients and hessians by hand.</p>
-
-<p>Using Pymanopt in this way is similar to Manopt. You can refer to the Manopt
-<a href="http://www.manopt.org/tutorial.html">tutorial</a> and
-<a href="https://groups.google.com/forum/#!forum/manopttoolbox">forum</a> for
-advice on calculating gradients/hessians by hand.
-However, we would like to stress that there is <i>little or no advantage</i> to
-doing things in this way. The gradients and hessians calculated by Pymanopt
-should be both correct and efficient.
-</p>
-<pre class="prettyprint"><code class="language-python">
-problem = Problem(manifold=manifold, cost=cost, egrad=egrad, ehess=ehess)
-</code></pre>
-
-<h2>2. Manifolds</h2>
-
-<p>The Pymanopt Manifold class provides manifold specific routines like
+<p>The Pymanopt Manifold classes provide manifold specific routines like
 computing the intrinsic mean of two points on the manifold or computing
 the geodesic distance. The user will only need to instantiate the
 correct manifold and need not worry about the internal workings. We plan
@@ -305,7 +232,141 @@ manifold = Product([Stiefel(m,n), Euclidean(k,l)])
 </table>
 
 
+<h2>2. Cost Functions</h2>
+
+<p>Both the manifold and cost function fully describe the Riemannian Optimisation
+problem that is to be solved. They are combined into a Pymanopt Problem object that
+is then passed to a Pymanopt solver.</p>
+<pre class="prettyprint"><code class="language-py">
+from pymanopt import Problem
+problem = Problem(manifold=manifold, cost=cost)
+</code></pre>
+
+<p>The cost function passed to Pymanopt should take a single input (a point on
+the manifold), and return a scalar. You have three options for how to define
+the cost function:</p>
+<table id="cost-setup">
+  <tr>
+    <th></th><th>Method</th><th>Extra work required</th>
+  </tr>
+  <tr>
+    <td>(a)</td><td>Use Autograd</td><td>None</td>
+  </tr>
+  <tr>
+    <td>(b)</td><td>Use Theano</td><td>None</td>
+  </tr>
+  <tr>
+    <td>(c)</td><td>Use a regular Python function</td><td>Calculate and implement
+    derivatives (gradient and hessian) by hand.</td>
+  </tr>
+</table>
+
+<p><strong>The first two options are recommended – indeed, they are what makes
+manifold optimization with Pymanopt so easy!</strong></p>
+
+<h3>(a/b) Use Autograd or Theano</h3>
+
+<p>Currently Pymanopt supports Theano and Autograd as autodiff backends. We
+plan to implement support for
+<a href="https://www.tensorflow.org">TensorFlow</a>.</p>
+
+<h4 id="autograd-example">Setup the cost function using Autograd</h4>
+<p>If you already know how to use NumPy, then this approach will be easy. Just
+import autograd.numpy and setup your cost as a Python function, using the
+autograd numpy to perform the computation.</p>
+<pre class="prettyprint"><code class="language-python">
+import autograd.numpy as np
+
+def cost(X):
+    return np.exp(-np.sum(X**2))
+
+problem = Problem(manifold=manifold, cost=cost)
+</code></pre>
+
+
+<h4>Setup the cost function using Theano</h4>
+<p>This approach requires you to setup your cost as a Theano graph. A
+tutorial on using Theano can be found
+<a href="http://deeplearning.net/software/theano/tutorial/">here</a>.</p>
+<pre class="prettyprint"><code class="language-python">
+import theano.tensor as T
+
+X = T.matrix()
+cost = T.exp(-T.sum(X**2))
+
+problem = Problem(manifold=manifold, cost=cost, arg=X)
+</code></pre>
+
+
+<h3>(c) Use a regular Python function</h3>
+
+<p>If you wish to use one of the derivative-free solvers (perhaps your cost
+function is nowhere smooth), then this approach makes sense. If you want to use
+a solver which requires derivatives (these solvers generally perform far better
+than derivative-free methods) this approach enables you to calculate and
+implement gradients and hessians by hand.</p>
+
+<p>Using Pymanopt in this way is similar to Manopt. You can refer to the Manopt
+<a href="http://www.manopt.org/tutorial.html">tutorial</a> and
+<a href="https://groups.google.com/forum/#!forum/manopttoolbox">forum</a> for
+advice on calculating gradients/hessians by hand.
+However, we would like to stress that there is <i>little or no advantage</i> to
+doing things in this way. The gradients and hessians calculated by Pymanopt
+should be both correct and efficient.
+</p>
+<pre class="prettyprint"><code class="language-python">
+problem = Problem(manifold=manifold, cost=cost, egrad=egrad, ehess=ehess)
+</code></pre>
+
+
 <h2>3. Solvers</h2>
+
+<p>The Pymanopt Solver classes provide the algorithms for optimisation.
+Once a Pymanopt Problem object has been set up and a solver instantiated
+the optimisation is run as follows:</p>
+<pre class="prettyprint"><code class="language-py">
+xoptimal = solver.solve(problem)
+</code></pre>
+<p>The solvers' parameters are specified when instantiating the solver object.
+The following parameters are shared by all solvers
+(<code class="prettyprint, language-py">argumentname=defaultvalue</code>):</p>
+<dl>
+    <dt><code class="prettyprint, language-py">maxtime=1000</code></dt>
+    <dd>Maximum time in seconds for the solver to run. You can set
+    <code class="prettyprint, language-py">maxtime=float('inf')</code>
+    for no time limit.</dd>
+
+    <dt><code class="prettyprint, language-py">maxiter=1000</code></dt>
+    <dd>Maximum number of iterations to run.</dd>
+
+    <dt><code class="prettyprint, language-py">mingradnorm=1e-6</code></dt>
+    <dd>Terminate optimisation if the norm of the gradient is below this.</dd>
+
+    <dt><code class="prettyprint, language-py">minstepsize=1e-10</code></dt>
+    <dd>Terminate optimisation if the stepsize is below this.</dd>
+
+    <dt><code class="prettyprint, language-py">maxcostvals=5000</code></dt>
+    <dd>Maximum number of allowed cost evaluations, especially important if
+    cost evaluation is computationally expensive.</dd>
+
+    <dt><code class="prettyprint, language-py">logverbosity=0</code></dt>
+    <dd>Level of information logged by the solver while it operates, 0
+    is silent, 2 is most information. If set to a non-zero value, the solver
+    will return both the final point on the manifold as well as a dictionary
+    that holds the log information, otherwise the solve routine only returns
+    the final point, i.e.,
+<pre class="prettyprint"><code class="language-py">
+xoptimal = solver.solve(problem, logverbosity=0)
+xoptimal, optlog = solver.solve(problem, logverbosity=2)
+</code></pre>
+    There is also a minimalistic <a href="#example-optlog-1">example</a>.</dd>
+</dl>
+
+<p>Solvers may have individual parameters to adjust their behaviour. These
+are documented in the respective source files. Developers wanting to implement
+a new solver for Pymanopt are referred to the
+<a href="doc/index.html#module-pymanopt.solvers.solver">Solver abstract
+base class</a>.</p>
 
 <h3>List of Solvers</h3>
 
@@ -321,7 +382,7 @@ manifold = Product([Stiefel(m,n), Euclidean(k,l)])
     <td>TrustRegions</td>
     <td>Second-order method that approximates the objective function by
     a quadratic surface and then updates the current estimate based on
-    that</td>
+    that.</td>
     <td>
 <pre class="prettyprint"><code class="language-py">
 from pymanopt.solvers import TrustRegions
@@ -333,7 +394,15 @@ Xopt = solver.solve(problem)
 
 <tr>
     <td>SteepestDescent</td>
-    <td>Classical first-order steepest descent algorithm</td>
+    <td>Classical first-order steepest descent algorithm.
+    By default uses a standard back tracking linesearch. To set its parameters
+    you can instantiate the
+    <a href="file:///is/ei/sweichwald/projects/pymanopt.github.io/doc/index.html#pymanopt.solvers.linesearch.LineSearchBackTracking">LineSearchBackTracking</a>
+    object with your desired parameters and hand it over to the
+    SteepestDescent solver (<code class="language-py">solver = SteepestDescent(linesearch=LinesearchObject)</code>).
+    It is also easy to implement your own linesearch class, just take
+    <a href="https://github.com/pymanopt/pymanopt/blob/master/pymanopt/solvers/linesearch.py#L4">this code</a>
+    as a starting point.</td>
     <td>
 <pre class="prettyprint"><code class="language-py">
 from pymanopt.solvers import SteepestDescent
@@ -345,7 +414,15 @@ Xopt = solver.solve(problem)
 
 <tr>
     <td>ConjugateGradient</td>
-    <td>Classical first-order conjugate gradient descent algorithm</td>
+    <td>Classical first-order conjugate gradient descent algorithm.
+    By default uses a standard adaptive linesearch. To set its parameters
+    you can instantiate the
+    <a href="file:///is/ei/sweichwald/projects/pymanopt.github.io/doc/index.html#pymanopt.solvers.linesearch.LineSearchAdaptive">LineSearchAdaptive</a>
+    object with your desired parameters and hand it over to the
+    ConjugateGradient solver (<code class="language-py">solver = ConjugateGradient(linesearch=LinesearchObject)</code>).
+    It is also easy to implement your own linesearch class, just take
+    <a href="https://github.com/pymanopt/pymanopt/blob/master/pymanopt/solvers/linesearch.py#L81">this code</a>
+    as a starting point.</td>
     <td>
 <pre class="prettyprint"><code class="language-py">
 from pymanopt.solvers import ConjugateGradient

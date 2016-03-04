@@ -536,7 +536,7 @@ the optional argument x is not provided)</p>
 <span id="conjugate-gradient"></span><h3>conjugate_gradient<a class="headerlink" href="#module-pymanopt.solvers.conjugate_gradient" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
 <dt id="pymanopt.solvers.conjugate_gradient.ConjugateGradient">
-<em class="property">class </em><code class="descclassname">pymanopt.solvers.conjugate_gradient.</code><code class="descname">ConjugateGradient</code><span class="sig-paren">(</span><em>beta_type=2</em>, <em>orth_value=inf</em>, <em>linesearch=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.solvers.conjugate_gradient.ConjugateGradient" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pymanopt.solvers.conjugate_gradient.</code><code class="descname">ConjugateGradient</code><span class="sig-paren">(</span><em>beta_type=2</em>, <em>orth_value=inf</em>, <em>linesearch=&lt;pymanopt.solvers.linesearch.LineSearchAdaptive object&gt;</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.solvers.conjugate_gradient.ConjugateGradient" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pymanopt.solvers.solver.Solver" title="pymanopt.solvers.solver.Solver"><code class="xref py py-class docutils literal"><span class="pre">pymanopt.solvers.solver.Solver</span></code></a></p>
 <p>Module containing conjugate gradient algorithm based on
 conjugategradient.m from the manopt MATLAB package.</p>
@@ -590,14 +590,26 @@ convergence x will be the point at which it terminated.</p>
 <div class="section" id="module-pymanopt.solvers.linesearch">
 <span id="linesearch"></span><h3>linesearch<a class="headerlink" href="#module-pymanopt.solvers.linesearch" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
-<dt id="pymanopt.solvers.linesearch.LineSearch">
-<em class="property">class </em><code class="descclassname">pymanopt.solvers.linesearch.</code><code class="descname">LineSearch</code><span class="sig-paren">(</span><em>contraction_factor=0.5</em>, <em>optimism=2</em>, <em>suff_decr=0.0001</em>, <em>maxiter=25</em>, <em>initial_stepsize=1</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.solvers.linesearch.LineSearch" title="Permalink to this definition">¶</a></dt>
+<dt id="pymanopt.solvers.linesearch.LineSearchAdaptive">
+<em class="property">class </em><code class="descclassname">pymanopt.solvers.linesearch.</code><code class="descname">LineSearchAdaptive</code><span class="sig-paren">(</span><em>contraction_factor=0.5</em>, <em>suff_decr=0.5</em>, <em>maxiter=10</em>, <em>initial_stepsize=1</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.solvers.linesearch.LineSearchAdaptive" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
-<p>Line-search based on linesearch.m and linesearch_adaptive.m in the manopt
-MATLAB package.</p>
+<p>Adaptive line-search</p>
 <dl class="method">
-<dt id="pymanopt.solvers.linesearch.LineSearch.search">
-<code class="descname">search</code><span class="sig-paren">(</span><em>objective</em>, <em>manifold</em>, <em>x</em>, <em>d</em>, <em>f0</em>, <em>df0</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.solvers.linesearch.LineSearch.search" title="Permalink to this definition">¶</a></dt>
+<dt id="pymanopt.solvers.linesearch.LineSearchAdaptive.search">
+<code class="descname">search</code><span class="sig-paren">(</span><em>objective</em>, <em>man</em>, <em>x</em>, <em>d</em>, <em>f0</em>, <em>df0</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.solvers.linesearch.LineSearchAdaptive.search" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pymanopt.solvers.linesearch.LineSearchBackTracking">
+<em class="property">class </em><code class="descclassname">pymanopt.solvers.linesearch.</code><code class="descname">LineSearchBackTracking</code><span class="sig-paren">(</span><em>contraction_factor=0.5</em>, <em>optimism=2</em>, <em>suff_decr=0.0001</em>, <em>maxiter=25</em>, <em>initial_stepsize=1</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.solvers.linesearch.LineSearchBackTracking" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Back-tracking line-search based on linesearch.m in the manopt MATLAB
+package.</p>
+<dl class="method">
+<dt id="pymanopt.solvers.linesearch.LineSearchBackTracking.search">
+<code class="descname">search</code><span class="sig-paren">(</span><em>objective</em>, <em>manifold</em>, <em>x</em>, <em>d</em>, <em>f0</em>, <em>df0</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.solvers.linesearch.LineSearchBackTracking.search" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to perform backtracking line-search.
 Arguments:</p>
 <blockquote>
@@ -653,18 +665,6 @@ Arguments:</p>
 </dd>
 </dl>
 </dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="pymanopt.solvers.linesearch.LineSearchAdaptive">
-<em class="property">class </em><code class="descclassname">pymanopt.solvers.linesearch.</code><code class="descname">LineSearchAdaptive</code><span class="sig-paren">(</span><em>contraction_factor=0.5</em>, <em>suff_decr=0.5</em>, <em>maxiter=10</em>, <em>initial_stepsize=1</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.solvers.linesearch.LineSearchAdaptive" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
-<p>Adaptive line-search</p>
-<dl class="method">
-<dt id="pymanopt.solvers.linesearch.LineSearchAdaptive.search">
-<code class="descname">search</code><span class="sig-paren">(</span><em>objective</em>, <em>man</em>, <em>x</em>, <em>d</em>, <em>f0</em>, <em>df0</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.solvers.linesearch.LineSearchAdaptive.search" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
 
 </dd></dl>
 
@@ -784,7 +784,7 @@ convergence x will be the point at which it terminated</p>
 <span id="steepest-descent"></span><h3>steepest_descent<a class="headerlink" href="#module-pymanopt.solvers.steepest_descent" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
 <dt id="pymanopt.solvers.steepest_descent.SteepestDescent">
-<em class="property">class </em><code class="descclassname">pymanopt.solvers.steepest_descent.</code><code class="descname">SteepestDescent</code><span class="sig-paren">(</span><em>linesearch=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.solvers.steepest_descent.SteepestDescent" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pymanopt.solvers.steepest_descent.</code><code class="descname">SteepestDescent</code><span class="sig-paren">(</span><em>linesearch=&lt;pymanopt.solvers.linesearch.LineSearchBackTracking object&gt;</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.solvers.steepest_descent.SteepestDescent" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pymanopt.solvers.solver.Solver" title="pymanopt.solvers.solver.Solver"><code class="xref py py-class docutils literal"><span class="pre">pymanopt.solvers.solver.Solver</span></code></a></p>
 <p>Steepest descent (gradient descent) algorithm based on
 steepestdescent.m from the manopt MATLAB package.</p>
