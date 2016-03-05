@@ -484,6 +484,25 @@ only be used if it is expected that the points of interest will have rank
 exactly k. Reduce k if that is not the case.</p>
 </dd></dl>
 
+<dl class="class">
+<dt id="pymanopt.manifolds.psd.PositiveDefinite">
+<em class="property">class </em><code class="descclassname">pymanopt.manifolds.psd.</code><code class="descname">PositiveDefinite</code><span class="sig-paren">(</span><em>n</em>, <em>k=1</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.psd.PositiveDefinite" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pymanopt.manifolds.manifold.Manifold" title="pymanopt.manifolds.manifold.Manifold"><code class="xref py py-class docutils literal"><span class="pre">pymanopt.manifolds.manifold.Manifold</span></code></a></p>
+<p>Manifold of (n x n)^k positive definite matrices, based on the geometry
+discussed in Chapter 6 of Positive Definite Matrices (Bhatia 2007). Some
+of the implementation is based on sympositivedefinitefactory.m from the
+Manopt MATLAB package. Also see &#8220;Conic geometric optimisation on the
+manifold of positive definite matrices&#8221; (Sra &amp; Hosseini 2013) for more
+details.</p>
+<dl class="method">
+<dt id="pymanopt.manifolds.psd.PositiveDefinite.pairmean">
+<code class="descname">pairmean</code><span class="sig-paren">(</span><em>X</em>, <em>Y</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.psd.PositiveDefinite.pairmean" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the intrinsic mean of X and Y, that is, a point that lies
+mid-way between X and Y on the geodesic arc joining them.</p>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="section" id="module-pymanopt.manifolds.sphere">
 <span id="sphere"></span><h3>sphere<a class="headerlink" href="#module-pymanopt.manifolds.sphere" title="Permalink to this headline">¶</a></h3>
