@@ -41,8 +41,11 @@ needs to do is minimal. Usually only the following steps are required:</p>
 </ol>
 
 <p>Experimenting with manifold optimisation is simple with Pymanopt. The
-following example demonstrates this. The steps will be discussed in more detail
-in the subsequent three sections.</p>
+minimum working example below demonstrates this. The steps will be
+discussed in more detail in the subsequent three sections. Please
+refer to <a href="MoG.html">this example</a> for a <strong>cool
+application</strong> of Riemannian Optimisation using Pymanopt for
+Inference in MoG models!</p>
 
 <p><strong>We encourage users to report problems, request features, ask for
 help, or leave general comments either on
@@ -156,6 +159,18 @@ manifold = Grassmann(m,n)
 <pre class="prettyprint"><code class="language-py">
 from pymanopt.manifolds import Oblique
 manifold = Oblique(m,n)
+</code></pre>
+    </td>
+</tr>
+
+<tr>
+    <td>PositiveDefinite manifold<br />
+    $\mathcal{PD}^n \triangleq \{M\in\mathbb{R}^{n\times n}: M \succ \mathbf{0}\}$</td>
+    <td>Manifold of $n$-by-$n$ positive definite matrices.</td>
+    <td>
+<pre class="prettyprint"><code class="language-py">
+from pymanopt.manifolds import PositiveDefinite
+manifold = PositiveDefinite(n)
 </code></pre>
     </td>
 </tr>
@@ -397,7 +412,7 @@ Xopt = solver.solve(problem)
     <td>Classical first-order steepest descent algorithm.
     By default uses a standard back tracking linesearch. To set its parameters
     you can instantiate the
-    <a href="file:///is/ei/sweichwald/projects/pymanopt.github.io/doc/index.html#pymanopt.solvers.linesearch.LineSearchBackTracking">LineSearchBackTracking</a>
+    <a href="https://pymanopt.github.io/doc/index.html#pymanopt.solvers.linesearch.LineSearchBackTracking">LineSearchBackTracking</a>
     object with your desired parameters and hand it over to the
     SteepestDescent solver (<code class="language-py">solver = SteepestDescent(linesearch=LinesearchObject)</code>).
     It is also easy to implement your own linesearch class, just take
@@ -417,7 +432,7 @@ Xopt = solver.solve(problem)
     <td>Classical first-order conjugate gradient descent algorithm.
     By default uses a standard adaptive linesearch. To set its parameters
     you can instantiate the
-    <a href="file:///is/ei/sweichwald/projects/pymanopt.github.io/doc/index.html#pymanopt.solvers.linesearch.LineSearchAdaptive">LineSearchAdaptive</a>
+    <a href="https://pymanopt.github.io/doc/index.html#pymanopt.solvers.linesearch.LineSearchAdaptive">LineSearchAdaptive</a>
     object with your desired parameters and hand it over to the
     ConjugateGradient solver (<code class="language-py">solver = ConjugateGradient(linesearch=LinesearchObject)</code>).
     It is also easy to implement your own linesearch class, just take
