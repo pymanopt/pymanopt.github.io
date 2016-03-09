@@ -4,6 +4,9 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <title>Pymanopt</title>
 
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+
     <!-- mathjax -->
     <script type="text/x-mathjax-config">
         MathJax.Hub.Config({
@@ -15,19 +18,24 @@
     <!-- code-prettify -->
     <script type="text/javascript" src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=py"></script>
 
+    <!-- skeleton.css -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css" rel="stylesheet" type="text/css" />
     <link href="layout.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
 
+  <div class="section">
+    <div class="container">
+
 <h1>Pymanopt</h1>
 
 <p>Pymanopt is a Python package for doing manifold optimization, that computes
-gradients and hessians automatically. It builds upon the MATLAB toolbox
+gradients and Hessians automatically. It builds upon the MATLAB toolbox
 <a href="http://manopt.org/">Manopt</a> but is otherwise independent of it.
 Pymanopt aims to lower the barriers for users wishing to use state of the art
 manifold optimization techniques, by relying on automatic differentiation for
-computing gradients and hessians, saving users time and saving them from
+computing gradients and Hessians, saving users time and saving them from
 potential calculation and implementiation errors.</p>
 
 <p>Pymanopt is modular and hence easy to use. All of the automatic
@@ -82,7 +90,7 @@ print(Xopt)
 </code></pre>
 
 
-<h2>0. Installing Pymanopt</h2>
+<h2>Installation</h2>
 <h3>Dependencies</h3>
 <p>Pymanopt is compatible with Python 2.7 and Python 3.3+, and depends on
 NumPy and SciPy. Additionally, to use Pymanopt's built-in automatic
@@ -101,14 +109,13 @@ systems can be found
 for installing Autograd
 <a href="https://github.com/HIPS/autograd#how-to-install">here</a>.</p>
 
-<h3>Pymanopt installation</h3>
 <p>Pymanopt can be installed with the following command:</p>
 <pre class="prettyprint"><code class="language-bash">
 pip install --user git+https://github.com/pymanopt/pymanopt.git
 </code></pre>
 
 
-<h2>1. Manifolds</h2>
+<h2>Supported Manifolds</h2>
 
 <p>The Pymanopt Manifold classes provide manifold specific routines like
 computing the intrinsic mean of two points on the manifold or computing
@@ -119,15 +126,15 @@ wanting to implement a new manifold for Pymanopt are referred to the
 <a href="doc/index.html#module-pymanopt.manifolds.manifold">Manifold
 abstract base class</a>.</p>
 
-<h3>List of Manifolds</h3>
+<table id="manifolds" class="u-full-width">
 
-<table id="manifolds">
-
+  <thead>
 <tr>
-    <th>manifold</th>
-    <th>description</th>
-    <th>required codelines</th>
+    <th>Manifold</th>
+    <th>Description</th>
+    <th>Code</th>
 </tr>
+  </thead>
 
 <tr>
     <td>Euclidean manifold<br />
@@ -252,7 +259,7 @@ manifold = Product([Stiefel(m,n), Euclidean(k,l)])
 </table>
 
 
-<h2>2. Cost Functions</h2>
+<h2>Cost Functions</h2>
 
 <p>Both the manifold and cost function fully describe the Riemannian Optimisation
 problem that is to be solved. They are combined into a Pymanopt Problem object that
@@ -265,10 +272,14 @@ problem = Problem(manifold=manifold, cost=cost)
 <p>The cost function passed to Pymanopt should take a single input (a point on
 the manifold), and return a scalar. You have three options for how to define
 the cost function:</p>
-<table id="cost-setup">
+<table id="cost-setup" class="u-full-width">
+  <thead>
   <tr>
-    <th></th><th>Method</th><th>Extra work required</th>
+    <th></th>
+    <th>Method</th>
+    <th>Additional requirements</th>
   </tr>
+  </thead>
   <tr>
     <td>(a)</td><td>Use Autograd</td><td>None</td>
   </tr>
@@ -277,7 +288,7 @@ the cost function:</p>
   </tr>
   <tr>
     <td>(c)</td><td>Use a regular Python function</td><td>Calculate and implement
-    derivatives (gradient and hessian) by hand.</td>
+    derivatives (gradient and Hessian) by hand.</td>
   </tr>
 </table>
 
@@ -290,7 +301,7 @@ manifold optimization with Pymanopt so easy!</strong></p>
 plan to implement support for
 <a href="https://www.tensorflow.org">TensorFlow</a>.</p>
 
-<h4 id="autograd-example">Setup the cost function using Autograd</h4>
+<h4 id="autograd-example">Setting up the cost function using Autograd</h4>
 <p>If you already know how to use NumPy, then this approach will be easy. Just
 import autograd.numpy and setup your cost as a Python function, using the
 autograd numpy to perform the computation.</p>
@@ -304,7 +315,7 @@ problem = Problem(manifold=manifold, cost=cost)
 </code></pre>
 
 
-<h4>Setup the cost function using Theano</h4>
+<h4>Setting up the cost function using Theano</h4>
 <p>This approach requires you to setup your cost as a Theano graph. A
 tutorial on using Theano can be found
 <a href="http://deeplearning.net/software/theano/tutorial/">here</a>.</p>
@@ -324,14 +335,14 @@ problem = Problem(manifold=manifold, cost=cost, arg=X)
 function is nowhere smooth), then this approach makes sense. If you want to use
 a solver which requires derivatives (these solvers generally perform far better
 than derivative-free methods) this approach enables you to calculate and
-implement gradients and hessians by hand.</p>
+implement gradients and Hessians by hand.</p>
 
 <p>Using Pymanopt in this way is similar to Manopt. You can refer to the Manopt
 <a href="http://www.manopt.org/tutorial.html">tutorial</a> and
 <a href="https://groups.google.com/forum/#!forum/manopttoolbox">forum</a> for
 advice on calculating gradients/hessians by hand.
 However, we would like to stress that there is <i>little or no advantage</i> to
-doing things in this way. The gradients and hessians calculated by Pymanopt
+doing things in this way. The gradients and Hessians calculated by Pymanopt
 should be both correct and efficient.
 </p>
 <pre class="prettyprint"><code class="language-python">
@@ -339,7 +350,7 @@ problem = Problem(manifold=manifold, cost=cost, egrad=egrad, ehess=ehess)
 </code></pre>
 
 
-<h2>3. Solvers</h2>
+<h2>Solvers</h2>
 
 <p>The Pymanopt Solver classes provide the algorithms for optimisation.
 Once a Pymanopt Problem object has been set up and a solver instantiated
@@ -388,15 +399,15 @@ a new solver for Pymanopt are referred to the
 <a href="doc/index.html#module-pymanopt.solvers.solver">Solver abstract
 base class</a>.</p>
 
-<h3>List of Solvers</h3>
+<table id="solvers" class="u-full-width">
 
-<table id="solvers">
-
+  <thead>
 <tr>
-    <th>solver</th>
-    <th>description</th>
-    <th>required codelines</th>
+    <th>Solver</th>
+    <th>Description</th>
+    <th>Code</th>
 </tr>
+  </thead>
 
 <tr>
     <td>TrustRegions</td>
@@ -486,13 +497,15 @@ Xopt = solver.solve(problem)
 Below are some examples that demonstrate certain use-cases that may be of
 general interest and give an idea of what can be done with Pymanopt.</p>
 
-<table>
+<table class="u-full-width">
 
+  <thead>
 <tr>
-    <th>example</th>
-    <th>notes</th>
-    <th>file(s)</th>
+    <th>Example</th>
+    <th>Notes</th>
+    <th>Links</th>
 </tr>
+  </thead>
 
 <tr id="example-optlog-1">
     <td>Log optimisation behaviour</td>
@@ -547,6 +560,8 @@ general interest and give an idea of what can be done with Pymanopt.</p>
 
 </table>
 
+    </div>
+  </div>
 
 </body>
 
