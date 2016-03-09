@@ -66,8 +66,7 @@ file if you wish to extend Pymanopt's functionality and/or contribute to
 the project. Pymanopt is distributed under the open source
 <a href="https://github.com/pymanopt/pymanopt/blob/master/LICENSE">3-clause BSD license</a>.</p>
 
-<pre class="prettyprint"><code class="language-py">
-import autograd.numpy as np
+<pre class="prettyprint"><code class="language-py">import autograd.numpy as np
 
 from pymanopt.manifolds import Stiefel
 from pymanopt import Problem
@@ -110,8 +109,7 @@ for installing Autograd
 <a href="https://github.com/HIPS/autograd#how-to-install">here</a>.</p>
 
 <p>Pymanopt can be installed with the following command:</p>
-<pre class="prettyprint"><code class="language-bash">
-pip install --user git+https://github.com/pymanopt/pymanopt.git
+<pre class="prettyprint"><code class="language-bash">pip install --user git+https://github.com/pymanopt/pymanopt.git
 </code></pre>
 
 
@@ -144,8 +142,7 @@ abstract base class</a>.</p>
     unconstrained problems or, when used as part of a product manifold,
     for unconstrained hyperparameters.</td>
     <td>
-<pre class="prettyprint"><code class="language-py">
-from pymanopt.manifolds import Euclidean
+<pre class="prettyprint"><code class="language-py">from pymanopt.manifolds import Euclidean
 manifold = Euclidean(m,n)
 </code></pre>
     </td>
@@ -156,8 +153,7 @@ manifold = Euclidean(m,n)
     $G_{m,n} \triangleq \{\operatorname{Span}\{M\}:M\in\mathbb{R}^{m\times n}\}$</td>
     <td>This is the manifold of $n$-dimensional subspaces of $\mathbb{R}^m$. For optional argument $k>1$ this instantiates the product $\mathcal{Gr}^{m\times n}\times\cdots\times\mathcal{Gr}^{m\times n}$ of $k$ Grassmann manifolds.</td>
     <td>
-<pre class="prettyprint"><code class="language-py">
-from pymanopt.manifolds import Grassmann
+<pre class="prettyprint"><code class="language-py">from pymanopt.manifolds import Grassmann
 manifold = Grassmann(m,n)
 </code></pre>
     </td>
@@ -168,8 +164,7 @@ manifold = Grassmann(m,n)
     $O_{m,n} \triangleq \{M\in\mathbb{R}^{m\times n}: ||M_{:,j}||_2=1 \ \forall j\in\mathbb{N}_1^n\}$</td>
     <td>Manifold of matrices with unit-norm columns.</td>
     <td>
-<pre class="prettyprint"><code class="language-py">
-from pymanopt.manifolds import Oblique
+<pre class="prettyprint"><code class="language-py">from pymanopt.manifolds import Oblique
 manifold = Oblique(m,n)
 </code></pre>
     </td>
@@ -180,8 +175,7 @@ manifold = Oblique(m,n)
     $\mathcal{PD}^n \triangleq \{M\in\mathbb{R}^{n\times n}: M \succ \mathbf{0}\}$</td>
     <td>Manifold of $n$-by-$n$ positive definite matrices.</td>
     <td>
-<pre class="prettyprint"><code class="language-py">
-from pymanopt.manifolds import PositiveDefinite
+<pre class="prettyprint"><code class="language-py">from pymanopt.manifolds import PositiveDefinite
 manifold = PositiveDefinite(n)
 </code></pre>
     </td>
@@ -189,11 +183,13 @@ manifold = PositiveDefinite(n)
 
 <tr>
     <td>Elliptope manifold<br />
-    $E_k^n \triangleq \{M\in\mathbb{R}^{n\times n}: M \succeq \mathbf{0}, \operatorname{rank}(M)=k, ||M_{i,:}||_2=1 \ \forall i\in\mathbb{N}_1^n\}$</td>
+    $\begin{align}
+        E_k^n \triangleq \{M\in\mathbb{R}^{n\times n}: & M \succeq \mathbf{0}, \operatorname{rank}(M)=k,\\
+                                                       & ||M_{i,:}||_2=1 \ \forall i\in\mathbb{N}_1^n\}
+    \end{align}$</td>
     <td>Manifold of $n$-by-$n$ psd matrices of rank $k$ with unit diagonal elements.</td>
     <td>
-<pre class="prettyprint"><code class="language-py">
-from pymanopt.manifolds import Elliptope
+<pre class="prettyprint"><code class="language-py">from pymanopt.manifolds import Elliptope
 manifold = Elliptope(n,k)
 </code></pre>
     </td>
@@ -204,8 +200,7 @@ manifold = Elliptope(n,k)
     $\operatorname{PSD}_k^n \triangleq \{M\in\mathbb{R}^{n\times n}: M \succeq \mathbf{0}, \operatorname{rank}(M)=k\}$</td>
     <td>Manifold of $n$-by-$n$ symmetric/hermitian positive semidefinite matrices of rank $k$.</td>
     <td>
-<pre class="prettyprint"><code class="language-py">
-# real
+<pre class="prettyprint"><code class="language-py"># real
 from pymanopt.manifolds import PSDFixedRank
 manifold = PSDFixedRank(n,k)
 
@@ -222,8 +217,7 @@ manifold = PSDFixedRankComplex(n,k)
     <td>$m\times n$ matrices of unit Frobenius norm, i.e., the unit
     Sphere for $n=1$ (the default value of this optional argument).</td>
     <td>
-<pre class="prettyprint"><code class="language-py">
-from pymanopt.manifolds import Sphere
+<pre class="prettyprint"><code class="language-py">from pymanopt.manifolds import Sphere
 manifold = Sphere(m)
 </code></pre>
     </td>
@@ -237,8 +231,7 @@ manifold = Sphere(m)
     $\mathcal{St}^{m\times n}\times\cdots\times\mathcal{St}^{m\times n}$
     of $k$ Stiefel manifolds.</td>
     <td>
-<pre class="prettyprint"><code class="language-py">
-from pymanopt.manifolds import Stiefel
+<pre class="prettyprint"><code class="language-py">from pymanopt.manifolds import Stiefel
 manifold = Stiefel(m,n)
 </code></pre>
     </td>
@@ -249,8 +242,7 @@ manifold = Stiefel(m,n)
     $\mathcal{M_1}\times \cdots \times \mathcal{M_l}$ for manifolds $\mathcal{M_1},...,\mathcal{M_l}$</td>
     <td>Product manifold of any of the manifolds listed above, e.g. $V_{m\times n}\times\mathbb{R}^{k\times l}$.</td>
     <td>
-<pre class="prettyprint"><code class="language-py">
-from pymanopt.manifolds import Product, Stiefel, Euclidean
+<pre class="prettyprint"><code class="language-py">from pymanopt.manifolds import Product, Stiefel, Euclidean
 manifold = Product([Stiefel(m,n), Euclidean(k,l)])
 </code></pre>
     </td>
@@ -264,8 +256,7 @@ manifold = Product([Stiefel(m,n), Euclidean(k,l)])
 <p>Both the manifold and cost function fully describe the Riemannian Optimisation
 problem that is to be solved. They are combined into a Pymanopt Problem object that
 is then passed to a Pymanopt solver.</p>
-<pre class="prettyprint"><code class="language-py">
-from pymanopt import Problem
+<pre class="prettyprint"><code class="language-py">from pymanopt import Problem
 problem = Problem(manifold=manifold, cost=cost)
 </code></pre>
 
@@ -305,8 +296,7 @@ plan to implement support for
 <p>If you already know how to use NumPy, then this approach will be easy. Just
 import autograd.numpy and setup your cost as a Python function, using the
 autograd numpy to perform the computation.</p>
-<pre class="prettyprint"><code class="language-python">
-import autograd.numpy as np
+<pre class="prettyprint"><code class="language-python">import autograd.numpy as np
 
 def cost(X):
     return np.exp(-np.sum(X**2))
@@ -319,8 +309,7 @@ problem = Problem(manifold=manifold, cost=cost)
 <p>This approach requires you to setup your cost as a Theano graph. A
 tutorial on using Theano can be found
 <a href="http://deeplearning.net/software/theano/tutorial/">here</a>.</p>
-<pre class="prettyprint"><code class="language-python">
-import theano.tensor as T
+<pre class="prettyprint"><code class="language-python">import theano.tensor as T
 
 X = T.matrix()
 cost = T.exp(-T.sum(X**2))
@@ -345,8 +334,7 @@ However, we would like to stress that there is <i>little or no advantage</i> to
 doing things in this way. The gradients and Hessians calculated by Pymanopt
 should be both correct and efficient.
 </p>
-<pre class="prettyprint"><code class="language-python">
-problem = Problem(manifold=manifold, cost=cost, egrad=egrad, ehess=ehess)
+<pre class="prettyprint"><code class="language-python">problem = Problem(manifold=manifold, cost=cost, egrad=egrad, ehess=ehess)
 </code></pre>
 
 
@@ -355,8 +343,7 @@ problem = Problem(manifold=manifold, cost=cost, egrad=egrad, ehess=ehess)
 <p>The Pymanopt Solver classes provide the algorithms for optimisation.
 Once a Pymanopt Problem object has been set up and a solver instantiated
 the optimisation is run as follows:</p>
-<pre class="prettyprint"><code class="language-py">
-xoptimal = solver.solve(problem)
+<pre class="prettyprint"><code class="language-py">xoptimal = solver.solve(problem)
 </code></pre>
 <p>The solvers' parameters are specified when instantiating the solver object.
 The following parameters are shared by all solvers
@@ -386,8 +373,7 @@ The following parameters are shared by all solvers
     will return both the final point on the manifold as well as a dictionary
     that holds the log information, otherwise the solve routine only returns
     the final point, i.e.,
-<pre class="prettyprint"><code class="language-py">
-xoptimal = solver.solve(problem, logverbosity=0)
+<pre class="prettyprint"><code class="language-py">xoptimal = solver.solve(problem, logverbosity=0)
 xoptimal, optlog = solver.solve(problem, logverbosity=2)
 </code></pre>
     There is also a minimalistic <a href="#example-optlog-1">example</a>.</dd>
@@ -415,8 +401,7 @@ base class</a>.</p>
     a quadratic surface and then updates the current estimate based on
     that.</td>
     <td>
-<pre class="prettyprint"><code class="language-py">
-from pymanopt.solvers import TrustRegions
+<pre class="prettyprint"><code class="language-py">from pymanopt.solvers import TrustRegions
 solver = TrustRegions()
 Xopt = solver.solve(problem)
 </code></pre>
@@ -435,8 +420,7 @@ Xopt = solver.solve(problem)
     <a href="https://github.com/pymanopt/pymanopt/blob/master/pymanopt/solvers/linesearch.py#L4">this code</a>
     as a starting point.</td>
     <td>
-<pre class="prettyprint"><code class="language-py">
-from pymanopt.solvers import SteepestDescent
+<pre class="prettyprint"><code class="language-py">from pymanopt.solvers import SteepestDescent
 solver = SteepestDescent()
 Xopt = solver.solve(problem)
 </code></pre>
@@ -455,8 +439,7 @@ Xopt = solver.solve(problem)
     <a href="https://github.com/pymanopt/pymanopt/blob/master/pymanopt/solvers/linesearch.py#L81">this code</a>
     as a starting point.</td>
     <td>
-<pre class="prettyprint"><code class="language-py">
-from pymanopt.solvers import ConjugateGradient
+<pre class="prettyprint"><code class="language-py">from pymanopt.solvers import ConjugateGradient
 solver = ConjugateGradient()
 Xopt = solver.solve(problem)
 </code></pre>
@@ -467,8 +450,7 @@ Xopt = solver.solve(problem)
     <td>NelderMead</td>
     <td>Derivative-free optimisation</td>
     <td>
-<pre class="prettyprint"><code class="language-py">
-from pymanopt.solvers import NelderMead
+<pre class="prettyprint"><code class="language-py">from pymanopt.solvers import NelderMead
 solver = NelderMead()
 Xopt = solver.solve(problem)
 </code></pre>
@@ -479,8 +461,7 @@ Xopt = solver.solve(problem)
     <td>ParticleSwarm</td>
     <td>Derivative-free optimisation</td>
     <td>
-<pre class="prettyprint"><code class="language-py">
-from pymanopt.solvers import ParticleSwarm
+<pre class="prettyprint"><code class="language-py">from pymanopt.solvers import ParticleSwarm
 solver = ParticleSwarm()
 Xopt = solver.solve(problem)
 </code></pre>
