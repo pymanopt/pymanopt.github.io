@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.1//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-2.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" dir="ltr" id="index">
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -68,8 +68,7 @@
         Please cite <a href="http://arxiv.org/abs/1603.03236">this paper</a>
         if you publish work using Pymanopt (<a href="pymanopt.bib">BibTeX</a>).</p>
 
-        <pre class="prettyprint">
-          <code class="language-python">import autograd.numpy as np
+        <pre><code class="prettyprint language-py">import autograd.numpy as np
 
 from pymanopt.manifolds import Stiefel
 from pymanopt import Problem
@@ -88,8 +87,7 @@ solver = SteepestDescent()
 
 # let Pymanopt do the rest
 Xopt = solver.solve(problem)
-print(Xopt)</code>
-        </pre>
+print(Xopt)</code></pre>
 
         <h2>Installation</h2>
         <h3>Dependencies</h3>
@@ -112,9 +110,7 @@ print(Xopt)</code>
 
         <h3>Installing Pymanopt</h3>
         <p>Pymanopt can be installed with the following command:</p>
-        <pre class="prettyprint">
-          <code class="language-bash">pip install --user git+https://github.com/pymanopt/pymanopt.git</code>
-        </pre>
+        <pre><code class="prettyprint language-py">pip install --user git+https://github.com/pymanopt/pymanopt.git</code></pre>
 
 
         <h2>Manifolds</h2>
@@ -130,7 +126,7 @@ print(Xopt)</code>
             strip</a>. If you need to solve an optimization problem with a
           search space which is constrained in some smooth way, then
           using manifold optimization may well be the natural approach to take.</p>
-          <p>Below is a table containing the manifolds that we currently support.
+          <p>The manifolds that we currently support are listed below.
             We plan to implement more depending on the needs of users, so if
             there's a particular manifold you'd like to optimize over, please
             let us know.
@@ -139,72 +135,58 @@ print(Xopt)</code>
         <a href="doc/index.html#module-pymanopt.manifolds.manifold">Manifold
         abstract base class</a>.</p>
 
-        <table id="manifolds" class="u-full-width">
-          <thead>
-            <tr>
-              <th>Manifold</th>
-              <th>Example code</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong>Euclidean manifold</strong><br>
-                <code class="language-python">Euclidean(n1, n2, ..., nk)</code><br>
+
+        <div class="row">
+              <div class="one-half column"><strong>Euclidean manifold</strong><br>
+                <code class="prettyprint language-py">Euclidean(n1, n2, ..., nk)</code><br>
                 Unconstrained Euclidean space of shape <code>(n1, n2, ..., nk)</code> tensors.
               Useful for unconstrained problems or for unconstrained hyperparameters,
-               as part of a product manifold.</td>
-              <td>
-                <pre class="prettyprint">
-                  <code class="language-py">from pymanopt.manifolds import Euclidean
+               as part of a product manifold.</div>
+              <div class="one-half column">
+<pre><code class="prettyprint language-py">from pymanopt.manifolds import Euclidean
 
 # Space of shape (3, ) vectors
 manifold = Euclidean(3)
 
 # Space of (4 x 2) matrices
-manifold = Euclidean(4, 2)
-</code>
-                </pre>
-              </td>
-            </tr>
+manifold = Euclidean(4, 2)</code></pre>
+              </div>
+            </div>
 
-            <tr>
-              <td><strong>Sphere manifold</strong><br>
-                <code>Sphere(n1, n2, ..., nk)</code><br>
+            <div class="row">
+              <div class="one-half column"><strong>Sphere manifold</strong><br>
+                <code class="prettyprint language-py">Sphere(n1, n2, ..., nk)</code><br>
                   Shape <code>(n1, n2, ..., nk)</code> tensors with unit
-                  2-norm.</td>
-              <td>
-                <pre class="prettyprint">
-                  <code class="language-py">from pymanopt.manifolds import Sphere
+                  2-norm.</div>
+              <div class="one-half column">
+<pre><code class="prettyprint language-py">from pymanopt.manifolds import Sphere
 
 # The 'usual' sphere S^2, the set of points lying
 # on the surface of a ball in 3D space:
-manifold = Sphere(3)</code>
-                </pre>
+manifold = Sphere(3)</code></pre>
               </td>
-            </tr>
+            </div>
 
-            <tr>
-              <td><strong>Stiefel manifold</strong><br>
-                <code>Stiefel(n, p, k=1)</code><br>
+            <div class="row">
+              <div class="one-half column"><strong>Stiefel manifold</strong><br>
+                <code class="prettyprint language-py">Stiefel(n, p, k=1)</code><br>
                 Manifold $\mathrm{St}(n, p)$ of n x p matrices whose
                 columns are orthonormal. That is
                 $\mathrm{St}(n, p):=\{X\in \mathbb{R}^{n \times p}:X^TX=I_p\}$.
                 If k > 1 then this instantiates a product $\mathrm{St}(n, p)^k$
-              of k Stiefel manifolds.</td>
-              <td>
-                <pre class="prettyprint">
-                  <code class="language-py">from pymanopt.manifolds import Stiefel
+              of k Stiefel manifolds.</div>
+            <div class="one-half column">
+<pre><code class="prettyprint language-py">from pymanopt.manifolds import Stiefel
 
 # Manifold of 3 x 2 matrices with orthonormal
 # columns.
-manifold = Stiefel(3, 2)</code>
-                </pre>
-              </td>
-            </tr>
+manifold = Stiefel(3, 2)</code></pre>
+              </div>
+            </div>
 
-            <tr>
-              <td><strong>Grassmann manifold</strong></br>
-                <code>Grassmann(n, p, k=1)</code></br>
+            <div class="row">
+              <div class="one-half column"><strong>Grassmann manifold</strong></br>
+                <code class="prettyprint language-py">Grassmann(n, p, k=1)</code></br>
                 Manifold of p-dimensional subspaces of $\mathbb{R}^n$,
                 denoted $\mathrm{Gr}(n, p)$.
                 If optional argument k > 1, instantiates the product
@@ -213,110 +195,99 @@ manifold = Stiefel(3, 2)</code>
                 If k = 1 then elements (subspaces) are represented by n x p Stiefel matrices
                 whose columns span the subspace
                 (see above for definition). If k > 1 then elements are represented
-                by a k x n x p array containing k (n x p) Stiefel matrices.</td>
-              <td>
-                <pre class="prettyprint">
-                  <code class="language-py">from pymanopt.manifolds import Grassmann
+                by a k x n x p array containing k (n x p) Stiefel matrices.</div>
+              <div class="one-half column">
+<pre><code class="prettyprint language-py">from pymanopt.manifolds import Grassmann
 
 # Manifold of planes through the origin in R^3
-manifold = Grassmann(3, 2)</code>
-                </pre>
-              </td>
-            </tr>
+manifold = Grassmann(3, 2)</code></pre>
+              </div>
+            </div>
 
-            <tr>
-              <td><strong>Oblique manifold</strong><br />
-                <code>Oblique(m, n)</code><br />
+            <div class="row">
+              <div class="one-half column"><strong>Oblique manifold</strong><br />
+                <code class="prettyprint language-py">Oblique(m, n)</code><br />
                 Manifold of m x n matrices with unit-norm columns. See
                 <a href="http://www.damtp.cam.ac.uk/user/na/NA_papers/NA2006_01.pdf">
                   this paper</a> for an example doing Independent Components Analysis
                   by optimizing over this manifold.
-                </select></td>
-              <td>
-                <pre class="prettyprint">
-                  <code class="language-py">from pymanopt.manifolds import Oblique
+                </select></div>
+              <div class="one-half column">
+<pre><code class="prettyprint language-py">from pymanopt.manifolds import Oblique
 
 # Two 3-vectors, each with norm 1
-manifold = Oblique(3, 2)</code>
-                </pre>
-              </td>
-            </tr>
+manifold = Oblique(3, 2)</code></pre>
+              </div>
+            </div>
 
-            <tr>
-              <td><strong>Positive-definite matrices</strong><br />
-                <code>PositiveDefinite(n, k=1)</code><br />
+            <div class="row">
+              <div class="one-half column"><strong>Positive-definite matrices</strong><br />
+                <code class="prettyprint language-py">PositiveDefinite(n, k=1)</code><br />
                 If k = 1, this is the manifold of n x n positive-definite matrices.
               That is, symmetric matrices whose eigenvalues are all strictly positive.
               If k > 1 then this is a product of k positive definite matrices,
               arranged as an array of shape <code>(k, n, n)</code>. This is useful
-              in the <a href="MoG.html">Mixture of Gaussians example</a>.</td>
-              <td>
-                <pre class="prettyprint">
-                  <code class="language-py">from pymanopt.manifolds import PositiveDefinite
-manifold = PositiveDefinite(n)</code>
-                </pre>
-              </td>
-            </tr>
+              in the <a href="MoG.html">Mixture of Gaussians example</a>.</div>
+              <div class="one-half column">
+<pre><code class="prettyprint language-py">from pymanopt.manifolds import PositiveDefinite
 
-            <tr>
-              <td><strong>Elliptope manifold</strong><br />
-                <code>Elliptope(n, k)</code><br />
+# Manifold of 3 x 3 positive-definite matrices
+manifold = PositiveDefinite(3)</code></pre>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="one-half column"><strong>Elliptope manifold</strong><br />
+                <code class="prettyprint language-py">Elliptope(n, k)</code><br />
                 Manifold of n x n positive-semidefinite matrices with rank k
                 and unit diagonal elements. Note, a <a href="https://en.wikipedia.org/wiki/Correlation_and_dependence#Correlation_matrices">
                   correlation matrix</a>
                 is of this form. Used in <a href="http://arxiv.org/pdf/cond-mat/0403477.pdf">
-                this paper</a> for rank reduction of correlation matrices.</td>
-              <td>
-                <pre class="prettyprint">
-                  <code class="language-py">from pymanopt.manifolds import Elliptope
+                this paper</a> for rank reduction of correlation matrices.</div>
+              <div class="one-half column">
+<pre><code class="prettyprint language-py">from pymanopt.manifolds import Elliptope
 
 # Manifold of 3 x 3 correlation matrices
 # of rank 2
-manifold = Elliptope(3, 2)</code>
-                </pre>
-              </td>
-            </tr>
+manifold = Elliptope(3, 2)</code></pre>
+              </div>
+            </div>
 
-            <tr>
-              <td><strong>Fixed rank positive-semidefinite matrices</strong><br/>
-                <code>PSDFixedRank(n, k)</code><br />
-                <code>PSDFixedRankComplex(n, k)</code><br />
+            <div class="row">
+              <div class="one-half column"><strong>Fixed rank positive-semidefinite matrices</strong><br/>
+                <code class="prettyprint language-py">PSDFixedRank(n, k)</code><br />
+                <code class="prettyprint language-py">PSDFixedRankComplex(n, k)</code><br />
                 Manifold of real (or complex) valued n x n
                 symmetric (or hermitian) positive-semidefinite matrices of rank k.<br />
                 See <a href="http://epubs.siam.org/doi/abs/10.1137/080731359">this
-                paper</a> for details.</td>
-              <td>
-                <pre class="prettyprint">
-                  <code class="language-py">from pymanopt.manifolds import PSDFixedRank, PSDFixedRankComplex
+                paper</a> for details.</div>
+            <div class="one-half column">
+<pre><code class="prettyprint language-py">from pymanopt.manifolds import PSDFixedRank, PSDFixedRankComplex
 
 # 3 x 3 rank 2 p.s.d. matrices
 # Real
 manifold = PSDFixedRank(3, 2)
 
 # Complex
-manifold = PSDFixedRankComplex(3, 2)</code>
-                </pre>
-              </td>
-            </tr>
+manifold = PSDFixedRankComplex(3, 2)</code></pre>
+              </div>
+            </div>
 
-            <tr class="topborder">
-              <td><strong>Product manifold</strong><br />
-              <code>Product((man1, man2, ..., manN))</code><br />
+            <div class="row">
+              <div class="one-half column"><strong>Product manifold</strong><br />
+              <code class="prettyprint language-py">Product((man1, man2, ..., manN))</code><br />
               Product manifold of any of the manifolds listed above. This enables
             you to optimize over multiple manifolds simultaneously. Useful for problems
-            with multiple parameters that have different constraints.</td>
-              <td>
-                <pre class="prettyprint">
-                  <code class="language-py">from pymanopt.manifolds import Product, Stiefel, Euclidean
+            with multiple parameters that have different constraints.</div>
+              <div class="one-half column">
+<pre><code class="prettyprint language-py">from pymanopt.manifolds import Product, Stiefel, Euclidean
 
 # Product of Euclidean 3-vector with
 # 5 x 2 Stiefel manifold.
-manifold = Product((Euclidean(3), Stiefel(5, 2)))</code>
-                </pre>
-              </td>
-            </tr>
-            <tbody>
-        </table>
+manifold = Product((Euclidean(3), Stiefel(5, 2)))</code></pre>
+              </div>
+            </div>
+          </div>
 
 
         <h2>Cost Functions</h2>

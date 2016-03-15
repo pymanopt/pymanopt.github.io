@@ -6,7 +6,7 @@ ol.alpha {
     list-style-type: lower-alpha;
 }
 
-pre.prettyprint, code.prettyprint {
+/*pre.prettyprint, code.prettyprint {
   font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace;
   border-width: 0;
   -moz-border-radius: .5em;
@@ -15,12 +15,13 @@ pre.prettyprint, code.prettyprint {
   -ms-border-radius: .5em;
   -khtml-border-radius: .5em;
   border-radius: .5em;
-}
+}*/
 
 pre.prettyprint {
-  width: 95%;
-  padding: 0em 1em 1em 1em ;
+  width: 100%;
+  padding: 0em 0em 0em 0em ;
   white-space: pre-wrap;
+  vertical-align: top;
 }
 
 pre.prettyprint a, code.prettyprint a {
