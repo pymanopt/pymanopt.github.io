@@ -17,6 +17,30 @@ ol.alpha {
   border-radius: .5em;
 }*/
 
+div.container {
+  padding-top: 20px;
+}
+
+div.row {
+  margin-bottom: 12px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #eee;
+    border-top-width: 1px;
+    border-top-style: solid;
+    border-top-color: rgb(238, 238, 238);
+}
+
+code.table-code-decl{
+  margin-left: 0px;
+  line-height: 1.85;
+}
+
+pre.table-code-block{
+  margin-top: 5px;
+  margin-bottom: 3.5px;
+}
+
 pre.prettyprint {
   width: 100%;
   padding: 0em 0em 0em 0em ;
