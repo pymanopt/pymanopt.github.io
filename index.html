@@ -93,10 +93,10 @@ print(Xopt)</code></pre>
       <p>Pymanopt is compatible with Python 2.7 and Python 3.3+, and depends on
       NumPy and SciPy. Additionally, to use Pymanopt's built-in automatic
       differentiation, which we strongly recommend, you need to setup your cost
-      functions using either
+      functions using either <a href="https://github.com/HIPS/autograd">Autograd</a>,
       <a href="http://www.deeplearning.net/software/theano/">Theano</a> or
-      <a href="https://github.com/HIPS/autograd">Autograd</a>. If you're unfamiliar
-      with both packages and not sure which to go for, it's probably best to start
+      <a href="https://www.tensorflow.org">TensorFlow</a>. If you're unfamiliar
+      with these packages and not sure which to go for, it's probably best to start
       with Autograd. Autograd wraps thinly around NumPy, and is very simple to use,
       particularly if you're already familiar with NumPy (see
       <a href="#autograd-example">below</a>).</p>
@@ -105,7 +105,9 @@ print(Xopt)</code></pre>
       systems can be found
       <a href="http://deeplearning.net/software/theano/install.html">here</a>,
       for installing Autograd
-      <a href="https://github.com/HIPS/autograd#how-to-install">here</a>.</p>
+      <a href="https://github.com/HIPS/autograd#how-to-install">here</a> and for
+      installing TensorFlow
+      <a href="https://www.tensorflow.org/versions/r0.7/get_started/os_setup.html#download-and-setup">here</a>.</p>
 
       <h3>Installing Pymanopt</h3>
       <p>Pymanopt can be installed with the following command:</p>
@@ -336,20 +338,22 @@ problem = Problem(manifold=manifold, cost=cost)</code></pre>
               <td>(b)</td><td>Use Theano</td><td>None</td>
             </tr>
             <tr>
-              <td>(c)</td><td>Use a regular Python function</td><td>Calculate and implement
+              <td>(c)</td><td>Use TensorFlow</td><td>None</td>
+            </tr>
+            <tr>
+              <td>(d)</td><td>Use a regular Python function</td><td>Calculate and implement
                 derivatives (gradient and Hessian) by hand.</td>
             </tr>
           </tbody>
         </table>
 
-        <p><strong>The first two options are recommended – indeed, they are what makes
+        <p><strong>The first three options are recommended – indeed, they are what makes
           manifold optimization with Pymanopt so easy!</strong></p>
 
-        <h3>(a/b) Use Autograd or Theano</h3>
+        <h3>(a/b/c) Use Autograd, Theano or TensorFlow</h3>
 
-        <p>Currently Pymanopt supports Theano and Autograd as autodiff backends. We
-        are currently in the process of implementing support for
-        <a href="https://www.tensorflow.org">TensorFlow</a>.</p>
+        <p>Currently Pymanopt supports Autograd, Theano and TensorFlow as autodiff
+        backends.</p>
 
         <h4 id="autograd-example">Setting up the cost function using Autograd</h4>
         <p>If you already know how to use NumPy, then this approach will be easy. Just
@@ -374,8 +378,20 @@ cost = T.exp(-T.sum(X**2))
 
 problem = Problem(manifold=manifold, cost=cost, arg=X)</code></pre>
 
+        <h4>Setting up the cost function using TensorFlow</h4>
+        <p>This approach requires you to setup your cost as a TensorFlow graph. A
+        tutorial on using TensorFlow can be found
+        <a href="https://www.tensorflow.org/versions/r0.7/get_started/basic_usage.html#basic-usage">here</a>.</p>
+<pre><code class="prettyprint language-python">import tensorflow as tf
+import numpy as np
 
-        <h3>(c) Use a regular Python function</h3>
+X = tf.Variable(tf.placeholder(tf.float32))
+cost = tf.exp(-tf.reduce_sum(tf.square(X)))
+
+problem = Problem(manifold=manifold, cost=cost, arg=X)</code></pre>
+
+
+        <h3>(d) Use a regular Python function</h3>
 
         <p>If you wish to use one of the derivative-free solvers (perhaps your cost
         function is nowhere smooth), then this approach makes sense. If you want to use
@@ -583,7 +599,9 @@ Xopt = solver.solve(problem)</code></pre>
                 <a href="https://github.com/pymanopt/pymanopt/blob/master/examples/regression_offset_autograd.py">
                   regression_offset_autograd.py</a> /
                 <a href="https://github.com/pymanopt/pymanopt/blob/master/examples/regression_offset_theano.py">
-                  regression_offset_theano.py</a>
+                  regression_offset_theano.py</a> /
+                <a href="https://github.com/pymanopt/pymanopt/blob/master/examples/regression_offset_tensorflow.py">
+                  regression_offset_tensorflow.py</a>
               </td>
             </tr>
 
