@@ -140,7 +140,7 @@ print(Xopt)</code></pre>
 <!-- MANIFOLDS TABLE START ------------------------------------------------->
 <!-------------------------------------------------------------------------->
       <div class="row">
-        <div class="one-half column">
+        < class="one-half column">
           <strong>Euclidean manifold</strong><br />
           <code class="table-code-decl prettyprint language-py">Euclidean(n1, n2, ..., nk)</code><br />
           Unconstrained Euclidean space of shape <code>(n1, n2, ..., nk)</code> tensors.
@@ -155,6 +155,22 @@ manifold = Euclidean(3)
 
 # Space of (4 x 2) matrices
 manifold = Euclidean(4, 2)</code></pre>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="one-half column">
+          <strong>Symmetric matrices</strong><br />
+          <code class="table-code-decl prettyprint language-py">Symmetric(n, k=1)</code><br />
+          If k = 1, this is the manifold of n x n symmetric matrices.
+          If k > 1 then this is a product of k symmetric matrices,
+          arranged as an array of shape <code>(k, n, n)</code>.
+        </div>
+        <div class="one-half column">
+<pre class="table-code-block"><code class="prettyprint language-py">from pymanopt.manifolds import Symmetric
+
+# Manifold of 3 x 3 symmetric matrices
+manifold = Symmetric(3)</code></pre>
         </div>
       </div>
 
