@@ -352,11 +352,26 @@ trust-region radii.</p>
 <span id="euclidean"></span><h3>euclidean<a class="headerlink" href="#module-pymanopt.manifolds.euclidean" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
 <dt id="pymanopt.manifolds.euclidean.Euclidean">
-<em class="property">class </em><code class="descclassname">pymanopt.manifolds.euclidean.</code><code class="descname">Euclidean</code><span class="sig-paren">(</span><em>m</em>, <em>n</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.euclidean.Euclidean" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pymanopt.manifolds.euclidean.</code><code class="descname">Euclidean</code><span class="sig-paren">(</span><em>*shape</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.euclidean.Euclidean" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pymanopt.manifolds.manifold.Manifold" title="pymanopt.manifolds.manifold.Manifold"><code class="xref py py-class docutils literal"><span class="pre">pymanopt.manifolds.manifold.Manifold</span></code></a></p>
-<p>Euclidean manifold, i.e. the euclidean space of m-by-n matrices
-equipped with the Frobenius distance and trace inner product.
-Use for solving unconstrained problems with pymanopt.</p>
+<p>Euclidean manifold of shape n1 x n2 x ... x nk tensors. Useful for
+unconstrained optimization problems or for unconstrained hyperparameters,
+as part of a product manifold.</p>
+<p>Examples:
+Create a manifold of vectors of length n:
+manifold = Euclidean(n)</p>
+<p>Create a manifold of m x n matrices:
+manifold = Euclidean(m, n)</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pymanopt.manifolds.euclidean.Symmetric">
+<em class="property">class </em><code class="descclassname">pymanopt.manifolds.euclidean.</code><code class="descname">Symmetric</code><span class="sig-paren">(</span><em>n</em>, <em>k=1</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.euclidean.Symmetric" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pymanopt.manifolds.euclidean.Euclidean" title="pymanopt.manifolds.euclidean.Euclidean"><code class="xref py py-class docutils literal"><span class="pre">pymanopt.manifolds.euclidean.Euclidean</span></code></a></p>
+<p>Manifold of n x n symmetric matrices, as a Riemannian submanifold of
+Euclidean space.</p>
+<p>If k &gt; 1 then this is an array of shape (k, n, n) (product manifold)
+containing k (n x n) matrices.</p>
 </dd></dl>
 
 </div>
@@ -508,12 +523,16 @@ mid-way between X and Y on the geodesic arc joining them.</p>
 <span id="sphere"></span><h3>sphere<a class="headerlink" href="#module-pymanopt.manifolds.sphere" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
 <dt id="pymanopt.manifolds.sphere.Sphere">
-<em class="property">class </em><code class="descclassname">pymanopt.manifolds.sphere.</code><code class="descname">Sphere</code><span class="sig-paren">(</span><em>m</em>, <em>n=1</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.sphere.Sphere" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pymanopt.manifolds.sphere.</code><code class="descname">Sphere</code><span class="sig-paren">(</span><em>*shape</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.sphere.Sphere" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pymanopt.manifolds.manifold.Manifold" title="pymanopt.manifolds.manifold.Manifold"><code class="xref py py-class docutils literal"><span class="pre">pymanopt.manifolds.manifold.Manifold</span></code></a></p>
-<p>Manifold of m-by-n real matrices of unit Frobenius norm. By default, n =
-1, which corresponds to the unit sphere in R^m. The metric is such that the
-sphere is a Riemannian submanifold of the space of m-by-n matrices with the
-usual trace inner product, i.e., the usual metric.</p>
+<p>Manifold of shape n1 x n2 x ... x nk tensors with unit 2-norm. The
+metric is such that the sphere is a Riemannian submanifold of Euclidean
+space. This implementation is based on spherefactory.m from the Manopt
+MATLAB package.</p>
+<p>Examples:
+The &#8216;usual&#8217; sphere S^2, the set of points lying on the surface of a ball in
+3D space:
+sphere = Sphere(3)</p>
 </dd></dl>
 
 </div>
@@ -555,13 +574,13 @@ the optional argument x is not provided)</p>
 <span id="conjugate-gradient"></span><h3>conjugate_gradient<a class="headerlink" href="#module-pymanopt.solvers.conjugate_gradient" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
 <dt id="pymanopt.solvers.conjugate_gradient.ConjugateGradient">
-<em class="property">class </em><code class="descclassname">pymanopt.solvers.conjugate_gradient.</code><code class="descname">ConjugateGradient</code><span class="sig-paren">(</span><em>beta_type=2</em>, <em>orth_value=inf</em>, <em>linesearch=&lt;pymanopt.solvers.linesearch.LineSearchAdaptive object&gt;</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.solvers.conjugate_gradient.ConjugateGradient" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pymanopt.solvers.conjugate_gradient.</code><code class="descname">ConjugateGradient</code><span class="sig-paren">(</span><em>beta_type=2</em>, <em>orth_value=inf</em>, <em>linesearch=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.solvers.conjugate_gradient.ConjugateGradient" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pymanopt.solvers.solver.Solver" title="pymanopt.solvers.solver.Solver"><code class="xref py py-class docutils literal"><span class="pre">pymanopt.solvers.solver.Solver</span></code></a></p>
 <p>Module containing conjugate gradient algorithm based on
 conjugategradient.m from the manopt MATLAB package.</p>
 <dl class="method">
 <dt id="pymanopt.solvers.conjugate_gradient.ConjugateGradient.solve">
-<code class="descname">solve</code><span class="sig-paren">(</span><em>problem</em>, <em>x=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.solvers.conjugate_gradient.ConjugateGradient.solve" title="Permalink to this definition">¶</a></dt>
+<code class="descname">solve</code><span class="sig-paren">(</span><em>problem</em>, <em>x=None</em>, <em>reuselinesearch=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.solvers.conjugate_gradient.ConjugateGradient.solve" title="Permalink to this definition">¶</a></dt>
 <dd><p>Perform optimization using nonlinear conjugate gradient method with
 linesearch.
 This method first computes the gradient of obj w.r.t. arg, and then
@@ -583,6 +602,13 @@ the gradient of that cost.</p>
 <dt>x=None</dt>
 <dd><p class="first last">Optional parameter. Starting point on the manifold. If none
 then a starting point will be randomly generated.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>reuselinesearch=False</dt>
+<dd><p class="first last">Whether to reuse the previous linesearch object. Allows to
+use information from a previous solve run.</p>
 </dd>
 </dl>
 </li>
@@ -809,7 +835,7 @@ convergence x will be the point at which it terminated</p>
 steepestdescent.m from the manopt MATLAB package.</p>
 <dl class="method">
 <dt id="pymanopt.solvers.steepest_descent.SteepestDescent.solve">
-<code class="descname">solve</code><span class="sig-paren">(</span><em>problem</em>, <em>x=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.solvers.steepest_descent.SteepestDescent.solve" title="Permalink to this definition">¶</a></dt>
+<code class="descname">solve</code><span class="sig-paren">(</span><em>problem</em>, <em>x=None</em>, <em>reuselinesearch=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.solvers.steepest_descent.SteepestDescent.solve" title="Permalink to this definition">¶</a></dt>
 <dd><p>Perform optimization using gradient descent with linesearch.
 This method first computes the gradient (derivative) of obj
 w.r.t. arg, and then optimizes by moving in the direction of
@@ -830,6 +856,13 @@ the gradient of that cost.</p>
 <dt>x=None</dt>
 <dd><p class="first last">Optional parameter. Starting point on the manifold. If none
 then a starting point will be randomly generated.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>reuselinesearch=False</dt>
+<dd><p class="first last">Whether to reuse the previous linesearch object. Allows to
+use information from a previous solve run.</p>
 </dd>
 </dl>
 </li>
@@ -968,6 +1001,38 @@ argument and return as a function.</p>
 <dl class="method">
 <dt id="pymanopt.tools.autodiff.AutogradBackend.is_compatible">
 <code class="descname">is_compatible</code><span class="sig-paren">(</span><em>backend</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.tools.autodiff.AutogradBackend.is_compatible" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pymanopt.tools.autodiff.TensorflowBackend">
+<em class="property">class </em><code class="descclassname">pymanopt.tools.autodiff.</code><code class="descname">TensorflowBackend</code><a class="headerlink" href="#pymanopt.tools.autodiff.TensorflowBackend" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">pymanopt.tools.autodiff._backend.Backend</span></code></p>
+<dl class="method">
+<dt id="pymanopt.tools.autodiff.TensorflowBackend.compile_function">
+<code class="descname">compile_function</code><span class="sig-paren">(</span><em>backend</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.tools.autodiff.TensorflowBackend.compile_function" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.tools.autodiff.TensorflowBackend.compute_gradient">
+<code class="descname">compute_gradient</code><span class="sig-paren">(</span><em>backend</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.tools.autodiff.TensorflowBackend.compute_gradient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the gradient of &#8216;objective&#8217; and return as a function.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.tools.autodiff.TensorflowBackend.compute_hessian">
+<code class="descname">compute_hessian</code><span class="sig-paren">(</span><em>backend</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.tools.autodiff.TensorflowBackend.compute_hessian" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.tools.autodiff.TensorflowBackend.is_available">
+<code class="descname">is_available</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.tools.autodiff.TensorflowBackend.is_available" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.tools.autodiff.TensorflowBackend.is_compatible">
+<code class="descname">is_compatible</code><span class="sig-paren">(</span><em>backend</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.tools.autodiff.TensorflowBackend.is_compatible" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
