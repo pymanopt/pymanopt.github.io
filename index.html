@@ -29,11 +29,11 @@
     <div class="container">
       <h1>Pymanopt</h1>
 
-      <p>Pymanopt is a Python toolbox for doing manifold optimization, that computes
+      <p>Pymanopt is a Python toolbox for optimization on manifolds, that computes
       gradients and Hessians automatically. It builds upon the Matlab toolbox
       <a href="http://manopt.org/">Manopt</a> but is otherwise independent of it.
       Pymanopt aims to lower the barriers for users wishing to use state of the art
-      manifold optimization techniques, by relying on automatic differentiation for
+      techniques for optimization on manifolds, by relying on automatic differentiation for
       computing gradients and Hessians, saving users time and saving them from
       potential calculation and implementiation errors.</p>
 
@@ -47,7 +47,7 @@
         <li>Instantiation of a Pymanopt solver</li>
       </ol>
 
-      <p>Experimenting with manifold optimization is simple with Pymanopt. The
+      <p>Experimenting with optimization on manifolds is simple with Pymanopt. The
       minimum working example below demonstrates this. The steps will be
       discussed in more detail in the subsequent three sections. Please
       refer to <a href="MoG.html">this example</a> for a <strong>cool
@@ -126,7 +126,7 @@ print(Xopt)</code></pre>
         <a href="https://en.wikipedia.org/wiki/Möbius_strip">Möbius
           strip</a>. If you need to solve an optimization problem with a
         search space which is constrained in some smooth way, then
-        using manifold optimization may well be the natural approach to take.</p>
+        performing optimization on manifolds may well be the natural approach to take.</p>
       <p>The manifolds that we currently support are listed below.
         We plan to implement more depending on the needs of users, so if
         there's a particular manifold you'd like to optimize over, please
@@ -595,7 +595,7 @@ Xopt = solver.solve(problem)</code></pre>
             <tr id="example-mog-1">
               <td>Riemannian optimization using Pymanopt for Inference in MoG models</td>
               <td>Given samples of a Mixture of Gaussians model, infer the parameters
-                using manifold optimization instead of expectation maximisation (EM).</td>
+                using optimization on manifolds instead of expectation maximisation (EM).</td>
               <td>
                 <a href="MoG.html">
                   MoG.html</a> /
