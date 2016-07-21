@@ -474,10 +474,12 @@ xoptimal, optlog = solver.solve(problem, logverbosity=2)</code></pre>
           <a href="http://www.manopt.org">Manopt website</a>.
           Solvers may have individual parameters to adjust
           their behaviour. These are documented in the respective source files.
-          Developers wanting to implement a new solver for Pymanopt are referred to
-          the
+          If you wish to implement your own solver, you must inherit from the
           <a href="doc/index.html#module-pymanopt.solvers.solver">Solver abstract
-          base class</a>.
+          base class</a>. The
+          <a href="https://github.com/pymanopt/pymanopt/blob/master/pymanopt/solvers/steepest_descent.py">
+          steepest_descent</a> solver is reasonably simple and
+          could be used as a model for custom solvers.
         </p>
 
       </div>
