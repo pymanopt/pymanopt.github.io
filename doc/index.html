@@ -94,14 +94,11 @@
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -239,7 +236,21 @@ is silent, 2 is most information.</p>
 <dt id="pymanopt.manifolds.manifold.Manifold">
 <em class="property">class </em><code class="descclassname">pymanopt.manifolds.manifold.</code><code class="descname">Manifold</code><a class="headerlink" href="#pymanopt.manifolds.manifold.Manifold" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
-<p>Abstract base class setting out template for manifold classes.</p>
+<p>Abstract base class setting out a template for manifold classes. If you
+would like to extend Pymanopt with a new manifold, then your manifold
+should inherit from this class.</p>
+<p>Not all methods are required by all solvers. In particular, first order
+gradient based solvers such as
+<a class="reference internal" href="#module-pymanopt.solvers.steepest_descent" title="pymanopt.solvers.steepest_descent"><code class="xref py py-mod docutils literal"><span class="pre">pymanopt.solvers.steepest_descent</span></code></a> and
+<a class="reference internal" href="#module-pymanopt.solvers.conjugate_gradient" title="pymanopt.solvers.conjugate_gradient"><code class="xref py py-mod docutils literal"><span class="pre">pymanopt.solvers.conjugate_gradient</span></code></a> require
+<a class="reference internal" href="#pymanopt.manifolds.manifold.Manifold.egrad2rgrad" title="pymanopt.manifolds.manifold.Manifold.egrad2rgrad"><code class="xref py py-func docutils literal"><span class="pre">egrad2rgrad()</span></code></a> to be implemented but not <a class="reference internal" href="#pymanopt.manifolds.manifold.Manifold.ehess2rhess" title="pymanopt.manifolds.manifold.Manifold.ehess2rhess"><code class="xref py py-func docutils literal"><span class="pre">ehess2rhess()</span></code></a>.
+Second order solvers such as <a class="reference internal" href="#module-pymanopt.solvers.trust_regions" title="pymanopt.solvers.trust_regions"><code class="xref py py-mod docutils literal"><span class="pre">pymanopt.solvers.trust_regions</span></code></a>
+will require <a class="reference internal" href="#pymanopt.manifolds.manifold.Manifold.ehess2rhess" title="pymanopt.manifolds.manifold.Manifold.ehess2rhess"><code class="xref py py-func docutils literal"><span class="pre">ehess2rhess()</span></code></a>.</p>
+<p>All of these methods correspond closely to methods in
+<a class="reference external" href="http://www.manopt.org">Manopt</a>. See
+<a class="reference external" href="http://www.manopt.org/tutorial.html#manifolds">http://www.manopt.org/tutorial.html#manifolds</a> for more details on manifolds
+in Manopt, which are effectively identical to those in Pymanopt (all of the
+methods in this class have equivalents in Manopt with the same name).</p>
 <dl class="attribute">
 <dt id="pymanopt.manifolds.manifold.Manifold.dim">
 <code class="descname">dim</code><a class="headerlink" href="#pymanopt.manifolds.manifold.Manifold.dim" title="Permalink to this definition">¶</a></dt>
@@ -946,21 +957,21 @@ convergence x will be the point at which it terminated.</p>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">pymanopt.tools.autodiff._backend.Backend</span></code></p>
 <dl class="method">
 <dt id="pymanopt.tools.autodiff.TheanoBackend.compile_function">
-<code class="descname">compile_function</code><span class="sig-paren">(</span><em>backend</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.tools.autodiff.TheanoBackend.compile_function" title="Permalink to this definition">¶</a></dt>
+<code class="descname">compile_function</code><span class="sig-paren">(</span><em>objective</em>, <em>argument</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.tools.autodiff.TheanoBackend.compile_function" title="Permalink to this definition">¶</a></dt>
 <dd><p>Wrapper for the theano.function(). Compiles a theano graph into a
 python function.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pymanopt.tools.autodiff.TheanoBackend.compute_gradient">
-<code class="descname">compute_gradient</code><span class="sig-paren">(</span><em>backend</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.tools.autodiff.TheanoBackend.compute_gradient" title="Permalink to this definition">¶</a></dt>
+<code class="descname">compute_gradient</code><span class="sig-paren">(</span><em>objective</em>, <em>argument</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.tools.autodiff.TheanoBackend.compute_gradient" title="Permalink to this definition">¶</a></dt>
 <dd><p>Wrapper for theano.tensor.grad(). Computes the gradient of &#8216;objective&#8217;
 with respect to &#8216;argument&#8217; and returns compiled version.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pymanopt.tools.autodiff.TheanoBackend.compute_hessian">
-<code class="descname">compute_hessian</code><span class="sig-paren">(</span><em>backend</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.tools.autodiff.TheanoBackend.compute_hessian" title="Permalink to this definition">¶</a></dt>
+<code class="descname">compute_hessian</code><span class="sig-paren">(</span><em>objective</em>, <em>argument</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.tools.autodiff.TheanoBackend.compute_hessian" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes the directional derivative of the gradient (which is equal to
 the Hessian multiplied by direction).</p>
 </dd></dl>
@@ -972,7 +983,7 @@ the Hessian multiplied by direction).</p>
 
 <dl class="method">
 <dt id="pymanopt.tools.autodiff.TheanoBackend.is_compatible">
-<code class="descname">is_compatible</code><span class="sig-paren">(</span><em>backend</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.tools.autodiff.TheanoBackend.is_compatible" title="Permalink to this definition">¶</a></dt>
+<code class="descname">is_compatible</code><span class="sig-paren">(</span><em>objective</em>, <em>argument</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.tools.autodiff.TheanoBackend.is_compatible" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -983,14 +994,14 @@ the Hessian multiplied by direction).</p>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">pymanopt.tools.autodiff._backend.Backend</span></code></p>
 <dl class="method">
 <dt id="pymanopt.tools.autodiff.AutogradBackend.compute_gradient">
-<code class="descname">compute_gradient</code><span class="sig-paren">(</span><em>backend</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.tools.autodiff.AutogradBackend.compute_gradient" title="Permalink to this definition">¶</a></dt>
+<code class="descname">compute_gradient</code><span class="sig-paren">(</span><em>objective</em>, <em>argument</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.tools.autodiff.AutogradBackend.compute_gradient" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the gradient of &#8216;objective&#8217; with respect to the first
 argument and return as a function.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pymanopt.tools.autodiff.AutogradBackend.compute_hessian">
-<code class="descname">compute_hessian</code><span class="sig-paren">(</span><em>backend</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.tools.autodiff.AutogradBackend.compute_hessian" title="Permalink to this definition">¶</a></dt>
+<code class="descname">compute_hessian</code><span class="sig-paren">(</span><em>objective</em>, <em>argument</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.tools.autodiff.AutogradBackend.compute_hessian" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -1000,7 +1011,7 @@ argument and return as a function.</p>
 
 <dl class="method">
 <dt id="pymanopt.tools.autodiff.AutogradBackend.is_compatible">
-<code class="descname">is_compatible</code><span class="sig-paren">(</span><em>backend</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.tools.autodiff.AutogradBackend.is_compatible" title="Permalink to this definition">¶</a></dt>
+<code class="descname">is_compatible</code><span class="sig-paren">(</span><em>objective</em>, <em>argument</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.tools.autodiff.AutogradBackend.is_compatible" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -1011,18 +1022,18 @@ argument and return as a function.</p>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">pymanopt.tools.autodiff._backend.Backend</span></code></p>
 <dl class="method">
 <dt id="pymanopt.tools.autodiff.TensorflowBackend.compile_function">
-<code class="descname">compile_function</code><span class="sig-paren">(</span><em>backend</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.tools.autodiff.TensorflowBackend.compile_function" title="Permalink to this definition">¶</a></dt>
+<code class="descname">compile_function</code><span class="sig-paren">(</span><em>objective</em>, <em>argument</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.tools.autodiff.TensorflowBackend.compile_function" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="pymanopt.tools.autodiff.TensorflowBackend.compute_gradient">
-<code class="descname">compute_gradient</code><span class="sig-paren">(</span><em>backend</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.tools.autodiff.TensorflowBackend.compute_gradient" title="Permalink to this definition">¶</a></dt>
+<code class="descname">compute_gradient</code><span class="sig-paren">(</span><em>objective</em>, <em>argument</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.tools.autodiff.TensorflowBackend.compute_gradient" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the gradient of &#8216;objective&#8217; and return as a function.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pymanopt.tools.autodiff.TensorflowBackend.compute_hessian">
-<code class="descname">compute_hessian</code><span class="sig-paren">(</span><em>backend</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.tools.autodiff.TensorflowBackend.compute_hessian" title="Permalink to this definition">¶</a></dt>
+<code class="descname">compute_hessian</code><span class="sig-paren">(</span><em>objective</em>, <em>argument</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.tools.autodiff.TensorflowBackend.compute_hessian" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -1032,7 +1043,7 @@ argument and return as a function.</p>
 
 <dl class="method">
 <dt id="pymanopt.tools.autodiff.TensorflowBackend.is_compatible">
-<code class="descname">is_compatible</code><span class="sig-paren">(</span><em>backend</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.tools.autodiff.TensorflowBackend.is_compatible" title="Permalink to this definition">¶</a></dt>
+<code class="descname">is_compatible</code><span class="sig-paren">(</span><em>objective</em>, <em>argument</em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.tools.autodiff.TensorflowBackend.is_compatible" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -1153,7 +1164,7 @@ vector product. Hopefully this can be fixed in future.</p>
     </div>
     <div class="footer" role="contentinfo">
         &copy; Copyright 2016, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.5.
     </div>
   </body>
 </html>
