@@ -308,6 +308,21 @@ manifold = PSDFixedRankComplex(3, 2)</code></pre>
 
       <div class="row">
         <div class="one-half column">
+          <strong>Fixed rank matrices</strong><br/>
+          <code class="table-code-decl prettyprint language-py">FixedRankEmbedded(m, n, k)</code><br />
+          Manifold of real valued m x n matrices of rank k.<br />
+          This follows the embedded geometry described in <a href="http://arxiv.org/abs/1209.3834">this paper</a>.
+        </div>
+        <div class="one-half column">
+<pre class="table-code-block"><code class="prettyprint language-py">from pymanopt.manifolds import FixedRankEmbedded
+
+# 5 x 4 rank 2 matrices
+manifold = FixedRankEmbedded(5, 4, 2)</code></pre>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="one-half column">
           <strong>Product manifold</strong><br />
           <code class="table-code-decl prettyprint language-py">Product((man1, man2, ..., manN))</code><br />
           Product manifold of any of the manifolds listed above. This enables
