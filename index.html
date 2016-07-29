@@ -111,7 +111,7 @@ print(Xopt)</code></pre>
 
       <h3>Installing Pymanopt</h3>
       <p>Pymanopt can be installed with the following command:</p>
-      <pre><code class="prettyprint language-py">pip install --user pymanopt</code></pre>
+      <pre><code>pip install --user pymanopt</code></pre>
 
 
       <h2>Manifolds</h2>
@@ -276,7 +276,7 @@ manifold = PositiveDefinite(3)</code></pre>
             this paper</a> for rank reduction of correlation matrices.
         </div>
         <div class="one-half column">
-<pre class="table-code-block"><code class="language-py">from pymanopt.manifolds import Elliptope
+<pre class="table-code-block"><code class="prettyprint language-py">from pymanopt.manifolds import Elliptope
 
 # Manifold of 3 x 3 correlation matrices
 # of rank 2
@@ -449,7 +449,7 @@ problem = Problem(manifold=manifold, cost=cost, arg=X)</code></pre>
         <p>The Pymanopt Solver classes provide the algorithms for optimization.
         Once a Pymanopt Problem object has been set up and a solver instantiated
         the optimization is run as follows:</p>
-<pre><code class="prettyprint language-py">xoptimal = solver.solve(problem)</code></pre>
+<pre><code class="prettyprint, language-py">xoptimal = solver.solve(problem)</code></pre>
         <p>The solvers' parameters are specified when instantiating the solver object.
         The following parameters are shared by all solvers
         (<code class="prettyprint, language-py">argumentname=defaultvalue</code>):</p>
@@ -478,7 +478,7 @@ problem = Problem(manifold=manifold, cost=cost, arg=X)</code></pre>
           will return both the final point on the manifold as well as a dictionary
           that holds the log information, otherwise the solve routine only returns
           the final point, i.e.,
-<pre><code class="prettyprint language-py">xoptimal = solver.solve(problem, logverbosity=0)
+<pre><code class="prettyprint, language-py">xoptimal = solver.solve(problem, logverbosity=0)
 xoptimal, optlog = solver.solve(problem, logverbosity=2)</code></pre>
           See <a href="#example-optlog-1">below</a> for a minimalistic example.</dd>
         </dl>
