@@ -310,8 +310,9 @@ manifold = PSDFixedRankComplex(3, 2)</code></pre>
         <div class="one-half column">
           <strong>Fixed rank matrices</strong><br/>
           <code class="table-code-decl prettyprint language-py">FixedRankEmbedded(m, n, k)</code><br />
-          Manifold of real valued m x n matrices of rank k.<br />
-          This follows the embedded geometry described in <a href="http://arxiv.org/abs/1209.3834">this paper</a>.
+          Manifold of real valued m x n matrices of rank k.
+          This follows the embedded geometry described in <a href="http://arxiv.org/abs/1209.3834">this paper</a>.<br />
+          Note: Only compatible with autograd autodiff backend. Should be fixed soon.
         </div>
         <div class="one-half column">
 <pre class="table-code-block"><code class="prettyprint language-py">from pymanopt.manifolds import FixedRankEmbedded
