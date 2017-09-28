@@ -163,8 +163,8 @@ manifold = Euclidean(4, 2)</code></pre>
         <div class="one-half column">
           <strong>Symmetric matrices</strong><br />
           <code class="table-code-decl prettyprint language-py">Symmetric(n, k=1)</code><br />
-          If k = 1, this is the manifold of n x n symmetric matrices.
-          If k > 1 then this is a product of k symmetric matrices,
+          If $k = 1$, this is the manifold of $n \times n$ symmetric matrices.
+          If $k > 1$ then this is a product of $k$ symmetric matrices,
           arranged as an array of shape <code>(k, n, n)</code>.
         </div>
         <div class="one-half column">
@@ -182,11 +182,26 @@ manifold = Symmetric(3)</code></pre>
           2-norm.
         </div>
         <div class="one-half column">
-<pre class="table-code-block"><code class="prettyprint language-py">from pymanopt.manifolds import Sphere
+          <pre class="table-code-block"><code class="prettyprint language-py">from pymanopt.manifolds import Sphere
 
 # The 'usual' sphere S^2, the set of points lying
 # on the surface of a ball in 3D space:
 manifold = Sphere(3)</code></pre>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="one-half column"><strong>Complex circle</strong><br />
+          <code class="table-code-decl prettyprint language-py">ComplexCircle(n)</code><br />
+          The complex circle manifold $\{x \in \mathbb{C}^n: |x_1| = |x_2| =
+          \ldots = |x_n| = 1\}$ of all complex $n$-vectors with unit-modulus
+          entries.
+        </div>
+        <div class="one-half column">
+          <pre class="table-code-block"><code class="prettyprint language-py">from pymanopt.manifolds import ComplexCircle
+
+manifold = ComplexCircle(3)</code>
+          </pre>
         </div>
       </div>
 
@@ -196,8 +211,8 @@ manifold = Sphere(3)</code></pre>
           Manifold $\mathrm{St}(n, p)$ of n x p matrices whose columns are
           orthonormal. That is
           $\mathrm{St}(n, p):=\{X\in \mathbb{R}^{n \times p}:X^TX=I_p\}$.
-          If k > 1 then this instantiates a product $\mathrm{St}(n, p)^k$
-          of k Stiefel manifolds.
+          If $k > 1$ then this instantiates a product $\mathrm{St}(n, p)^k$
+          of $k$ Stiefel manifolds.
         </div>
         <div class="one-half column">
 <pre class="table-code-block"><code class="prettyprint language-py">from pymanopt.manifolds import Stiefel
@@ -212,13 +227,13 @@ manifold = Stiefel(3, 2)</code></pre>
         <div class="one-half column">
           <strong>Grassmann manifold</strong></br>
           <code class="table-code-decl prettyprint language-py">Grassmann(n, p, k=1)</code></br>
-          Manifold of p-dimensional subspaces of $\mathbb{R}^n$,
-          denoted $\mathrm{Gr}(n, p)$. If optional argument k > 1, instantiates
-          the product $\mathrm{Gr}(n, p)^k$ of k Grassmann manifolds.</br>
-          If k = 1 then elements (subspaces) are represented by n x p Stiefel
+          Manifold of $p$-dimensional subspaces of $\mathbb{R}^n$,
+          denoted $\mathrm{Gr}(n, p)$. If the optional argument $k > 1$, instantiates
+          the product $\mathrm{Gr}(n, p)^k$ of $k$ Grassmann manifolds.</br>
+          If $k = 1$ then elements (subspaces) are represented by $n \times p$ Stiefel
           matrices whose columns span the subspace (see above for definition).
-          If k > 1 then elements are represented by a k x n x p array
-          containing k (n x p) Stiefel matrices.
+          If $k > 1$ then elements are represented by a $k \times n \times p$ array
+          containing $k$ copies of $n \times p$ Stiefel matrices.
         </div>
         <div class="one-half column">
 <pre class="table-code-block"><code class="prettyprint language-py">from pymanopt.manifolds import Grassmann
@@ -232,7 +247,7 @@ manifold = Grassmann(3, 2)</code></pre>
         <div class="one-half column">
           <strong>Oblique manifold</strong><br />
           <code class="table-code-decl prettyprint language-py">Oblique(m, n)</code><br />
-          Manifold of m x n matrices with unit-norm columns. See
+          Manifold of $m \times n$ matrices with unit-norm columns. See
           <a href="http://www.damtp.cam.ac.uk/user/na/NA_papers/NA2006_01.pdf">
             this paper</a> for an example doing Independent Components Analysis
           by optimizing over this manifold.
@@ -249,9 +264,9 @@ manifold = Oblique(3, 2)</code></pre>
         <div class="one-half column">
           <strong>Positive-definite matrices</strong><br />
           <code class="table-code-decl prettyprint language-py">PositiveDefinite(n, k=1)</code><br />
-          If k = 1, this is the manifold of n x n positive-definite matrices.
+          If $k = 1$, this is the manifold of $n \times n$ positive-definite matrices.
           That is, symmetric matrices whose eigenvalues are all strictly positive.
-          If k > 1 then this is a product of k positive definite matrices,
+          If $k > 1$, then this is a product of $k$ positive definite matrices,
           arranged as an array of shape <code>(k, n, n)</code>. This is useful
           in the <a href="MoG.html">Mixture of Gaussians example</a>.
         </div>
@@ -267,7 +282,7 @@ manifold = PositiveDefinite(3)</code></pre>
         <div class="one-half column">
           <strong>Elliptope manifold</strong><br />
           <code class="table-code-decl prettyprint language-py">Elliptope(n, k)</code><br />
-          Manifold of n x n positive-semidefinite matrices with rank k
+          Manifold of $n \times n$ positive-semidefinite matrices with rank $k$
           and unit diagonal elements. Note, a
           <a href="https://en.wikipedia.org/wiki/Correlation_and_dependence#Correlation_matrices">
             correlation matrix</a>
@@ -289,8 +304,8 @@ manifold = Elliptope(3, 2)</code></pre>
           <strong>Fixed rank positive-semidefinite matrices</strong><br/>
           <code class="table-code-decl prettyprint language-py">PSDFixedRank(n, k)</code><br />
           <code class="table-code-decl prettyprint language-py">PSDFixedRankComplex(n, k)</code><br />
-          Manifold of real (or complex) valued n x n symmetric (or hermitian)
-          positive-semidefinite matrices of rank k.<br />
+          Manifold of real (or complex) valued $n \times n$ symmetric (or hermitian)
+          positive-semidefinite matrices of rank $k$.<br />
           See <a href="http://epubs.siam.org/doi/abs/10.1137/080731359">this
             paper</a> for details.
         </div>
@@ -310,7 +325,7 @@ manifold = PSDFixedRankComplex(3, 2)</code></pre>
         <div class="one-half column">
           <strong>Fixed rank matrices</strong><br/>
           <code class="table-code-decl prettyprint language-py">FixedRankEmbedded(m, n, k)</code><br />
-          Manifold of real valued m x n matrices of rank k.
+          Manifold of real valued $m \times n$ matrices of rank $k$.
           This follows the embedded geometry described in <a href="http://arxiv.org/abs/1209.3834">this paper</a>.<br />
           <strong>Note:</strong> this manifold is a work in progress, see <a href="https://github.com/pymanopt/pymanopt/issues/23">here</a>.
         </div>
