@@ -206,6 +206,24 @@ manifold = ComplexCircle(3)</code>
       </div>
 
       <div class="row">
+        <div class="one-half column"><strong>Rotations manifold</strong><br />
+          <code class="table-code-decl prettyprint language-py">Rotations(n, k=1)</code><br />
+          Special orthogonal group (the manifold of rotations). That is
+          $\mathrm{SO}(n) := \{X\in\mathbb{R}^{n\times n}:X^\top X=I_n, \mathrm{det}(X)=1\}$.
+          If $k>1$ then this instantiates a product $\mathrm{SO}(n)^k$ of $k$ rotations
+          manifolds.
+        </div>
+        <div class="one-half column">
+          <pre class="table-code-block"><code class="prettyprint language-py">from pymanopt.manifolds import Rotations
+
+# Manifold of 3 x 3 orthogonal matrices with
+# determinant 1.
+manifold = Rotations(3)</code>
+          </pre>
+        </div>
+      </div>
+
+      <div class="row">
         <div class="one-half column"><strong>Stiefel manifold</strong><br />
           <code class="table-code-decl prettyprint language-py">Stiefel(n, p, k=1)</code><br />
           Manifold $\mathrm{St}(n, p)$ of n x p matrices whose columns are
