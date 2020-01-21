@@ -19,9 +19,8 @@
     <!-- code-prettify -->
     <script type="text/javascript" src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=py"></script>
 
-    <!-- skeleton.css -->
-    <link rel="stylesheet" href="css/normalize.css" type="text/css" />
-    <link rel="stylesheet" href="css/skeleton.css"  type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css" integrity="sha256-2YQRJMXD7pIAPHiXr0s+vlRWA7GYJEK0ARns7k2sbHY=" crossorigin="anonymous" />
     <link rel="stylesheet" href="css/layout.css"  type="text/css" />
   </head>
 
@@ -59,7 +58,7 @@
         <a href="https://github.com/pymanopt/pymanopt">github</a>,
         <a href="https://gitter.im/pymanopt/pymanopt">gitter</a>, or via email to
         one of the <a href="https://github.com/pymanopt/pymanopt/blob/master/MAINTAINERS">maintainers</a>.</strong>
-      Please refer to the <a href="doc/">dev documentation</a> and the
+      Please refer to the <a href="docs/index.html">dev documentation</a> and the
       <a href="https://github.com/pymanopt/pymanopt/blob/master/CONTRIBUTING.md">CONTRIBUTING.md</a>
       file if you wish to extend Pymanopt's functionality and/or contribute to
       the project. Pymanopt is distributed under the open source
@@ -134,7 +133,7 @@ print(Xopt)</code></pre>
 
         If you wish to implement your own manifold for Pymanopt, you will
         need to inherit from the
-        <a href="doc/#module-pymanopt.manifolds.manifold">Manifold
+        <a href="docs/api-reference.html#pymanopt.manifolds.manifold.Manifold">Manifold
           abstract base class</a>.</p>
 
 <!-------------------------------------------------------------------------->
@@ -524,7 +523,7 @@ xoptimal, optlog = solver.solve(problem, logverbosity=2)</code></pre>
           Solvers may have individual parameters to adjust
           their behaviour. These are documented in the respective source files.
           If you wish to implement your own solver, you must inherit from the
-          <a href="doc/index.html#module-pymanopt.solvers.solver">Solver abstract
+          <a href="docs/api-reference.html#pymanopt.solvers.solver.Solver">Solver abstract
           base class</a>. The
           <a href="https://github.com/pymanopt/pymanopt/blob/master/pymanopt/solvers/steepest_descent.py">
           steepest_descent</a> solver is reasonably simple and
@@ -552,7 +551,7 @@ Xopt = solver.solve(problem)</code></pre>
           <code class="table-code-decl prettyprint language-py">SteepestDescent()</code><br />
           Classical first-order steepest descent algorithm. By default uses a back-tracking
           linesearch. To set linesearch parameters you can instantiate the
-          <a href="https://pymanopt.github.io/doc/index.html#pymanopt.solvers.linesearch.LineSearchBackTracking">LineSearchBackTracking</a>
+          <a href="docs/api-reference.html#pymanopt.solvers.linesearch.LineSearchBackTracking">LineSearchBackTracking</a>
           object with your desired parameters and pass it to the
           SteepestDescent solver using the optional <code>linesearch</code> parameter:
           <code class="prettify language-py">SteepestDescent(linesearch=LinesearchObject)</code>.
@@ -574,7 +573,7 @@ Xopt = solver.solve(problem)</code></pre>
           Classical first-order conjugate gradient descent algorithm.
           By default uses an adaptive linesearch. To set linesearch parameters
           you can instantiate the
-          <a href="https://pymanopt.github.io/doc/index.html#pymanopt.solvers.linesearch.LineSearchAdaptive">LineSearchAdaptive</a>
+          <a href="docs/api-reference.html#pymanopt.solvers.linesearch.LineSearchAdaptive">LineSearchAdaptive</a>
           object with your desired parameters and pass it to the
           Conjugate gradient solver using the optional <code>linesearch</code> parameter:
           <code class="language-py">ConjugateGradient(linesearch=LinesearchObject)</code>.

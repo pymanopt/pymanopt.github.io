@@ -1,0 +1,303 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pymanopt.tools.autodiff._theano &mdash; Pymanopt dev documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> Pymanopt
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                dev
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api-reference.html">API Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Pymanopt</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>pymanopt.tools.autodiff._theano</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pymanopt.tools.autodiff._theano</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Module containing functions to compile and differentiate Theano graphs. Part of</span>
+<span class="sd">the pymanopt package.</span>
+
+<span class="sd">Jamie Townsend December 2014</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">theano</span>
+    <span class="kn">import</span> <span class="nn">theano.tensor</span> <span class="k">as</span> <span class="nn">T</span>
+    <span class="kn">from</span> <span class="nn">theano.gradient</span> <span class="kn">import</span> <span class="n">disconnected_grad</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="n">theano</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">T</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="kn">from</span> <span class="nn">._backend</span> <span class="kn">import</span> <span class="n">Backend</span><span class="p">,</span> <span class="n">assert_backend_available</span>
+
+
+<div class="viewcode-block" id="TheanoBackend"><a class="viewcode-back" href="../../../../api-reference.html#pymanopt.tools.autodiff.TheanoBackend">[docs]</a><span class="k">class</span> <span class="nc">TheanoBackend</span><span class="p">(</span><span class="n">Backend</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;theano&quot;</span>
+
+<div class="viewcode-block" id="TheanoBackend.is_available"><a class="viewcode-back" href="../../../../api-reference.html#pymanopt.tools.autodiff.TheanoBackend.is_available">[docs]</a>    <span class="k">def</span> <span class="nf">is_available</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">theano</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">T</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="TheanoBackend.is_compatible"><a class="viewcode-back" href="../../../../api-reference.html#pymanopt.tools.autodiff.TheanoBackend.is_compatible">[docs]</a>    <span class="nd">@assert_backend_available</span>
+    <span class="k">def</span> <span class="nf">is_compatible</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">objective</span><span class="p">,</span> <span class="n">argument</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">objective</span><span class="p">,</span> <span class="n">T</span><span class="o">.</span><span class="n">TensorVariable</span><span class="p">):</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">argument</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="ow">not</span>
+                <span class="nb">isinstance</span><span class="p">(</span><span class="n">argument</span><span class="p">,</span> <span class="n">T</span><span class="o">.</span><span class="n">TensorVariable</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span>
+                <span class="nb">all</span><span class="p">([</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">T</span><span class="o">.</span><span class="n">TensorVariable</span><span class="p">)</span>
+                     <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">argument</span><span class="p">])):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">&quot;Theano backend requires an argument (or sequence of &quot;</span>
+                    <span class="s2">&quot;arguments) with respect to which compilation is to be &quot;</span>
+                    <span class="s2">&quot;carried out&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="TheanoBackend.compile_function"><a class="viewcode-back" href="../../../../api-reference.html#pymanopt.tools.autodiff.TheanoBackend.compile_function">[docs]</a>    <span class="nd">@assert_backend_available</span>
+    <span class="k">def</span> <span class="nf">compile_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">objective</span><span class="p">,</span> <span class="n">argument</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wrapper for the theano.function(). Compiles a theano graph into a</span>
+<span class="sd">        python function.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">theano</span><span class="o">.</span><span class="n">function</span><span class="p">([</span><span class="n">argument</span><span class="p">],</span> <span class="n">objective</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+            <span class="c1"># Assume we are on a product manifold</span>
+            <span class="n">compiled</span> <span class="o">=</span> <span class="n">theano</span><span class="o">.</span><span class="n">function</span><span class="p">([</span><span class="n">arg</span> <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">argument</span><span class="p">],</span> <span class="n">objective</span><span class="p">)</span>
+            <span class="k">return</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">compiled</span><span class="p">(</span><span class="o">*</span><span class="n">x</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TheanoBackend.compute_gradient"><a class="viewcode-back" href="../../../../api-reference.html#pymanopt.tools.autodiff.TheanoBackend.compute_gradient">[docs]</a>    <span class="nd">@assert_backend_available</span>
+    <span class="k">def</span> <span class="nf">compute_gradient</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">objective</span><span class="p">,</span> <span class="n">argument</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wrapper for theano.tensor.grad(). Computes the gradient of &#39;objective&#39;</span>
+<span class="sd">        with respect to &#39;argument&#39; and returns compiled version.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">g</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">objective</span><span class="p">,</span> <span class="n">argument</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">compile_function</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">argument</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TheanoBackend.compute_hessian"><a class="viewcode-back" href="../../../../api-reference.html#pymanopt.tools.autodiff.TheanoBackend.compute_hessian">[docs]</a>    <span class="nd">@assert_backend_available</span>
+    <span class="k">def</span> <span class="nf">compute_hessian</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">objective</span><span class="p">,</span> <span class="n">argument</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Computes the directional derivative of the gradient (which is equal to</span>
+<span class="sd">        the Hessian multiplied by direction).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">g</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">objective</span><span class="p">,</span> <span class="n">argument</span><span class="p">)</span>
+
+        <span class="c1"># Create a new tensor A, which has the same type (i.e. same</span>
+        <span class="c1"># dimensionality) as argument.</span>
+        <span class="n">is_product_manifold</span> <span class="o">=</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">argument</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_product_manifold</span><span class="p">:</span>
+            <span class="n">A</span> <span class="o">=</span> <span class="n">argument</span><span class="o">.</span><span class="n">type</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">A</span> <span class="o">=</span> <span class="p">[</span><span class="n">arg</span><span class="o">.</span><span class="n">type</span><span class="p">()</span> <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">argument</span><span class="p">]</span>
+
+        <span class="c1"># First attempt efficient &#39;R-op&#39;, this directly calculates the</span>
+        <span class="c1"># directional derivative of the gradient.</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">R</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">Rop</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">argument</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">NotImplementedError</span><span class="p">:</span>
+            <span class="c1"># Implementation based on</span>
+            <span class="c1"># tensorflow.python.ops.gradients_impl._hessian_vector_product</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">is_product_manifold</span><span class="p">:</span>
+                <span class="n">proj</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">g</span> <span class="o">*</span> <span class="n">disconnected_grad</span><span class="p">(</span><span class="n">A</span><span class="p">))</span>
+                <span class="n">R</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">proj</span><span class="p">,</span> <span class="n">argument</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">proj</span> <span class="o">=</span> <span class="p">[</span><span class="n">T</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">g_elem</span> <span class="o">*</span> <span class="n">disconnected_grad</span><span class="p">(</span><span class="n">a_elem</span><span class="p">))</span>
+                        <span class="k">for</span> <span class="n">g_elem</span><span class="p">,</span> <span class="n">a_elem</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">A</span><span class="p">)]</span>
+                <span class="n">proj_grad</span> <span class="o">=</span> <span class="p">[</span><span class="n">T</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">proj_elem</span><span class="p">,</span> <span class="n">argument</span><span class="p">,</span>
+                                    <span class="n">disconnected_inputs</span><span class="o">=</span><span class="s2">&quot;ignore&quot;</span><span class="p">,</span>
+                                    <span class="n">return_disconnected</span><span class="o">=</span><span class="s2">&quot;None&quot;</span><span class="p">)</span>
+                             <span class="k">for</span> <span class="n">proj_elem</span> <span class="ow">in</span> <span class="n">proj</span><span class="p">]</span>
+                <span class="n">proj_grad_transpose</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">proj_grad</span><span class="p">))</span>
+                <span class="n">proj_grad_stack</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="n">T</span><span class="o">.</span><span class="n">stacklists</span><span class="p">([</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">row</span> <span class="k">if</span> <span class="n">c</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">])</span>
+                    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">proj_grad_transpose</span><span class="p">]</span>
+                <span class="n">R</span> <span class="o">=</span> <span class="p">[</span><span class="n">T</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">stack</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">stack</span> <span class="ow">in</span> <span class="n">proj_grad_stack</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_product_manifold</span><span class="p">:</span>
+            <span class="n">hess</span> <span class="o">=</span> <span class="n">theano</span><span class="o">.</span><span class="n">function</span><span class="p">([</span><span class="n">argument</span><span class="p">,</span> <span class="n">A</span><span class="p">],</span> <span class="n">R</span><span class="p">,</span> <span class="n">on_unused_input</span><span class="o">=</span><span class="s2">&quot;warn&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">hess_prod</span> <span class="o">=</span> <span class="n">theano</span><span class="o">.</span><span class="n">function</span><span class="p">(</span><span class="n">argument</span> <span class="o">+</span> <span class="n">A</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span>
+                                        <span class="n">on_unused_input</span><span class="o">=</span><span class="s2">&quot;warn&quot;</span><span class="p">)</span>
+
+            <span class="k">def</span> <span class="nf">hess</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">hess_prod</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">a</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">hess</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016-2020, Jamie Townsend, Niklas Koep, Sebastian Weichwald
+      <span class="lastupdated">
+        Last updated on Jan 21, 2020.
+      </span>
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
