@@ -148,16 +148,11 @@
            <div itemprop="articleBody">
             
   <h1>Source code for pymanopt.manifolds.grassmann</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
-
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">numpy.linalg</span> <span class="kn">import</span> <span class="n">svd</span>
 
 <span class="kn">from</span> <span class="nn">pymanopt.tools.multi</span> <span class="kn">import</span> <span class="n">multiprod</span><span class="p">,</span> <span class="n">multitransp</span>
 <span class="kn">from</span> <span class="nn">pymanopt.manifolds.manifold</span> <span class="kn">import</span> <span class="n">Manifold</span>
-
-<span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">__builtins__</span><span class="p">,</span> <span class="s2">&quot;xrange&quot;</span><span class="p">):</span>
-    <span class="n">xrange</span> <span class="o">=</span> <span class="nb">range</span>
 
 
 <div class="viewcode-block" id="Grassmann"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.grassmann.Grassmann">[docs]</a><span class="k">class</span> <span class="nc">Grassmann</span><span class="p">(</span><span class="n">Manifold</span><span class="p">):</span>
@@ -263,7 +258,7 @@
             <span class="k">return</span> <span class="n">q</span>
 
         <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_k</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">))</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">xrange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_k</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_k</span><span class="p">):</span>
             <span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">qr</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">X</span></div>
 
@@ -320,7 +315,7 @@
     <p>
         &copy; Copyright 2016-2020, Jamie Townsend, Niklas Koep, Sebastian Weichwald
       <span class="lastupdated">
-        Last updated on Jan 23, 2020.
+        Last updated on Jan 24, 2020.
       </span>
 
     </p>
