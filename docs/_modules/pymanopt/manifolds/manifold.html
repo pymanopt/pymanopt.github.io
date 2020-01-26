@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pymanopt.manifolds.manifold &mdash; Pymanopt dev documentation</title>
+  <title>pymanopt.manifolds.manifold &mdash; Pymanopt latest documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                dev
+                latest
               </div>
             
           
@@ -149,11 +149,12 @@
             
   <h1>Source code for pymanopt.manifolds.manifold</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">abc</span>
+<span class="kn">import</span> <span class="nn">functools</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 
-<div class="viewcode-block" id="Manifold"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.manifold.Manifold">[docs]</a><span class="k">class</span> <span class="nc">Manifold</span><span class="p">:</span>
+<div class="viewcode-block" id="Manifold"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.manifold.Manifold">[docs]</a><span class="k">class</span> <span class="nc">Manifold</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">abc</span><span class="o">.</span><span class="n">ABCMeta</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Abstract base class setting out a template for manifold classes. If you</span>
 <span class="sd">    would like to extend Pymanopt with a new manifold, then your manifold</span>
@@ -174,119 +175,172 @@
 <span class="sd">    methods in this class have equivalents in Manopt with the same name).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">__metaclass__</span> <span class="o">=</span> <span class="n">abc</span><span class="o">.</span><span class="n">ABCMeta</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">dimension</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dimension</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">)),</span> \
+                <span class="s2">&quot;dimension must be an integer&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dimension</span> <span class="o">=</span> <span class="n">dimension</span>
 
-    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Name of the manifold</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Returns a string representation of the particular manifold.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span>
 
-    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractproperty</span>
+    <span class="k">def</span> <span class="nf">_get_class_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+
+    <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">dim</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Dimension of the manifold</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;The dimension of the manifold&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dimension</span>
 
-    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractproperty</span>
+    <span class="c1"># Manifold properties that subclasses can define</span>
+
+    <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">typicaldist</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns the &quot;scale&quot; of the manifold. This is used by the</span>
-<span class="sd">        trust-regions solver, to determine default initial and maximal</span>
+        <span class="sd">&quot;&quot;&quot;Returns the &quot;scale&quot; of the manifold. This is used by the</span>
+<span class="sd">        trust-regions solver to determine default initial and maximal</span>
 <span class="sd">        trust-region radii.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+            <span class="s2">&quot;Manifold class &#39;</span><span class="si">{:s}</span><span class="s2">&#39; does not provide a &#39;typicaldist&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_get_class_name</span><span class="p">()))</span>
+
+    <span class="c1"># Abstract methods that subclasses must implement</span>
 
 <div class="viewcode-block" id="Manifold.dist"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.manifold.Manifold.dist">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
     <span class="k">def</span> <span class="nf">dist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Geodesic distance on the manifold</span>
-<span class="sd">        &quot;&quot;&quot;</span></div>
+        <span class="sd">&quot;&quot;&quot;Returns the geodesic distance between two points `X` and `Y` on the</span>
+<span class="sd">        manifold.&quot;&quot;&quot;</span></div>
 
 <div class="viewcode-block" id="Manifold.inner"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.manifold.Manifold.inner">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
     <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">H</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Inner product (Riemannian metric) on the tangent space</span>
+        <span class="sd">&quot;&quot;&quot;Returns the inner product (i.e., the Riemannian metric) between two</span>
+<span class="sd">        tangent vectors `G` and `H` in the tangent space at `X`.</span>
 <span class="sd">        &quot;&quot;&quot;</span></div>
 
 <div class="viewcode-block" id="Manifold.proj"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.manifold.Manifold.proj">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
     <span class="k">def</span> <span class="nf">proj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">G</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Project into the tangent space. Usually the same as egrad2rgrad</span>
-<span class="sd">        &quot;&quot;&quot;</span></div>
-
-<div class="viewcode-block" id="Manifold.egrad2rgrad"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.manifold.Manifold.egrad2rgrad">[docs]</a>    <span class="k">def</span> <span class="nf">egrad2rgrad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">G</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        A mapping from the Euclidean gradient G into the tangent space</span>
-<span class="sd">        to the manifold at X. For embedded manifolds, this is simply the</span>
-<span class="sd">        projection of G on the tangent space at X.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">proj</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">G</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Manifold.ehess2rhess"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.manifold.Manifold.ehess2rhess">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
-    <span class="k">def</span> <span class="nf">ehess2rhess</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Hess</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Convert Euclidean into Riemannian Hessian.</span>
-<span class="sd">        &quot;&quot;&quot;</span></div>
-
-<div class="viewcode-block" id="Manifold.retr"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.manifold.Manifold.retr">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
-    <span class="k">def</span> <span class="nf">retr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">G</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        A retraction mapping from the tangent space at X to the manifold.</span>
-<span class="sd">        See Absil for definition of retraction.</span>
+        <span class="sd">&quot;&quot;&quot;Projects a vector `G` in the ambient space on the tangent space at</span>
+<span class="sd">        `X`.</span>
 <span class="sd">        &quot;&quot;&quot;</span></div>
 
 <div class="viewcode-block" id="Manifold.norm"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.manifold.Manifold.norm">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
     <span class="k">def</span> <span class="nf">norm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">G</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Compute the norm of a tangent vector G, which is tangent to the</span>
-<span class="sd">        manifold at X.</span>
+        <span class="sd">&quot;&quot;&quot;Computes the norm of a tangent vector `G` in the tangent space at</span>
+<span class="sd">        `X`.</span>
 <span class="sd">        &quot;&quot;&quot;</span></div>
 
 <div class="viewcode-block" id="Manifold.rand"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.manifold.Manifold.rand">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
     <span class="k">def</span> <span class="nf">rand</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        A function which returns a random point on the manifold.</span>
-<span class="sd">        &quot;&quot;&quot;</span></div>
+        <span class="sd">&quot;&quot;&quot;Returns a random point on the manifold.&quot;&quot;&quot;</span></div>
 
 <div class="viewcode-block" id="Manifold.randvec"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.manifold.Manifold.randvec">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
     <span class="k">def</span> <span class="nf">randvec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns a random, unit norm vector in the tangent space at X.</span>
+        <span class="sd">&quot;&quot;&quot;Returns a random vector in the tangent space at `X`. This does not</span>
+<span class="sd">        follow a specific distribution.</span>
 <span class="sd">        &quot;&quot;&quot;</span></div>
 
-<div class="viewcode-block" id="Manifold.transp"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.manifold.Manifold.transp">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
-    <span class="k">def</span> <span class="nf">transp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Transports d, which is a tangent vector at x1, into the tangent</span>
-<span class="sd">        space at x2.</span>
-<span class="sd">        &quot;&quot;&quot;</span></div>
+<div class="viewcode-block" id="Manifold.zerovec"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.manifold.Manifold.zerovec">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">zerovec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns the zero vector in the tangent space at X.&quot;&quot;&quot;</span></div>
 
-<div class="viewcode-block" id="Manifold.exp"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.manifold.Manifold.exp">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
-    <span class="k">def</span> <span class="nf">exp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">U</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The exponential (in the sense of Lie group theory) of a tangent</span>
-<span class="sd">        vector U at X.</span>
-<span class="sd">        &quot;&quot;&quot;</span></div>
+    <span class="c1"># Methods which are only required by certain solvers</span>
 
-<div class="viewcode-block" id="Manifold.log"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.manifold.Manifold.log">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
-    <span class="k">def</span> <span class="nf">log</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The logarithm (in the sense of Lie group theory) of Y. This is the</span>
-<span class="sd">        inverse of exp.</span>
-<span class="sd">        &quot;&quot;&quot;</span></div>
-
-<div class="viewcode-block" id="Manifold.pairmean"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.manifold.Manifold.pairmean">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
-    <span class="k">def</span> <span class="nf">pairmean</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Computes the intrinsic mean of X and Y, that is, a point that lies</span>
-<span class="sd">        mid-way between X and Y on the geodesic arc joining them.</span>
-<span class="sd">        &quot;&quot;&quot;</span></div>
-
-<div class="viewcode-block" id="Manifold.zerovec"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.manifold.Manifold.zerovec">[docs]</a>    <span class="k">def</span> <span class="nf">zerovec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns the zero tangent vector at X.</span>
+    <span class="k">def</span> <span class="nf">_raise_not_implemented_error</span><span class="p">(</span><span class="n">method</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Method decorator which raises a NotImplementedError with some meta</span>
+<span class="sd">        information about the manifold and method if a decorated method is</span>
+<span class="sd">        called.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">X</span><span class="p">))</span></div></div>
+        <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">method</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+                <span class="s2">&quot;Manifold class &#39;</span><span class="si">{:s}</span><span class="s2">&#39; provides no implementation for &quot;</span>
+                <span class="s2">&quot;&#39;</span><span class="si">{:s}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_class_name</span><span class="p">(),</span> <span class="n">method</span><span class="o">.</span><span class="vm">__name__</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">wrapper</span>
+
+<div class="viewcode-block" id="Manifold.egrad2rgrad"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.manifold.Manifold.egrad2rgrad">[docs]</a>    <span class="nd">@_raise_not_implemented_error</span>
+    <span class="k">def</span> <span class="nf">egrad2rgrad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">G</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Maps the Euclidean gradient `G` in the ambient space on the tangent</span>
+<span class="sd">        space of the manifold at `X`. For embedded submanifolds, this is simply</span>
+<span class="sd">        the projection of `G` on the tangent space at `X`.</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+
+<div class="viewcode-block" id="Manifold.ehess2rhess"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.manifold.Manifold.ehess2rhess">[docs]</a>    <span class="nd">@_raise_not_implemented_error</span>
+    <span class="k">def</span> <span class="nf">ehess2rhess</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">U</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Converts the Euclidean gradient `G` and Hessian `H` of a function at</span>
+<span class="sd">        a point `X` along a tangent vector `U` to the Riemannian Hessian of `X`</span>
+<span class="sd">        along `U` on the manifold.</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+
+<div class="viewcode-block" id="Manifold.retr"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.manifold.Manifold.retr">[docs]</a>    <span class="nd">@_raise_not_implemented_error</span>
+    <span class="k">def</span> <span class="nf">retr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">G</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Computes a retraction mapping a vector `G` in the tangent space at</span>
+<span class="sd">        `X` to the manifold.</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+
+<div class="viewcode-block" id="Manifold.exp"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.manifold.Manifold.exp">[docs]</a>    <span class="nd">@_raise_not_implemented_error</span>
+    <span class="k">def</span> <span class="nf">exp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">U</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Computes the Lie-theoretic exponential map of a tangent vector `U`</span>
+<span class="sd">        at `X`.</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+
+<div class="viewcode-block" id="Manifold.log"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.manifold.Manifold.log">[docs]</a>    <span class="nd">@_raise_not_implemented_error</span>
+    <span class="k">def</span> <span class="nf">log</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Computes the Lie-theoretic logarithm of `Y`. This is the inverse of</span>
+<span class="sd">        `exp`.</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+
+<div class="viewcode-block" id="Manifold.transp"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.manifold.Manifold.transp">[docs]</a>    <span class="nd">@_raise_not_implemented_error</span>
+    <span class="k">def</span> <span class="nf">transp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X1</span><span class="p">,</span> <span class="n">X2</span><span class="p">,</span> <span class="n">G</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Computes a vector transport which transports a vector `G` in the</span>
+<span class="sd">        tangent space at `X1` to the tangent space at `X2`.</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+
+<div class="viewcode-block" id="Manifold.pairmean"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.manifold.Manifold.pairmean">[docs]</a>    <span class="nd">@_raise_not_implemented_error</span>
+    <span class="k">def</span> <span class="nf">pairmean</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns the intrinsic mean of two points `X` and `Y` on the</span>
+<span class="sd">        manifold, i.e., a point that lies mid-way between `X` and `Y` on the</span>
+<span class="sd">        geodesic arc joining them.</span>
+<span class="sd">        &quot;&quot;&quot;</span></div></div>
+
+
+<div class="viewcode-block" id="EuclideanEmbeddedSubmanifold"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold">[docs]</a><span class="k">class</span> <span class="nc">EuclideanEmbeddedSubmanifold</span><span class="p">(</span><span class="n">Manifold</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">abc</span><span class="o">.</span><span class="n">ABCMeta</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A class to model embedded submanifolds of a Euclidean space. It provides</span>
+<span class="sd">    a generic way to project Euclidean gradients to their Riemannian</span>
+<span class="sd">    counterparts via the `egrad2rgrad` method. Similarly, if the Weingarten map</span>
+<span class="sd">    (also known as shape operator) is provided via implementing the</span>
+<span class="sd">    &#39;weingarten&#39; method, the class provides a generic implementation of the</span>
+<span class="sd">    &#39;ehess2rhess&#39; method required by second-order solvers to translate</span>
+<span class="sd">    Euclidean Hessian-vector products to their Riemannian counterparts.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Refer to [1]_ for the exact definition of the Weingarten map.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] Absil, P-A., Robert Mahony, and Jochen Trumpf. &quot;An extrinsic look at</span>
+<span class="sd">       the Riemannian Hessian.&quot; International Conference on Geometric Science</span>
+<span class="sd">       of Information. Springer, Berlin, Heidelberg, 2013.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="EuclideanEmbeddedSubmanifold.egrad2rgrad"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold.egrad2rgrad">[docs]</a>    <span class="k">def</span> <span class="nf">egrad2rgrad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">G</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">proj</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">G</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="EuclideanEmbeddedSubmanifold.ehess2rhess"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold.ehess2rhess">[docs]</a>    <span class="k">def</span> <span class="nf">ehess2rhess</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">U</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Converts the Euclidean gradient `G` and Hessian `H` of a function at</span>
+<span class="sd">        a point `X` along a tangent vector `U` to the Riemannian Hessian of `X`</span>
+<span class="sd">        along `U` on the manifold. This uses the Weingarten map</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">normal_gradient</span> <span class="o">=</span> <span class="n">G</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">proj</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">G</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">proj</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">H</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">weingarten</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">U</span><span class="p">,</span> <span class="n">normal_gradient</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="EuclideanEmbeddedSubmanifold.weingarten"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold.weingarten">[docs]</a>    <span class="nd">@Manifold</span><span class="o">.</span><span class="n">_raise_not_implemented_error</span>
+    <span class="k">def</span> <span class="nf">weingarten</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">U</span><span class="p">,</span> <span class="n">V</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Evaluates the Weingarten map of the manifold. This map takes a</span>
+<span class="sd">        vector `U` in the tangent space at `X` and a vector `V` in the</span>
+<span class="sd">        normal space at `X` to produce another tangent vector.</span>
+<span class="sd">        &quot;&quot;&quot;</span></div></div>
 </pre></div>
 
            </div>
@@ -301,7 +355,7 @@
     <p>
         &copy; Copyright 2016-2020, Jamie Townsend, Niklas Koep, Sebastian Weichwald
       <span class="lastupdated">
-        Last updated on Jan 25, 2020.
+        Last updated on Jan 26, 2020.
       </span>
 
     </p>

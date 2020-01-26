@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pymanopt.manifolds.product &mdash; Pymanopt dev documentation</title>
+  <title>pymanopt.manifolds.product &mdash; Pymanopt latest documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                dev
+                latest
               </div>
             
           
@@ -155,24 +155,19 @@
 
 
 <div class="viewcode-block" id="Product"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.product.Product">[docs]</a><span class="k">class</span> <span class="nc">Product</span><span class="p">(</span><span class="n">Manifold</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Product manifold, i.e. the cartesian product of multiple manifolds.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Product manifold, i.e., the cartesian product of multiple manifolds.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">manifolds</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_manifolds</span> <span class="o">=</span> <span class="n">manifolds</span>
-
-    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">(</span><span class="s2">&quot;Product manifold: </span><span class="si">{:s}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;Product manifold: </span><span class="si">{:s}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                 <span class="s2">&quot; X &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">man</span><span class="p">)</span> <span class="k">for</span> <span class="n">man</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_manifolds</span><span class="p">])))</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">dim</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">([</span><span class="n">man</span><span class="o">.</span><span class="n">dim</span> <span class="k">for</span> <span class="n">man</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_manifolds</span><span class="p">])</span>
+        <span class="n">dimension</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">([</span><span class="n">man</span><span class="o">.</span><span class="n">dim</span> <span class="k">for</span> <span class="n">man</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_manifolds</span><span class="p">])</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">dimension</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">typicaldist</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">([</span><span class="n">man</span><span class="o">.</span><span class="n">typicaldist</span><span class="o">**</span><span class="mi">2</span> <span class="k">for</span> <span class="n">man</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_manifolds</span><span class="p">]))</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">([</span><span class="n">man</span><span class="o">.</span><span class="n">typicaldist</span> <span class="o">**</span> <span class="mi">2</span>
+                               <span class="k">for</span> <span class="n">man</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_manifolds</span><span class="p">]))</span>
 
 <div class="viewcode-block" id="Product.inner"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.product.Product.inner">[docs]</a>    <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">H</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">([</span><span class="n">man</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">G</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">H</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
@@ -182,7 +177,7 @@
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">G</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="Product.dist"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.product.Product.dist">[docs]</a>    <span class="k">def</span> <span class="nf">dist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">([</span><span class="n">man</span><span class="o">.</span><span class="n">dist</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">Y</span><span class="p">[</span><span class="n">k</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">([</span><span class="n">man</span><span class="o">.</span><span class="n">dist</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">Y</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span>
                                <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">man</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_manifolds</span><span class="p">)]))</span></div>
 
 <div class="viewcode-block" id="Product.proj"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.product.Product.proj">[docs]</a>    <span class="k">def</span> <span class="nf">proj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">U</span><span class="p">):</span>
@@ -234,8 +229,7 @@
 
 <span class="k">class</span> <span class="nc">_ProductTangentVector</span><span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">ndarraySequenceMixin</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">repr_</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">_ProductTangentVector</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">()</span>
-        <span class="k">return</span> <span class="s2">&quot;_ProductTangentVector: &quot;</span> <span class="o">+</span> <span class="n">repr_</span>
+        <span class="k">return</span> <span class="s2">&quot;_ProductTangentVector: &quot;</span> <span class="o">+</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
@@ -271,7 +265,7 @@
     <p>
         &copy; Copyright 2016-2020, Jamie Townsend, Niklas Koep, Sebastian Weichwald
       <span class="lastupdated">
-        Last updated on Jan 25, 2020.
+        Last updated on Jan 26, 2020.
       </span>
 
     </p>
