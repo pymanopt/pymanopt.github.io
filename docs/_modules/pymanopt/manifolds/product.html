@@ -157,6 +157,7 @@
 <div class="viewcode-block" id="Product"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.product.Product">[docs]</a><span class="k">class</span> <span class="nc">Product</span><span class="p">(</span><span class="n">Manifold</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Product manifold, i.e., the cartesian product of multiple manifolds.&quot;&quot;&quot;</span>
 
+    <span class="c1"># TODO: Change the argument to *manifold so we can do Product(man1, man2).</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">manifolds</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_manifolds</span> <span class="o">=</span> <span class="n">manifolds</span>
         <span class="n">name</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;Product manifold: </span><span class="si">{:s}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
@@ -265,7 +266,7 @@
     <p>
         &copy; Copyright 2016-2020, Jamie Townsend, Niklas Koep, Sebastian Weichwald
       <span class="lastupdated">
-        Last updated on Jan 26, 2020.
+        Last updated on Jan 30, 2020.
       </span>
 
     </p>

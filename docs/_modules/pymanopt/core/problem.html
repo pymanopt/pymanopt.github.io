@@ -153,9 +153,6 @@
 <span class="sd">object to feed to one of the solvers.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">pymanopt.tools.autodiff</span> <span class="kn">import</span> <span class="p">(</span><span class="n">AutogradBackend</span><span class="p">,</span> <span class="n">TheanoBackend</span><span class="p">,</span>
-                                     <span class="n">TensorflowBackend</span><span class="p">)</span>
-
 
 <div class="viewcode-block" id="Problem"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.core.problem.Problem">[docs]</a><span class="k">class</span> <span class="nc">Problem</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -189,28 +186,21 @@
 <span class="sd">            The &#39;Euclidean Hessian&#39;, ehess(x, a) should return the</span>
 <span class="sd">            directional derivative of egrad at x in direction a. This</span>
 <span class="sd">            need not lie in the tangent space.</span>
-<span class="sd">        - arg</span>
-<span class="sd">            A symbolic (tensor) variable with respect to which you would like</span>
-<span class="sd">            to optimize. Its type (together with the type of the cost argument)</span>
-<span class="sd">            defines the autodiff backend used.</span>
 <span class="sd">        - verbosity (2)</span>
 <span class="sd">            Level of information printed by the solver while it operates, 0</span>
 <span class="sd">            is silent, 2 is most information.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">manifold</span><span class="p">,</span> <span class="n">cost</span><span class="p">,</span> <span class="n">egrad</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ehess</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">grad</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">hess</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">arg</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">precon</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+                 <span class="n">hess</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">precon</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">manifold</span> <span class="o">=</span> <span class="n">manifold</span>
-        <span class="c1"># We keep a reference to the original cost function in case we want to</span>
-        <span class="c1"># call the `prepare` method twice (for instance, after switching from</span>
-        <span class="c1"># a first- to second-order method).</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cost</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_original_cost</span> <span class="o">=</span> <span class="n">cost</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_egrad</span> <span class="o">=</span> <span class="n">egrad</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">cost</span> <span class="o">=</span> <span class="n">cost</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">_ehess</span> <span class="o">=</span> <span class="n">ehess</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_egrad</span> <span class="o">=</span> <span class="n">egrad</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">_grad</span> <span class="o">=</span> <span class="n">grad</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_hess</span> <span class="o">=</span> <span class="n">hess</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_arg</span> <span class="o">=</span> <span class="n">arg</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="k">if</span> <span class="n">precon</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">def</span> <span class="nf">precon</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
@@ -219,60 +209,15 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">=</span> <span class="n">verbosity</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_backends</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
-            <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">b</span><span class="p">:</span> <span class="n">b</span><span class="o">.</span><span class="n">is_available</span><span class="p">(),</span> <span class="p">[</span>
-                <span class="n">TheanoBackend</span><span class="p">(),</span>
-                <span class="n">AutogradBackend</span><span class="p">(),</span>
-                <span class="n">TensorflowBackend</span><span class="p">()</span>
-                <span class="p">]))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span> <span class="o">=</span> <span class="kc">None</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">backend</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">backend</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backends</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">backend</span><span class="o">.</span><span class="n">is_compatible</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_original_cost</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_arg</span><span class="p">):</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span> <span class="o">=</span> <span class="n">backend</span>
-                    <span class="k">break</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">backend_names</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">backend</span><span class="p">)</span> <span class="k">for</span> <span class="n">backend</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backends</span><span class="p">]</span>
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="n">backend_names</span><span class="p">)</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                    <span class="s2">&quot;Cannot determine autodiff backend from cost function of &quot;</span>
-                    <span class="s2">&quot;type `</span><span class="si">{:s}</span><span class="s2">`. Available backends are: </span><span class="si">{:s}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">_original_cost</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
-                        <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">backend_names</span><span class="p">)))</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">cost</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cost</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">callable</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_original_cost</span><span class="p">)</span> <span class="ow">and</span>
-                <span class="ow">not</span> <span class="n">AutogradBackend</span><span class="p">()</span><span class="o">.</span><span class="n">is_available</span><span class="p">()):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_cost</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_original_cost</span>
-
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cost</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Compiling cost function...&quot;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_cost</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">compile_function</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_original_cost</span><span class="p">,</span>
-                                                       <span class="bp">self</span><span class="o">.</span><span class="n">_arg</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cost</span>
-
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">egrad</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_egrad</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Computing gradient of cost function...&quot;</span><span class="p">)</span>
-            <span class="n">egrad</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">compute_gradient</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_original_cost</span><span class="p">,</span>
-                                                  <span class="bp">self</span><span class="o">.</span><span class="n">_arg</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_egrad</span> <span class="o">=</span> <span class="n">egrad</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_egrad</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cost</span><span class="o">.</span><span class="n">compute_gradient</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_egrad</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">grad</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_grad</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="c1"># Explicit access forces computation/compilation if necessary.</span>
             <span class="n">egrad</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">egrad</span>
 
             <span class="k">def</span> <span class="nf">grad</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
@@ -283,17 +228,12 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">ehess</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ehess</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Computing Hessian of cost function...&quot;</span><span class="p">)</span>
-            <span class="n">ehess</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">compute_hessian</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_original_cost</span><span class="p">,</span>
-                                                 <span class="bp">self</span><span class="o">.</span><span class="n">_arg</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_ehess</span> <span class="o">=</span> <span class="n">ehess</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_ehess</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cost</span><span class="o">.</span><span class="n">compute_hessian</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ehess</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">hess</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hess</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="c1"># Explicit access forces computation if necessary.</span>
             <span class="n">ehess</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ehess</span>
 
             <span class="k">def</span> <span class="nf">hess</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
@@ -315,7 +255,7 @@
     <p>
         &copy; Copyright 2016-2020, Jamie Townsend, Niklas Koep, Sebastian Weichwald
       <span class="lastupdated">
-        Last updated on Jan 26, 2020.
+        Last updated on Jan 30, 2020.
       </span>
 
     </p>
