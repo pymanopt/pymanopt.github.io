@@ -151,8 +151,7 @@
 <span></span><span class="kn">import</span> <span class="nn">warnings</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">numpy.linalg</span> <span class="k">as</span> <span class="nn">la</span>
-<span class="kn">import</span> <span class="nn">numpy.random</span> <span class="k">as</span> <span class="nn">rnd</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">linalg</span> <span class="k">as</span> <span class="n">la</span><span class="p">,</span> <span class="n">random</span> <span class="k">as</span> <span class="n">rnd</span>
 <span class="kn">from</span> <span class="nn">scipy.linalg</span> <span class="kn">import</span> <span class="n">expm</span>
 <span class="c1"># Workaround for SciPy bug: https://github.com/scipy/scipy/pull/8082</span>
 <span class="k">try</span><span class="p">:</span>
@@ -161,7 +160,7 @@
     <span class="kn">from</span> <span class="nn">scipy.linalg</span> <span class="kn">import</span> <span class="n">solve_lyapunov</span> <span class="k">as</span> <span class="n">lyap</span>
 
 <span class="kn">from</span> <span class="nn">pymanopt.manifolds.manifold</span> <span class="kn">import</span> <span class="n">EuclideanEmbeddedSubmanifold</span><span class="p">,</span> <span class="n">Manifold</span>
-<span class="kn">from</span> <span class="nn">pymanopt.tools.multi</span> <span class="kn">import</span> <span class="n">multiprod</span><span class="p">,</span> <span class="n">multitransp</span><span class="p">,</span> <span class="n">multisym</span><span class="p">,</span> <span class="n">multilog</span>
+<span class="kn">from</span> <span class="nn">pymanopt.tools.multi</span> <span class="kn">import</span> <span class="n">multilog</span><span class="p">,</span> <span class="n">multiprod</span><span class="p">,</span> <span class="n">multisym</span><span class="p">,</span> <span class="n">multitransp</span>
 
 
 <span class="k">class</span> <span class="nc">_RetrAsExpMixin</span><span class="p">:</span>
