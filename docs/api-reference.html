@@ -245,6 +245,11 @@ is silent, 2 is most information.</p>
 </dd>
 </dl>
 <dl class="method">
+<dt id="pymanopt.core.problem.Problem.cost">
+<em class="property">property </em><code class="sig-name descname">cost</code><a class="headerlink" href="#pymanopt.core.problem.Problem.cost" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="pymanopt.core.problem.Problem.egrad">
 <em class="property">property </em><code class="sig-name descname">egrad</code><a class="headerlink" href="#pymanopt.core.problem.Problem.egrad" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -273,7 +278,7 @@ is silent, 2 is most information.</p>
 <span id="manifold"></span><h3>Manifold<a class="headerlink" href="#module-pymanopt.manifolds.manifold" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
 <dt id="pymanopt.manifolds.manifold.Manifold">
-<em class="property">class </em><code class="sig-prename descclassname">pymanopt.manifolds.manifold.</code><code class="sig-name descname">Manifold</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">dimension</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/manifold.html#Manifold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymanopt.manifolds.manifold.Manifold" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">pymanopt.manifolds.manifold.</code><code class="sig-name descname">Manifold</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">dimension</em>, <em class="sig-param">point_layout=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/manifold.html#Manifold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymanopt.manifolds.manifold.Manifold" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Abstract base class setting out a template for manifold classes. If you
 would like to extend Pymanopt with a new manifold, then your manifold
@@ -294,6 +299,16 @@ methods in this class have equivalents in Manopt with the same name).</p>
 <dt id="pymanopt.manifolds.manifold.Manifold.dim">
 <em class="property">property </em><code class="sig-name descname">dim</code><a class="headerlink" href="#pymanopt.manifolds.manifold.Manifold.dim" title="Permalink to this definition">¶</a></dt>
 <dd><p>The dimension of the manifold</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.manifold.Manifold.point_layout">
+<em class="property">property </em><code class="sig-name descname">point_layout</code><a class="headerlink" href="#pymanopt.manifolds.manifold.Manifold.point_layout" title="Permalink to this definition">¶</a></dt>
+<dd><p>The number of elements a point on a manifold consists of.</p>
+<p>For most manifolds, which represent points as (potentially
+multi-dimensional) arrays, this will be 1, but other manifolds might
+represent points as tuples or lists of arrays. In this case,
+<cite>point_layout</cite> describes how many elements such tuples/lists contain.</p>
 </dd></dl>
 
 <dl class="method">
@@ -407,7 +422,7 @@ geodesic arc joining them.</p>
 
 <dl class="class">
 <dt id="pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold">
-<em class="property">class </em><code class="sig-prename descclassname">pymanopt.manifolds.manifold.</code><code class="sig-name descname">EuclideanEmbeddedSubmanifold</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">dimension</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/manifold.html#EuclideanEmbeddedSubmanifold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">pymanopt.manifolds.manifold.</code><code class="sig-name descname">EuclideanEmbeddedSubmanifold</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">dimension</em>, <em class="sig-param">point_layout=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/manifold.html#EuclideanEmbeddedSubmanifold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pymanopt.manifolds.manifold.Manifold" title="pymanopt.manifolds.manifold.Manifold"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.manifolds.manifold.Manifold</span></code></a></p>
 <p>A class to model embedded submanifolds of a Euclidean space. It provides
 a generic way to project Euclidean gradients to their Riemannian

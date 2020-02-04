@@ -157,13 +157,24 @@
 <div class="viewcode-block" id="Product"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.product.Product">[docs]</a><span class="k">class</span> <span class="nc">Product</span><span class="p">(</span><span class="n">Manifold</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Product manifold, i.e., the cartesian product of multiple manifolds.&quot;&quot;&quot;</span>
 
-    <span class="c1"># TODO: Change the argument to *manifold so we can do Product(man1, man2).</span>
+    <span class="c1"># TODO(nkoep): Change the argument to *manifold so we can do Product(man1,</span>
+    <span class="c1">#              man2).</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">manifolds</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_manifolds</span> <span class="o">=</span> <span class="n">manifolds</span>
+        <span class="k">for</span> <span class="n">manifold</span> <span class="ow">in</span> <span class="n">manifolds</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">manifold</span><span class="p">,</span> <span class="n">Product</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Nested product manifolds are not supported&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_manifolds</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">manifolds</span><span class="p">)</span>
         <span class="n">name</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;Product manifold: </span><span class="si">{:s}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="s2">&quot; X &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">man</span><span class="p">)</span> <span class="k">for</span> <span class="n">man</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_manifolds</span><span class="p">])))</span>
-        <span class="n">dimension</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">([</span><span class="n">man</span><span class="o">.</span><span class="n">dim</span> <span class="k">for</span> <span class="n">man</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_manifolds</span><span class="p">])</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">dimension</span><span class="p">)</span>
+                <span class="s2">&quot; x &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">man</span><span class="p">)</span> <span class="k">for</span> <span class="n">man</span> <span class="ow">in</span> <span class="n">manifolds</span><span class="p">])))</span>
+        <span class="n">dimension</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">([</span><span class="n">man</span><span class="o">.</span><span class="n">dim</span> <span class="k">for</span> <span class="n">man</span> <span class="ow">in</span> <span class="n">manifolds</span><span class="p">])</span>
+        <span class="n">point_layout</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">manifold</span><span class="o">.</span><span class="n">point_layout</span> <span class="k">for</span> <span class="n">manifold</span> <span class="ow">in</span> <span class="n">manifolds</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">dimension</span><span class="p">,</span> <span class="n">point_layout</span><span class="o">=</span><span class="n">point_layout</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;manifolds&quot;</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;Cannot override &#39;manifolds&#39; attribute&quot;</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">typicaldist</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>

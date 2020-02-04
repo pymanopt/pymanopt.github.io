@@ -175,11 +175,18 @@
 <span class="sd">    methods in this class have equivalents in Manopt with the same name).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">dimension</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">dimension</span><span class="p">,</span> <span class="n">point_layout</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dimension</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">)),</span> \
-                <span class="s2">&quot;dimension must be an integer&quot;</span>
+            <span class="s2">&quot;dimension must be an integer&quot;</span>
+        <span class="k">assert</span> <span class="p">((</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">point_layout</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">and</span> <span class="n">point_layout</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span>
+                <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">point_layout</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">))</span> <span class="ow">and</span>
+                 <span class="nb">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">point_layout</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">))),</span> \
+            <span class="p">(</span><span class="s2">&quot;&#39;point_layout&#39; must be a positive integer or a sequence of &quot;</span>
+             <span class="s2">&quot;positive integers&quot;</span><span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_dimension</span> <span class="o">=</span> <span class="n">dimension</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_point_layout</span> <span class="o">=</span> <span class="n">point_layout</span>
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Returns a string representation of the particular manifold.&quot;&quot;&quot;</span>
@@ -192,6 +199,17 @@
     <span class="k">def</span> <span class="nf">dim</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;The dimension of the manifold&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dimension</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">point_layout</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The number of elements a point on a manifold consists of.</span>
+
+<span class="sd">        For most manifolds, which represent points as (potentially</span>
+<span class="sd">        multi-dimensional) arrays, this will be 1, but other manifolds might</span>
+<span class="sd">        represent points as tuples or lists of arrays. In this case,</span>
+<span class="sd">        `point_layout` describes how many elements such tuples/lists contain.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_point_layout</span>
 
     <span class="c1"># Manifold properties that subclasses can define</span>
 
