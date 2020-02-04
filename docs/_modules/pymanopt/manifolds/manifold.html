@@ -207,11 +207,6 @@
 
     <span class="c1"># Abstract methods that subclasses must implement</span>
 
-<div class="viewcode-block" id="Manifold.dist"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.manifold.Manifold.dist">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
-    <span class="k">def</span> <span class="nf">dist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returns the geodesic distance between two points `X` and `Y` on the</span>
-<span class="sd">        manifold.&quot;&quot;&quot;</span></div>
-
 <div class="viewcode-block" id="Manifold.inner"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.manifold.Manifold.inner">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
     <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">H</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Returns the inner product (i.e., the Riemannian metric) between two</span>
@@ -257,6 +252,11 @@
                 <span class="s2">&quot;Manifold class &#39;</span><span class="si">{:s}</span><span class="s2">&#39; provides no implementation for &quot;</span>
                 <span class="s2">&quot;&#39;</span><span class="si">{:s}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_class_name</span><span class="p">(),</span> <span class="n">method</span><span class="o">.</span><span class="vm">__name__</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">wrapper</span>
+
+<div class="viewcode-block" id="Manifold.dist"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.manifold.Manifold.dist">[docs]</a>    <span class="nd">@_raise_not_implemented_error</span>
+    <span class="k">def</span> <span class="nf">dist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns the geodesic distance between two points `X` and `Y` on the</span>
+<span class="sd">        manifold.&quot;&quot;&quot;</span></div>
 
 <div class="viewcode-block" id="Manifold.egrad2rgrad"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.manifold.Manifold.egrad2rgrad">[docs]</a>    <span class="nd">@_raise_not_implemented_error</span>
     <span class="k">def</span> <span class="nf">egrad2rgrad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">G</span><span class="p">):</span>
@@ -355,7 +355,7 @@
     <p>
         &copy; Copyright 2016-2020, Jamie Townsend, Niklas Koep, Sebastian Weichwald
       <span class="lastupdated">
-        Last updated on Jan 30, 2020.
+        Last updated on Feb 04, 2020.
       </span>
 
     </p>

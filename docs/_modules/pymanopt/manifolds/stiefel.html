@@ -193,11 +193,6 @@
         <span class="c1"># For the stiefel this is the Frobenius inner product.</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">tensordot</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">G</span><span class="o">.</span><span class="n">ndim</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Stiefel.dist"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.stiefel.Stiefel.dist">[docs]</a>    <span class="k">def</span> <span class="nf">dist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-            <span class="s2">&quot;The manifold &#39;</span><span class="si">{:s}</span><span class="s2">&#39; currently provides no implementation of &quot;</span>
-            <span class="s2">&quot;the &#39;dist&#39; method&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_class_name</span><span class="p">()))</span></div>
-
 <div class="viewcode-block" id="Stiefel.proj"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.stiefel.Stiefel.proj">[docs]</a>    <span class="k">def</span> <span class="nf">proj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">U</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">U</span> <span class="o">-</span> <span class="n">multiprod</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">multisym</span><span class="p">(</span><span class="n">multiprod</span><span class="p">(</span><span class="n">multitransp</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="n">U</span><span class="p">)))</span></div>
 
@@ -285,7 +280,7 @@
     <p>
         &copy; Copyright 2016-2020, Jamie Townsend, Niklas Koep, Sebastian Weichwald
       <span class="lastupdated">
-        Last updated on Jan 30, 2020.
+        Last updated on Feb 04, 2020.
       </span>
 
     </p>

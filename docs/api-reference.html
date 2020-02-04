@@ -305,13 +305,6 @@ trust-region radii.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="pymanopt.manifolds.manifold.Manifold.dist">
-<em class="property">abstract </em><code class="sig-name descname">dist</code><span class="sig-paren">(</span><em class="sig-param">X</em>, <em class="sig-param">Y</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/manifold.html#Manifold.dist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymanopt.manifolds.manifold.Manifold.dist" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the geodesic distance between two points <cite>X</cite> and <cite>Y</cite> on the
-manifold.</p>
-</dd></dl>
-
-<dl class="method">
 <dt id="pymanopt.manifolds.manifold.Manifold.inner">
 <em class="property">abstract </em><code class="sig-name descname">inner</code><span class="sig-paren">(</span><em class="sig-param">X</em>, <em class="sig-param">G</em>, <em class="sig-param">H</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/manifold.html#Manifold.inner"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymanopt.manifolds.manifold.Manifold.inner" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the inner product (i.e., the Riemannian metric) between two
@@ -349,6 +342,13 @@ follow a specific distribution.</p>
 <dt id="pymanopt.manifolds.manifold.Manifold.zerovec">
 <em class="property">abstract </em><code class="sig-name descname">zerovec</code><span class="sig-paren">(</span><em class="sig-param">X</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/manifold.html#Manifold.zerovec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymanopt.manifolds.manifold.Manifold.zerovec" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the zero vector in the tangent space at X.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymanopt.manifolds.manifold.Manifold.dist">
+<code class="sig-name descname">dist</code><span class="sig-paren">(</span><em class="sig-param">X</em>, <em class="sig-param">Y</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/manifold.html#Manifold.dist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymanopt.manifolds.manifold.Manifold.dist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the geodesic distance between two points <cite>X</cite> and <cite>Y</cite> on the
+manifold.</p>
 </dd></dl>
 
 <dl class="method">
@@ -1124,13 +1124,6 @@ tangent vectors <cite>G</cite> and <cite>H</cite> in the tangent space at <cite>
 </dd></dl>
 
 <dl class="method">
-<dt id="pymanopt.manifolds.psd.Elliptope.dist">
-<code class="sig-name descname">dist</code><span class="sig-paren">(</span><em class="sig-param">U</em>, <em class="sig-param">V</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/psd.html#Elliptope.dist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymanopt.manifolds.psd.Elliptope.dist" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the geodesic distance between two points <cite>X</cite> and <cite>Y</cite> on the
-manifold.</p>
-</dd></dl>
-
-<dl class="method">
 <dt id="pymanopt.manifolds.psd.Elliptope.norm">
 <code class="sig-name descname">norm</code><span class="sig-paren">(</span><em class="sig-param">Y</em>, <em class="sig-param">U</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/psd.html#Elliptope.norm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymanopt.manifolds.psd.Elliptope.norm" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes the norm of a tangent vector <cite>G</cite> in the tangent space at
@@ -1260,13 +1253,6 @@ trust-region radii.</p>
 <code class="sig-name descname">inner</code><span class="sig-paren">(</span><em class="sig-param">X</em>, <em class="sig-param">G</em>, <em class="sig-param">H</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/stiefel.html#Stiefel.inner"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymanopt.manifolds.stiefel.Stiefel.inner" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the inner product (i.e., the Riemannian metric) between two
 tangent vectors <cite>G</cite> and <cite>H</cite> in the tangent space at <cite>X</cite>.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pymanopt.manifolds.stiefel.Stiefel.dist">
-<code class="sig-name descname">dist</code><span class="sig-paren">(</span><em class="sig-param">X</em>, <em class="sig-param">Y</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/stiefel.html#Stiefel.dist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymanopt.manifolds.stiefel.Stiefel.dist" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the geodesic distance between two points <cite>X</cite> and <cite>Y</cite> on the
-manifold.</p>
 </dd></dl>
 
 <dl class="method">
@@ -1818,7 +1804,7 @@ for efficient jacobian-vector products in autograd.</p>
     <p>
         &copy; Copyright 2016-2020, Jamie Townsend, Niklas Koep, Sebastian Weichwald
       <span class="lastupdated">
-        Last updated on Jan 30, 2020.
+        Last updated on Feb 04, 2020.
       </span>
 
     </p>
