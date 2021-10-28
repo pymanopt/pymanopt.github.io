@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pymanopt.solvers.solver &mdash; Pymanopt latest documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+    <link rel="canonical" href="www.pymanopt.org/_modules/pymanopt/solvers/solver.html" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> Pymanopt
+          </a>
+              <div class="version">
+                latest
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api-reference.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Pymanopt</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      <li>pymanopt.solvers.solver</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pymanopt.solvers.solver</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">abc</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+
+<div class="viewcode-block" id="Solver"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.solvers.solver.Solver">[docs]</a><span class="k">class</span> <span class="nc">Solver</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">abc</span><span class="o">.</span><span class="n">ABCMeta</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Abstract base class setting out template for solver classes.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">maxtime</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">maxiter</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">mingradnorm</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">,</span>
+                 <span class="n">minstepsize</span><span class="o">=</span><span class="mf">1e-10</span><span class="p">,</span> <span class="n">maxcostevals</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">logverbosity</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Variable attributes (defaults in brackets):</span>
+<span class="sd">            - maxtime (1000)</span>
+<span class="sd">                Max time (in seconds) to run.</span>
+<span class="sd">            - maxiter (1000)</span>
+<span class="sd">                Max number of iterations to run.</span>
+<span class="sd">            - mingradnorm (1e-6)</span>
+<span class="sd">                Terminate if the norm of the gradient is below this.</span>
+<span class="sd">            - minstepsize (1e-10)</span>
+<span class="sd">                Terminate if linesearch returns a vector whose norm is below</span>
+<span class="sd">                this.</span>
+<span class="sd">            - maxcostevals (5000)</span>
+<span class="sd">                Maximum number of allowed cost evaluations</span>
+<span class="sd">            - logverbosity (0)</span>
+<span class="sd">                Level of information logged by the solver while it operates,</span>
+<span class="sd">                0 is silent, 2 ist most information.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_maxtime</span> <span class="o">=</span> <span class="n">maxtime</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_maxiter</span> <span class="o">=</span> <span class="n">maxiter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mingradnorm</span> <span class="o">=</span> <span class="n">mingradnorm</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_minstepsize</span> <span class="o">=</span> <span class="n">minstepsize</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_maxcostevals</span> <span class="o">=</span> <span class="n">maxcostevals</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logverbosity</span> <span class="o">=</span> <span class="n">logverbosity</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_optlog</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span>
+
+<div class="viewcode-block" id="Solver.solve"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.solvers.solver.Solver.solve">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">solve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">problem</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Solve the given :py:class:`pymanopt.core.problem.Problem` (starting</span>
+<span class="sd">        from a random initial guess if the optional argument x is not</span>
+<span class="sd">        provided).</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">pass</span></div>
+
+    <span class="k">def</span> <span class="nf">_check_stopping_criterion</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time0</span><span class="p">,</span> <span class="nb">iter</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">gradnorm</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">),</span>
+                                  <span class="n">stepsize</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">),</span> <span class="n">costevals</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">reason</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="n">time0</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_maxtime</span><span class="p">:</span>
+            <span class="n">reason</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;Terminated - max time reached after </span><span class="si">%d</span><span class="s2"> iterations.&quot;</span>
+                      <span class="o">%</span> <span class="nb">iter</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">iter</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_maxiter</span><span class="p">:</span>
+            <span class="n">reason</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;Terminated - max iterations reached after &quot;</span>
+                      <span class="s2">&quot;</span><span class="si">%.2f</span><span class="s2"> seconds.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">time0</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">gradnorm</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mingradnorm</span><span class="p">:</span>
+            <span class="n">reason</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;Terminated - min grad norm reached after </span><span class="si">%d</span><span class="s2"> &quot;</span>
+                      <span class="s2">&quot;iterations, </span><span class="si">%.2f</span><span class="s2"> seconds.&quot;</span> <span class="o">%</span> <span class="p">(</span>
+                          <span class="nb">iter</span><span class="p">,</span> <span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">time0</span><span class="p">)))</span>
+        <span class="k">elif</span> <span class="n">stepsize</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_minstepsize</span><span class="p">:</span>
+            <span class="n">reason</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;Terminated - min stepsize reached after </span><span class="si">%d</span><span class="s2"> iterations, &quot;</span>
+                      <span class="s2">&quot;</span><span class="si">%.2f</span><span class="s2"> seconds.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">iter</span><span class="p">,</span> <span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">time0</span><span class="p">)))</span>
+        <span class="k">elif</span> <span class="n">costevals</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_maxcostevals</span><span class="p">:</span>
+            <span class="n">reason</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;Terminated - max cost evals reached after &quot;</span>
+                      <span class="s2">&quot;</span><span class="si">%.2f</span><span class="s2"> seconds.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">time0</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">reason</span>
+
+    <span class="k">def</span> <span class="nf">_start_optlog</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">solverparams</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">extraiterfields</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_logverbosity</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_optlog</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_optlog</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;solver&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span>
+                            <span class="s1">&#39;stoppingcriteria&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;maxtime&#39;</span><span class="p">:</span>
+                                                 <span class="bp">self</span><span class="o">.</span><span class="n">_maxtime</span><span class="p">,</span>
+                                                 <span class="s1">&#39;maxiter&#39;</span><span class="p">:</span>
+                                                 <span class="bp">self</span><span class="o">.</span><span class="n">_maxiter</span><span class="p">,</span>
+                                                 <span class="s1">&#39;mingradnorm&#39;</span><span class="p">:</span>
+                                                 <span class="bp">self</span><span class="o">.</span><span class="n">_mingradnorm</span><span class="p">,</span>
+                                                 <span class="s1">&#39;minstepsize&#39;</span><span class="p">:</span>
+                                                 <span class="bp">self</span><span class="o">.</span><span class="n">_minstepsize</span><span class="p">,</span>
+                                                 <span class="s1">&#39;maxcostevals&#39;</span><span class="p">:</span>
+                                                 <span class="bp">self</span><span class="o">.</span><span class="n">_maxcostevals</span><span class="p">},</span>
+                            <span class="s1">&#39;solverparams&#39;</span><span class="p">:</span> <span class="n">solverparams</span>
+                            <span class="p">}</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_logverbosity</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">extraiterfields</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_optlog</span><span class="p">[</span><span class="s1">&#39;iterations&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;iteration&#39;</span><span class="p">:</span> <span class="p">[],</span>
+                                              <span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="p">[],</span>
+                                              <span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="p">[],</span>
+                                              <span class="s1">&#39;f(x)&#39;</span><span class="p">:</span> <span class="p">[]}</span>
+                <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">extraiterfields</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_optlog</span><span class="p">[</span><span class="s1">&#39;iterations&#39;</span><span class="p">][</span><span class="n">field</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="nf">_append_optlog</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iteration</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">fx</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="c1"># In case not every iteration is being logged</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_optlog</span><span class="p">[</span><span class="s1">&#39;iterations&#39;</span><span class="p">][</span><span class="s1">&#39;iteration&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">iteration</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_optlog</span><span class="p">[</span><span class="s1">&#39;iterations&#39;</span><span class="p">][</span><span class="s1">&#39;time&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_optlog</span><span class="p">[</span><span class="s1">&#39;iterations&#39;</span><span class="p">][</span><span class="s1">&#39;x&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_optlog</span><span class="p">[</span><span class="s1">&#39;iterations&#39;</span><span class="p">][</span><span class="s1">&#39;f(x)&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fx</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_optlog</span><span class="p">[</span><span class="s1">&#39;iterations&#39;</span><span class="p">][</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">kwargs</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">_stop_optlog</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">objective</span><span class="p">,</span> <span class="n">stop_reason</span><span class="p">,</span> <span class="n">time0</span><span class="p">,</span>
+                     <span class="n">stepsize</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">),</span> <span class="n">gradnorm</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">),</span>
+                     <span class="nb">iter</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">costevals</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_optlog</span><span class="p">[</span><span class="s1">&#39;stoppingreason&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">stop_reason</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_optlog</span><span class="p">[</span><span class="s1">&#39;final_values&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span>
+                                        <span class="s1">&#39;f(x)&#39;</span><span class="p">:</span> <span class="n">objective</span><span class="p">,</span>
+                                        <span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">time0</span><span class="p">}</span>
+        <span class="k">if</span> <span class="n">stepsize</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_optlog</span><span class="p">[</span><span class="s1">&#39;final_values&#39;</span><span class="p">][</span><span class="s1">&#39;stepsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">stepsize</span>
+        <span class="k">if</span> <span class="n">gradnorm</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_optlog</span><span class="p">[</span><span class="s1">&#39;final_values&#39;</span><span class="p">][</span><span class="s1">&#39;gradnorm&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">gradnorm</span>
+        <span class="k">if</span> <span class="nb">iter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_optlog</span><span class="p">[</span><span class="s1">&#39;final_values&#39;</span><span class="p">][</span><span class="s1">&#39;iterations&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">iter</span>
+        <span class="k">if</span> <span class="n">costevals</span> <span class="ow">is</span> <span class="ow">not</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_optlog</span><span class="p">[</span><span class="s1">&#39;final_values&#39;</span><span class="p">][</span><span class="s1">&#39;costevals&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">costevals</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016-2020, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
+      <span class="lastupdated">Last updated on Oct 28, 2021.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
