@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pymanopt.solvers.linesearch &mdash; Pymanopt latest documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+    <link rel="canonical" href="pymanopt.org/_modules/pymanopt/solvers/linesearch.html" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> Pymanopt
+          </a>
+              <div class="version">
+                latest
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api-reference.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Pymanopt</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      <li>pymanopt.solvers.linesearch</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pymanopt.solvers.linesearch</h1><div class="highlight"><pre>
+<div class="viewcode-block" id="LineSearchBackTracking"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.solvers.linesearch.LineSearchBackTracking">[docs]</a><span></span><span class="k">class</span> <span class="nc">LineSearchBackTracking</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Back-tracking line-search based on linesearch.m in the manopt MATLAB</span>
+<span class="sd">    package.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">contraction_factor</span><span class="o">=</span><span class="mf">.5</span><span class="p">,</span> <span class="n">optimism</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                 <span class="n">suff_decr</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span> <span class="n">maxiter</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">initial_stepsize</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">contraction_factor</span> <span class="o">=</span> <span class="n">contraction_factor</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">optimism</span> <span class="o">=</span> <span class="n">optimism</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">suff_decr</span> <span class="o">=</span> <span class="n">suff_decr</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">maxiter</span> <span class="o">=</span> <span class="n">maxiter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initial_stepsize</span> <span class="o">=</span> <span class="n">initial_stepsize</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_oldf0</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="LineSearchBackTracking.search"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.solvers.linesearch.LineSearchBackTracking.search">[docs]</a>    <span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">objective</span><span class="p">,</span> <span class="n">manifold</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">f0</span><span class="p">,</span> <span class="n">df0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Function to perform backtracking line-search.</span>
+<span class="sd">        Arguments:</span>
+<span class="sd">            - objective</span>
+<span class="sd">                objective function to optimise</span>
+<span class="sd">            - manifold</span>
+<span class="sd">                manifold to optimise over</span>
+<span class="sd">            - x</span>
+<span class="sd">                starting point on the manifold</span>
+<span class="sd">            - d</span>
+<span class="sd">                tangent vector at x (descent direction)</span>
+<span class="sd">            - df0</span>
+<span class="sd">                directional derivative at x along d</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            - stepsize</span>
+<span class="sd">                norm of the vector retracted to reach newx from x</span>
+<span class="sd">            - newx</span>
+<span class="sd">                next iterate suggested by the line-search</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Compute the norm of the search direction</span>
+        <span class="n">norm_d</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_oldf0</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># Pick initial step size based on where we were last time.</span>
+            <span class="n">alpha</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">f0</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_oldf0</span><span class="p">)</span> <span class="o">/</span> <span class="n">df0</span>
+            <span class="c1"># Look a little further</span>
+            <span class="n">alpha</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimism</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">alpha</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_stepsize</span> <span class="o">/</span> <span class="n">norm_d</span>
+        <span class="n">alpha</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">alpha</span><span class="p">)</span>
+
+        <span class="c1"># Make the chosen step and compute the cost there.</span>
+        <span class="n">newx</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">retr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">d</span><span class="p">)</span>
+        <span class="n">newf</span> <span class="o">=</span> <span class="n">objective</span><span class="p">(</span><span class="n">newx</span><span class="p">)</span>
+        <span class="n">step_count</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="c1"># Backtrack while the Armijo criterion is not satisfied</span>
+        <span class="k">while</span> <span class="p">(</span><span class="n">newf</span> <span class="o">&gt;</span> <span class="n">f0</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">suff_decr</span> <span class="o">*</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">df0</span> <span class="ow">and</span>
+               <span class="n">step_count</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxiter</span><span class="p">):</span>
+
+            <span class="c1"># Reduce the step size</span>
+            <span class="n">alpha</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">contraction_factor</span> <span class="o">*</span> <span class="n">alpha</span>
+
+            <span class="c1"># and look closer down the line</span>
+            <span class="n">newx</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">retr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">d</span><span class="p">)</span>
+            <span class="n">newf</span> <span class="o">=</span> <span class="n">objective</span><span class="p">(</span><span class="n">newx</span><span class="p">)</span>
+
+            <span class="n">step_count</span> <span class="o">=</span> <span class="n">step_count</span> <span class="o">+</span> <span class="mi">1</span>
+
+        <span class="c1"># If we got here without obtaining a decrease, we reject the step.</span>
+        <span class="k">if</span> <span class="n">newf</span> <span class="o">&gt;</span> <span class="n">f0</span><span class="p">:</span>
+            <span class="n">alpha</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">newx</span> <span class="o">=</span> <span class="n">x</span>
+
+        <span class="n">stepsize</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">norm_d</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_oldf0</span> <span class="o">=</span> <span class="n">f0</span>
+
+        <span class="k">return</span> <span class="n">stepsize</span><span class="p">,</span> <span class="n">newx</span></div></div>
+
+
+<div class="viewcode-block" id="LineSearchAdaptive"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.solvers.linesearch.LineSearchAdaptive">[docs]</a><span class="k">class</span> <span class="nc">LineSearchAdaptive</span><span class="p">:</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Adaptive line-search</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">contraction_factor</span><span class="o">=</span><span class="mf">.5</span><span class="p">,</span> <span class="n">suff_decr</span><span class="o">=</span><span class="mf">.5</span><span class="p">,</span> <span class="n">maxiter</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                 <span class="n">initial_stepsize</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_contraction_factor</span> <span class="o">=</span> <span class="n">contraction_factor</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_suff_decr</span> <span class="o">=</span> <span class="n">suff_decr</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_maxiter</span> <span class="o">=</span> <span class="n">maxiter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_initial_stepsize</span> <span class="o">=</span> <span class="n">initial_stepsize</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_oldalpha</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="LineSearchAdaptive.search"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.solvers.linesearch.LineSearchAdaptive.search">[docs]</a>    <span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">objective</span><span class="p">,</span> <span class="n">man</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">f0</span><span class="p">,</span> <span class="n">df0</span><span class="p">):</span>
+        <span class="n">norm_d</span> <span class="o">=</span> <span class="n">man</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_oldalpha</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">alpha</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_oldalpha</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">alpha</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_initial_stepsize</span> <span class="o">/</span> <span class="n">norm_d</span>
+        <span class="n">alpha</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">alpha</span><span class="p">)</span>
+
+        <span class="n">newx</span> <span class="o">=</span> <span class="n">man</span><span class="o">.</span><span class="n">retr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">d</span><span class="p">)</span>
+        <span class="n">newf</span> <span class="o">=</span> <span class="n">objective</span><span class="p">(</span><span class="n">newx</span><span class="p">)</span>
+        <span class="n">cost_evaluations</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="k">while</span> <span class="p">(</span><span class="n">newf</span> <span class="o">&gt;</span> <span class="n">f0</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_suff_decr</span> <span class="o">*</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">df0</span> <span class="ow">and</span>
+               <span class="n">cost_evaluations</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_maxiter</span><span class="p">):</span>
+            <span class="c1"># Reduce the step size.</span>
+            <span class="n">alpha</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_contraction_factor</span>
+
+            <span class="c1"># Look closer down the line.</span>
+            <span class="n">newx</span> <span class="o">=</span> <span class="n">man</span><span class="o">.</span><span class="n">retr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">d</span><span class="p">)</span>
+            <span class="n">newf</span> <span class="o">=</span> <span class="n">objective</span><span class="p">(</span><span class="n">newx</span><span class="p">)</span>
+
+            <span class="n">cost_evaluations</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="k">if</span> <span class="n">newf</span> <span class="o">&gt;</span> <span class="n">f0</span><span class="p">:</span>
+            <span class="n">alpha</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">newx</span> <span class="o">=</span> <span class="n">x</span>
+
+        <span class="n">stepsize</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">norm_d</span>
+
+        <span class="c1"># Store a suggestion for what the next initial step size trial should</span>
+        <span class="c1"># be. On average we intend to do only one extra cost evaluation. Notice</span>
+        <span class="c1"># how the suggestion is not about stepsize but about alpha. This is the</span>
+        <span class="c1"># reason why this line search is not invariant under rescaling of the</span>
+        <span class="c1"># search direction d.</span>
+
+        <span class="c1"># If things go reasonably well, try to keep pace.</span>
+        <span class="k">if</span> <span class="n">cost_evaluations</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_oldalpha</span> <span class="o">=</span> <span class="n">alpha</span>
+        <span class="c1"># If things went very well or we backtracked a lot (meaning the step</span>
+        <span class="c1"># size is probably quite small), speed up.</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_oldalpha</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">alpha</span>
+
+        <span class="k">return</span> <span class="n">stepsize</span><span class="p">,</span> <span class="n">newx</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016-2021, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
+      <span class="lastupdated">Last updated on Nov 10, 2021.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
