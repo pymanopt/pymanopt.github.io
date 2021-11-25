@@ -131,7 +131,12 @@
         <span class="k">return</span> <span class="n">la</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">logm</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="SymmetricPositiveDefinite.inner"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.psd.SymmetricPositiveDefinite.inner">[docs]</a>    <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">tensordot</span><span class="p">(</span><span class="n">la</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">u</span><span class="p">),</span> <span class="n">la</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="n">axes</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="n">ndim</span><span class="p">)</span></div>
+        <span class="n">xinvu</span> <span class="o">=</span> <span class="n">la</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">u</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">u</span> <span class="ow">is</span> <span class="n">v</span><span class="p">:</span>
+            <span class="n">xinvv</span> <span class="o">=</span> <span class="n">xinvu</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">xinvv</span> <span class="o">=</span> <span class="n">la</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">tensordot</span><span class="p">(</span><span class="n">xinvu</span><span class="p">,</span> <span class="n">multitransp</span><span class="p">(</span><span class="n">xinvv</span><span class="p">),</span> <span class="n">axes</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="n">ndim</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="SymmetricPositiveDefinite.proj"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.psd.SymmetricPositiveDefinite.proj">[docs]</a>    <span class="k">def</span> <span class="nf">proj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">G</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">multisym</span><span class="p">(</span><span class="n">G</span><span class="p">)</span></div>
@@ -146,12 +151,7 @@
                 <span class="n">multisym</span><span class="p">(</span><span class="n">multiprod</span><span class="p">(</span><span class="n">multiprod</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">multisym</span><span class="p">(</span><span class="n">egrad</span><span class="p">)),</span> <span class="n">x</span><span class="p">)))</span></div>
 
 <div class="viewcode-block" id="SymmetricPositiveDefinite.norm"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.psd.SymmetricPositiveDefinite.norm">[docs]</a>    <span class="k">def</span> <span class="nf">norm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">u</span><span class="p">):</span>
-        <span class="c1"># This implementation is as fast as np.linalg.solve_triangular and is</span>
-        <span class="c1"># more stable, as the above solver tends to output non positive</span>
-        <span class="c1"># definite results.</span>
-        <span class="n">c</span> <span class="o">=</span> <span class="n">la</span><span class="o">.</span><span class="n">cholesky</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-        <span class="n">c_inv</span> <span class="o">=</span> <span class="n">la</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">la</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">multiprod</span><span class="p">(</span><span class="n">multiprod</span><span class="p">(</span><span class="n">c_inv</span><span class="p">,</span> <span class="n">u</span><span class="p">),</span> <span class="n">multitransp</span><span class="p">(</span><span class="n">c_inv</span><span class="p">)))</span></div>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">u</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="SymmetricPositiveDefinite.rand"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.psd.SymmetricPositiveDefinite.rand">[docs]</a>    <span class="k">def</span> <span class="nf">rand</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># The way this is done is arbitrary. I think the space of p.d.</span>
@@ -477,7 +477,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2021, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Nov 10, 2021.
+      <span class="lastupdated">Last updated on Nov 25, 2021.
       </span></p>
   </div>
 
