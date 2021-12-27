@@ -74,6 +74,7 @@
 <span class="kn">import</span> <span class="nn">numpy.random</span> <span class="k">as</span> <span class="nn">rnd</span>
 
 <span class="kn">from</span> <span class="nn">pymanopt.solvers.solver</span> <span class="kn">import</span> <span class="n">Solver</span>
+<span class="kn">from</span> <span class="nn">pymanopt.tools</span> <span class="kn">import</span> <span class="n">printer</span>
 
 
 <div class="viewcode-block" id="ParticleSwarm"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.solvers.particle_swarm.ParticleSwarm">[docs]</a><span class="k">class</span> <span class="nc">ParticleSwarm</span><span class="p">(</span><span class="n">Solver</span><span class="p">):</span>
@@ -170,19 +171,31 @@
         <span class="n">fbest</span> <span class="o">=</span> <span class="n">costs</span><span class="p">[</span><span class="n">imin</span><span class="p">]</span>
         <span class="n">xbest</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">imin</span><span class="p">]</span>
 
+        <span class="k">if</span> <span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">iter_format_length</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_maxiter</span><span class="p">))</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">column_printer</span> <span class="o">=</span> <span class="n">printer</span><span class="o">.</span><span class="n">ColumnPrinter</span><span class="p">(</span>
+                <span class="n">columns</span><span class="o">=</span><span class="p">[</span>
+                    <span class="p">(</span><span class="s2">&quot;Iteration&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">iter_format_length</span><span class="si">}</span><span class="s2">d&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s2">&quot;Cost evaluations&quot;</span><span class="p">,</span> <span class="s2">&quot;7d&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s2">&quot;Best cost&quot;</span><span class="p">,</span> <span class="s2">&quot;+.8e&quot;</span><span class="p">),</span>
+                <span class="p">]</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">column_printer</span> <span class="o">=</span> <span class="n">printer</span><span class="o">.</span><span class="n">VoidPrinter</span><span class="p">()</span>
+
+        <span class="n">column_printer</span><span class="o">.</span><span class="n">print_header</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_start_optlog</span><span class="p">()</span>
+
         <span class="c1"># Iteration counter (at any point, iter is the number of fully executed</span>
         <span class="c1"># iterations so far).</span>
         <span class="nb">iter</span> <span class="o">=</span> <span class="mi">0</span>
-
         <span class="n">time0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_start_optlog</span><span class="p">()</span>
 
         <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
             <span class="nb">iter</span> <span class="o">+=</span> <span class="mi">1</span>
 
-            <span class="k">if</span> <span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Cost evals: </span><span class="si">%7d</span><span class="se">\t</span><span class="s2">Best cost: </span><span class="si">%+.8e</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">costevals</span><span class="p">,</span> <span class="n">fbest</span><span class="p">))</span>
+            <span class="n">column_printer</span><span class="o">.</span><span class="n">print_row</span><span class="p">([</span><span class="nb">iter</span><span class="p">,</span> <span class="n">costevals</span><span class="p">,</span> <span class="n">fbest</span><span class="p">])</span>
 
             <span class="c1"># Stop if any particle triggers a stopping criterion.</span>
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">xi</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
@@ -255,7 +268,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2021, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Dec 11, 2021.
+      <span class="lastupdated">Last updated on Dec 27, 2021.
       </span></p>
   </div>
 
