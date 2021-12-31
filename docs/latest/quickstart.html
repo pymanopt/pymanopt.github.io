@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quickstart &mdash; Pymanopt latest documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/style.css" type="text/css" />
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" type="text/css" />
+      <link rel="stylesheet" href="_static/katex-math.css" type="text/css" />
+    <link rel="canonical" href="pymanopt.org/quickstart.html" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js"></script>
+        <script src="_static/katex_autorenderer.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API Reference" href="api-reference.html" />
+    <link rel="prev" title="Pymanopt" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> Pymanopt
+            <img src="_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                latest
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Quickstart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#a-simple-example">A Simple Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/pymanopt/pymanopt/tree/master/examples">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api-reference.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING.html">Contributing</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Notebooks</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="examples/notebooks/mixture_of_gaussians.html">Riemannian Optimization for Inference in MoG models</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Pymanopt</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Quickstart</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/quickstart.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="quickstart">
+<h1>Quickstart<a class="headerlink" href="#quickstart" title="Permalink to this headline"></a></h1>
+<p>Pymanopt is a modular toolbox and hence easy to use.
+All of the automatic differentiation is done behind the scenes so that the
+amount of setup the user needs to do is minimal.
+Usually only the following steps are required:</p>
+<ol class="arabic simple">
+<li><p>Instantiate a manifold <span class="math">\(\manM\)</span> from the <code class="xref py py-mod docutils literal notranslate"><span class="pre">pymanopt.manifolds</span></code>
+package to optimize over.</p></li>
+<li><p>Define a cost function <span class="math">\(f:\manM \to \R\)</span> to minimize using one of the
+backend decorators defined in <a class="reference internal" href="autodiff.html#module-pymanopt.function" title="pymanopt.function"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pymanopt.function</span></code></a>.</p></li>
+<li><p>Create a <code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.Problem</span></code> instance tying the
+optimization problem together.</p></li>
+<li><p>Instantiate a Pymanopt solver from <code class="xref py py-mod docutils literal notranslate"><span class="pre">pymanopt.solvers</span></code> and run it on the
+problem instance.</p></li>
+</ol>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline"></a></h2>
+<p>Pymanopt is compatible with Python 3.6+, and depends on NumPy and SciPy.
+Additionally, to use Pymanopt’s built-in automatic differentiation, which we
+strongly recommend, you need to setup your cost functions using either
+<a class="reference external" href="https://github.com/HIPS/autograd">Autograd</a>, <a class="reference external" href="https://www.tensorflow.org">TensorFlow</a> or <a class="reference external" href="http://www.pytorch.org/">PyTorch</a>.
+If you are unfamiliar with these packages and you are unsure which to go for,
+we suggest to start with Autograd.
+Autograd wraps thinly around NumPy, and is very simple to use, particularly if
+you’re already familiar with NumPy.
+To get the latest version of Pymanopt, install it via pip:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pip install pymanopt
+</pre></div>
+</div>
+</div>
+<div class="section" id="a-simple-example">
+<h2>A Simple Example<a class="headerlink" href="#a-simple-example" title="Permalink to this headline"></a></h2>
+<p>As a simple illustrative example, we consider the problem of estimating the
+dominant eigenvector of a real symmetric matrix <span class="math">\(\vmA \in \R^{n \times
+n}\)</span>.
+As is well known, a dominant eigenvector of a matrix <span class="math">\(\vmA\)</span> is any vector
+<span class="math">\(\opt{\vmx}\)</span> that maximizes the Rayleigh quotient</p>
+<div class="math">
+\[\begin{align*}
+    f(\vmx) &= \frac{\inner{\vmx}{\vmA\vmx}}{\inner{\vmx}{\vmx}}
+\end{align*}\]</div>
+<p>with <span class="math">\(\inner{\cdot}{\cdot}\)</span> denoting the canonical inner product on
+<span class="math">\(\R^n\)</span>.
+The value of <span class="math">\(f\)</span> at <span class="math">\(\opt{\vmx}\)</span> coincides with the largest
+eigenvalue of <span class="math">\(\vmA\)</span>.
+Clearly <span class="math">\(f\)</span> is scale-invariant since <span class="math">\(f(\vmx) = f(\alpha\vmx)\)</span> for
+any <span class="math">\(\alpha \neq 0\)</span>.
+Hence one may reframe the dominant eigenvector problem as the minimization
+problem</p>
+<div class="math">
+\[\begin{align*}
+    \opt{\vmx} = \argmin_{\vmx \in \sphere^{n-1}}\inner{-\vmx}{\vmA\vmx}
+\end{align*}\]</div>
+<p>with <span class="math">\(\sphere^{n-1}\)</span> denoting the set of all unit-norm vectors in
+<span class="math">\(\R^n\)</span>: the sphere manifold of dimension <span class="math">\(n-1\)</span>.</p>
+<p>The following is a minimal working example of how to solve the above problem
+using Pymanopt for a random symmetric matrix.
+As indicated in the introduction above, we follow four simple steps: we
+instantiate the manifold, create the cost function (using Autograd in this
+case), define a problem instance which we pass the manifold and the cost
+function, and run the minimization problem using one of the available solvers.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">autograd.numpy</span> <span class="k">as</span> <span class="nn">anp</span>
+<span class="kn">import</span> <span class="nn">pymanopt</span>
+<span class="kn">import</span> <span class="nn">pymanopt.manifolds</span>
+<span class="kn">import</span> <span class="nn">pymanopt.solvers</span>
+
+<span class="n">anp</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="n">dim</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">manifold</span> <span class="o">=</span> <span class="n">pymanopt</span><span class="o">.</span><span class="n">manifolds</span><span class="o">.</span><span class="n">Sphere</span><span class="p">(</span><span class="n">dim</span><span class="p">)</span>
+
+<span class="n">matrix</span> <span class="o">=</span> <span class="n">anp</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">dim</span><span class="p">,</span> <span class="n">dim</span><span class="p">))</span>
+<span class="n">matrix</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">matrix</span> <span class="o">+</span> <span class="n">matrix</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+
+<span class="nd">@pymanopt</span><span class="o">.</span><span class="n">function</span><span class="o">.</span><span class="n">Autograd</span>
+<span class="k">def</span> <span class="nf">cost</span><span class="p">(</span><span class="n">point</span><span class="p">):</span>
+    <span class="k">return</span> <span class="o">-</span><span class="n">point</span> <span class="o">@</span> <span class="n">matrix</span> <span class="o">@</span> <span class="n">point</span>
+
+<span class="n">problem</span> <span class="o">=</span> <span class="n">pymanopt</span><span class="o">.</span><span class="n">Problem</span><span class="p">(</span><span class="n">manifold</span><span class="o">=</span><span class="n">manifold</span><span class="p">,</span> <span class="n">cost</span><span class="o">=</span><span class="n">cost</span><span class="p">)</span>
+
+<span class="n">solver</span> <span class="o">=</span> <span class="n">pymanopt</span><span class="o">.</span><span class="n">solvers</span><span class="o">.</span><span class="n">SteepestDescent</span><span class="p">()</span>
+<span class="n">solution</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">problem</span><span class="p">)</span>
+
+<span class="n">eigenvalues</span><span class="p">,</span> <span class="n">eigenvectors</span> <span class="o">=</span> <span class="n">anp</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
+<span class="n">dominant_eigenvector</span> <span class="o">=</span> <span class="n">eigenvectors</span><span class="p">[:,</span> <span class="n">eigenvalues</span><span class="o">.</span><span class="n">argmax</span><span class="p">()]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Dominant eigenvector:&quot;</span><span class="p">,</span> <span class="n">dominant_eigenvector</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Pymanopt solution:&quot;</span><span class="p">,</span> <span class="n">solution</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Running this example will produce the following output:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Optimizing...
+Iteration    Cost                       Gradient norm
+---------    -----------------------    --------------
+   1         +1.1041943339110254e+00    5.65626470e-01
+   2         +5.2849633289004561e-01    8.90742722e-01
+   3         -8.0741058657312559e-01    2.23937710e+00
+   4         -1.2667369971251594e+00    1.59671326e+00
+   5         -1.4100298597091836e+00    1.11228845e+00
+   6         -1.5219408277812505e+00    2.45507203e-01
+   7         -1.5269956262562046e+00    6.81712914e-02
+   8         -1.5273114803528709e+00    3.40941735e-02
+   9         -1.5273905588875487e+00    1.70222768e-02
+  10         -1.5274100956128560e+00    8.61140952e-03
+  11         -1.5274154319869837e+00    3.90706914e-03
+  12         -1.5274156215853507e+00    3.62943721e-03
+  13         -1.5274162595152783e+00    2.47643452e-03
+  14         -1.5274168030609154e+00    3.66398414e-04
+  15         -1.5274168133149475e+00    1.45210081e-04
+  16         -1.5274168150025758e+00    4.96142583e-05
+  17         -1.5274168150483476e+00    4.42317042e-05
+  18         -1.5274168151841643e+00    2.13915041e-05
+  19         -1.5274168152087644e+00    1.36422863e-05
+  20         -1.5274168152220804e+00    6.25780214e-06
+  21         -1.5274168152229037e+00    5.48381052e-06
+  22         -1.5274168152252021e+00    2.16996083e-06
+  23         -1.5274168152255774e+00    7.52279600e-07
+Terminated - min grad norm reached after 23 iterations, 0.01 seconds.
+
+Dominant eigenvector: [-0.78442334 -0.38225031 -0.48843088]
+Pymanopt solution: [0.78442327 0.38225034 0.48843097]
+</pre></div>
+</div>
+<p>Note that the signs of the <em>true</em> dominant eigenvector and the solution found
+by Pymanopt differ.
+This is not exactly surprising though.
+Eigenvectors are not unique since every eigenpair <span class="math">\((\lambda, \vmv)\)</span> still
+satisfies the eigenvalue equation <span class="math">\(\vmA \vmv = \lambda \vmv\)</span> if
+<span class="math">\(\vmv\)</span> is replaced by <span class="math">\(\alpha \vmv\)</span> for some <span class="math">\(\alpha \in \R
+\setminus \set{0}\)</span>.
+That is, the dominant eigenvector is only unique up to multiplication by a
+nonzero constant.</p>
+<p>The example above constitutes the conceivably simplest demonstration of
+Pymanopt.
+For more interesting examples we refer to the <a class="reference external" href="https://github.com/pymanopt/pymanopt/tree/master/examples">examples</a> in Pymanopt’s
+github repository.
+Moreover, <a class="reference internal" href="examples/notebooks/mixture_of_gaussians.html"><span class="doc">this notebook</span></a>
+demonstrates a more involved application of Riemannian optimization using
+Pymanopt in the context of inference in Gaussian mixture models.</p>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Pymanopt" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="api-reference.html" class="btn btn-neutral float-right" title="API Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016-2021, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
+      <span class="lastupdated">Last updated on Dec 31, 2021.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: latest
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl>
+      <dt>Versions</dt>
+      <dd><a href="/docs/latest">latest</a></dd>
+    </dl>
+  </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

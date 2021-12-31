@@ -5,7 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pymanopt.manifolds.psd &mdash; Pymanopt latest documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/style.css" type="text/css" />
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/katex-math.css" type="text/css" />
     <link rel="canonical" href="pymanopt.org/_modules/pymanopt/manifolds/psd.html" />
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
@@ -15,6 +17,10 @@
         <script src="../../../_static/jquery.js"></script>
         <script src="../../../_static/underscore.js"></script>
         <script src="../../../_static/doctools.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js"></script>
+        <script src="../../../_static/katex_autorenderer.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -26,6 +32,7 @@
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
             <a href="../../../index.html" class="icon icon-home"> Pymanopt
+            <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
                 latest
@@ -40,7 +47,14 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/pymanopt/pymanopt/tree/master/examples">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api-reference.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributing</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Notebooks</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/notebooks/mixture_of_gaussians.html">Riemannian Optimization for Inference in MoG models</a></li>
 </ul>
 
         </div>
@@ -84,9 +98,7 @@
 
 
 <span class="k">class</span> <span class="nc">_RetrAsExpMixin</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Mixin class which defers calls to the exponential map to the retraction</span>
-<span class="sd">    and issues a warning.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Mixin to use a retraction as exponential map.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">exp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">U</span><span class="p">):</span>
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
@@ -96,13 +108,12 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">retr</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">U</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="SymmetricPositiveDefinite"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.psd.SymmetricPositiveDefinite">[docs]</a><span class="k">class</span> <span class="nc">SymmetricPositiveDefinite</span><span class="p">(</span><span class="n">EuclideanEmbeddedSubmanifold</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Manifold of (n x n)^k symmetric positive definite matrices, based on the</span>
-<span class="sd">    geometry discussed in Chapter 6 of Positive Definite Matrices (Bhatia</span>
-<span class="sd">    2007). Some of the implementation is based on sympositivedefinitefactory.m</span>
-<span class="sd">    from the Manopt MATLAB package. Also see &quot;Conic geometric optimisation on</span>
-<span class="sd">    the manifold of positive definite matrices&quot; (Sra &amp; Hosseini 2013) for more</span>
-<span class="sd">    details.</span>
+<div class="viewcode-block" id="SymmetricPositiveDefinite"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.psd.SymmetricPositiveDefinite">[docs]</a><span class="k">class</span> <span class="nc">SymmetricPositiveDefinite</span><span class="p">(</span><span class="n">EuclideanEmbeddedSubmanifold</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Manifold of symmetric positive definite matrices.</span>
+
+<span class="sd">    Notes:</span>
+<span class="sd">        The geometry is based on the discussion in chapter 6 of [Bha2007]_.</span>
+<span class="sd">        Also see [SH2015]_ for more details.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_n</span> <span class="o">=</span> <span class="n">n</span>
@@ -120,7 +131,7 @@
     <span class="k">def</span> <span class="nf">typicaldist</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
 
-<div class="viewcode-block" id="SymmetricPositiveDefinite.dist"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.psd.SymmetricPositiveDefinite.dist">[docs]</a>    <span class="k">def</span> <span class="nf">dist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<div class="viewcode-block" id="SymmetricPositiveDefinite.dist"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.psd.SymmetricPositiveDefinite.dist">[docs]</a>    <span class="k">def</span> <span class="nf">dist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
         <span class="c1"># Adapted from equation 6.13 of &quot;Positive definite matrices&quot;. The</span>
         <span class="c1"># Cholesky decomposition gives the same result as matrix sqrt. There</span>
         <span class="c1"># may be more efficient ways to compute this.</span>
@@ -130,7 +141,7 @@
                         <span class="n">pos_def</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">la</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">logm</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="SymmetricPositiveDefinite.inner"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.psd.SymmetricPositiveDefinite.inner">[docs]</a>    <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+<div class="viewcode-block" id="SymmetricPositiveDefinite.inner"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.psd.SymmetricPositiveDefinite.inner">[docs]</a>    <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
         <span class="n">xinvu</span> <span class="o">=</span> <span class="n">la</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">u</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">u</span> <span class="ow">is</span> <span class="n">v</span><span class="p">:</span>
             <span class="n">xinvv</span> <span class="o">=</span> <span class="n">xinvu</span>
@@ -138,22 +149,22 @@
             <span class="n">xinvv</span> <span class="o">=</span> <span class="n">la</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">tensordot</span><span class="p">(</span><span class="n">xinvu</span><span class="p">,</span> <span class="n">multitransp</span><span class="p">(</span><span class="n">xinvv</span><span class="p">),</span> <span class="n">axes</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="n">ndim</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="SymmetricPositiveDefinite.proj"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.psd.SymmetricPositiveDefinite.proj">[docs]</a>    <span class="k">def</span> <span class="nf">proj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">G</span><span class="p">):</span>
+<div class="viewcode-block" id="SymmetricPositiveDefinite.proj"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.psd.SymmetricPositiveDefinite.proj">[docs]</a>    <span class="k">def</span> <span class="nf">proj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">G</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">multisym</span><span class="p">(</span><span class="n">G</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="SymmetricPositiveDefinite.egrad2rgrad"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.psd.SymmetricPositiveDefinite.egrad2rgrad">[docs]</a>    <span class="k">def</span> <span class="nf">egrad2rgrad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">u</span><span class="p">):</span>
+<div class="viewcode-block" id="SymmetricPositiveDefinite.egrad2rgrad"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.psd.SymmetricPositiveDefinite.egrad2rgrad">[docs]</a>    <span class="k">def</span> <span class="nf">egrad2rgrad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">u</span><span class="p">):</span>
         <span class="c1"># TODO: Check that this is correct</span>
         <span class="k">return</span> <span class="n">multiprod</span><span class="p">(</span><span class="n">multiprod</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">multisym</span><span class="p">(</span><span class="n">u</span><span class="p">)),</span> <span class="n">x</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="SymmetricPositiveDefinite.ehess2rhess"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.psd.SymmetricPositiveDefinite.ehess2rhess">[docs]</a>    <span class="k">def</span> <span class="nf">ehess2rhess</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">egrad</span><span class="p">,</span> <span class="n">ehess</span><span class="p">,</span> <span class="n">u</span><span class="p">):</span>
+<div class="viewcode-block" id="SymmetricPositiveDefinite.ehess2rhess"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.psd.SymmetricPositiveDefinite.ehess2rhess">[docs]</a>    <span class="k">def</span> <span class="nf">ehess2rhess</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">egrad</span><span class="p">,</span> <span class="n">ehess</span><span class="p">,</span> <span class="n">u</span><span class="p">):</span>
         <span class="c1"># TODO: Check that this is correct</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">multiprod</span><span class="p">(</span><span class="n">multiprod</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">multisym</span><span class="p">(</span><span class="n">ehess</span><span class="p">)),</span> <span class="n">x</span><span class="p">)</span> <span class="o">+</span>
                 <span class="n">multisym</span><span class="p">(</span><span class="n">multiprod</span><span class="p">(</span><span class="n">multiprod</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">multisym</span><span class="p">(</span><span class="n">egrad</span><span class="p">)),</span> <span class="n">x</span><span class="p">)))</span></div>
 
-<div class="viewcode-block" id="SymmetricPositiveDefinite.norm"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.psd.SymmetricPositiveDefinite.norm">[docs]</a>    <span class="k">def</span> <span class="nf">norm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">u</span><span class="p">):</span>
+<div class="viewcode-block" id="SymmetricPositiveDefinite.norm"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.psd.SymmetricPositiveDefinite.norm">[docs]</a>    <span class="k">def</span> <span class="nf">norm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">u</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">u</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="SymmetricPositiveDefinite.rand"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.psd.SymmetricPositiveDefinite.rand">[docs]</a>    <span class="k">def</span> <span class="nf">rand</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="SymmetricPositiveDefinite.rand"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.psd.SymmetricPositiveDefinite.rand">[docs]</a>    <span class="k">def</span> <span class="nf">rand</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># The way this is done is arbitrary. I think the space of p.d.</span>
         <span class="c1"># matrices would have infinite measure w.r.t. the Riemannian metric</span>
         <span class="c1"># (cf. integral 0-inf [ln(x)] dx = inf) so impossible to have a</span>
@@ -173,7 +184,7 @@
             <span class="k">return</span> <span class="n">multiprod</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">d</span> <span class="o">*</span> <span class="n">multitransp</span><span class="p">(</span><span class="n">u</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">multiprod</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">d</span> <span class="o">*</span> <span class="n">multitransp</span><span class="p">(</span><span class="n">u</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="SymmetricPositiveDefinite.randvec"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.psd.SymmetricPositiveDefinite.randvec">[docs]</a>    <span class="k">def</span> <span class="nf">randvec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<div class="viewcode-block" id="SymmetricPositiveDefinite.randvec"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.psd.SymmetricPositiveDefinite.randvec">[docs]</a>    <span class="k">def</span> <span class="nf">randvec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
         <span class="n">k</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_k</span>
         <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n</span>
         <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
@@ -182,10 +193,10 @@
             <span class="n">u</span> <span class="o">=</span> <span class="n">multisym</span><span class="p">(</span><span class="n">rnd</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">u</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">u</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="SymmetricPositiveDefinite.transp"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.psd.SymmetricPositiveDefinite.transp">[docs]</a>    <span class="k">def</span> <span class="nf">transp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+<div class="viewcode-block" id="SymmetricPositiveDefinite.transp"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.psd.SymmetricPositiveDefinite.transp">[docs]</a>    <span class="k">def</span> <span class="nf">transp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">d</span></div>
 
-<div class="viewcode-block" id="SymmetricPositiveDefinite.exp"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.psd.SymmetricPositiveDefinite.exp">[docs]</a>    <span class="k">def</span> <span class="nf">exp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">u</span><span class="p">):</span>
+<div class="viewcode-block" id="SymmetricPositiveDefinite.exp"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.psd.SymmetricPositiveDefinite.exp">[docs]</a>    <span class="k">def</span> <span class="nf">exp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">u</span><span class="p">):</span>
         <span class="c1"># TODO: Check which method is faster depending on n, k.</span>
         <span class="n">x_inv_u</span> <span class="o">=</span> <span class="n">la</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">u</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_k</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
@@ -205,14 +216,14 @@
 
     <span class="n">retr</span> <span class="o">=</span> <span class="n">exp</span>
 
-<div class="viewcode-block" id="SymmetricPositiveDefinite.log"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.psd.SymmetricPositiveDefinite.log">[docs]</a>    <span class="k">def</span> <span class="nf">log</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<div class="viewcode-block" id="SymmetricPositiveDefinite.log"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.psd.SymmetricPositiveDefinite.log">[docs]</a>    <span class="k">def</span> <span class="nf">log</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
         <span class="n">c</span> <span class="o">=</span> <span class="n">la</span><span class="o">.</span><span class="n">cholesky</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
         <span class="n">c_inv</span> <span class="o">=</span> <span class="n">la</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
         <span class="n">logm</span> <span class="o">=</span> <span class="n">multilog</span><span class="p">(</span><span class="n">multiprod</span><span class="p">(</span><span class="n">multiprod</span><span class="p">(</span><span class="n">c_inv</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="n">multitransp</span><span class="p">(</span><span class="n">c_inv</span><span class="p">)),</span>
                         <span class="n">pos_def</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">multiprod</span><span class="p">(</span><span class="n">multiprod</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">logm</span><span class="p">),</span> <span class="n">multitransp</span><span class="p">(</span><span class="n">c</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="SymmetricPositiveDefinite.zerovec"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.psd.SymmetricPositiveDefinite.zerovec">[docs]</a>    <span class="k">def</span> <span class="nf">zerovec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<div class="viewcode-block" id="SymmetricPositiveDefinite.zerovec"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.psd.SymmetricPositiveDefinite.zerovec">[docs]</a>    <span class="k">def</span> <span class="nf">zerovec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
         <span class="n">k</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_k</span>
         <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n</span>
         <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
@@ -275,9 +286,8 @@
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_k</span><span class="p">))</span>
 
 
-<div class="viewcode-block" id="PSDFixedRank"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.psd.PSDFixedRank">[docs]</a><span class="k">class</span> <span class="nc">PSDFixedRank</span><span class="p">(</span><span class="n">_PSDFixedRank</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Manifold of n-by-n symmetric positive semidefinite matrices of rank k.</span>
+<div class="viewcode-block" id="PSDFixedRank"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.psd.PSDFixedRank">[docs]</a><span class="k">class</span> <span class="nc">PSDFixedRank</span><span class="p">(</span><span class="n">_PSDFixedRank</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Manifold of fixed-rank positive semidefinite (PSD) matrices.</span>
 
 <span class="sd">    A point X on the manifold is parameterized as YY^T where Y is a matrix of</span>
 <span class="sd">    size nxk. As such, X is symmetric, positive semidefinite. We restrict to</span>
@@ -315,9 +325,8 @@
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">dimension</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="PSDFixedRankComplex"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.psd.PSDFixedRankComplex">[docs]</a><span class="k">class</span> <span class="nc">PSDFixedRankComplex</span><span class="p">(</span><span class="n">_PSDFixedRank</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Manifold of n x n complex Hermitian pos. semidefinite matrices of rank k.</span>
+<div class="viewcode-block" id="PSDFixedRankComplex"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.psd.PSDFixedRankComplex">[docs]</a><span class="k">class</span> <span class="nc">PSDFixedRankComplex</span><span class="p">(</span><span class="n">_PSDFixedRank</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Manifold of fixed-rank Hermitian positive semidefinite (PSD) matrices.</span>
 
 <span class="sd">    Manifold of n-by-n complex Hermitian positive semidefinite matrices of</span>
 <span class="sd">    fixed rank k. This follows the quotient geometry described</span>
@@ -347,25 +356,24 @@
         <span class="n">dimension</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">k</span> <span class="o">*</span> <span class="n">n</span> <span class="o">-</span> <span class="n">k</span> <span class="o">*</span> <span class="n">k</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">dimension</span><span class="p">)</span>
 
-<div class="viewcode-block" id="PSDFixedRankComplex.inner"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.psd.PSDFixedRankComplex.inner">[docs]</a>    <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">U</span><span class="p">,</span> <span class="n">V</span><span class="p">):</span>
+<div class="viewcode-block" id="PSDFixedRankComplex.inner"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.psd.PSDFixedRankComplex.inner">[docs]</a>    <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">U</span><span class="p">,</span> <span class="n">V</span><span class="p">):</span>
         <span class="k">return</span> <span class="mi">2</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">tensordot</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="n">V</span><span class="p">)</span><span class="o">.</span><span class="n">real</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PSDFixedRankComplex.norm"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.psd.PSDFixedRankComplex.norm">[docs]</a>    <span class="k">def</span> <span class="nf">norm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">U</span><span class="p">):</span>
+<div class="viewcode-block" id="PSDFixedRankComplex.norm"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.psd.PSDFixedRankComplex.norm">[docs]</a>    <span class="k">def</span> <span class="nf">norm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">U</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">U</span><span class="p">,</span> <span class="n">U</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="PSDFixedRankComplex.dist"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.psd.PSDFixedRankComplex.dist">[docs]</a>    <span class="k">def</span> <span class="nf">dist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">U</span><span class="p">,</span> <span class="n">V</span><span class="p">):</span>
+<div class="viewcode-block" id="PSDFixedRankComplex.dist"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.psd.PSDFixedRankComplex.dist">[docs]</a>    <span class="k">def</span> <span class="nf">dist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">U</span><span class="p">,</span> <span class="n">V</span><span class="p">):</span>
         <span class="n">S</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">D</span> <span class="o">=</span> <span class="n">la</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">V</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">U</span><span class="p">))</span>
         <span class="n">E</span> <span class="o">=</span> <span class="n">U</span> <span class="o">-</span> <span class="n">V</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">S</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">D</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">E</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span></div>
 
-<div class="viewcode-block" id="PSDFixedRankComplex.rand"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.psd.PSDFixedRankComplex.rand">[docs]</a>    <span class="k">def</span> <span class="nf">rand</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PSDFixedRankComplex.rand"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.psd.PSDFixedRankComplex.rand">[docs]</a>    <span class="k">def</span> <span class="nf">rand</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">rand_</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">rand</span>
         <span class="k">return</span> <span class="n">rand_</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">rand_</span><span class="p">()</span></div></div>
 
 
-<div class="viewcode-block" id="Elliptope"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.psd.Elliptope">[docs]</a><span class="k">class</span> <span class="nc">Elliptope</span><span class="p">(</span><span class="n">Manifold</span><span class="p">,</span> <span class="n">_RetrAsExpMixin</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Manifold of n-by-n psd matrices of rank k with unit diagonal elements.</span>
+<div class="viewcode-block" id="Elliptope"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.psd.Elliptope">[docs]</a><span class="k">class</span> <span class="nc">Elliptope</span><span class="p">(</span><span class="n">Manifold</span><span class="p">,</span> <span class="n">_RetrAsExpMixin</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Manifold of fixed-rank PSD matrices with unit diagonal elements.</span>
 
 <span class="sd">    A point X on the manifold is parameterized as YY^T where Y is a matrix of</span>
 <span class="sd">    size nxk. As such, X is symmetric, positive semidefinite. We restrict to</span>
@@ -407,15 +415,15 @@
     <span class="k">def</span> <span class="nf">typicaldist</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="mi">10</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_k</span>
 
-<div class="viewcode-block" id="Elliptope.inner"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.psd.Elliptope.inner">[docs]</a>    <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">U</span><span class="p">,</span> <span class="n">V</span><span class="p">):</span>
+<div class="viewcode-block" id="Elliptope.inner"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.psd.Elliptope.inner">[docs]</a>    <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">U</span><span class="p">,</span> <span class="n">V</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">tensordot</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="n">V</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="Elliptope.norm"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.psd.Elliptope.norm">[docs]</a>    <span class="k">def</span> <span class="nf">norm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">U</span><span class="p">):</span>
+<div class="viewcode-block" id="Elliptope.norm"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.psd.Elliptope.norm">[docs]</a>    <span class="k">def</span> <span class="nf">norm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">U</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">U</span><span class="p">,</span> <span class="n">U</span><span class="p">))</span></div>
 
     <span class="c1"># Projection onto the tangent space, i.e., on the tangent space of</span>
     <span class="c1"># ||Y[i, :]||_2 = 1</span>
-<div class="viewcode-block" id="Elliptope.proj"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.psd.Elliptope.proj">[docs]</a>    <span class="k">def</span> <span class="nf">proj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">H</span><span class="p">):</span>
+<div class="viewcode-block" id="Elliptope.proj"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.psd.Elliptope.proj">[docs]</a>    <span class="k">def</span> <span class="nf">proj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">H</span><span class="p">):</span>
         <span class="n">eta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_project_rows</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">H</span><span class="p">)</span>
 
         <span class="c1"># Projection onto the horizontal space</span>
@@ -424,17 +432,17 @@
         <span class="n">Omega</span> <span class="o">=</span> <span class="n">lyap</span><span class="p">(</span><span class="n">YtY</span><span class="p">,</span> <span class="o">-</span><span class="n">AS</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">eta</span> <span class="o">-</span> <span class="n">Y</span><span class="o">.</span><span class="n">dot</span><span class="p">((</span><span class="n">Omega</span> <span class="o">-</span> <span class="n">Omega</span><span class="o">.</span><span class="n">T</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Elliptope.retr"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.psd.Elliptope.retr">[docs]</a>    <span class="k">def</span> <span class="nf">retr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">U</span><span class="p">):</span>
+<div class="viewcode-block" id="Elliptope.retr"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.psd.Elliptope.retr">[docs]</a>    <span class="k">def</span> <span class="nf">retr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">U</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_normalize_rows</span><span class="p">(</span><span class="n">Y</span> <span class="o">+</span> <span class="n">U</span><span class="p">)</span></div>
 
     <span class="c1"># Euclidean gradient to Riemannian gradient conversion. We only need the</span>
     <span class="c1"># ambient space projection: the remainder of the projection function is not</span>
     <span class="c1"># necessary because the Euclidean gradient must already be orthogonal to</span>
     <span class="c1"># the vertical space.</span>
-<div class="viewcode-block" id="Elliptope.egrad2rgrad"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.psd.Elliptope.egrad2rgrad">[docs]</a>    <span class="k">def</span> <span class="nf">egrad2rgrad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">egrad</span><span class="p">):</span>
+<div class="viewcode-block" id="Elliptope.egrad2rgrad"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.psd.Elliptope.egrad2rgrad">[docs]</a>    <span class="k">def</span> <span class="nf">egrad2rgrad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">egrad</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_project_rows</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">egrad</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Elliptope.ehess2rhess"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.psd.Elliptope.ehess2rhess">[docs]</a>    <span class="k">def</span> <span class="nf">ehess2rhess</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">egrad</span><span class="p">,</span> <span class="n">ehess</span><span class="p">,</span> <span class="n">U</span><span class="p">):</span>
+<div class="viewcode-block" id="Elliptope.ehess2rhess"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.psd.Elliptope.ehess2rhess">[docs]</a>    <span class="k">def</span> <span class="nf">ehess2rhess</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">egrad</span><span class="p">,</span> <span class="n">ehess</span><span class="p">,</span> <span class="n">U</span><span class="p">):</span>
         <span class="n">scaling_grad</span> <span class="o">=</span> <span class="p">(</span><span class="n">egrad</span> <span class="o">*</span> <span class="n">Y</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
         <span class="n">hess</span> <span class="o">=</span> <span class="n">ehess</span> <span class="o">-</span> <span class="n">U</span> <span class="o">*</span> <span class="n">scaling_grad</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
 
@@ -443,14 +451,14 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">proj</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">hess</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Elliptope.rand"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.psd.Elliptope.rand">[docs]</a>    <span class="k">def</span> <span class="nf">rand</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Elliptope.rand"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.psd.Elliptope.rand">[docs]</a>    <span class="k">def</span> <span class="nf">rand</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_normalize_rows</span><span class="p">(</span><span class="n">rnd</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_k</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="Elliptope.randvec"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.psd.Elliptope.randvec">[docs]</a>    <span class="k">def</span> <span class="nf">randvec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
+<div class="viewcode-block" id="Elliptope.randvec"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.psd.Elliptope.randvec">[docs]</a>    <span class="k">def</span> <span class="nf">randvec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
         <span class="n">H</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">proj</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rand</span><span class="p">())</span>
         <span class="k">return</span> <span class="n">H</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">H</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Elliptope.transp"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.psd.Elliptope.transp">[docs]</a>    <span class="k">def</span> <span class="nf">transp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">U</span><span class="p">):</span>
+<div class="viewcode-block" id="Elliptope.transp"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.psd.Elliptope.transp">[docs]</a>    <span class="k">def</span> <span class="nf">transp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">U</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">proj</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="n">U</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">_normalize_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
@@ -465,7 +473,7 @@
         <span class="n">inners</span> <span class="o">=</span> <span class="p">(</span><span class="n">Y</span> <span class="o">*</span> <span class="n">H</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">H</span> <span class="o">-</span> <span class="n">Y</span> <span class="o">*</span> <span class="n">inners</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
 
-<div class="viewcode-block" id="Elliptope.zerovec"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.psd.Elliptope.zerovec">[docs]</a>    <span class="k">def</span> <span class="nf">zerovec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<div class="viewcode-block" id="Elliptope.zerovec"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.psd.Elliptope.zerovec">[docs]</a>    <span class="k">def</span> <span class="nf">zerovec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_k</span><span class="p">))</span></div></div>
 </pre></div>
 
@@ -477,7 +485,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2021, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Dec 27, 2021.
+      <span class="lastupdated">Last updated on Dec 31, 2021.
       </span></p>
   </div>
 
@@ -488,7 +496,19 @@
       </div>
     </section>
   </div>
-  <script>
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: latest
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl>
+      <dt>Versions</dt>
+      <dd><a href="/docs/latest">latest</a></dd>
+    </dl>
+  </div>
+</div><script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });

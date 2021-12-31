@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pymanopt.tools.diagnostics &mdash; Pymanopt latest documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/style.css" type="text/css" />
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/katex-math.css" type="text/css" />
+    <link rel="canonical" href="pymanopt.org/_modules/pymanopt/tools/diagnostics.html" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js"></script>
+        <script src="../../../_static/katex_autorenderer.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> Pymanopt
+            <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                latest
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/pymanopt/pymanopt/tree/master/examples">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api-reference.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributing</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Notebooks</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/notebooks/mixture_of_gaussians.html">Riemannian Optimization for Inference in MoG models</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Pymanopt</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      <li>pymanopt.tools.diagnostics</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pymanopt.tools.diagnostics</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="n">plt</span> <span class="o">=</span> <span class="kc">None</span>
+
+
+<div class="viewcode-block" id="identify_linear_piece"><a class="viewcode-back" href="../../../tools.html#pymanopt.tools.diagnostics.identify_linear_piece">[docs]</a><span class="k">def</span> <span class="nf">identify_linear_piece</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">window_length</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Identify a segment of the curve (x, y) that appears to be linear.</span>
+
+<span class="sd">    This function attempts to identify a contiguous segment of the curve</span>
+<span class="sd">    defined by the vectors x and y that appears to be linear. A line is fit</span>
+<span class="sd">    through the data over all windows of length window_length and the best</span>
+<span class="sd">    fit is retained. The output specifies the range of indices such that</span>
+<span class="sd">    x(segment) is the portion over which (x, y) is the most linear and the</span>
+<span class="sd">    output poly specifies a first order polynomial that best fits (x, y) over</span>
+<span class="sd">    that segment (highest degree coefficients first).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">residues</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">-</span><span class="n">window_length</span><span class="p">)</span>
+    <span class="n">polys</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">residues</span><span class="p">)))</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">residues</span><span class="p">)):</span>
+        <span class="n">segment</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">k</span><span class="o">+</span><span class="n">window_length</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">poly</span><span class="p">,</span> <span class="n">residuals</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polyfit</span><span class="p">(</span>
+            <span class="n">x</span><span class="p">[</span><span class="n">segment</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">segment</span><span class="p">],</span> <span class="n">deg</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+        <span class="n">residues</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">residuals</span><span class="p">)</span>
+        <span class="n">polys</span><span class="p">[:,</span> <span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">poly</span>
+    <span class="n">best</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">residues</span><span class="p">)</span>
+    <span class="n">segment</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">best</span><span class="p">,</span> <span class="n">best</span><span class="o">+</span><span class="n">window_length</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">poly</span> <span class="o">=</span> <span class="n">polys</span><span class="p">[:,</span> <span class="n">best</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">segment</span><span class="p">,</span> <span class="n">poly</span></div>
+
+
+<div class="viewcode-block" id="check_directional_derivative"><a class="viewcode-back" href="../../../tools.html#pymanopt.tools.diagnostics.check_directional_derivative">[docs]</a><span class="k">def</span> <span class="nf">check_directional_derivative</span><span class="p">(</span><span class="n">problem</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Checks the consistency of the cost function and directional derivatives.</span>
+
+<span class="sd">    check_directional_derivative performs a numerical test to check that the</span>
+<span class="sd">    directional derivatives defined in the problem structure agree up to first</span>
+<span class="sd">    order with the cost function at some point x, along some direction d. The</span>
+<span class="sd">    test is based on a truncated Taylor series (see online pymanopt</span>
+<span class="sd">    documentation).</span>
+<span class="sd">    Both x and d are optional and will be sampled at random if omitted.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1">#  If x and / or d are not specified, pick them at random.</span>
+    <span class="k">if</span> <span class="n">d</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">x</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;If d is provided, x must be too, &quot;</span>
+                         <span class="s2">&quot;since d is tangent at x.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">manifold</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">d</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">manifold</span><span class="o">.</span><span class="n">randvec</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+    <span class="c1"># Compute the value f0 of f at x and directional derivative at x along d.</span>
+    <span class="n">f0</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">cost</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">grad</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">df0</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">manifold</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">grad</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+
+    <span class="c1"># Compute the value of f at points on the geodesic (or approximation</span>
+    <span class="c1"># of it) originating from x, along direction d, for stepsizes in a</span>
+    <span class="c1"># large range given by h.</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logspace</span><span class="p">(</span><span class="o">-</span><span class="mi">8</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">51</span><span class="p">)</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">h_k</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">h</span><span class="p">):</span>
+        <span class="c1"># TODO(nkoep): Remove this once we use the RetrAsExpMixin for every</span>
+        <span class="c1">#              manifold.</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">manifold</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">h_k</span> <span class="o">*</span> <span class="n">d</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">NotImplementedError</span><span class="p">:</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">manifold</span><span class="o">.</span><span class="n">retr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">h_k</span> <span class="o">*</span> <span class="n">d</span><span class="p">)</span>
+        <span class="n">value</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">cost</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+
+    <span class="c1"># Compute the linear approximation of the cost function using f0 and</span>
+    <span class="c1"># df0 at the same points.</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polyval</span><span class="p">([</span><span class="n">df0</span><span class="p">,</span> <span class="n">f0</span><span class="p">],</span> <span class="n">h</span><span class="p">)</span>
+
+    <span class="c1"># Compute the approximation error</span>
+    <span class="n">err</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">model</span> <span class="o">-</span> <span class="n">value</span><span class="p">)</span>
+    <span class="n">model_is_exact</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">err</span> <span class="o">&lt;</span> <span class="mf">1e-12</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">model_is_exact</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Directional derivative check. &quot;</span>
+              <span class="s2">&quot;It seems the linear model is exact: &quot;</span>
+              <span class="s2">&quot;Model error is numerically zero for all h.&quot;</span><span class="p">)</span>
+        <span class="c1"># The 1st order model is exact: all errors are (numerically) zero.</span>
+        <span class="c1"># Fit line from all points, use log scale only in h.</span>
+        <span class="n">segment</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">h</span><span class="p">))</span>
+        <span class="n">poly</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polyfit</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">h</span><span class="p">),</span> <span class="n">err</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="c1"># Set mean error in log scale for plot.</span>
+        <span class="n">poly</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">poly</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Directional derivative check. The slope of the &quot;</span>
+              <span class="s2">&quot;continuous line should match that of the dashed &quot;</span>
+              <span class="s2">&quot;(reference) line over at least a few orders of &quot;</span>
+              <span class="s2">&quot;magnitude for h.&quot;</span><span class="p">)</span>
+        <span class="c1"># In a numerically reasonable neighborhood, the error should</span>
+        <span class="c1"># decrease as the square of the stepsize, i.e., in loglog scale,</span>
+        <span class="c1"># the error should have a slope of 2.</span>
+        <span class="n">window_len</span> <span class="o">=</span> <span class="mi">10</span>
+        <span class="c1"># Despite not all coordinates of the model being close to the true</span>
+        <span class="c1"># value, some entries of &#39;err&#39; can be zero. To avoid numerical issues</span>
+        <span class="c1"># we add an epsilon here.</span>
+        <span class="n">eps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="n">err</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span><span class="o">.</span><span class="n">eps</span>
+        <span class="n">segment</span><span class="p">,</span> <span class="n">poly</span> <span class="o">=</span> <span class="n">identify_linear_piece</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">h</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">err</span> <span class="o">+</span> <span class="n">eps</span><span class="p">),</span>
+                                              <span class="n">window_len</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">h</span><span class="p">,</span> <span class="n">err</span><span class="p">,</span> <span class="n">segment</span><span class="p">,</span> <span class="n">poly</span></div>
+
+
+<div class="viewcode-block" id="check_gradient"><a class="viewcode-back" href="../../../tools.html#pymanopt.tools.diagnostics.check_gradient">[docs]</a><span class="k">def</span> <span class="nf">check_gradient</span><span class="p">(</span><span class="n">problem</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Checks the consistency of the cost function and the gradient.</span>
+
+<span class="sd">    check_gradient performs a numerical test to check that the gradient</span>
+<span class="sd">    defined in the problem structure agrees up to first order with the cost</span>
+<span class="sd">    function at some point x, along some direction d. The test is based on a</span>
+<span class="sd">    truncated Taylor series.</span>
+
+<span class="sd">    It is also tested that the gradient is indeed a tangent vector.</span>
+
+<span class="sd">    Both x and d are optional and will be sampled at random if omitted.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1">#  If x and / or d are not specified, pick them at random.</span>
+    <span class="k">if</span> <span class="n">plt</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;The &#39;check_gradient&#39; function requires matplotlib&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">d</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">x</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;If d is provided, x must be too,&quot;</span>
+                         <span class="s2">&quot;since d is tangent at x.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">manifold</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">d</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">manifold</span><span class="o">.</span><span class="n">randvec</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+    <span class="n">h</span><span class="p">,</span> <span class="n">err</span><span class="p">,</span> <span class="n">segment</span><span class="p">,</span> <span class="n">poly</span> <span class="o">=</span> <span class="n">check_directional_derivative</span><span class="p">(</span><span class="n">problem</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;h&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Approximation error&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">h</span><span class="p">[</span><span class="n">segment</span><span class="p">],</span> <span class="mi">10</span><span class="o">**</span><span class="n">np</span><span class="o">.</span><span class="n">polyval</span><span class="p">(</span><span class="n">poly</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">h</span><span class="p">[</span><span class="n">segment</span><span class="p">])),</span>
+               <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mf">1e-8</span><span class="p">,</span> <span class="mf">1e0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1e-8</span><span class="p">,</span> <span class="mf">1e8</span><span class="p">],</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Gradient check</span><span class="se">\n</span><span class="s2">The slope of the continuous line &quot;</span>
+              <span class="s2">&quot;should match that of the dashed</span><span class="se">\n</span><span class="s2">(reference) line &quot;</span>
+              <span class="s2">&quot;over at least a few orders of magnitude for h.&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+    <span class="c1"># Try to check that the gradient is a tangent vector.</span>
+    <span class="n">grad</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">problem</span><span class="o">.</span><span class="n">manifold</span><span class="p">,</span> <span class="s2">&quot;tangent&quot;</span><span class="p">):</span>
+        <span class="n">projected_grad</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">manifold</span><span class="o">.</span><span class="n">tangent</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">grad</span><span class="p">)</span>
+        <span class="n">residual</span> <span class="o">=</span> <span class="n">grad</span> <span class="o">-</span> <span class="n">projected_grad</span>
+        <span class="n">err</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">manifold</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">residual</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The residual should be 0, or very close. &quot;</span>
+              <span class="s2">&quot;Residual: </span><span class="si">{:g}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">err</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;If it is far from 0, then the gradient &quot;</span>
+              <span class="s2">&quot;is not in the tangent space.&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Unfortunately, pymanopt was unable to verify that the gradient &quot;</span>
+              <span class="s2">&quot;is indeed a tangent vector. Please verify this manually or &quot;</span>
+              <span class="s2">&quot;implement the &#39;tangent&#39; function in your manifold structure.&quot;</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016-2021, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
+      <span class="lastupdated">Last updated on Dec 31, 2021.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: latest
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl>
+      <dt>Versions</dt>
+      <dd><a href="/docs/latest">latest</a></dd>
+    </dl>
+  </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -5,7 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pymanopt.solvers.trust_regions &mdash; Pymanopt latest documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/style.css" type="text/css" />
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/katex-math.css" type="text/css" />
     <link rel="canonical" href="pymanopt.org/_modules/pymanopt/solvers/trust_regions.html" />
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
@@ -15,6 +17,10 @@
         <script src="../../../_static/jquery.js"></script>
         <script src="../../../_static/underscore.js"></script>
         <script src="../../../_static/doctools.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js"></script>
+        <script src="../../../_static/katex_autorenderer.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -26,6 +32,7 @@
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
             <a href="../../../index.html" class="icon icon-home"> Pymanopt
+            <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
                 latest
@@ -40,7 +47,14 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/pymanopt/pymanopt/tree/master/examples">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api-reference.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributing</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Notebooks</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/notebooks/mixture_of_gaussians.html">Riemannian Optimization for Inference in MoG models</a></li>
 </ul>
 
         </div>
@@ -128,7 +142,7 @@
 <span class="kn">from</span> <span class="nn">pymanopt.solvers.solver</span> <span class="kn">import</span> <span class="n">Solver</span>
 
 
-<div class="viewcode-block" id="TrustRegions"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.solvers.trust_regions.TrustRegions">[docs]</a><span class="k">class</span> <span class="nc">TrustRegions</span><span class="p">(</span><span class="n">Solver</span><span class="p">):</span>
+<div class="viewcode-block" id="TrustRegions"><a class="viewcode-back" href="../../../solvers.html#pymanopt.solvers.trust_regions.TrustRegions">[docs]</a><span class="k">class</span> <span class="nc">TrustRegions</span><span class="p">(</span><span class="n">Solver</span><span class="p">):</span>
     <span class="p">(</span><span class="n">NEGATIVE_CURVATURE</span><span class="p">,</span> <span class="n">EXCEEDED_TR</span><span class="p">,</span> <span class="n">REACHED_TARGET_LINEAR</span><span class="p">,</span>
      <span class="n">REACHED_TARGET_SUPERLINEAR</span><span class="p">,</span> <span class="n">MAX_INNER_ITER</span><span class="p">,</span> <span class="n">MODEL_INCREASED</span><span class="p">)</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
     <span class="n">TCG_STOP_REASONS</span> <span class="o">=</span> <span class="p">{</span>
@@ -143,12 +157,12 @@
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">miniter</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">kappa</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">rho_prime</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
                  <span class="n">use_rand</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">rho_regularization</span><span class="o">=</span><span class="mf">1e3</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Trust regions algorithm based on trustregions.m from the</span>
-<span class="sd">        Manopt MATLAB package.</span>
+        <span class="sd">&quot;&quot;&quot;Riemannian Trust-Regions solver.</span>
 
-<span class="sd">        Also included is the Truncated (Steihaug-Toint) Conjugate-Gradient</span>
-<span class="sd">        algorithm, based on tCG.m from the Manopt MATLAB package.</span>
+<span class="sd">        Second-order method that approximates the objective function by a</span>
+<span class="sd">        quadratic surface and then updates the current estimate based on that.</span>
+<span class="sd">        Also included is the truncated (Steihaug-Toint) conjugate gradient</span>
+<span class="sd">        algorithm.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
@@ -159,7 +173,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">use_rand</span> <span class="o">=</span> <span class="n">use_rand</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rho_regularization</span> <span class="o">=</span> <span class="n">rho_regularization</span>
 
-<div class="viewcode-block" id="TrustRegions.solve"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.solvers.trust_regions.TrustRegions.solve">[docs]</a>    <span class="k">def</span> <span class="nf">solve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">problem</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mininner</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">maxinner</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<div class="viewcode-block" id="TrustRegions.solve"><a class="viewcode-back" href="../../../solvers.html#pymanopt.solvers.trust_regions.TrustRegions.solve">[docs]</a>    <span class="k">def</span> <span class="nf">solve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">problem</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mininner</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">maxinner</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
               <span class="n">Delta_bar</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Delta0</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">man</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">manifold</span>
         <span class="n">verbosity</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">verbosity</span>
@@ -630,7 +644,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2021, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Dec 27, 2021.
+      <span class="lastupdated">Last updated on Dec 31, 2021.
       </span></p>
   </div>
 
@@ -641,7 +655,19 @@
       </div>
     </section>
   </div>
-  <script>
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: latest
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl>
+      <dt>Versions</dt>
+      <dd><a href="/docs/latest">latest</a></dd>
+    </dl>
+  </div>
+</div><script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });

@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tools &mdash; Pymanopt latest documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/style.css" type="text/css" />
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" type="text/css" />
+      <link rel="stylesheet" href="_static/katex-math.css" type="text/css" />
+    <link rel="canonical" href="pymanopt.org/tools.html" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js"></script>
+        <script src="_static/katex_autorenderer.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Bibliography" href="bibliography.html" />
+    <link rel="prev" title="Optimization" href="solvers.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> Pymanopt
+            <img src="_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                latest
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/pymanopt/pymanopt/tree/master/examples">Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="api-reference.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="manifolds.html">Manifolds</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autodiff.html">Autodiff</a></li>
+<li class="toctree-l2"><a class="reference internal" href="problem.html">Problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers.html">Optimization</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Tools</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-pymanopt.tools.multi">Multi Tools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-pymanopt.tools.diagnostics">Diagnostics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-pymanopt.tools.testing">Testing</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="bibliography.html">Bibliography</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING.html">Contributing</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Notebooks</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="examples/notebooks/mixture_of_gaussians.html">Riemannian Optimization for Inference in MoG models</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Pymanopt</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="api-reference.html">API Reference</a> &raquo;</li>
+      <li>Tools</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/tools.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="tools">
+<h1>Tools<a class="headerlink" href="#tools" title="Permalink to this headline"></a></h1>
+<div class="section" id="module-pymanopt.tools.multi">
+<span id="multi-tools"></span><h2>Multi Tools<a class="headerlink" href="#module-pymanopt.tools.multi" title="Permalink to this headline"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pymanopt.tools.multi.multiprod">
+<span class="sig-prename descclassname"><span class="pre">pymanopt.tools.multi.</span></span><span class="sig-name descname"><span class="pre">multiprod</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/tools/multi.html#multiprod"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.tools.multi.multiprod" title="Permalink to this definition"></a></dt>
+<dd><p>Vectorized matrix-matrix multiplication.</p>
+<p>The matrices <code class="docutils literal notranslate"><span class="pre">A</span></code> and <code class="docutils literal notranslate"><span class="pre">B</span></code> are assumed to be arrays containing <code class="docutils literal notranslate"><span class="pre">k</span></code>
+matrices, i.e., <code class="docutils literal notranslate"><span class="pre">A</span></code> and <code class="docutils literal notranslate"><span class="pre">B</span></code> have shape <code class="docutils literal notranslate"><span class="pre">(k,</span> <span class="pre">m,</span> <span class="pre">n)</span></code> and <code class="docutils literal notranslate"><span class="pre">(k,</span> <span class="pre">n,</span> <span class="pre">p)</span></code>,
+respectively.
+The function multiplies each matrix in <code class="docutils literal notranslate"><span class="pre">A</span></code> with the corresponding matrix
+in <code class="docutils literal notranslate"><span class="pre">B</span></code> along the first dimension.
+The resulting array has shape <code class="docutils literal notranslate"><span class="pre">(k,</span> <span class="pre">m,</span> <span class="pre">p)</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>A</strong> (<em>numpy.ndarray</em>) – The first matrix.</p></li>
+<li><p><strong>B</strong> (<em>numpy.ndarray</em>) – The second matrix.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The matrix (or more precisely array of matrices) corresponding to
+the matrix product vectorized over the first dimension of <code class="docutils literal notranslate"><span class="pre">A</span></code> and
+<code class="docutils literal notranslate"><span class="pre">B</span></code> (if <code class="docutils literal notranslate"><span class="pre">A.ndim</span> <span class="pre">==</span> <span class="pre">2</span></code>).</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pymanopt.tools.multi.multitransp">
+<span class="sig-prename descclassname"><span class="pre">pymanopt.tools.multi.</span></span><span class="sig-name descname"><span class="pre">multitransp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/tools/multi.html#multitransp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.tools.multi.multitransp" title="Permalink to this definition"></a></dt>
+<dd><p>Vectorized matrix transpose.</p>
+<p>A is assumed to be an array containing M matrices, each of which has
+dimension N x P.
+That is, A is an M x N x P array. Multitransp then returns an array
+containing the M matrix transposes of the matrices in A, each of which will
+be P x N.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pymanopt.tools.multi.multihconj">
+<span class="sig-prename descclassname"><span class="pre">pymanopt.tools.multi.</span></span><span class="sig-name descname"><span class="pre">multihconj</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/tools/multi.html#multihconj"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.tools.multi.multihconj" title="Permalink to this definition"></a></dt>
+<dd><p>Vectorized matrix Hermitian conjugate.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pymanopt.tools.multi.multisym">
+<span class="sig-prename descclassname"><span class="pre">pymanopt.tools.multi.</span></span><span class="sig-name descname"><span class="pre">multisym</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/tools/multi.html#multisym"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.tools.multi.multisym" title="Permalink to this definition"></a></dt>
+<dd><p>Vectorized matrix symmetrization.</p>
+<p>Given an array <code class="docutils literal notranslate"><span class="pre">A</span></code> of matrices (represented as an array of shape <code class="docutils literal notranslate"><span class="pre">(k,</span> <span class="pre">n,</span>
+<span class="pre">n)</span></code>), returns a version of <code class="docutils literal notranslate"><span class="pre">A</span></code> with each matrix symmetrized, i.e.,
+every matrix <code class="docutils literal notranslate"><span class="pre">A[i]</span></code> satisfies <code class="docutils literal notranslate"><span class="pre">A[i]</span> <span class="pre">==</span> <span class="pre">A[i].T</span></code>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pymanopt.tools.multi.multiskew">
+<span class="sig-prename descclassname"><span class="pre">pymanopt.tools.multi.</span></span><span class="sig-name descname"><span class="pre">multiskew</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/tools/multi.html#multiskew"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.tools.multi.multiskew" title="Permalink to this definition"></a></dt>
+<dd><p>Vectorized matrix skew-symmetrization.</p>
+<p>Same as <a class="reference internal" href="#pymanopt.tools.multi.multisym" title="pymanopt.tools.multi.multisym"><code class="xref py py-func docutils literal notranslate"><span class="pre">multisym()</span></code></a>, but returns an array where each matrix <code class="docutils literal notranslate"><span class="pre">A[i]</span></code>
+is skew-symmetric, i.e., the components of <code class="docutils literal notranslate"><span class="pre">A</span></code> satisfy <code class="docutils literal notranslate"><span class="pre">A[i]</span> <span class="pre">==</span>
+<span class="pre">-A[i].T</span></code>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pymanopt.tools.multi.multieye">
+<span class="sig-prename descclassname"><span class="pre">pymanopt.tools.multi.</span></span><span class="sig-name descname"><span class="pre">multieye</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/tools/multi.html#multieye"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.tools.multi.multieye" title="Permalink to this definition"></a></dt>
+<dd><p>Array of <code class="docutils literal notranslate"><span class="pre">k</span></code> <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">x</span> <span class="pre">n</span></code> identity matrices.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pymanopt.tools.multi.multilog">
+<span class="sig-prename descclassname"><span class="pre">pymanopt.tools.multi.</span></span><span class="sig-name descname"><span class="pre">multilog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos_def</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/tools/multi.html#multilog"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.tools.multi.multilog" title="Permalink to this definition"></a></dt>
+<dd><p>Vectorized matrix logarithm.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pymanopt.tools.multi.multiexp">
+<span class="sig-prename descclassname"><span class="pre">pymanopt.tools.multi.</span></span><span class="sig-name descname"><span class="pre">multiexp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sym</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/tools/multi.html#multiexp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.tools.multi.multiexp" title="Permalink to this definition"></a></dt>
+<dd><p>Vectorized matrix exponential.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pymanopt.tools.diagnostics">
+<span id="diagnostics"></span><h2>Diagnostics<a class="headerlink" href="#module-pymanopt.tools.diagnostics" title="Permalink to this headline"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pymanopt.tools.diagnostics.identify_linear_piece">
+<span class="sig-prename descclassname"><span class="pre">pymanopt.tools.diagnostics.</span></span><span class="sig-name descname"><span class="pre">identify_linear_piece</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window_length</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/tools/diagnostics.html#identify_linear_piece"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.tools.diagnostics.identify_linear_piece" title="Permalink to this definition"></a></dt>
+<dd><p>Identify a segment of the curve (x, y) that appears to be linear.</p>
+<p>This function attempts to identify a contiguous segment of the curve
+defined by the vectors x and y that appears to be linear. A line is fit
+through the data over all windows of length window_length and the best
+fit is retained. The output specifies the range of indices such that
+x(segment) is the portion over which (x, y) is the most linear and the
+output poly specifies a first order polynomial that best fits (x, y) over
+that segment (highest degree coefficients first).</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pymanopt.tools.diagnostics.check_directional_derivative">
+<span class="sig-prename descclassname"><span class="pre">pymanopt.tools.diagnostics.</span></span><span class="sig-name descname"><span class="pre">check_directional_derivative</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">problem</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/tools/diagnostics.html#check_directional_derivative"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.tools.diagnostics.check_directional_derivative" title="Permalink to this definition"></a></dt>
+<dd><p>Checks the consistency of the cost function and directional derivatives.</p>
+<p>check_directional_derivative performs a numerical test to check that the
+directional derivatives defined in the problem structure agree up to first
+order with the cost function at some point x, along some direction d. The
+test is based on a truncated Taylor series (see online pymanopt
+documentation).
+Both x and d are optional and will be sampled at random if omitted.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pymanopt.tools.diagnostics.check_gradient">
+<span class="sig-prename descclassname"><span class="pre">pymanopt.tools.diagnostics.</span></span><span class="sig-name descname"><span class="pre">check_gradient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">problem</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/tools/diagnostics.html#check_gradient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.tools.diagnostics.check_gradient" title="Permalink to this definition"></a></dt>
+<dd><p>Checks the consistency of the cost function and the gradient.</p>
+<p>check_gradient performs a numerical test to check that the gradient
+defined in the problem structure agrees up to first order with the cost
+function at some point x, along some direction d. The test is based on a
+truncated Taylor series.</p>
+<p>It is also tested that the gradient is indeed a tangent vector.</p>
+<p>Both x and d are optional and will be sampled at random if omitted.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pymanopt.tools.testing">
+<span id="testing"></span><h2>Testing<a class="headerlink" href="#module-pymanopt.tools.testing" title="Permalink to this headline"></a></h2>
+<p>Tools for testing numerical correctness in Pymanopt.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The functions <a class="reference internal" href="#pymanopt.tools.testing.rgrad" title="pymanopt.tools.testing.rgrad"><code class="xref py py-func docutils literal notranslate"><span class="pre">rgrad()</span></code></a>, <a class="reference internal" href="#pymanopt.tools.testing.egrad2rgrad" title="pymanopt.tools.testing.egrad2rgrad"><code class="xref py py-func docutils literal notranslate"><span class="pre">egrad2rgrad()</span></code></a>, <code class="xref py py-func docutils literal notranslate"><span class="pre">ehess()</span></code> and
+<a class="reference internal" href="#pymanopt.tools.testing.ehess2rhess" title="pymanopt.tools.testing.ehess2rhess"><code class="xref py py-func docutils literal notranslate"><span class="pre">ehess2rhess()</span></code></a> will only be correct if the manifold is a submanifold
+of Euclidean space, that is if the projection is an orthogonal projection
+onto the tangent space.</p>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="pymanopt.tools.testing.rgrad">
+<span class="sig-prename descclassname"><span class="pre">pymanopt.tools.testing.</span></span><span class="sig-name descname"><span class="pre">rgrad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cost</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/tools/testing.html#rgrad"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.tools.testing.rgrad" title="Permalink to this definition"></a></dt>
+<dd><p>Generates the Riemannian gradient of a cost function.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pymanopt.tools.testing.egrad2rgrad">
+<span class="sig-prename descclassname"><span class="pre">pymanopt.tools.testing.</span></span><span class="sig-name descname"><span class="pre">egrad2rgrad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">proj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/tools/testing.html#egrad2rgrad"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.tools.testing.egrad2rgrad" title="Permalink to this definition"></a></dt>
+<dd><p>Generates an egrad2rgrad function.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pymanopt.tools.testing.rhess">
+<span class="sig-prename descclassname"><span class="pre">pymanopt.tools.testing.</span></span><span class="sig-name descname"><span class="pre">rhess</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cost</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/tools/testing.html#rhess"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.tools.testing.rhess" title="Permalink to this definition"></a></dt>
+<dd><p>Generates the Riemannian hessian of a cost function.</p>
+<p>Specifically, <code class="docutils literal notranslate"><span class="pre">rhess(cost,</span> <span class="pre">proj)(x,</span> <span class="pre">u)</span></code> is the directional derivative of
+cost at <code class="docutils literal notranslate"><span class="pre">x</span></code> on the manifold in the direction of a tangent vector <code class="docutils literal notranslate"><span class="pre">u</span></code>.
+Both <code class="docutils literal notranslate"><span class="pre">cost</span></code> and <code class="docutils literal notranslate"><span class="pre">proj</span></code> must be defined using Autograd.
+The current implementation is not efficient because of the explicit
+Jacobian-vector product.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pymanopt.tools.testing.ehess2rhess">
+<span class="sig-prename descclassname"><span class="pre">pymanopt.tools.testing.</span></span><span class="sig-name descname"><span class="pre">ehess2rhess</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">proj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/tools/testing.html#ehess2rhess"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.tools.testing.ehess2rhess" title="Permalink to this definition"></a></dt>
+<dd><p>Generates an ehess2rhess function.</p>
+<p>Specifically, <code class="docutils literal notranslate"><span class="pre">ehess2rhess(proj)(x,</span> <span class="pre">egrad,</span> <span class="pre">ehess,</span> <span class="pre">u)</span></code> converts the
+Euclidean Hessian-vector product <code class="docutils literal notranslate"><span class="pre">ehess</span></code> at a point <code class="docutils literal notranslate"><span class="pre">x</span></code> to a Riemannian
+Hessian-vector product, i.e., the directional derivative of the gradient in
+the tangent direction <code class="docutils literal notranslate"><span class="pre">u</span></code>.
+Similar to <a class="reference internal" href="#pymanopt.tools.testing.rhess" title="pymanopt.tools.testing.rhess"><code class="xref py py-func docutils literal notranslate"><span class="pre">rhess()</span></code></a>, this is not efficient as it computes the Jacobian
+explicitly.</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="solvers.html" class="btn btn-neutral float-left" title="Optimization" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="bibliography.html" class="btn btn-neutral float-right" title="Bibliography" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016-2021, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
+      <span class="lastupdated">Last updated on Dec 31, 2021.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: latest
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl>
+      <dt>Versions</dt>
+      <dd><a href="/docs/latest">latest</a></dd>
+    </dl>
+  </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -5,7 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pymanopt.solvers.linesearch &mdash; Pymanopt latest documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/style.css" type="text/css" />
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/katex-math.css" type="text/css" />
     <link rel="canonical" href="pymanopt.org/_modules/pymanopt/solvers/linesearch.html" />
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
@@ -15,6 +17,10 @@
         <script src="../../../_static/jquery.js"></script>
         <script src="../../../_static/underscore.js"></script>
         <script src="../../../_static/doctools.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js"></script>
+        <script src="../../../_static/katex_autorenderer.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -26,6 +32,7 @@
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
             <a href="../../../index.html" class="icon icon-home"> Pymanopt
+            <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
                 latest
@@ -40,7 +47,14 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/pymanopt/pymanopt/tree/master/examples">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api-reference.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributing</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Notebooks</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/notebooks/mixture_of_gaussians.html">Riemannian Optimization for Inference in MoG models</a></li>
 </ul>
 
         </div>
@@ -68,11 +82,8 @@
            <div itemprop="articleBody">
              
   <h1>Source code for pymanopt.solvers.linesearch</h1><div class="highlight"><pre>
-<div class="viewcode-block" id="LineSearchBackTracking"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.solvers.linesearch.LineSearchBackTracking">[docs]</a><span></span><span class="k">class</span> <span class="nc">LineSearchBackTracking</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Back-tracking line-search based on linesearch.m in the manopt MATLAB</span>
-<span class="sd">    package.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="LineSearchBackTracking"><a class="viewcode-back" href="../../../solvers.html#pymanopt.solvers.linesearch.LineSearchBackTracking">[docs]</a><span></span><span class="k">class</span> <span class="nc">LineSearchBackTracking</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Back-tracking line-search algorithm.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">contraction_factor</span><span class="o">=</span><span class="mf">.5</span><span class="p">,</span> <span class="n">optimism</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
                  <span class="n">suff_decr</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span> <span class="n">maxiter</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">initial_stepsize</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
@@ -84,25 +95,20 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_oldf0</span> <span class="o">=</span> <span class="kc">None</span>
 
-<div class="viewcode-block" id="LineSearchBackTracking.search"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.solvers.linesearch.LineSearchBackTracking.search">[docs]</a>    <span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">objective</span><span class="p">,</span> <span class="n">manifold</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">f0</span><span class="p">,</span> <span class="n">df0</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Function to perform backtracking line-search.</span>
-<span class="sd">        Arguments:</span>
-<span class="sd">            - objective</span>
-<span class="sd">                objective function to optimise</span>
-<span class="sd">            - manifold</span>
-<span class="sd">                manifold to optimise over</span>
-<span class="sd">            - x</span>
-<span class="sd">                starting point on the manifold</span>
-<span class="sd">            - d</span>
-<span class="sd">                tangent vector at x (descent direction)</span>
-<span class="sd">            - df0</span>
-<span class="sd">                directional derivative at x along d</span>
+<div class="viewcode-block" id="LineSearchBackTracking.search"><a class="viewcode-back" href="../../../solvers.html#pymanopt.solvers.linesearch.LineSearchBackTracking.search">[docs]</a>    <span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">objective</span><span class="p">,</span> <span class="n">manifold</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">f0</span><span class="p">,</span> <span class="n">df0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Function to perform backtracking line search.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            objective: Objective function to optimize.</span>
+<span class="sd">            manifold: The manifold to optimize over.</span>
+<span class="sd">            x: Starting point on the manifold.</span>
+<span class="sd">            d: Tangent vector at ``x``, i.e., a descent direction.</span>
+<span class="sd">            df0: Directional derivative at ``x`` along ``d``.</span>
+
 <span class="sd">        Returns:</span>
-<span class="sd">            - stepsize</span>
-<span class="sd">                norm of the vector retracted to reach newx from x</span>
-<span class="sd">            - newx</span>
-<span class="sd">                next iterate suggested by the line-search</span>
+<span class="sd">            A tuple ``(stepsize, newx)`` where ``stepsize`` is the norm of the</span>
+<span class="sd">            vector retracted to reach the suggested iterate ``newx`` from</span>
+<span class="sd">            ``x``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Compute the norm of the search direction</span>
         <span class="n">norm_d</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
@@ -146,10 +152,8 @@
         <span class="k">return</span> <span class="n">stepsize</span><span class="p">,</span> <span class="n">newx</span></div></div>
 
 
-<div class="viewcode-block" id="LineSearchAdaptive"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.solvers.linesearch.LineSearchAdaptive">[docs]</a><span class="k">class</span> <span class="nc">LineSearchAdaptive</span><span class="p">:</span>
-    <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Adaptive line-search</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+<div class="viewcode-block" id="LineSearchAdaptive"><a class="viewcode-back" href="../../../solvers.html#pymanopt.solvers.linesearch.LineSearchAdaptive">[docs]</a><span class="k">class</span> <span class="nc">LineSearchAdaptive</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Adaptive line-search.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">contraction_factor</span><span class="o">=</span><span class="mf">.5</span><span class="p">,</span> <span class="n">suff_decr</span><span class="o">=</span><span class="mf">.5</span><span class="p">,</span> <span class="n">maxiter</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
                  <span class="n">initial_stepsize</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
@@ -159,7 +163,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_initial_stepsize</span> <span class="o">=</span> <span class="n">initial_stepsize</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_oldalpha</span> <span class="o">=</span> <span class="kc">None</span>
 
-<div class="viewcode-block" id="LineSearchAdaptive.search"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.solvers.linesearch.LineSearchAdaptive.search">[docs]</a>    <span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">objective</span><span class="p">,</span> <span class="n">man</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">f0</span><span class="p">,</span> <span class="n">df0</span><span class="p">):</span>
+<div class="viewcode-block" id="LineSearchAdaptive.search"><a class="viewcode-back" href="../../../solvers.html#pymanopt.solvers.linesearch.LineSearchAdaptive.search">[docs]</a>    <span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">objective</span><span class="p">,</span> <span class="n">man</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">f0</span><span class="p">,</span> <span class="n">df0</span><span class="p">):</span>
         <span class="n">norm_d</span> <span class="o">=</span> <span class="n">man</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_oldalpha</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -214,7 +218,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2021, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Dec 27, 2021.
+      <span class="lastupdated">Last updated on Dec 31, 2021.
       </span></p>
   </div>
 
@@ -225,7 +229,19 @@
       </div>
     </section>
   </div>
-  <script>
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: latest
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl>
+      <dt>Versions</dt>
+      <dd><a href="/docs/latest">latest</a></dd>
+    </dl>
+  </div>
+</div><script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });

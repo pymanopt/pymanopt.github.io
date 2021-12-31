@@ -5,7 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pymanopt.manifolds.product &mdash; Pymanopt latest documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/style.css" type="text/css" />
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/katex-math.css" type="text/css" />
     <link rel="canonical" href="pymanopt.org/_modules/pymanopt/manifolds/product.html" />
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
@@ -15,6 +17,10 @@
         <script src="../../../_static/jquery.js"></script>
         <script src="../../../_static/underscore.js"></script>
         <script src="../../../_static/doctools.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js"></script>
+        <script src="../../../_static/katex_autorenderer.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -26,6 +32,7 @@
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
             <a href="../../../index.html" class="icon icon-home"> Pymanopt
+            <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
                 latest
@@ -40,7 +47,14 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/pymanopt/pymanopt/tree/master/examples">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api-reference.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributing</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Notebooks</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/notebooks/mixture_of_gaussians.html">Riemannian Optimization for Inference in MoG models</a></li>
 </ul>
 
         </div>
@@ -74,7 +88,7 @@
 <span class="kn">from</span> <span class="nn">pymanopt.tools</span> <span class="kn">import</span> <span class="n">ndarraySequenceMixin</span>
 
 
-<div class="viewcode-block" id="Product"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.product.Product">[docs]</a><span class="k">class</span> <span class="nc">Product</span><span class="p">(</span><span class="n">Manifold</span><span class="p">):</span>
+<div class="viewcode-block" id="Product"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.product.Product">[docs]</a><span class="k">class</span> <span class="nc">Product</span><span class="p">(</span><span class="n">Manifold</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Product manifold, i.e., the cartesian product of multiple manifolds.&quot;&quot;&quot;</span>
 
     <span class="c1"># TODO(nkoep): Change the argument to *manifold so we can do Product(man1,</span>
@@ -101,60 +115,60 @@
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">([</span><span class="n">man</span><span class="o">.</span><span class="n">typicaldist</span> <span class="o">**</span> <span class="mi">2</span>
                                <span class="k">for</span> <span class="n">man</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_manifolds</span><span class="p">]))</span>
 
-<div class="viewcode-block" id="Product.inner"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.product.Product.inner">[docs]</a>    <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">H</span><span class="p">):</span>
+<div class="viewcode-block" id="Product.inner"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.product.Product.inner">[docs]</a>    <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">H</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">([</span><span class="n">man</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">G</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">H</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
                        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">man</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_manifolds</span><span class="p">)])</span></div>
 
-<div class="viewcode-block" id="Product.norm"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.product.Product.norm">[docs]</a>    <span class="k">def</span> <span class="nf">norm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">G</span><span class="p">):</span>
+<div class="viewcode-block" id="Product.norm"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.product.Product.norm">[docs]</a>    <span class="k">def</span> <span class="nf">norm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">G</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">G</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="Product.dist"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.product.Product.dist">[docs]</a>    <span class="k">def</span> <span class="nf">dist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
+<div class="viewcode-block" id="Product.dist"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.product.Product.dist">[docs]</a>    <span class="k">def</span> <span class="nf">dist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">([</span><span class="n">man</span><span class="o">.</span><span class="n">dist</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">Y</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span>
                                <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">man</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_manifolds</span><span class="p">)]))</span></div>
 
-<div class="viewcode-block" id="Product.proj"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.product.Product.proj">[docs]</a>    <span class="k">def</span> <span class="nf">proj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">U</span><span class="p">):</span>
+<div class="viewcode-block" id="Product.proj"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.product.Product.proj">[docs]</a>    <span class="k">def</span> <span class="nf">proj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">U</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">_ProductTangentVector</span><span class="p">(</span>
             <span class="p">[</span><span class="n">man</span><span class="o">.</span><span class="n">proj</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">U</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">man</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_manifolds</span><span class="p">)])</span></div>
 
-<div class="viewcode-block" id="Product.egrad2rgrad"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.product.Product.egrad2rgrad">[docs]</a>    <span class="k">def</span> <span class="nf">egrad2rgrad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">U</span><span class="p">):</span>
+<div class="viewcode-block" id="Product.egrad2rgrad"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.product.Product.egrad2rgrad">[docs]</a>    <span class="k">def</span> <span class="nf">egrad2rgrad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">U</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">_ProductTangentVector</span><span class="p">(</span>
             <span class="p">[</span><span class="n">man</span><span class="o">.</span><span class="n">egrad2rgrad</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">U</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
              <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">man</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_manifolds</span><span class="p">)])</span></div>
 
-<div class="viewcode-block" id="Product.ehess2rhess"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.product.Product.ehess2rhess">[docs]</a>    <span class="k">def</span> <span class="nf">ehess2rhess</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">egrad</span><span class="p">,</span> <span class="n">ehess</span><span class="p">,</span> <span class="n">H</span><span class="p">):</span>
+<div class="viewcode-block" id="Product.ehess2rhess"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.product.Product.ehess2rhess">[docs]</a>    <span class="k">def</span> <span class="nf">ehess2rhess</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">egrad</span><span class="p">,</span> <span class="n">ehess</span><span class="p">,</span> <span class="n">H</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">_ProductTangentVector</span><span class="p">(</span>
             <span class="p">[</span><span class="n">man</span><span class="o">.</span><span class="n">ehess2rhess</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">egrad</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">ehess</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">H</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
              <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">man</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_manifolds</span><span class="p">)])</span></div>
 
-<div class="viewcode-block" id="Product.exp"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.product.Product.exp">[docs]</a>    <span class="k">def</span> <span class="nf">exp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">U</span><span class="p">):</span>
+<div class="viewcode-block" id="Product.exp"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.product.Product.exp">[docs]</a>    <span class="k">def</span> <span class="nf">exp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">U</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">man</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">U</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">man</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_manifolds</span><span class="p">)]</span></div>
 
-<div class="viewcode-block" id="Product.retr"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.product.Product.retr">[docs]</a>    <span class="k">def</span> <span class="nf">retr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">U</span><span class="p">):</span>
+<div class="viewcode-block" id="Product.retr"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.product.Product.retr">[docs]</a>    <span class="k">def</span> <span class="nf">retr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">U</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">man</span><span class="o">.</span><span class="n">retr</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">U</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">man</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_manifolds</span><span class="p">)]</span></div>
 
-<div class="viewcode-block" id="Product.log"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.product.Product.log">[docs]</a>    <span class="k">def</span> <span class="nf">log</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">U</span><span class="p">):</span>
+<div class="viewcode-block" id="Product.log"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.product.Product.log">[docs]</a>    <span class="k">def</span> <span class="nf">log</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">U</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">_ProductTangentVector</span><span class="p">(</span>
             <span class="p">[</span><span class="n">man</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">U</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">man</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_manifolds</span><span class="p">)])</span></div>
 
-<div class="viewcode-block" id="Product.rand"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.product.Product.rand">[docs]</a>    <span class="k">def</span> <span class="nf">rand</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Product.rand"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.product.Product.rand">[docs]</a>    <span class="k">def</span> <span class="nf">rand</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">man</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span> <span class="k">for</span> <span class="n">man</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_manifolds</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="Product.randvec"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.product.Product.randvec">[docs]</a>    <span class="k">def</span> <span class="nf">randvec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<div class="viewcode-block" id="Product.randvec"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.product.Product.randvec">[docs]</a>    <span class="k">def</span> <span class="nf">randvec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
         <span class="n">scale</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_manifolds</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">_ProductTangentVector</span><span class="p">(</span>
             <span class="p">[</span><span class="n">scale</span> <span class="o">*</span> <span class="n">man</span><span class="o">.</span><span class="n">randvec</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
              <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">man</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_manifolds</span><span class="p">)])</span></div>
 
-<div class="viewcode-block" id="Product.transp"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.product.Product.transp">[docs]</a>    <span class="k">def</span> <span class="nf">transp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X1</span><span class="p">,</span> <span class="n">X2</span><span class="p">,</span> <span class="n">G</span><span class="p">):</span>
+<div class="viewcode-block" id="Product.transp"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.product.Product.transp">[docs]</a>    <span class="k">def</span> <span class="nf">transp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X1</span><span class="p">,</span> <span class="n">X2</span><span class="p">,</span> <span class="n">G</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">_ProductTangentVector</span><span class="p">(</span>
             <span class="p">[</span><span class="n">man</span><span class="o">.</span><span class="n">transp</span><span class="p">(</span><span class="n">X1</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">X2</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">G</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
              <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">man</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_manifolds</span><span class="p">)])</span></div>
 
-<div class="viewcode-block" id="Product.pairmean"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.product.Product.pairmean">[docs]</a>    <span class="k">def</span> <span class="nf">pairmean</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
+<div class="viewcode-block" id="Product.pairmean"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.product.Product.pairmean">[docs]</a>    <span class="k">def</span> <span class="nf">pairmean</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">man</span><span class="o">.</span><span class="n">pairmean</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">Y</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
                 <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">man</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_manifolds</span><span class="p">)]</span></div>
 
-<div class="viewcode-block" id="Product.zerovec"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.manifolds.product.Product.zerovec">[docs]</a>    <span class="k">def</span> <span class="nf">zerovec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<div class="viewcode-block" id="Product.zerovec"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.product.Product.zerovec">[docs]</a>    <span class="k">def</span> <span class="nf">zerovec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">_ProductTangentVector</span><span class="p">(</span>
             <span class="p">[</span><span class="n">man</span><span class="o">.</span><span class="n">zerovec</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">man</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_manifolds</span><span class="p">)])</span></div></div>
 
@@ -193,7 +207,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2021, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Dec 27, 2021.
+      <span class="lastupdated">Last updated on Dec 31, 2021.
       </span></p>
   </div>
 
@@ -204,7 +218,19 @@
       </div>
     </section>
   </div>
-  <script>
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: latest
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl>
+      <dt>Versions</dt>
+      <dd><a href="/docs/latest">latest</a></dd>
+    </dl>
+  </div>
+</div><script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
