@@ -477,7 +477,7 @@ q_\mathcal{N}(\mathbf{y}_n;\mathbf{S}_m)
 
 <span class="c1"># (2) Define cost function</span>
 <span class="c1"># The parameters must be contained in a list theta.</span>
-<span class="nd">@pymanopt</span><span class="o">.</span><span class="n">function</span><span class="o">.</span><span class="n">Autograd</span>
+<span class="nd">@pymanopt</span><span class="o">.</span><span class="n">function</span><span class="o">.</span><span class="n">Autograd</span><span class="p">(</span><span class="n">manifold</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">cost</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
     <span class="c1"># Unpack parameters</span>
     <span class="n">nu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
@@ -515,7 +515,7 @@ q_\mathcal{N}(\mathbf{y}_n;\mathbf{S}_m)
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Optimizing...
-Terminated - min stepsize reached after 131 iterations, 1.28 seconds.
+Terminated - min stepsize reached after 179 iterations, 1.16 seconds.
 
 </pre></div></div>
 </div>
@@ -597,21 +597,21 @@ Terminated - min stepsize reached after 131 iterations, 1.28 seconds.
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[[-4.12]
- [ 1.1 ]]
-[[2.54 0.17]
- [0.17 0.91]]
-[[ 1.98]
- [-1.1 ]]
-[[0.5  0.01]
- [0.01 0.51]]
-[[-0.05]
- [ 0.03]]
-[[0.99 0.81]
- [0.81 2.77]]
-0.10469426850259353
-0.29517590950265016
-0.6001298219947563
+[[-0.03]
+ [ 0.04]]
+[[0.97 0.99]
+ [0.99 3.1 ]]
+[[ 2.1 ]
+ [-1.01]]
+[[0.52 0.01]
+ [0.01 0.45]]
+[[-4.1 ]
+ [ 1.02]]
+[[ 2.47 -0.12]
+ [-0.12  1.08]]
+0.6167011218224706
+0.2951051573246835
+0.08819372085284594
 </pre></div></div>
 </div>
 <p>Et voilà – this was a brief demonstration of how to do inference for MoG models by performing Manifold optimisation using Pymanopt.</p>
@@ -740,8 +740,8 @@ Terminated - min stepsize reached after 131 iterations, 1.28 seconds.
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2016-2021, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Dec 31, 2021.
+    <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
+      <span class="lastupdated">Last updated on Jan 04, 2022.
       </span></p>
   </div>
 

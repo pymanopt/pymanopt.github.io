@@ -85,55 +85,40 @@
 <span></span><span class="kn">import</span> <span class="nn">inspect</span>
 <span class="kn">import</span> <span class="nn">typing</span>
 
+<span class="kn">from</span> <span class="nn">pymanopt.manifolds.manifold</span> <span class="kn">import</span> <span class="n">Manifold</span>
+
 
 <div class="viewcode-block" id="Function"><a class="viewcode-back" href="../../autodiff.html#pymanopt.autodiff.Function">[docs]</a><span class="k">class</span> <span class="nc">Function</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;Function &lt;</span><span class="si">{}</span><span class="s2">&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_backend</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">function</span><span class="p">,</span> <span class="n">manifold</span><span class="p">,</span> <span class="n">backend</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">callable</span><span class="p">(</span><span class="n">function</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Object </span><span class="si">{</span><span class="n">function</span><span class="si">}</span><span class="s2"> is not callable&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">backend</span><span class="o">.</span><span class="n">is_available</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Backend `</span><span class="si">{</span><span class="n">backend</span><span class="si">}</span><span class="s2">&#39; is not available&quot;</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">function</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">backend</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_function</span> <span class="o">=</span> <span class="n">function</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_args</span> <span class="o">=</span> <span class="n">args</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span> <span class="o">=</span> <span class="n">backend</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_compiled_function</span> <span class="o">=</span> <span class="n">backend</span><span class="o">.</span><span class="n">compile_function</span><span class="p">(</span><span class="n">function</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_num_arguments</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">num_values</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_compiled_function</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_egrad</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_ehess</span> <span class="o">=</span> <span class="kc">None</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_backend</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_compile</span><span class="p">()</span>
-
-    <span class="k">def</span> <span class="nf">_validate_backend</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span><span class="o">.</span><span class="n">is_available</span><span class="p">():</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Backend `</span><span class="si">{}</span><span class="s2">&#39; is not available&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span><span class="p">))</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span><span class="o">.</span><span class="n">is_compatible</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_function</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_args</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Backend `</span><span class="si">{}</span><span class="s2">&#39; is not compatible with cost &quot;</span>
-                             <span class="s2">&quot;function of type `</span><span class="si">{:s}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                                 <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span><span class="p">,</span>
-                                 <span class="bp">self</span><span class="o">.</span><span class="n">_function</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">))</span>
-
-    <span class="k">def</span> <span class="nf">_compile</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compiled_function</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_compiled_function</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span><span class="o">.</span><span class="n">compile_function</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_function</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_args</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;Function &lt;</span><span class="si">{}</span><span class="s2">&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_backend</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Function.compute_gradient"><a class="viewcode-back" href="../../autodiff.html#pymanopt.autodiff.Function.compute_gradient">[docs]</a>    <span class="k">def</span> <span class="nf">compute_gradient</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_egrad</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_egrad</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span><span class="o">.</span><span class="n">compute_gradient</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_function</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_args</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_function</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_arguments</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_egrad</span></div>
 
 <div class="viewcode-block" id="Function.compute_hessian_vector_product"><a class="viewcode-back" href="../../autodiff.html#pymanopt.autodiff.Function.compute_hessian_vector_product">[docs]</a>    <span class="k">def</span> <span class="nf">compute_hessian_vector_product</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ehess</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_ehess</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span><span class="o">.</span><span class="n">compute_hessian_vector_product</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_function</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_args</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_function</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_arguments</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ehess</span></div>
 
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compiled_function</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compiled_function</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 
@@ -145,13 +130,9 @@
 
 <span class="sd">        decorator = make_tracing_backend_decorator(Backend)</span>
 
-<span class="sd">        @decorator</span>
+<span class="sd">        @decorator(manifold)</span>
 <span class="sd">        def function(x):</span>
-<span class="sd">            pass</span>
-
-<span class="sd">        @decator(backend_specific_kwargs=...)</span>
-<span class="sd">        def function(x):</span>
-<span class="sd">            pass</span>
+<span class="sd">            ...</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        Backend: a class implementing the backend interface defined by</span>
@@ -160,31 +141,25 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        A new backend decorator.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">callable</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
-            <span class="p">(</span><span class="n">function</span><span class="p">,)</span> <span class="o">=</span> <span class="n">args</span>
+    <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="n">manifold</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">manifold</span><span class="p">,</span> <span class="n">Manifold</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="s2">&quot;Backend decorator requires a manifold instance, got &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">manifold</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="n">function</span><span class="p">):</span>
             <span class="n">argspec</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getfullargspec</span><span class="p">(</span><span class="n">function</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">argspec</span><span class="o">.</span><span class="n">varargs</span> <span class="ow">or</span> <span class="n">argspec</span><span class="o">.</span><span class="n">varkw</span> <span class="ow">or</span> <span class="n">argspec</span><span class="o">.</span><span class="n">kwonlyargs</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">((</span><span class="n">argspec</span><span class="o">.</span><span class="n">args</span> <span class="ow">and</span> <span class="n">argspec</span><span class="o">.</span><span class="n">varargs</span><span class="p">)</span> <span class="ow">or</span>
+                    <span class="ow">not</span> <span class="p">(</span><span class="n">argspec</span><span class="o">.</span><span class="n">args</span> <span class="ow">or</span> <span class="n">argspec</span><span class="o">.</span><span class="n">varargs</span><span class="p">)</span> <span class="ow">or</span>
+                    <span class="p">(</span><span class="n">argspec</span><span class="o">.</span><span class="n">varkw</span> <span class="ow">or</span> <span class="n">argspec</span><span class="o">.</span><span class="n">kwonlyargs</span><span class="p">)):</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                    <span class="s2">&quot;Decorated function must only accept positional &quot;</span>
-                    <span class="s2">&quot;arguments&quot;</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">Function</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="n">argspec</span><span class="o">.</span><span class="n">args</span><span class="p">),</span>
-                            <span class="n">backend</span><span class="o">=</span><span class="n">Backend</span><span class="p">())</span>
-
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Only keyword arguments allowed&quot;</span><span class="p">)</span>
-
-        <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="n">function</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">Function</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="n">args</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="n">Backend</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">inner</span>
-    <span class="k">return</span> <span class="n">decorator</span></div>
-
-
-<div class="viewcode-block" id="make_graph_backend_decorator"><a class="viewcode-back" href="../../autodiff.html#pymanopt.autodiff.make_graph_backend_decorator">[docs]</a><span class="k">def</span> <span class="nf">make_graph_backend_decorator</span><span class="p">(</span><span class="n">Backend</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="n">function</span><span class="p">):</span>
-            <span class="n">graph</span> <span class="o">=</span> <span class="n">function</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">Function</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="n">args</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="n">Backend</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
+                    <span class="s2">&quot;Decorated function must only accept positional arguments &quot;</span>
+                    <span class="s2">&quot;or a variable-length argument like *x&quot;</span>
+                <span class="p">)</span>
+            <span class="k">return</span> <span class="n">Function</span><span class="p">(</span>
+                <span class="n">function</span><span class="o">=</span><span class="n">function</span><span class="p">,</span> <span class="n">manifold</span><span class="o">=</span><span class="n">manifold</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="n">Backend</span><span class="p">()</span>
+            <span class="p">)</span>
         <span class="k">return</span> <span class="n">inner</span>
     <span class="k">return</span> <span class="n">decorator</span></div>
 </pre></div>
@@ -196,8 +171,8 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2016-2021, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Dec 31, 2021.
+    <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
+      <span class="lastupdated">Last updated on Jan 04, 2022.
       </span></p>
   </div>
 

@@ -173,7 +173,7 @@ As indicated in the introduction above, we follow four simple steps: we
 instantiate the manifold, create the cost function (using Autograd in this
 case), define a problem instance which we pass the manifold and the cost
 function, and run the minimization problem using one of the available solvers.</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">autograd.numpy</span> <span class="k">as</span> <span class="nn">anp</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">autograd.numpy</span> <span class="k">as</span> <span class="nn">anp</span>
 <span class="kn">import</span> <span class="nn">pymanopt</span>
 <span class="kn">import</span> <span class="nn">pymanopt.manifolds</span>
 <span class="kn">import</span> <span class="nn">pymanopt.solvers</span>
@@ -186,7 +186,7 @@ function, and run the minimization problem using one of the available solvers.</
 <span class="n">matrix</span> <span class="o">=</span> <span class="n">anp</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">dim</span><span class="p">,</span> <span class="n">dim</span><span class="p">))</span>
 <span class="n">matrix</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">matrix</span> <span class="o">+</span> <span class="n">matrix</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
 
-<span class="nd">@pymanopt</span><span class="o">.</span><span class="n">function</span><span class="o">.</span><span class="n">Autograd</span>
+<span class="nd">@pymanopt</span><span class="o">.</span><span class="n">function</span><span class="o">.</span><span class="n">Autograd</span><span class="p">(</span><span class="n">manifold</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">cost</span><span class="p">(</span><span class="n">point</span><span class="p">):</span>
     <span class="k">return</span> <span class="o">-</span><span class="n">point</span> <span class="o">@</span> <span class="n">matrix</span> <span class="o">@</span> <span class="n">point</span>
 
@@ -202,7 +202,7 @@ function, and run the minimization problem using one of the available solvers.</
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Pymanopt solution:&quot;</span><span class="p">,</span> <span class="n">solution</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Running this example will produce the following output:</p>
+<p>Running this example will produce (something like) the following output:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Optimizing...
 Iteration    Cost                       Gradient norm
 ---------    -----------------------    --------------
@@ -235,15 +235,15 @@ Dominant eigenvector: [-0.78442334 -0.38225031 -0.48843088]
 Pymanopt solution: [0.78442327 0.38225034 0.48843097]
 </pre></div>
 </div>
-<p>Note that the signs of the <em>true</em> dominant eigenvector and the solution found
-by Pymanopt differ.
+<p>Note that the direction of the “true” dominant eigenvector and the solution
+found by Pymanopt differ.
 This is not exactly surprising though.
 Eigenvectors are not unique since every eigenpair <span class="math">\((\lambda, \vmv)\)</span> still
 satisfies the eigenvalue equation <span class="math">\(\vmA \vmv = \lambda \vmv\)</span> if
 <span class="math">\(\vmv\)</span> is replaced by <span class="math">\(\alpha \vmv\)</span> for some <span class="math">\(\alpha \in \R
 \setminus \set{0}\)</span>.
 That is, the dominant eigenvector is only unique up to multiplication by a
-nonzero constant.</p>
+nonzero constant; the zero vector is trivially considered <em>not</em> an eigenvector.</p>
 <p>The example above constitutes the conceivably simplest demonstration of
 Pymanopt.
 For more interesting examples we refer to the <a class="reference external" href="https://github.com/pymanopt/pymanopt/tree/master/examples">examples</a> in Pymanopt’s
@@ -265,8 +265,8 @@ Pymanopt in the context of inference in Gaussian mixture models.</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2016-2021, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Dec 31, 2021.
+    <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
+      <span class="lastupdated">Last updated on Jan 04, 2022.
       </span></p>
   </div>
 

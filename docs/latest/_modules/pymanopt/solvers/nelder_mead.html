@@ -91,33 +91,22 @@
 <span class="kn">from</span> <span class="nn">pymanopt.solvers.steepest_descent</span> <span class="kn">import</span> <span class="n">SteepestDescent</span>
 
 
-<span class="c1"># TODO(nkoep): Check if a suitable autodiff backend is available, and solve the</span>
-<span class="c1">#              problem using the TR solver if so.</span>
 <div class="viewcode-block" id="compute_centroid"><a class="viewcode-back" href="../../../solvers.html#pymanopt.solvers.nelder_mead.compute_centroid">[docs]</a><span class="k">def</span> <span class="nf">compute_centroid</span><span class="p">(</span><span class="n">manifold</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Compute the centroid of `points` on the `manifold` as Karcher mean.&quot;&quot;&quot;</span>
-    <span class="n">num_points</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+    <span class="nd">@pymanopt</span><span class="o">.</span><span class="n">function</span><span class="o">.</span><span class="n">Callable</span><span class="p">(</span><span class="n">manifold</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">objective</span><span class="p">(</span><span class="o">*</span><span class="n">y</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">manifold</span><span class="o">.</span><span class="n">num_values</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="p">(</span><span class="n">y</span><span class="p">,)</span> <span class="o">=</span> <span class="n">y</span>
+        <span class="k">return</span> <span class="nb">sum</span><span class="p">([</span><span class="n">manifold</span><span class="o">.</span><span class="n">dist</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">point</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span>
 
-    <span class="nd">@pymanopt</span><span class="o">.</span><span class="n">function</span><span class="o">.</span><span class="n">Callable</span>
-    <span class="k">def</span> <span class="nf">objective</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
-        <span class="n">accumulator</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_points</span><span class="p">):</span>
-            <span class="n">accumulator</span> <span class="o">+=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">dist</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span>
-        <span class="k">return</span> <span class="n">accumulator</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="nd">@pymanopt</span><span class="o">.</span><span class="n">function</span><span class="o">.</span><span class="n">Callable</span><span class="p">(</span><span class="n">manifold</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">gradient</span><span class="p">(</span><span class="o">*</span><span class="n">y</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">manifold</span><span class="o">.</span><span class="n">num_values</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="p">(</span><span class="n">y</span><span class="p">,)</span> <span class="o">=</span> <span class="n">y</span>
+        <span class="k">return</span> <span class="o">-</span><span class="nb">sum</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">manifold</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">point</span><span class="p">)</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points</span><span class="p">],</span> <span class="n">manifold</span><span class="o">.</span><span class="n">zerovec</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+        <span class="p">)</span>
 
-    <span class="nd">@pymanopt</span><span class="o">.</span><span class="n">function</span><span class="o">.</span><span class="n">Callable</span>
-    <span class="k">def</span> <span class="nf">gradient</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
-        <span class="n">g</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">zerovec</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_points</span><span class="p">):</span>
-            <span class="n">g</span> <span class="o">-=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-        <span class="k">return</span> <span class="n">g</span>
-
-    <span class="c1"># XXX: Manopt runs a few TR iterations here. For us to do this, we either</span>
-    <span class="c1">#      need to work out the Hessian of the Karcher mean by hand or</span>
-    <span class="c1">#      implement approximations for the Hessian to use in the TR solver as</span>
-    <span class="c1">#      Manopt. This is because we cannot implement the Karcher mean with</span>
-    <span class="c1">#      Theano, say, and compute the Hessian automatically due to dependence</span>
-    <span class="c1">#      on the manifold-dependent distance function, which is written in</span>
-    <span class="c1">#      numpy.</span>
     <span class="n">solver</span> <span class="o">=</span> <span class="n">SteepestDescent</span><span class="p">(</span><span class="n">maxiter</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
     <span class="n">problem</span> <span class="o">=</span> <span class="n">pymanopt</span><span class="o">.</span><span class="n">Problem</span><span class="p">(</span><span class="n">manifold</span><span class="p">,</span> <span class="n">objective</span><span class="p">,</span> <span class="n">grad</span><span class="o">=</span><span class="n">gradient</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">problem</span><span class="p">)</span></div>
@@ -314,8 +303,8 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2016-2021, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Dec 31, 2021.
+    <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
+      <span class="lastupdated">Last updated on Jan 04, 2022.
       </span></p>
   </div>
 

@@ -143,7 +143,7 @@ backend decorator using
 <a class="reference internal" href="#pymanopt.autodiff.make_tracing_backend_decorator" title="pymanopt.autodiff.make_tracing_backend_decorator"><code class="xref py py-func docutils literal notranslate"><span class="pre">pymanopt.autodiff.make_tracing_backend_decorator()</span></code></a>.</p>
 <span class="target" id="module-pymanopt.autodiff"></span><dl class="py class">
 <dt class="sig sig-object py" id="pymanopt.autodiff.Function">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pymanopt.autodiff.</span></span><span class="sig-name descname"><span class="pre">Function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">function</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backend</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/autodiff.html#Function"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.autodiff.Function" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pymanopt.autodiff.</span></span><span class="sig-name descname"><span class="pre">Function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">function</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">manifold</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backend</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/autodiff.html#Function"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.autodiff.Function" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pymanopt.autodiff.Function.compute_gradient">
@@ -165,13 +165,9 @@ backend decorator using
 callable:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">decorator</span> <span class="o">=</span> <span class="n">make_tracing_backend_decorator</span><span class="p">(</span><span class="n">Backend</span><span class="p">)</span>
 
-<span class="nd">@decorator</span>
+<span class="nd">@decorator</span><span class="p">(</span><span class="n">manifold</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-    <span class="k">pass</span>
-
-<span class="nd">@decator</span><span class="p">(</span><span class="n">backend_specific_kwargs</span><span class="o">=...</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-    <span class="k">pass</span>
+    <span class="o">...</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
@@ -188,36 +184,26 @@ callable:</p>
 </dl>
 </dd></dl>
 
-<dl class="py function">
-<dt class="sig sig-object py" id="pymanopt.autodiff.make_graph_backend_decorator">
-<span class="sig-prename descclassname"><span class="pre">pymanopt.autodiff.</span></span><span class="sig-name descname"><span class="pre">make_graph_backend_decorator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Backend</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/autodiff.html#make_graph_backend_decorator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.autodiff.make_graph_backend_decorator" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
 <div class="section" id="module-pymanopt.function">
 <span id="backend-decorators"></span><h2>Backend Decorators<a class="headerlink" href="#module-pymanopt.function" title="Permalink to this headline"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="pymanopt.function.Autograd">
-<span class="sig-prename descclassname"><span class="pre">pymanopt.function.</span></span><span class="sig-name descname"><span class="pre">Autograd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.function.Autograd" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pymanopt.function.</span></span><span class="sig-name descname"><span class="pre">Autograd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">manifold</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.function.Autograd" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pymanopt.function.Callable">
-<span class="sig-prename descclassname"><span class="pre">pymanopt.function.</span></span><span class="sig-name descname"><span class="pre">Callable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.function.Callable" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pymanopt.function.</span></span><span class="sig-name descname"><span class="pre">Callable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">manifold</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.function.Callable" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pymanopt.function.PyTorch">
-<span class="sig-prename descclassname"><span class="pre">pymanopt.function.</span></span><span class="sig-name descname"><span class="pre">PyTorch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.function.PyTorch" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pymanopt.function.</span></span><span class="sig-name descname"><span class="pre">PyTorch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">manifold</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.function.PyTorch" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pymanopt.function.TensorFlow">
-<span class="sig-prename descclassname"><span class="pre">pymanopt.function.</span></span><span class="sig-name descname"><span class="pre">TensorFlow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.function.TensorFlow" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pymanopt.function.Theano">
-<span class="sig-prename descclassname"><span class="pre">pymanopt.function.</span></span><span class="sig-name descname"><span class="pre">Theano</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.function.Theano" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pymanopt.function.</span></span><span class="sig-name descname"><span class="pre">TensorFlow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">manifold</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.function.TensorFlow" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 </div>
@@ -234,8 +220,8 @@ callable:</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2016-2021, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Dec 31, 2021.
+    <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
+      <span class="lastupdated">Last updated on Jan 04, 2022.
       </span></p>
   </div>
 

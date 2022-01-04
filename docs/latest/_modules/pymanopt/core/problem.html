@@ -98,8 +98,13 @@
 
 <span class="sd">    Args:</span>
 <span class="sd">        manifold: Manifold to optimize over.</span>
-<span class="sd">        cost: The cost function which takes an element of the manifold and</span>
-<span class="sd">            returns a real number.</span>
+<span class="sd">        cost: A callable decorated with a decorator from</span>
+<span class="sd">            :mod:`pymanopt.functions` which takes a point on a manifold and</span>
+<span class="sd">            returns a real scalar.</span>
+<span class="sd">            If any decorator other than</span>
+<span class="sd">            :func:`pymanopt.function.Callable` is used the gradient and</span>
+<span class="sd">            Hessian-vector production functions are computed automatically if</span>
+<span class="sd">            needed and no ``(e)grad`` or ``(e)hess`` arguments are provided.</span>
 <span class="sd">        egrad: The Euclidean gradient, i.e., the gradient of the cost function</span>
 <span class="sd">            in the typical sense in the ambient space.</span>
 <span class="sd">            The returned value need not belong to the tangent space of</span>
@@ -314,8 +319,8 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2016-2021, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Dec 31, 2021.
+    <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
+      <span class="lastupdated">Last updated on Jan 04, 2022.
       </span></p>
   </div>
 
