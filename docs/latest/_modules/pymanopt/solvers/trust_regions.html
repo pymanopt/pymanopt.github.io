@@ -224,8 +224,7 @@
         <span class="k">if</span> <span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Optimizing...&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{:44s}</span><span class="s2">f: </span><span class="si">{:+.6e}</span><span class="s2">   |grad|: </span><span class="si">{:.6e}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">fx</span><span class="p">),</span> <span class="n">norm_grad</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39; &#39;</span><span class="si">:</span><span class="s2">44s</span><span class="si">}</span><span class="s2">f: </span><span class="si">{</span><span class="n">fx</span><span class="si">:</span><span class="s2">+.6e</span><span class="si">}</span><span class="s2">   |grad|: </span><span class="si">{</span><span class="n">norm_grad</span><span class="si">:</span><span class="s2">.6e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_start_optlog</span><span class="p">()</span>
 
@@ -388,8 +387,8 @@
                           <span class="s2">&quot;decreases).&quot;</span><span class="p">)</span>
                     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; +++ Consider decreasing options.Delta_bar &quot;</span>
                           <span class="s2">&quot;by an order of magnitude.&quot;</span><span class="p">)</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; +++ Current values: Delta_bar = </span><span class="si">{:g}</span><span class="s2"> and &quot;</span>
-                          <span class="s2">&quot;Delta0 = </span><span class="si">{:g}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Delta_bar</span><span class="p">,</span> <span class="n">Delta0</span><span class="p">))</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; +++ Current values: Delta_bar = </span><span class="si">{</span><span class="n">Delta_bar</span><span class="si">:</span><span class="s2">g</span><span class="si">}</span><span class="s2"> &quot;</span>
+                          <span class="sa">f</span><span class="s2">&quot;and Delta0 = </span><span class="si">{</span><span class="n">Delta0</span><span class="si">:</span><span class="s2">g</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="c1"># If the actual decrease is at least 3/4 of the precicted decrease</span>
             <span class="c1"># and the tCG (inner solve) hit the TR boundary, increase the TR</span>
             <span class="c1"># radius. We also keep track of the number of consecutive</span>
@@ -407,8 +406,8 @@
                           <span class="s2">&quot;increases).&quot;</span><span class="p">)</span>
                     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; +++ Consider increasing options.Delta_bar &quot;</span>
                           <span class="s2">&quot;by an order of magnitude.&quot;</span><span class="p">)</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; +++ Current values: Delta_bar = </span><span class="si">{:g}</span><span class="s2"> and &quot;</span>
-                          <span class="s2">&quot;Delta0 = </span><span class="si">{:g}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Delta_bar</span><span class="p">,</span> <span class="n">Delta0</span><span class="p">))</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; +++ Current values: Delta_bar = </span><span class="si">{</span><span class="n">Delta_bar</span><span class="si">:</span><span class="s2">g</span><span class="si">}</span><span class="s2"> &quot;</span>
+                          <span class="sa">f</span><span class="s2">&quot;and Delta0 = </span><span class="si">{</span><span class="n">Delta0</span><span class="si">:</span><span class="s2">g</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="c1"># Otherwise, keep the TR radius constant.</span>
                 <span class="n">consecutive_TRplus</span> <span class="o">=</span> <span class="mi">0</span>
@@ -432,18 +431,16 @@
 
             <span class="c1"># ** Display:</span>
             <span class="k">if</span> <span class="n">verbosity</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{:.3s}</span><span class="s2"> </span><span class="si">{:.3s}</span><span class="s2">   k: </span><span class="si">{:5d}</span><span class="s2">     num_inner: &quot;</span>
-                      <span class="s2">&quot;</span><span class="si">{:5d}</span><span class="s2">     f: </span><span class="si">{:+e}</span><span class="s2">   |grad|: </span><span class="si">{:e}</span><span class="s2">   &quot;</span>
-                      <span class="s2">&quot;</span><span class="si">{:s}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">accstr</span><span class="p">,</span> <span class="n">trstr</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">numit</span><span class="p">,</span>
-                                    <span class="nb">float</span><span class="p">(</span><span class="n">fx</span><span class="p">),</span> <span class="n">norm_grad</span><span class="p">,</span> <span class="n">srstr</span><span class="p">))</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">accstr</span><span class="si">:</span><span class="s2">.3s</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">trstr</span><span class="si">:</span><span class="s2">.3s</span><span class="si">}</span><span class="s2">   k: </span><span class="si">{</span><span class="n">k</span><span class="si">:</span><span class="s2">5d</span><span class="si">}</span><span class="s2">     num_inner: &quot;</span>
+                      <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">numit</span><span class="si">:</span><span class="s2">5d</span><span class="si">}</span><span class="s2">     f: </span><span class="si">{</span><span class="n">fx</span><span class="si">:</span><span class="s2">+e</span><span class="si">}</span><span class="s2">   |grad|: &quot;</span>
+                      <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">norm_grad</span><span class="si">:</span><span class="s2">e</span><span class="si">}</span><span class="s2">   </span><span class="si">{</span><span class="n">srstr</span><span class="si">:</span><span class="s2">s</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">verbosity</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_rand</span> <span class="ow">and</span> <span class="n">used_cauchy</span><span class="p">:</span>
                     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;USED CAUCHY POINT&quot;</span><span class="p">)</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{:.3s}</span><span class="s2"> </span><span class="si">{:.3s}</span><span class="s2">    k: </span><span class="si">{:5d}</span><span class="s2">     num_inner: &quot;</span>
-                      <span class="s2">&quot;</span><span class="si">{:5d}</span><span class="s2">     </span><span class="si">{:s}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">accstr</span><span class="p">,</span> <span class="n">trstr</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">numit</span><span class="p">,</span> <span class="n">srstr</span><span class="p">))</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;       f(x) : </span><span class="si">{:+e}</span><span class="s2">     |grad| : &quot;</span>
-                      <span class="s2">&quot;</span><span class="si">{:e}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fx</span><span class="p">,</span> <span class="n">norm_grad</span><span class="p">))</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;        rho : </span><span class="si">{:e}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rho</span><span class="p">))</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">accstr</span><span class="si">:</span><span class="s2">.3s</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">trstr</span><span class="si">:</span><span class="s2">.3s</span><span class="si">}</span><span class="s2">    k: </span><span class="si">{</span><span class="n">k</span><span class="si">:</span><span class="s2">5d</span><span class="si">}</span><span class="s2">     num_inner: &quot;</span>
+                      <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">numit</span><span class="si">:</span><span class="s2">5d</span><span class="si">}</span><span class="s2">     </span><span class="si">{</span><span class="n">srstr</span><span class="si">:</span><span class="s2">s</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;       f(x) : </span><span class="si">{</span><span class="n">fx</span><span class="si">:</span><span class="s2">+e</span><span class="si">}</span><span class="s2">     |grad| : </span><span class="si">{</span><span class="n">norm_grad</span><span class="si">:</span><span class="s2">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;        rho : </span><span class="si">{</span><span class="n">rho</span><span class="si">:</span><span class="s2">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
             <span class="c1"># ** CHECK STOPPING criteria</span>
             <span class="n">stop_reason</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_stopping_criterion</span><span class="p">(</span>
@@ -644,7 +641,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Jan 04, 2022.
+      <span class="lastupdated">Last updated on Jan 05, 2022.
       </span></p>
   </div>
 

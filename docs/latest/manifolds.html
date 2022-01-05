@@ -153,6 +153,18 @@ class.</p>
 <div class="section" id="module-pymanopt.manifolds.manifold">
 <span id="manifold"></span><h2>Manifold<a class="headerlink" href="#module-pymanopt.manifolds.manifold" title="Permalink to this headline"></a></h2>
 <dl class="py class">
+<dt class="sig sig-object py" id="pymanopt.manifolds.manifold.RetrAsExpMixin">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pymanopt.manifolds.manifold.</span></span><span class="sig-name descname"><span class="pre">RetrAsExpMixin</span></span><a class="reference internal" href="_modules/pymanopt/manifolds/manifold.html#RetrAsExpMixin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.manifold.RetrAsExpMixin" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Mixin which defers calls to the exponential map to the retraction.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pymanopt.manifolds.manifold.RetrAsExpMixin.exp">
+<span class="sig-name descname"><span class="pre">exp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">U</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/manifold.html#RetrAsExpMixin.exp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.manifold.RetrAsExpMixin.exp" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="pymanopt.manifolds.manifold.Manifold">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pymanopt.manifolds.manifold.</span></span><span class="sig-name descname"><span class="pre">Manifold</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dimension</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point_layout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/manifold.html#Manifold"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.manifold.Manifold" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
@@ -1391,7 +1403,7 @@ tangent vectors <code class="docutils literal notranslate"><span class="pre">G</
 <dl class="py class">
 <dt class="sig sig-object py" id="pymanopt.manifolds.psd.Elliptope">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pymanopt.manifolds.psd.</span></span><span class="sig-name descname"><span class="pre">Elliptope</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/psd.html#Elliptope"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.psd.Elliptope" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pymanopt.manifolds.manifold.Manifold" title="pymanopt.manifolds.manifold.Manifold"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.manifolds.manifold.Manifold</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.manifolds.psd._RetrAsExpMixin</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="#pymanopt.manifolds.manifold.Manifold" title="pymanopt.manifolds.manifold.Manifold"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.manifolds.manifold.Manifold</span></code></a>, <a class="reference internal" href="#pymanopt.manifolds.manifold.RetrAsExpMixin" title="pymanopt.manifolds.manifold.RetrAsExpMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.manifolds.manifold.RetrAsExpMixin</span></code></a></p>
 <p>Manifold of fixed-rank PSD matrices with unit diagonal elements.</p>
 <p>A point X on the manifold is parameterized as YY^T where Y is a matrix of
 size nxk. As such, X is symmetric, positive semidefinite. We restrict to
@@ -1909,7 +1921,7 @@ the geodesic arc joining them.</p>
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Jan 04, 2022.
+      <span class="lastupdated">Last updated on Jan 05, 2022.
       </span></p>
   </div>
 

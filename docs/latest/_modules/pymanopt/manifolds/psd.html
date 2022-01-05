@@ -82,30 +82,17 @@
            <div itemprop="articleBody">
              
   <h1>Source code for pymanopt.manifolds.psd</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">warnings</span>
-
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">linalg</span> <span class="k">as</span> <span class="n">la</span><span class="p">,</span> <span class="n">random</span> <span class="k">as</span> <span class="n">rnd</span>
 <span class="kn">from</span> <span class="nn">scipy.linalg</span> <span class="kn">import</span> <span class="n">expm</span>
-<span class="c1"># Workaround for SciPy bug: https://github.com/scipy/scipy/pull/8082</span>
-<span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">scipy.linalg</span> <span class="kn">import</span> <span class="n">solve_continuous_lyapunov</span> <span class="k">as</span> <span class="n">lyap</span>
-<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">scipy.linalg</span> <span class="kn">import</span> <span class="n">solve_lyapunov</span> <span class="k">as</span> <span class="n">lyap</span>
+<span class="kn">from</span> <span class="nn">scipy.linalg</span> <span class="kn">import</span> <span class="n">solve_continuous_lyapunov</span> <span class="k">as</span> <span class="n">lyap</span>
 
-<span class="kn">from</span> <span class="nn">pymanopt.manifolds.manifold</span> <span class="kn">import</span> <span class="n">EuclideanEmbeddedSubmanifold</span><span class="p">,</span> <span class="n">Manifold</span>
+<span class="kn">from</span> <span class="nn">pymanopt.manifolds.manifold</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">EuclideanEmbeddedSubmanifold</span><span class="p">,</span>
+    <span class="n">Manifold</span><span class="p">,</span>
+    <span class="n">RetrAsExpMixin</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span> <span class="nn">pymanopt.tools.multi</span> <span class="kn">import</span> <span class="n">multilog</span><span class="p">,</span> <span class="n">multiprod</span><span class="p">,</span> <span class="n">multisym</span><span class="p">,</span> <span class="n">multitransp</span>
-
-
-<span class="k">class</span> <span class="nc">_RetrAsExpMixin</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Mixin to use a retraction as exponential map.&quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="nf">exp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">U</span><span class="p">):</span>
-        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-            <span class="s2">&quot;Exponential map for manifold &#39;</span><span class="si">{:s}</span><span class="s2">&#39; not implemented yet. Using &quot;</span>
-            <span class="s2">&quot;retraction instead.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_class_name</span><span class="p">()),</span>
-            <span class="ne">RuntimeWarning</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">retr</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">U</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="SymmetricPositiveDefinite"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.psd.SymmetricPositiveDefinite">[docs]</a><span class="k">class</span> <span class="nc">SymmetricPositiveDefinite</span><span class="p">(</span><span class="n">EuclideanEmbeddedSubmanifold</span><span class="p">):</span>
@@ -120,10 +107,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_k</span> <span class="o">=</span> <span class="n">k</span>
 
         <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">name</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;Manifold of positive definite (</span><span class="si">{}</span><span class="s2"> x </span><span class="si">{}</span><span class="s2">) matrices&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Manifold of positive definite </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">x</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2"> matrices&quot;</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Product manifold of </span><span class="si">{}</span><span class="s2"> (</span><span class="si">{}</span><span class="s2"> x </span><span class="si">{}</span><span class="s2">) matrices&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Product manifold of </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2"> positive definite </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">x</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2"> matrices&quot;</span>
+            <span class="p">)</span>
         <span class="n">dimension</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">k</span> <span class="o">*</span> <span class="n">n</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">dimension</span><span class="p">)</span>
 
@@ -235,7 +223,7 @@
 <span class="c1">#              psd matrices, or in fixed_rank. Alternatively, move this one and</span>
 <span class="c1">#              the next class to a dedicated &#39;psd_fixed_rank&#39; module.</span>
 
-<span class="k">class</span> <span class="nc">_PSDFixedRank</span><span class="p">(</span><span class="n">Manifold</span><span class="p">,</span> <span class="n">_RetrAsExpMixin</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">_PSDFixedRank</span><span class="p">(</span><span class="n">Manifold</span><span class="p">,</span> <span class="n">RetrAsExpMixin</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">dimension</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_n</span> <span class="o">=</span> <span class="n">n</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_k</span> <span class="o">=</span> <span class="n">k</span>
@@ -254,10 +242,10 @@
 
     <span class="k">def</span> <span class="nf">proj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">H</span><span class="p">):</span>
         <span class="c1"># Projection onto the horizontal space</span>
-        <span class="n">YtY</span> <span class="o">=</span> <span class="n">Y</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
-        <span class="n">AS</span> <span class="o">=</span> <span class="n">Y</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">H</span><span class="p">)</span> <span class="o">-</span> <span class="n">H</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
+        <span class="n">YtY</span> <span class="o">=</span> <span class="n">Y</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">Y</span>
+        <span class="n">AS</span> <span class="o">=</span> <span class="n">Y</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">H</span> <span class="o">-</span> <span class="n">H</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">Y</span>
         <span class="n">Omega</span> <span class="o">=</span> <span class="n">lyap</span><span class="p">(</span><span class="n">YtY</span><span class="p">,</span> <span class="n">AS</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">H</span> <span class="o">-</span> <span class="n">Y</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Omega</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">H</span> <span class="o">-</span> <span class="n">Y</span> <span class="o">@</span> <span class="n">Omega</span>
 
     <span class="k">def</span> <span class="nf">egrad2rgrad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">egrad</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">egrad</span>
@@ -319,8 +307,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
-        <span class="n">name</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;YY&#39; quotient manifold of </span><span class="si">{:d}</span><span class="s2">x</span><span class="si">{:d}</span><span class="s2"> psd matrices of &quot;</span>
-                <span class="s2">&quot;rank </span><span class="si">{:d}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">))</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Quotient manifold of </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">x</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2"> psd matrices of rank </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="n">dimension</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">k</span> <span class="o">*</span> <span class="n">n</span> <span class="o">-</span> <span class="n">k</span> <span class="o">*</span> <span class="p">(</span><span class="n">k</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">dimension</span><span class="p">)</span></div>
 
@@ -351,8 +338,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
-        <span class="n">name</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;YY&#39; quotient manifold of Hermitian </span><span class="si">{:d}</span><span class="s2">x</span><span class="si">{:d}</span><span class="s2"> complex &quot;</span>
-                <span class="s2">&quot;matrices of rank </span><span class="si">{:d}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">))</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Quotient manifold of Hermitian </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">x</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2"> matrices of rank </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="n">dimension</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">k</span> <span class="o">*</span> <span class="n">n</span> <span class="o">-</span> <span class="n">k</span> <span class="o">*</span> <span class="n">k</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">dimension</span><span class="p">)</span>
 
@@ -363,8 +349,8 @@
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">U</span><span class="p">,</span> <span class="n">U</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="PSDFixedRankComplex.dist"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.psd.PSDFixedRankComplex.dist">[docs]</a>    <span class="k">def</span> <span class="nf">dist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">U</span><span class="p">,</span> <span class="n">V</span><span class="p">):</span>
-        <span class="n">S</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">D</span> <span class="o">=</span> <span class="n">la</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">V</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">U</span><span class="p">))</span>
-        <span class="n">E</span> <span class="o">=</span> <span class="n">U</span> <span class="o">-</span> <span class="n">V</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">S</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">D</span><span class="p">)</span>
+        <span class="n">S</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">D</span> <span class="o">=</span> <span class="n">la</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">V</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span> <span class="o">@</span> <span class="n">U</span><span class="p">)</span>
+        <span class="n">E</span> <span class="o">=</span> <span class="n">U</span> <span class="o">-</span> <span class="n">V</span> <span class="o">@</span> <span class="n">S</span> <span class="o">@</span> <span class="n">D</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">E</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span></div>
 
 <div class="viewcode-block" id="PSDFixedRankComplex.rand"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.psd.PSDFixedRankComplex.rand">[docs]</a>    <span class="k">def</span> <span class="nf">rand</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -372,7 +358,7 @@
         <span class="k">return</span> <span class="n">rand_</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">rand_</span><span class="p">()</span></div></div>
 
 
-<div class="viewcode-block" id="Elliptope"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.psd.Elliptope">[docs]</a><span class="k">class</span> <span class="nc">Elliptope</span><span class="p">(</span><span class="n">Manifold</span><span class="p">,</span> <span class="n">_RetrAsExpMixin</span><span class="p">):</span>
+<div class="viewcode-block" id="Elliptope"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.psd.Elliptope">[docs]</a><span class="k">class</span> <span class="nc">Elliptope</span><span class="p">(</span><span class="n">Manifold</span><span class="p">,</span> <span class="n">RetrAsExpMixin</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Manifold of fixed-rank PSD matrices with unit diagonal elements.</span>
 
 <span class="sd">    A point X on the manifold is parameterized as YY^T where Y is a matrix of</span>
@@ -406,8 +392,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_n</span> <span class="o">=</span> <span class="n">n</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_k</span> <span class="o">=</span> <span class="n">k</span>
 
-        <span class="n">name</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;YY&#39; quotient manifold of </span><span class="si">{:d}</span><span class="s2">x</span><span class="si">{:d}</span><span class="s2"> psd matrices of rank </span><span class="si">{:d}</span><span class="s2"> &quot;</span>
-                <span class="s2">&quot;with diagonal elements being 1&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">))</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Quotient manifold of </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">x</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2"> psd matrices of rank </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2"> &quot;</span>
+                <span class="s2">&quot;with unit diagonal elements&quot;</span><span class="p">)</span>
         <span class="n">dimension</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">n</span> <span class="o">*</span> <span class="p">(</span><span class="n">k</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">k</span> <span class="o">*</span> <span class="p">(</span><span class="n">k</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">dimension</span><span class="p">)</span>
 
@@ -427,10 +413,10 @@
         <span class="n">eta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_project_rows</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">H</span><span class="p">)</span>
 
         <span class="c1"># Projection onto the horizontal space</span>
-        <span class="n">YtY</span> <span class="o">=</span> <span class="n">Y</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
-        <span class="n">AS</span> <span class="o">=</span> <span class="n">Y</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">eta</span><span class="p">)</span> <span class="o">-</span> <span class="n">H</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
+        <span class="n">YtY</span> <span class="o">=</span> <span class="n">Y</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">Y</span>
+        <span class="n">AS</span> <span class="o">=</span> <span class="n">Y</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">eta</span> <span class="o">-</span> <span class="n">H</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">Y</span>
         <span class="n">Omega</span> <span class="o">=</span> <span class="n">lyap</span><span class="p">(</span><span class="n">YtY</span><span class="p">,</span> <span class="o">-</span><span class="n">AS</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">eta</span> <span class="o">-</span> <span class="n">Y</span><span class="o">.</span><span class="n">dot</span><span class="p">((</span><span class="n">Omega</span> <span class="o">-</span> <span class="n">Omega</span><span class="o">.</span><span class="n">T</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">eta</span> <span class="o">-</span> <span class="n">Y</span> <span class="o">@</span> <span class="p">(</span><span class="n">Omega</span> <span class="o">-</span> <span class="n">Omega</span><span class="o">.</span><span class="n">T</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span></div>
 
 <div class="viewcode-block" id="Elliptope.retr"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.psd.Elliptope.retr">[docs]</a>    <span class="k">def</span> <span class="nf">retr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">U</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_normalize_rows</span><span class="p">(</span><span class="n">Y</span> <span class="o">+</span> <span class="n">U</span><span class="p">)</span></div>
@@ -485,7 +471,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Jan 04, 2022.
+      <span class="lastupdated">Last updated on Jan 05, 2022.
       </span></p>
   </div>
 
