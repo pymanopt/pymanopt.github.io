@@ -105,8 +105,16 @@
 <span class="sd">        social: Quantifies performance relative to neighbors.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">maxcostevals</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">maxiter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">populationsize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">nostalgia</span><span class="o">=</span><span class="mf">1.4</span><span class="p">,</span> <span class="n">social</span><span class="o">=</span><span class="mf">1.4</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">maxcostevals</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">maxiter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">populationsize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">nostalgia</span><span class="o">=</span><span class="mf">1.4</span><span class="p">,</span>
+        <span class="n">social</span><span class="o">=</span><span class="mf">1.4</span><span class="p">,</span>
+        <span class="o">*</span><span class="n">args</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_maxcostevals</span> <span class="o">=</span> <span class="n">maxcostevals</span>
@@ -152,8 +160,10 @@
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The initial population x must be iterable&quot;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_populationsize</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The population size was forced to the size of &quot;</span>
-                      <span class="s2">&quot;the given initial population&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span>
+                    <span class="s2">&quot;The population size was forced to the size of &quot;</span>
+                    <span class="s2">&quot;the given initial population&quot;</span>
+                <span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_populationsize</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 
         <span class="c1"># Initialize personal best positions to the initial population.</span>
@@ -204,13 +214,14 @@
             <span class="c1"># Stop if any particle triggers a stopping criterion.</span>
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">xi</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
                 <span class="n">stop_reason</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_stopping_criterion</span><span class="p">(</span>
-                    <span class="n">time0</span><span class="p">,</span> <span class="nb">iter</span><span class="o">=</span><span class="nb">iter</span><span class="p">,</span> <span class="n">costevals</span><span class="o">=</span><span class="n">costevals</span><span class="p">)</span>
+                    <span class="n">time0</span><span class="p">,</span> <span class="nb">iter</span><span class="o">=</span><span class="nb">iter</span><span class="p">,</span> <span class="n">costevals</span><span class="o">=</span><span class="n">costevals</span>
+                <span class="p">)</span>
                 <span class="k">if</span> <span class="n">stop_reason</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="k">break</span>
             <span class="k">if</span> <span class="n">stop_reason</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
                     <span class="nb">print</span><span class="p">(</span><span class="n">stop_reason</span><span class="p">)</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
                 <span class="k">break</span>
 
             <span class="c1"># Compute the inertia factor which we linearly decrease from 0.9 to</span>
@@ -259,8 +270,14 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_logverbosity</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">xbest</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_stop_optlog</span><span class="p">(</span><span class="n">xbest</span><span class="p">,</span> <span class="n">fbest</span><span class="p">,</span> <span class="n">stop_reason</span><span class="p">,</span> <span class="n">time0</span><span class="p">,</span>
-                              <span class="n">costevals</span><span class="o">=</span><span class="n">costevals</span><span class="p">,</span> <span class="nb">iter</span><span class="o">=</span><span class="nb">iter</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_stop_optlog</span><span class="p">(</span>
+                <span class="n">xbest</span><span class="p">,</span>
+                <span class="n">fbest</span><span class="p">,</span>
+                <span class="n">stop_reason</span><span class="p">,</span>
+                <span class="n">time0</span><span class="p">,</span>
+                <span class="n">costevals</span><span class="o">=</span><span class="n">costevals</span><span class="p">,</span>
+                <span class="nb">iter</span><span class="o">=</span><span class="nb">iter</span><span class="p">,</span>
+            <span class="p">)</span>
             <span class="k">return</span> <span class="n">xbest</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_optlog</span></div></div>
 </pre></div>
 
@@ -272,7 +289,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Jan 05, 2022.
+      <span class="lastupdated">Last updated on Jan 06, 2022.
       </span></p>
   </div>
 

@@ -84,6 +84,7 @@
   <h1>Source code for pymanopt.tools.diagnostics</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
+
 <span class="k">try</span><span class="p">:</span>
     <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
@@ -101,17 +102,17 @@
 <span class="sd">    output poly specifies a first order polynomial that best fits (x, y) over</span>
 <span class="sd">    that segment (highest degree coefficients first).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">residues</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">-</span><span class="n">window_length</span><span class="p">)</span>
+    <span class="n">residues</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="n">window_length</span><span class="p">)</span>
     <span class="n">polys</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">residues</span><span class="p">)))</span>
     <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">residues</span><span class="p">)):</span>
-        <span class="n">segment</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">k</span><span class="o">+</span><span class="n">window_length</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">segment</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">k</span> <span class="o">+</span> <span class="n">window_length</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
         <span class="n">poly</span><span class="p">,</span> <span class="n">residuals</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polyfit</span><span class="p">(</span>
             <span class="n">x</span><span class="p">[</span><span class="n">segment</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">segment</span><span class="p">],</span> <span class="n">deg</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">True</span>
         <span class="p">)</span>
         <span class="n">residues</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">residuals</span><span class="p">)</span>
         <span class="n">polys</span><span class="p">[:,</span> <span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">poly</span>
     <span class="n">best</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">residues</span><span class="p">)</span>
-    <span class="n">segment</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">best</span><span class="p">,</span> <span class="n">best</span><span class="o">+</span><span class="n">window_length</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">segment</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">best</span><span class="p">,</span> <span class="n">best</span> <span class="o">+</span> <span class="n">window_length</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
     <span class="n">poly</span> <span class="o">=</span> <span class="n">polys</span><span class="p">[:,</span> <span class="n">best</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">segment</span><span class="p">,</span> <span class="n">poly</span></div>
 
@@ -128,8 +129,9 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1">#  If x and / or d are not specified, pick them at random.</span>
     <span class="k">if</span> <span class="n">d</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">x</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;If d is provided, x must be too, &quot;</span>
-                         <span class="s2">&quot;since d is tangent at x.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;If d is provided, x must be too, &quot;</span> <span class="s2">&quot;since d is tangent at x.&quot;</span>
+        <span class="p">)</span>
     <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">x</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">manifold</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">d</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -162,9 +164,11 @@
     <span class="n">err</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">model</span> <span class="o">-</span> <span class="n">value</span><span class="p">)</span>
     <span class="n">model_is_exact</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">err</span> <span class="o">&lt;</span> <span class="mf">1e-12</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">model_is_exact</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Directional derivative check. &quot;</span>
-              <span class="s2">&quot;It seems the linear model is exact: &quot;</span>
-              <span class="s2">&quot;Model error is numerically zero for all h.&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="s2">&quot;Directional derivative check. &quot;</span>
+            <span class="s2">&quot;It seems the linear model is exact: &quot;</span>
+            <span class="s2">&quot;Model error is numerically zero for all h.&quot;</span>
+        <span class="p">)</span>
         <span class="c1"># The 1st order model is exact: all errors are (numerically) zero.</span>
         <span class="c1"># Fit line from all points, use log scale only in h.</span>
         <span class="n">segment</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">h</span><span class="p">))</span>
@@ -172,10 +176,12 @@
         <span class="c1"># Set mean error in log scale for plot.</span>
         <span class="n">poly</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">poly</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Directional derivative check. The slope of the &quot;</span>
-              <span class="s2">&quot;continuous line should match that of the dashed &quot;</span>
-              <span class="s2">&quot;(reference) line over at least a few orders of &quot;</span>
-              <span class="s2">&quot;magnitude for h.&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="s2">&quot;Directional derivative check. The slope of the &quot;</span>
+            <span class="s2">&quot;continuous line should match that of the dashed &quot;</span>
+            <span class="s2">&quot;(reference) line over at least a few orders of &quot;</span>
+            <span class="s2">&quot;magnitude for h.&quot;</span>
+        <span class="p">)</span>
         <span class="c1"># In a numerically reasonable neighborhood, the error should</span>
         <span class="c1"># decrease as the square of the stepsize, i.e., in loglog scale,</span>
         <span class="c1"># the error should have a slope of 2.</span>
@@ -184,8 +190,9 @@
         <span class="c1"># value, some entries of &#39;err&#39; can be zero. To avoid numerical issues</span>
         <span class="c1"># we add an epsilon here.</span>
         <span class="n">eps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="n">err</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span><span class="o">.</span><span class="n">eps</span>
-        <span class="n">segment</span><span class="p">,</span> <span class="n">poly</span> <span class="o">=</span> <span class="n">identify_linear_piece</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">h</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">err</span> <span class="o">+</span> <span class="n">eps</span><span class="p">),</span>
-                                              <span class="n">window_len</span><span class="p">)</span>
+        <span class="n">segment</span><span class="p">,</span> <span class="n">poly</span> <span class="o">=</span> <span class="n">identify_linear_piece</span><span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">h</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">err</span> <span class="o">+</span> <span class="n">eps</span><span class="p">),</span> <span class="n">window_len</span>
+        <span class="p">)</span>
     <span class="k">return</span> <span class="n">h</span><span class="p">,</span> <span class="n">err</span><span class="p">,</span> <span class="n">segment</span><span class="p">,</span> <span class="n">poly</span></div>
 
 
@@ -205,8 +212,9 @@
     <span class="k">if</span> <span class="n">plt</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;The &#39;check_gradient&#39; function requires matplotlib&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">d</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">x</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;If d is provided, x must be too,&quot;</span>
-                         <span class="s2">&quot;since d is tangent at x.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;If d is provided, x must be too,&quot;</span> <span class="s2">&quot;since d is tangent at x.&quot;</span>
+        <span class="p">)</span>
     <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">x</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">manifold</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">d</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -218,12 +226,15 @@
     <span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;h&quot;</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Approximation error&quot;</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">h</span><span class="p">[</span><span class="n">segment</span><span class="p">],</span> <span class="mi">10</span><span class="o">**</span><span class="n">np</span><span class="o">.</span><span class="n">polyval</span><span class="p">(</span><span class="n">poly</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">h</span><span class="p">[</span><span class="n">segment</span><span class="p">])),</span>
-               <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span>
+        <span class="n">h</span><span class="p">[</span><span class="n">segment</span><span class="p">],</span> <span class="mi">10</span> <span class="o">**</span> <span class="n">np</span><span class="o">.</span><span class="n">polyval</span><span class="p">(</span><span class="n">poly</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">h</span><span class="p">[</span><span class="n">segment</span><span class="p">])),</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span>
+    <span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mf">1e-8</span><span class="p">,</span> <span class="mf">1e0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1e-8</span><span class="p">,</span> <span class="mf">1e8</span><span class="p">],</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Gradient check</span><span class="se">\n</span><span class="s2">The slope of the continuous line &quot;</span>
-              <span class="s2">&quot;should match that of the dashed</span><span class="se">\n</span><span class="s2">(reference) line &quot;</span>
-              <span class="s2">&quot;over at least a few orders of magnitude for h.&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span>
+        <span class="s2">&quot;Gradient check</span><span class="se">\n</span><span class="s2">The slope of the continuous line &quot;</span>
+        <span class="s2">&quot;should match that of the dashed</span><span class="se">\n</span><span class="s2">(reference) line &quot;</span>
+        <span class="s2">&quot;over at least a few orders of magnitude for h.&quot;</span>
+    <span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
     <span class="c1"># Try to check that the gradient is a tangent vector.</span>
@@ -233,12 +244,16 @@
         <span class="n">residual</span> <span class="o">=</span> <span class="n">grad</span> <span class="o">-</span> <span class="n">projected_grad</span>
         <span class="n">err</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">manifold</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">residual</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The residual should be 0, or very close. Residual: </span><span class="si">{</span><span class="n">err</span><span class="si">:</span><span class="s2">g</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;If it is far from 0, then the gradient &quot;</span>
-              <span class="s2">&quot;is not in the tangent space.&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="s2">&quot;If it is far from 0, then the gradient &quot;</span>
+            <span class="s2">&quot;is not in the tangent space.&quot;</span>
+        <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Unfortunately, pymanopt was unable to verify that the gradient &quot;</span>
-              <span class="s2">&quot;is indeed a tangent vector. Please verify this manually or &quot;</span>
-              <span class="s2">&quot;implement the &#39;tangent&#39; function in your manifold structure.&quot;</span><span class="p">)</span></div>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="s2">&quot;Unfortunately, pymanopt was unable to verify that the gradient &quot;</span>
+            <span class="s2">&quot;is indeed a tangent vector. Please verify this manually or &quot;</span>
+            <span class="s2">&quot;implement the &#39;tangent&#39; function in your manifold structure.&quot;</span>
+        <span class="p">)</span></div>
 </pre></div>
 
            </div>
@@ -249,7 +264,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Jan 05, 2022.
+      <span class="lastupdated">Last updated on Jan 06, 2022.
       </span></p>
   </div>
 

@@ -97,7 +97,7 @@
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;Exponential map for manifold &#39;</span><span class="si">{</span><span class="n">class_name</span><span class="si">}</span><span class="s2">&#39; not available. &quot;</span>
             <span class="s2">&quot;Using retraction instead.&quot;</span><span class="p">,</span>
-            <span class="ne">RuntimeWarning</span>
+            <span class="ne">RuntimeWarning</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">retr</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">U</span><span class="p">)</span></div></div>
 
@@ -220,6 +220,7 @@
                 <span class="sa">f</span><span class="s2">&quot;Manifold &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&#39; provides no &quot;</span>
                 <span class="sa">f</span><span class="s2">&quot;implementation for &#39;</span><span class="si">{</span><span class="n">method</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
             <span class="p">)</span>
+
         <span class="k">return</span> <span class="n">wrapper</span>
 
 <div class="viewcode-block" id="Manifold.dist"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.manifold.Manifold.dist">[docs]</a>    <span class="nd">@_raise_not_implemented_error</span>
@@ -324,7 +325,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Jan 05, 2022.
+      <span class="lastupdated">Last updated on Jan 06, 2022.
       </span></p>
   </div>
 

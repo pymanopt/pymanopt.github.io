@@ -96,7 +96,8 @@
 <span class="c1"># TODO: Use Python&#39;s enum module.</span>
 <span class="n">BetaTypes</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">make_enum</span><span class="p">(</span>
     <span class="s2">&quot;BetaTypes&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;FletcherReeves PolakRibiere HestenesStiefel HagerZhang&quot;</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
+    <span class="s2">&quot;FletcherReeves PolakRibiere HestenesStiefel HagerZhang&quot;</span><span class="o">.</span><span class="n">split</span><span class="p">(),</span>
+<span class="p">)</span>
 
 
 <div class="viewcode-block" id="ConjugateGradient"><a class="viewcode-back" href="../../../solvers.html#pymanopt.solvers.conjugate_gradient.ConjugateGradient">[docs]</a><span class="k">class</span> <span class="nc">ConjugateGradient</span><span class="p">(</span><span class="n">Solver</span><span class="p">):</span>
@@ -117,8 +118,14 @@
 <span class="sd">        linesearch: The line search method.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">beta_type</span><span class="o">=</span><span class="n">BetaTypes</span><span class="o">.</span><span class="n">HestenesStiefel</span><span class="p">,</span> <span class="n">orth_value</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span>
-                 <span class="n">linesearch</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">beta_type</span><span class="o">=</span><span class="n">BetaTypes</span><span class="o">.</span><span class="n">HestenesStiefel</span><span class="p">,</span>
+        <span class="n">orth_value</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span>
+        <span class="n">linesearch</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="o">*</span><span class="n">args</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_beta_type</span> <span class="o">=</span> <span class="n">beta_type</span>
@@ -187,10 +194,14 @@
         <span class="c1"># Initial descent direction is the negative gradient</span>
         <span class="n">desc_dir</span> <span class="o">=</span> <span class="o">-</span><span class="n">Pgrad</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_start_optlog</span><span class="p">(</span><span class="n">extraiterfields</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;gradnorm&#39;</span><span class="p">],</span>
-                           <span class="n">solverparams</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;beta_type&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_beta_type</span><span class="p">,</span>
-                                         <span class="s1">&#39;orth_value&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_orth_value</span><span class="p">,</span>
-                                         <span class="s1">&#39;linesearcher&#39;</span><span class="p">:</span> <span class="n">linesearch</span><span class="p">})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_start_optlog</span><span class="p">(</span>
+            <span class="n">extraiterfields</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;gradnorm&quot;</span><span class="p">],</span>
+            <span class="n">solverparams</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;beta_type&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_beta_type</span><span class="p">,</span>
+                <span class="s2">&quot;orth_value&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_orth_value</span><span class="p">,</span>
+                <span class="s2">&quot;linesearcher&quot;</span><span class="p">:</span> <span class="n">linesearch</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">)</span>
 
         <span class="c1"># Initialize iteration counter and timer</span>
         <span class="nb">iter</span> <span class="o">=</span> <span class="mi">0</span>
@@ -204,12 +215,13 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">_append_optlog</span><span class="p">(</span><span class="nb">iter</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">cost</span><span class="p">,</span> <span class="n">gradnorm</span><span class="o">=</span><span class="n">gradnorm</span><span class="p">)</span>
 
             <span class="n">stop_reason</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_stopping_criterion</span><span class="p">(</span>
-                <span class="n">time0</span><span class="p">,</span> <span class="n">gradnorm</span><span class="o">=</span><span class="n">gradnorm</span><span class="p">,</span> <span class="nb">iter</span><span class="o">=</span><span class="nb">iter</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">stepsize</span><span class="o">=</span><span class="n">stepsize</span><span class="p">)</span>
+                <span class="n">time0</span><span class="p">,</span> <span class="n">gradnorm</span><span class="o">=</span><span class="n">gradnorm</span><span class="p">,</span> <span class="nb">iter</span><span class="o">=</span><span class="nb">iter</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">stepsize</span><span class="o">=</span><span class="n">stepsize</span>
+            <span class="p">)</span>
 
             <span class="k">if</span> <span class="n">stop_reason</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
                     <span class="nb">print</span><span class="p">(</span><span class="n">stop_reason</span><span class="p">)</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
                 <span class="k">break</span>
 
             <span class="c1"># The line search algorithms require the directional derivative of</span>
@@ -222,16 +234,19 @@
             <span class="k">if</span> <span class="n">df0</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="c1"># Or we switch to the negative gradient direction.</span>
                 <span class="k">if</span> <span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Conjugate gradient info: got an ascent direction &quot;</span>
-                          <span class="s2">&quot;(df0 = </span><span class="si">%.2f</span><span class="s2">), reset to the (preconditioned) &quot;</span>
-                          <span class="s2">&quot;steepest descent direction.&quot;</span> <span class="o">%</span> <span class="n">df0</span><span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span>
+                        <span class="s2">&quot;Conjugate gradient info: got an ascent direction &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;(df0 = </span><span class="si">{</span><span class="n">df0</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">), reset to the (preconditioned) &quot;</span>
+                        <span class="s2">&quot;steepest descent direction.&quot;</span>
+                    <span class="p">)</span>
                 <span class="c1"># Reset to negative gradient: this discards the CG memory.</span>
                 <span class="n">desc_dir</span> <span class="o">=</span> <span class="o">-</span><span class="n">Pgrad</span>
                 <span class="n">df0</span> <span class="o">=</span> <span class="o">-</span><span class="n">gradPgrad</span>
 
             <span class="c1"># Execute line search</span>
-            <span class="n">stepsize</span><span class="p">,</span> <span class="n">newx</span> <span class="o">=</span> <span class="n">linesearch</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">objective</span><span class="p">,</span> <span class="n">man</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">desc_dir</span><span class="p">,</span>
-                                               <span class="n">cost</span><span class="p">,</span> <span class="n">df0</span><span class="p">)</span>
+            <span class="n">stepsize</span><span class="p">,</span> <span class="n">newx</span> <span class="o">=</span> <span class="n">linesearch</span><span class="o">.</span><span class="n">search</span><span class="p">(</span>
+                <span class="n">objective</span><span class="p">,</span> <span class="n">man</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">desc_dir</span><span class="p">,</span> <span class="n">cost</span><span class="p">,</span> <span class="n">df0</span>
+            <span class="p">)</span>
 
             <span class="c1"># Compute the new cost-related quantities for newx</span>
             <span class="n">newcost</span> <span class="o">=</span> <span class="n">objective</span><span class="p">(</span><span class="n">newx</span><span class="p">)</span>
@@ -262,8 +277,9 @@
                     <span class="n">diff</span> <span class="o">=</span> <span class="n">newgrad</span> <span class="o">-</span> <span class="n">oldgrad</span>
                     <span class="n">ip_diff</span> <span class="o">=</span> <span class="n">man</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">Pnewgrad</span><span class="p">,</span> <span class="n">diff</span><span class="p">)</span>
                     <span class="k">try</span><span class="p">:</span>
-                        <span class="n">beta</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span>
-                                   <span class="n">ip_diff</span> <span class="o">/</span> <span class="n">man</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">diff</span><span class="p">,</span> <span class="n">desc_dir</span><span class="p">))</span>
+                        <span class="n">beta</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span>
+                            <span class="mi">0</span><span class="p">,</span> <span class="n">ip_diff</span> <span class="o">/</span> <span class="n">man</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">diff</span><span class="p">,</span> <span class="n">desc_dir</span><span class="p">)</span>
+                        <span class="p">)</span>
                     <span class="c1"># if ip_diff = man.inner(newx, diff, desc_dir) = 0</span>
                     <span class="k">except</span> <span class="ne">ZeroDivisionError</span><span class="p">:</span>
                         <span class="n">beta</span> <span class="o">=</span> <span class="mi">1</span>
@@ -273,8 +289,12 @@
                     <span class="n">Pdiff</span> <span class="o">=</span> <span class="n">Pnewgrad</span> <span class="o">-</span> <span class="n">Poldgrad</span>
                     <span class="n">deno</span> <span class="o">=</span> <span class="n">man</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">diff</span><span class="p">,</span> <span class="n">desc_dir</span><span class="p">)</span>
                     <span class="n">numo</span> <span class="o">=</span> <span class="n">man</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">diff</span><span class="p">,</span> <span class="n">Pnewgrad</span><span class="p">)</span>
-                    <span class="n">numo</span> <span class="o">-=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">man</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">diff</span><span class="p">,</span> <span class="n">Pdiff</span><span class="p">)</span> <span class="o">*</span>
-                             <span class="n">man</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">desc_dir</span><span class="p">,</span> <span class="n">newgrad</span><span class="p">)</span> <span class="o">/</span> <span class="n">deno</span><span class="p">)</span>
+                    <span class="n">numo</span> <span class="o">-=</span> <span class="p">(</span>
+                        <span class="mi">2</span>
+                        <span class="o">*</span> <span class="n">man</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">diff</span><span class="p">,</span> <span class="n">Pdiff</span><span class="p">)</span>
+                        <span class="o">*</span> <span class="n">man</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">desc_dir</span><span class="p">,</span> <span class="n">newgrad</span><span class="p">)</span>
+                        <span class="o">/</span> <span class="n">deno</span>
+                    <span class="p">)</span>
                     <span class="n">beta</span> <span class="o">=</span> <span class="n">numo</span> <span class="o">/</span> <span class="n">deno</span>
                     <span class="c1"># Robustness (see Hager-Zhang paper mentioned above)</span>
                     <span class="n">desc_dir_norm</span> <span class="o">=</span> <span class="n">man</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">desc_dir</span><span class="p">)</span>
@@ -282,10 +302,12 @@
                     <span class="n">beta</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">beta</span><span class="p">,</span> <span class="n">eta_HZ</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">types</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-                        <span class="p">[</span><span class="s2">&quot;BetaTypes.</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">t</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">BetaTypes</span><span class="o">.</span><span class="n">_fields</span><span class="p">])</span>
+                        <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;BetaTypes.</span><span class="si">{</span><span class="n">t</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">BetaTypes</span><span class="o">.</span><span class="n">_fields</span><span class="p">]</span>
+                    <span class="p">)</span>
                     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                        <span class="s2">&quot;Unknown beta_type </span><span class="si">%s</span><span class="s2">. Should be one of </span><span class="si">%s</span><span class="s2">.&quot;</span> <span class="o">%</span> <span class="p">(</span>
-                            <span class="bp">self</span><span class="o">.</span><span class="n">_beta_type</span><span class="p">,</span> <span class="n">types</span><span class="p">))</span>
+                        <span class="sa">f</span><span class="s2">&quot;Unknown beta_type </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_beta_type</span><span class="si">}</span><span class="s2">. Should be one &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;of </span><span class="si">{</span><span class="n">types</span><span class="si">}</span><span class="s2">.&quot;</span>
+                    <span class="p">)</span>
 
                 <span class="n">desc_dir</span> <span class="o">=</span> <span class="o">-</span><span class="n">Pnewgrad</span> <span class="o">+</span> <span class="n">beta</span> <span class="o">*</span> <span class="n">desc_dir</span>
 
@@ -302,9 +324,15 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_logverbosity</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">x</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_stop_optlog</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">cost</span><span class="p">,</span> <span class="n">stop_reason</span><span class="p">,</span> <span class="n">time0</span><span class="p">,</span>
-                              <span class="n">stepsize</span><span class="o">=</span><span class="n">stepsize</span><span class="p">,</span> <span class="n">gradnorm</span><span class="o">=</span><span class="n">gradnorm</span><span class="p">,</span>
-                              <span class="nb">iter</span><span class="o">=</span><span class="nb">iter</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_stop_optlog</span><span class="p">(</span>
+                <span class="n">x</span><span class="p">,</span>
+                <span class="n">cost</span><span class="p">,</span>
+                <span class="n">stop_reason</span><span class="p">,</span>
+                <span class="n">time0</span><span class="p">,</span>
+                <span class="n">stepsize</span><span class="o">=</span><span class="n">stepsize</span><span class="p">,</span>
+                <span class="n">gradnorm</span><span class="o">=</span><span class="n">gradnorm</span><span class="p">,</span>
+                <span class="nb">iter</span><span class="o">=</span><span class="nb">iter</span><span class="p">,</span>
+            <span class="p">)</span>
             <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_optlog</span></div></div>
 </pre></div>
 
@@ -316,7 +344,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Jan 05, 2022.
+      <span class="lastupdated">Last updated on Jan 06, 2022.
       </span></p>
   </div>
 

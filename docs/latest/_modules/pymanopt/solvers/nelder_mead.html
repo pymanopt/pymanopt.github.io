@@ -93,6 +93,7 @@
 
 <div class="viewcode-block" id="compute_centroid"><a class="viewcode-back" href="../../../solvers.html#pymanopt.solvers.nelder_mead.compute_centroid">[docs]</a><span class="k">def</span> <span class="nf">compute_centroid</span><span class="p">(</span><span class="n">manifold</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Compute the centroid of `points` on the `manifold` as Karcher mean.&quot;&quot;&quot;</span>
+
     <span class="nd">@pymanopt</span><span class="o">.</span><span class="n">function</span><span class="o">.</span><span class="n">Callable</span><span class="p">(</span><span class="n">manifold</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">objective</span><span class="p">(</span><span class="o">*</span><span class="n">y</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">manifold</span><span class="o">.</span><span class="n">num_values</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
@@ -128,8 +129,16 @@
 <span class="sd">        contraction: Factor by which to contract the reflected simplex.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">maxcostevals</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">maxiter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">reflection</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-                 <span class="n">expansion</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">contraction</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">maxcostevals</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">maxiter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">reflection</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">expansion</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="n">contraction</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+        <span class="o">*</span><span class="n">args</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_maxcostevals</span> <span class="o">=</span> <span class="n">maxcostevals</span>
@@ -173,9 +182,11 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># XXX: Is this necessary?</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">!=</span> <span class="n">dim</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The simplex size was adapted to the dimension &quot;</span>
-                      <span class="s2">&quot;of the manifold&quot;</span><span class="p">)</span>
-                <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="p">[:</span><span class="n">dim</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+                <span class="nb">print</span><span class="p">(</span>
+                    <span class="s2">&quot;The simplex size was adapted to the dimension &quot;</span>
+                    <span class="s2">&quot;of the manifold&quot;</span>
+                <span class="p">)</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="p">[:</span> <span class="n">dim</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
 
         <span class="c1"># Compute objective-related quantities for x, and setup a function</span>
         <span class="c1"># evaluations counter.</span>
@@ -199,8 +210,10 @@
             <span class="nb">iter</span> <span class="o">+=</span> <span class="mi">1</span>
 
             <span class="k">if</span> <span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Cost evals: </span><span class="si">%7d</span><span class="se">\t</span><span class="s2">&quot;</span>
-                      <span class="s2">&quot;Best cost: </span><span class="si">%+.8e</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">costevals</span><span class="p">,</span> <span class="n">costs</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+                <span class="nb">print</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Cost evals: </span><span class="si">{</span><span class="n">costevals</span><span class="si">:</span><span class="s2">7d</span><span class="si">}</span><span class="se">\t</span><span class="s2">&quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;Best cost: </span><span class="si">{</span><span class="n">costs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">+.8e</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
 
             <span class="c1"># Sort simplex points by cost.</span>
             <span class="n">order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">costs</span><span class="p">)</span>
@@ -208,11 +221,12 @@
             <span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">order</span><span class="p">]</span>  <span class="c1"># XXX: Probably inefficient</span>
 
             <span class="n">stop_reason</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_stopping_criterion</span><span class="p">(</span>
-                <span class="n">time0</span><span class="p">,</span> <span class="nb">iter</span><span class="o">=</span><span class="nb">iter</span><span class="p">,</span> <span class="n">costevals</span><span class="o">=</span><span class="n">costevals</span><span class="p">)</span>
+                <span class="n">time0</span><span class="p">,</span> <span class="nb">iter</span><span class="o">=</span><span class="nb">iter</span><span class="p">,</span> <span class="n">costevals</span><span class="o">=</span><span class="n">costevals</span>
+            <span class="p">)</span>
             <span class="k">if</span> <span class="n">stop_reason</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
                     <span class="nb">print</span><span class="p">(</span><span class="n">stop_reason</span><span class="p">)</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
                 <span class="k">break</span>
 
             <span class="c1"># Compute a centroid for the dim best points.</span>
@@ -291,8 +305,14 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_logverbosity</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_stop_optlog</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">objective</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">stop_reason</span><span class="p">,</span> <span class="n">time0</span><span class="p">,</span>
-                              <span class="n">costevals</span><span class="o">=</span><span class="n">costevals</span><span class="p">,</span> <span class="nb">iter</span><span class="o">=</span><span class="nb">iter</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_stop_optlog</span><span class="p">(</span>
+                <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                <span class="n">objective</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+                <span class="n">stop_reason</span><span class="p">,</span>
+                <span class="n">time0</span><span class="p">,</span>
+                <span class="n">costevals</span><span class="o">=</span><span class="n">costevals</span><span class="p">,</span>
+                <span class="nb">iter</span><span class="o">=</span><span class="nb">iter</span><span class="p">,</span>
+            <span class="p">)</span>
             <span class="k">return</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_optlog</span></div></div>
 </pre></div>
 
@@ -304,7 +324,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Jan 05, 2022.
+      <span class="lastupdated">Last updated on Jan 06, 2022.
       </span></p>
   </div>
 

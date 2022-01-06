@@ -85,8 +85,14 @@
 <div class="viewcode-block" id="LineSearchBackTracking"><a class="viewcode-back" href="../../../solvers.html#pymanopt.solvers.linesearch.LineSearchBackTracking">[docs]</a><span></span><span class="k">class</span> <span class="nc">LineSearchBackTracking</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Back-tracking line-search algorithm.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">contraction_factor</span><span class="o">=</span><span class="mf">.5</span><span class="p">,</span> <span class="n">optimism</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-                 <span class="n">suff_decr</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span> <span class="n">maxiter</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">initial_stepsize</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">contraction_factor</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">optimism</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="n">suff_decr</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span>
+        <span class="n">maxiter</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span>
+        <span class="n">initial_stepsize</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">contraction_factor</span> <span class="o">=</span> <span class="n">contraction_factor</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">optimism</span> <span class="o">=</span> <span class="n">optimism</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">suff_decr</span> <span class="o">=</span> <span class="n">suff_decr</span>
@@ -128,8 +134,10 @@
         <span class="n">step_count</span> <span class="o">=</span> <span class="mi">1</span>
 
         <span class="c1"># Backtrack while the Armijo criterion is not satisfied</span>
-        <span class="k">while</span> <span class="p">(</span><span class="n">newf</span> <span class="o">&gt;</span> <span class="n">f0</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">suff_decr</span> <span class="o">*</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">df0</span> <span class="ow">and</span>
-               <span class="n">step_count</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxiter</span><span class="p">):</span>
+        <span class="k">while</span> <span class="p">(</span>
+            <span class="n">newf</span> <span class="o">&gt;</span> <span class="n">f0</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">suff_decr</span> <span class="o">*</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">df0</span>
+            <span class="ow">and</span> <span class="n">step_count</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxiter</span>
+        <span class="p">):</span>
 
             <span class="c1"># Reduce the step size</span>
             <span class="n">alpha</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">contraction_factor</span> <span class="o">*</span> <span class="n">alpha</span>
@@ -155,8 +163,13 @@
 <div class="viewcode-block" id="LineSearchAdaptive"><a class="viewcode-back" href="../../../solvers.html#pymanopt.solvers.linesearch.LineSearchAdaptive">[docs]</a><span class="k">class</span> <span class="nc">LineSearchAdaptive</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Adaptive line-search.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">contraction_factor</span><span class="o">=</span><span class="mf">.5</span><span class="p">,</span> <span class="n">suff_decr</span><span class="o">=</span><span class="mf">.5</span><span class="p">,</span> <span class="n">maxiter</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
-                 <span class="n">initial_stepsize</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">contraction_factor</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">suff_decr</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">maxiter</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+        <span class="n">initial_stepsize</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_contraction_factor</span> <span class="o">=</span> <span class="n">contraction_factor</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_suff_decr</span> <span class="o">=</span> <span class="n">suff_decr</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_maxiter</span> <span class="o">=</span> <span class="n">maxiter</span>
@@ -176,8 +189,10 @@
         <span class="n">newf</span> <span class="o">=</span> <span class="n">objective</span><span class="p">(</span><span class="n">newx</span><span class="p">)</span>
         <span class="n">cost_evaluations</span> <span class="o">=</span> <span class="mi">1</span>
 
-        <span class="k">while</span> <span class="p">(</span><span class="n">newf</span> <span class="o">&gt;</span> <span class="n">f0</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_suff_decr</span> <span class="o">*</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">df0</span> <span class="ow">and</span>
-               <span class="n">cost_evaluations</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_maxiter</span><span class="p">):</span>
+        <span class="k">while</span> <span class="p">(</span>
+            <span class="n">newf</span> <span class="o">&gt;</span> <span class="n">f0</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_suff_decr</span> <span class="o">*</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">df0</span>
+            <span class="ow">and</span> <span class="n">cost_evaluations</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_maxiter</span>
+        <span class="p">):</span>
             <span class="c1"># Reduce the step size.</span>
             <span class="n">alpha</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_contraction_factor</span>
 
@@ -218,7 +233,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Jan 05, 2022.
+      <span class="lastupdated">Last updated on Jan 06, 2022.
       </span></p>
   </div>
 
