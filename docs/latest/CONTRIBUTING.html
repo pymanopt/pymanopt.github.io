@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contributing &mdash; Pymanopt latest documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/style.css" type="text/css" />
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" type="text/css" />
+      <link rel="stylesheet" href="_static/katex-math.css" type="text/css" />
+    <link rel="canonical" href="pymanopt.org/CONTRIBUTING.html" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js"></script>
+        <script src="_static/katex_autorenderer.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Riemannian Optimization for Inference in MoG models" href="examples/notebooks/mixture_of_gaussians.html" />
+    <link rel="prev" title="Bibliography" href="bibliography.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> Pymanopt
+            <img src="_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                latest
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/pymanopt/pymanopt/tree/master/examples">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api-reference.html">API Reference</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#sign-off">Sign-off</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Notebooks</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="examples/notebooks/mixture_of_gaussians.html">Riemannian Optimization for Inference in MoG models</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Pymanopt</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Contributing</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/CONTRIBUTING.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="tex2jax_ignore mathjax_ignore section" id="contributing">
+<h1>Contributing<a class="headerlink" href="#contributing" title="Permalink to this headline"></a></h1>
+<p><a class="reference external" href="https://help.github.com/articles/cloning-a-repository/">Fork and clone the repository</a>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ git clone git@github.com:your-username/pymanopt.git
+</pre></div>
+</div>
+<p>Set up a local development environment, installing both the runtime and
+development dependencies listed in the <code class="docutils literal notranslate"><span class="pre">requirements/dev.txt</span></code> and
+<code class="docutils literal notranslate"><span class="pre">requirements/base.txt</span></code> files. We provide a simple bootstrapping script in
+<code class="docutils literal notranslate"><span class="pre">tools/bootstrap-pyenv-virtualenv.sh</span></code> to set up a local development
+environment. The script requires <code class="docutils literal notranslate"><span class="pre">pyenv</span></code> and <code class="docutils literal notranslate"><span class="pre">pyenv-virtualenv</span></code> to be installed
+and configured.</p>
+<p>Verify that all existing tests pass by either running</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ python setup.py test
+</pre></div>
+</div>
+<p>or executing the test suite via <a class="reference external" href="https://docs.nose2.io/en/latest/">nose2</a>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ nose2 tests
+</pre></div>
+</div>
+<p>Note that we run the <a class="reference external" href="http://flake8.pycqa.org/en/latest/">flake8</a> utility on every python file in the
+package to verify coding style consistency during our integration tests. As
+such, failure to comply to the <a class="reference external" href="https://www.python.org/dev/peps/pep-0008/">style guide</a> will result in a failing
+ci build. To prevent adding commits which fail to adhere to the PEP8
+guidelines, we include a <a class="reference external" href="https://pre-commit.com/">pre-commit</a> config, which immediately
+invokes flake8 on all files staged for commit when running <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">commit</span></code>. To
+enable the hook, simply run <code class="docutils literal notranslate"><span class="pre">pre-commit</span> <span class="pre">install</span></code> after installing <code class="docutils literal notranslate"><span class="pre">pre-commit</span></code>
+either manually via <code class="docutils literal notranslate"><span class="pre">pip</span></code> or as part of <code class="docutils literal notranslate"><span class="pre">requirements/dev.txt</span></code>.</p>
+<p>Push a feature branch to your fork and <a class="reference external" href="https://github.com/pymanopt/pymanopt/compare">submit a pull request</a>. Refer to
+<a class="reference external" href="http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html">this guide</a> on how to write good commit messages.</p>
+<div class="section" id="sign-off">
+<h2>Sign-off<a class="headerlink" href="#sign-off" title="Permalink to this headline"></a></h2>
+<p>By making a contribution (pull requesting or committing) to the Pymanopt
+project you certify that</p>
+<ul class="simple">
+<li><p>you have the right to submit it to Pymanopt.</p></li>
+<li><p>you created the contribution/modification; or you based it on previous work
+that, to the best of your knowledge, is covered by a compatible open source
+license; or someone who did one of the former provided you with this
+contribution/modification and you are submitting it without changes.</p></li>
+<li><p>you understand and agree that your contribution/modification to this project
+is public and that a record of it (including all information you submit with
+it, including copyright notices and your sign-off) is maintained indefinitely
+and may be redistributed consistent with Pymanopt’s 3-clause BSD license or
+the open source license(s) involved.</p></li>
+</ul>
+<p>To make your certification explicit we borrow the “sign-off” procedure
+from the Linux kernel project, i.e., each commit message should contain
+a line saying</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Signed-off-by: Name Surname &lt;name.surname@example.org&gt;
+</pre></div>
+</div>
+<p>using your real name and email address. Running the git-commit command
+with the -s option automatically adds this line.</p>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="bibliography.html" class="btn btn-neutral float-left" title="Bibliography" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="examples/notebooks/mixture_of_gaussians.html" class="btn btn-neutral float-right" title="Riemannian Optimization for Inference in MoG models" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
+      <span class="lastupdated">Last updated on Jan 06, 2022.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: latest
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl>
+      <dt>Versions</dt>
+      <dd><a href="/docs/latest">latest</a></dd>
+    </dl>
+  </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

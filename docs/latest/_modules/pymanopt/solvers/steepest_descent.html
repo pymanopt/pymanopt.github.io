@@ -5,7 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pymanopt.solvers.steepest_descent &mdash; Pymanopt latest documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/style.css" type="text/css" />
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/katex-math.css" type="text/css" />
     <link rel="canonical" href="pymanopt.org/_modules/pymanopt/solvers/steepest_descent.html" />
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
@@ -15,6 +17,10 @@
         <script src="../../../_static/jquery.js"></script>
         <script src="../../../_static/underscore.js"></script>
         <script src="../../../_static/doctools.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js"></script>
+        <script src="../../../_static/katex_autorenderer.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -26,6 +32,7 @@
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
             <a href="../../../index.html" class="icon icon-home"> Pymanopt
+            <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
                 latest
@@ -40,7 +47,14 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/pymanopt/pymanopt/tree/master/examples">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api-reference.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributing</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Notebooks</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/notebooks/mixture_of_gaussians.html">Riemannian Optimization for Inference in MoG models</a></li>
 </ul>
 
         </div>
@@ -78,10 +92,16 @@
 <span class="kn">from</span> <span class="nn">pymanopt.tools</span> <span class="kn">import</span> <span class="n">printer</span>
 
 
-<div class="viewcode-block" id="SteepestDescent"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.solvers.steepest_descent.SteepestDescent">[docs]</a><span class="k">class</span> <span class="nc">SteepestDescent</span><span class="p">(</span><span class="n">Solver</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Steepest descent (gradient descent) algorithm based on</span>
-<span class="sd">    steepestdescent.m from the manopt MATLAB package.</span>
+<div class="viewcode-block" id="SteepestDescent"><a class="viewcode-back" href="../../../solvers.html#pymanopt.solvers.steepest_descent.SteepestDescent">[docs]</a><span class="k">class</span> <span class="nc">SteepestDescent</span><span class="p">(</span><span class="n">Solver</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Riemannian steepest descent solver.</span>
+
+<span class="sd">    Perform optimization using gradient descent with line search.</span>
+<span class="sd">    This method first computes the gradient of the objective, and then</span>
+<span class="sd">    optimizes by moving in the direction of steepest descent (which is the</span>
+<span class="sd">    opposite direction to the gradient).</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        linesearch: The line search method.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">linesearch</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -94,28 +114,23 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">linesearch</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="c1"># Function to solve optimisation problem using steepest descent.</span>
-<div class="viewcode-block" id="SteepestDescent.solve"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.solvers.steepest_descent.SteepestDescent.solve">[docs]</a>    <span class="k">def</span> <span class="nf">solve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">problem</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">reuselinesearch</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Perform optimization using gradient descent with linesearch.</span>
-<span class="sd">        This method first computes the gradient (derivative) of obj</span>
-<span class="sd">        w.r.t. arg, and then optimizes by moving in the direction of</span>
-<span class="sd">        steepest descent (which is the opposite direction to the gradient).</span>
-<span class="sd">        Arguments:</span>
-<span class="sd">            - problem</span>
-<span class="sd">                Pymanopt problem setup using the Problem class, this must</span>
-<span class="sd">                have a .manifold attribute specifying the manifold to optimize</span>
-<span class="sd">                over, as well as a cost and enough information to compute</span>
-<span class="sd">                the gradient of that cost.</span>
-<span class="sd">            - x=None</span>
-<span class="sd">                Optional parameter. Starting point on the manifold. If none</span>
-<span class="sd">                then a starting point will be randomly generated.</span>
-<span class="sd">            - reuselinesearch=False</span>
-<span class="sd">                Whether to reuse the previous linesearch object. Allows to</span>
-<span class="sd">                use information from a previous solve run.</span>
+<div class="viewcode-block" id="SteepestDescent.solve"><a class="viewcode-back" href="../../../solvers.html#pymanopt.solvers.steepest_descent.SteepestDescent.solve">[docs]</a>    <span class="k">def</span> <span class="nf">solve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">problem</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">reuselinesearch</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Run steepest descent algorithm.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            problem: Pymanopt problem class instance exposing the cost function</span>
+<span class="sd">                and the manifold to optimize over.</span>
+<span class="sd">                The class must either</span>
+<span class="sd">            x: Initial point on the manifold.</span>
+<span class="sd">                If no value is provided then a starting point will be randomly</span>
+<span class="sd">                generated.</span>
+<span class="sd">            reuselinesearch: Whether to reuse the previous linesearch object.</span>
+<span class="sd">                Allows to use information from a previous call to</span>
+<span class="sd">                :meth:`solve`.</span>
+
 <span class="sd">        Returns:</span>
-<span class="sd">            - x</span>
-<span class="sd">                Local minimum of obj, or if algorithm terminated before</span>
-<span class="sd">                convergence x will be the point at which it terminated.</span>
+<span class="sd">            Local minimum of the cost function, or the most recent iterate if</span>
+<span class="sd">            algorithm terminated before convergence.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">man</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">manifold</span>
         <span class="n">verbosity</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">verbosity</span>
@@ -146,8 +161,10 @@
 
         <span class="n">column_printer</span><span class="o">.</span><span class="n">print_header</span><span class="p">()</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_start_optlog</span><span class="p">(</span><span class="n">extraiterfields</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;gradnorm&#39;</span><span class="p">],</span>
-                           <span class="n">solverparams</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;linesearcher&#39;</span><span class="p">:</span> <span class="n">linesearch</span><span class="p">})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_start_optlog</span><span class="p">(</span>
+            <span class="n">extraiterfields</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;gradnorm&quot;</span><span class="p">],</span>
+            <span class="n">solverparams</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;linesearcher&quot;</span><span class="p">:</span> <span class="n">linesearch</span><span class="p">},</span>
+        <span class="p">)</span>
 
         <span class="c1"># Initialize iteration counter and timer</span>
         <span class="nb">iter</span> <span class="o">=</span> <span class="mi">0</span>
@@ -169,24 +186,32 @@
             <span class="n">desc_dir</span> <span class="o">=</span> <span class="o">-</span><span class="n">grad</span>
 
             <span class="c1"># Perform line-search</span>
-            <span class="n">stepsize</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">linesearch</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">objective</span><span class="p">,</span> <span class="n">man</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">desc_dir</span><span class="p">,</span>
-                                            <span class="n">cost</span><span class="p">,</span> <span class="o">-</span><span class="n">gradnorm</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+            <span class="n">stepsize</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">linesearch</span><span class="o">.</span><span class="n">search</span><span class="p">(</span>
+                <span class="n">objective</span><span class="p">,</span> <span class="n">man</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">desc_dir</span><span class="p">,</span> <span class="n">cost</span><span class="p">,</span> <span class="o">-</span><span class="p">(</span><span class="n">gradnorm</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="p">)</span>
 
             <span class="n">stop_reason</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_stopping_criterion</span><span class="p">(</span>
-                <span class="n">time0</span><span class="p">,</span> <span class="n">stepsize</span><span class="o">=</span><span class="n">stepsize</span><span class="p">,</span> <span class="n">gradnorm</span><span class="o">=</span><span class="n">gradnorm</span><span class="p">,</span> <span class="nb">iter</span><span class="o">=</span><span class="nb">iter</span><span class="p">)</span>
+                <span class="n">time0</span><span class="p">,</span> <span class="n">stepsize</span><span class="o">=</span><span class="n">stepsize</span><span class="p">,</span> <span class="n">gradnorm</span><span class="o">=</span><span class="n">gradnorm</span><span class="p">,</span> <span class="nb">iter</span><span class="o">=</span><span class="nb">iter</span>
+            <span class="p">)</span>
 
             <span class="k">if</span> <span class="n">stop_reason</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
                     <span class="nb">print</span><span class="p">(</span><span class="n">stop_reason</span><span class="p">)</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
                 <span class="k">break</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_logverbosity</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">x</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_stop_optlog</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">objective</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">stop_reason</span><span class="p">,</span> <span class="n">time0</span><span class="p">,</span>
-                              <span class="n">stepsize</span><span class="o">=</span><span class="n">stepsize</span><span class="p">,</span> <span class="n">gradnorm</span><span class="o">=</span><span class="n">gradnorm</span><span class="p">,</span>
-                              <span class="nb">iter</span><span class="o">=</span><span class="nb">iter</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_stop_optlog</span><span class="p">(</span>
+                <span class="n">x</span><span class="p">,</span>
+                <span class="n">objective</span><span class="p">(</span><span class="n">x</span><span class="p">),</span>
+                <span class="n">stop_reason</span><span class="p">,</span>
+                <span class="n">time0</span><span class="p">,</span>
+                <span class="n">stepsize</span><span class="o">=</span><span class="n">stepsize</span><span class="p">,</span>
+                <span class="n">gradnorm</span><span class="o">=</span><span class="n">gradnorm</span><span class="p">,</span>
+                <span class="nb">iter</span><span class="o">=</span><span class="nb">iter</span><span class="p">,</span>
+            <span class="p">)</span>
             <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_optlog</span></div></div>
 </pre></div>
 
@@ -197,8 +222,8 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2016-2021, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Dec 27, 2021.
+    <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
+      <span class="lastupdated">Last updated on Jan 06, 2022.
       </span></p>
   </div>
 
@@ -209,7 +234,19 @@
       </div>
     </section>
   </div>
-  <script>
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: latest
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl>
+      <dt>Versions</dt>
+      <dd><a href="/docs/latest">latest</a></dd>
+    </dl>
+  </div>
+</div><script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });

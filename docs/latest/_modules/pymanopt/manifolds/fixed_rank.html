@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pymanopt.manifolds.fixed_rank &mdash; Pymanopt latest documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/style.css" type="text/css" />
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/katex-math.css" type="text/css" />
+    <link rel="canonical" href="pymanopt.org/_modules/pymanopt/manifolds/fixed_rank.html" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js"></script>
+        <script src="../../../_static/katex_autorenderer.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> Pymanopt
+            <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                latest
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/pymanopt/pymanopt/tree/master/examples">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api-reference.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributing</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Notebooks</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/notebooks/mixture_of_gaussians.html">Riemannian Optimization for Inference in MoG models</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Pymanopt</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      <li>pymanopt.manifolds.fixed_rank</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pymanopt.manifolds.fixed_rank</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Module containing manifolds of fixed-rank matrices.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">collections</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">pymanopt.manifolds.manifold</span> <span class="kn">import</span> <span class="n">EuclideanEmbeddedSubmanifold</span>
+<span class="kn">from</span> <span class="nn">pymanopt.manifolds.stiefel</span> <span class="kn">import</span> <span class="n">Stiefel</span>
+<span class="kn">from</span> <span class="nn">pymanopt.tools</span> <span class="kn">import</span> <span class="n">ndarraySequenceMixin</span>
+
+
+<div class="viewcode-block" id="FixedRankEmbedded"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.fixed_rank.FixedRankEmbedded">[docs]</a><span class="k">class</span> <span class="nc">FixedRankEmbedded</span><span class="p">(</span><span class="n">EuclideanEmbeddedSubmanifold</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Manifold of fixed rank matrices.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        m: The number of rows of the matrices in the ambient space.</span>
+<span class="sd">        n: The number of columns of the matrices.</span>
+<span class="sd">        k: The rank of the matrices on the manifold.</span>
+
+<span class="sd">    Notes:</span>
+<span class="sd">        * The implementation follows the embedded geometry described in</span>
+<span class="sd">          [Van2013]_.</span>
+<span class="sd">        * The class is currently not compatible with the</span>
+<span class="sd">          :class:`pymanopt.solvers.TrustRegions` solver.</span>
+
+<span class="sd">    Manifold of ``m x n`` real matrices of fixed rank ``k``.</span>
+<span class="sd">    For efficiency purposes, Pymanopt does not represent points on this</span>
+<span class="sd">    manifold explicitly using ``m x n`` matrices, but instead implicitly using</span>
+<span class="sd">    a truncated singular value decomposition.</span>
+<span class="sd">    Specifically, a point is represented by a tuple ``(u, s, vt)`` of three</span>
+<span class="sd">    numpy arrays.</span>
+<span class="sd">    The arrays ``u``, ``s`` and ``vt`` have shapes ``(m, k)``, ``(k,)`` and</span>
+<span class="sd">    ``(k, n)``, respectively, and the low rank matrix which they represent can</span>
+<span class="sd">    be recovered by the matrix product ``u * diag(s) * vt``.</span>
+
+<span class="sd">    For example, to optimize over the space of 5 x 4 matrices with rank 3, we</span>
+
+<span class="sd">    would need to</span>
+
+<span class="sd">    &gt;&gt;&gt; import pymanopt.manifolds</span>
+<span class="sd">    &gt;&gt;&gt; manifold = pymanopt.manifolds.FixedRankEmbedded(5, 4, 3)</span>
+
+<span class="sd">    Then the shapes will be as follows:</span>
+
+<span class="sd">    &gt;&gt;&gt; u, s, vt = manifold.rand()</span>
+<span class="sd">    &gt;&gt;&gt; u.shape</span>
+<span class="sd">    (5, 3)</span>
+<span class="sd">    &gt;&gt;&gt; s.shape</span>
+<span class="sd">    (3,)</span>
+<span class="sd">    &gt;&gt;&gt; vt.shape</span>
+<span class="sd">    (3, 4)</span>
+
+<span class="sd">    and the full matrix can be recovered using the matrix product</span>
+<span class="sd">    ``u @ diag(s) @ vt``:</span>
+
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; X = u @ np.diag(s) @ vt</span>
+
+<span class="sd">    Tangent vectors are represented as a tuple ``(Up, M, Vp)``.</span>
+<span class="sd">    The matrices ``Up`` (of size ``m x k``) and ``Vp`` (of size ``n x k``) obey</span>
+<span class="sd">    ``Up&#39; * U = 0 and Vp&#39; * V = 0``.</span>
+<span class="sd">    The matrix ``M`` (of size ``k x k``) is arbitrary.</span>
+<span class="sd">    Such a structure corresponds to the</span>
+<span class="sd">    following tangent vector in the ambient space of ``m x n`` matrices: ``Z =</span>
+<span class="sd">    U * M * V&#39; + Up * V&#39; + U * Vp&#39;``</span>
+<span class="sd">    where ``(U, S, V)`` is the current point and ``(Up, M, Vp)`` is the tangent</span>
+<span class="sd">    vector at that point.</span>
+
+<span class="sd">    Vectors in the ambient space are best represented as ``m x n`` matrices.</span>
+<span class="sd">    If these are low-rank, they may also be represented as structures with</span>
+<span class="sd">    ``U, S, V`` fields, such that ``Z = U * S * V&#39;``.</span>
+<span class="sd">    There are no restrictions on what ``U``, ``S`` and ``V`` are, as long as</span>
+<span class="sd">    their product as indicated yields a real ``m x n`` matrix.</span>
+
+<span class="sd">    The chosen geometry yields a Riemannian submanifold of the embedding</span>
+<span class="sd">    space :math:`\R^(m \times n)` equipped with the usual trace (Frobenius)</span>
+<span class="sd">    inner product.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_m</span> <span class="o">=</span> <span class="n">m</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_n</span> <span class="o">=</span> <span class="n">n</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_k</span> <span class="o">=</span> <span class="n">k</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_stiefel_m</span> <span class="o">=</span> <span class="n">Stiefel</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_stiefel_n</span> <span class="o">=</span> <span class="n">Stiefel</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+
+        <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Embedded manifold of </span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s2">x</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2"> matrices of rank </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">dimension</span> <span class="o">=</span> <span class="p">(</span><span class="n">m</span> <span class="o">+</span> <span class="n">n</span> <span class="o">-</span> <span class="n">k</span><span class="p">)</span> <span class="o">*</span> <span class="n">k</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">dimension</span><span class="p">,</span> <span class="n">point_layout</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">typicaldist</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span>
+
+<div class="viewcode-block" id="FixedRankEmbedded.inner"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.fixed_rank.FixedRankEmbedded.inner">[docs]</a>    <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">H</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">tensordot</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">H</span><span class="p">))</span></div>
+
+    <span class="k">def</span> <span class="nf">_apply_ambient</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">W</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Right-multiply matrix ``W`` to point ``Z`` in ambient space.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+            <span class="k">return</span> <span class="n">Z</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">@</span> <span class="n">Z</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">@</span> <span class="n">Z</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">W</span>
+        <span class="k">return</span> <span class="n">Z</span> <span class="o">@</span> <span class="n">W</span>
+
+    <span class="k">def</span> <span class="nf">_apply_ambient_transpose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">W</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Right-multiple matrix ``W`` to ``Z.T`` in ambient space.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+            <span class="k">return</span> <span class="n">Z</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">@</span> <span class="n">Z</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">@</span> <span class="n">Z</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">W</span>
+        <span class="k">return</span> <span class="n">Z</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">W</span>
+
+<div class="viewcode-block" id="FixedRankEmbedded.proj"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.fixed_rank.FixedRankEmbedded.proj">[docs]</a>    <span class="k">def</span> <span class="nf">proj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Z</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Project point to tangent space.</span>
+
+<span class="sd">        Note that Z must either be an m x n matrix from the ambient space, or</span>
+<span class="sd">        else a tuple (Uz, Sz, Vz), where Uz * Sz * Vz is in the ambient space</span>
+<span class="sd">        (of low-rank matrices).</span>
+
+<span class="sd">        This function then returns a tangent vector parameterized as</span>
+<span class="sd">        (Up, M, Vp), as described in the class docstring.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ZV</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_apply_ambient</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="n">X</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+        <span class="n">UtZV</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">ZV</span>
+        <span class="n">ZtU</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_apply_ambient_transpose</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="n">Up</span> <span class="o">=</span> <span class="n">ZV</span> <span class="o">-</span> <span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">@</span> <span class="n">UtZV</span>
+        <span class="n">M</span> <span class="o">=</span> <span class="n">UtZV</span>
+        <span class="n">Vp</span> <span class="o">=</span> <span class="n">ZtU</span> <span class="o">-</span> <span class="n">X</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">UtZV</span><span class="o">.</span><span class="n">T</span>
+
+        <span class="k">return</span> <span class="n">_FixedRankTangentVector</span><span class="p">(</span><span class="n">Up</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="n">Vp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FixedRankEmbedded.egrad2rgrad"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.fixed_rank.FixedRankEmbedded.egrad2rgrad">[docs]</a>    <span class="k">def</span> <span class="nf">egrad2rgrad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">egrad</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert Euclidean to Riemannian gradient.</span>
+
+<span class="sd">        Assuming that the cost function being optimized has been defined</span>
+<span class="sd">        in terms of the low-rank singular value decomposition of X, the</span>
+<span class="sd">        gradient returned by the autodiff backends will have three components</span>
+<span class="sd">        and will be in the form of a tuple egrad = (df/dU, df/dS, df/dV).</span>
+
+<span class="sd">        This function correctly maps a gradient of this form into the tangent</span>
+<span class="sd">        space. See https://j-towns.github.io/papers/svd-derivative.pdf for a</span>
+<span class="sd">        derivation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">utdu</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">egrad</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">uutdu</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">@</span> <span class="n">utdu</span>
+        <span class="n">Up</span> <span class="o">=</span> <span class="p">(</span><span class="n">egrad</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">uutdu</span><span class="p">)</span> <span class="o">/</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="n">vtdv</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">@</span> <span class="n">egrad</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">T</span>
+        <span class="n">vvtdv</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">vtdv</span>
+        <span class="n">Vp</span> <span class="o">=</span> <span class="p">(</span><span class="n">egrad</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">T</span> <span class="o">-</span> <span class="n">vvtdv</span><span class="p">)</span> <span class="o">/</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="n">i</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_k</span><span class="p">)</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">][:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">i</span><span class="p">)</span>
+
+        <span class="n">M</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">f</span> <span class="o">*</span> <span class="p">(</span><span class="n">utdu</span> <span class="o">-</span> <span class="n">utdu</span><span class="o">.</span><span class="n">T</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="o">+</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">][:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">*</span> <span class="n">f</span> <span class="o">*</span> <span class="p">(</span><span class="n">vtdv</span> <span class="o">-</span> <span class="n">vtdv</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+            <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">egrad</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">_FixedRankTangentVector</span><span class="p">(</span><span class="n">Up</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="n">Vp</span><span class="p">)</span></div>
+
+    <span class="c1"># TODO(nkoep): Implement the &#39;weingarten&#39; method to support the</span>
+    <span class="c1"># trust-region solver, cf.</span>
+    <span class="c1"># https://sites.uclouvain.be/absil/2013-01/Weingarten_07PA_techrep.pdf</span>
+
+    <span class="c1"># This retraction is second order, following general results from</span>
+    <span class="c1"># Absil, Malick, &quot;Projection-like retractions on matrix manifolds&quot;,</span>
+    <span class="c1"># SIAM J. Optim., 22 (2012), pp. 135-158.</span>
+<div class="viewcode-block" id="FixedRankEmbedded.retr"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.fixed_rank.FixedRankEmbedded.retr">[docs]</a>    <span class="k">def</span> <span class="nf">retr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Z</span><span class="p">):</span>
+        <span class="n">Qu</span><span class="p">,</span> <span class="n">Ru</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">qr</span><span class="p">(</span><span class="n">Z</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">Qv</span><span class="p">,</span> <span class="n">Rv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">qr</span><span class="p">(</span><span class="n">Z</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+
+        <span class="n">T</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span>
+            <span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="n">Z</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">Rv</span><span class="o">.</span><span class="n">T</span><span class="p">)),</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">Ru</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_k</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_k</span><span class="p">)))),</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Numpy svd outputs St as a 1d vector, not a matrix.</span>
+        <span class="n">Ut</span><span class="p">,</span> <span class="n">St</span><span class="p">,</span> <span class="n">Vt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">full_matrices</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="c1"># Transpose because numpy outputs it the wrong way.</span>
+        <span class="n">Vt</span> <span class="o">=</span> <span class="n">Vt</span><span class="o">.</span><span class="n">T</span>
+
+        <span class="n">U</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">Qu</span><span class="p">))</span> <span class="o">@</span> <span class="n">Ut</span><span class="p">[:,</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_k</span><span class="p">]</span>
+        <span class="n">V</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">X</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">Qv</span><span class="p">))</span> <span class="o">@</span> <span class="n">Vt</span><span class="p">[:,</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_k</span><span class="p">]</span>
+        <span class="n">S</span> <span class="o">=</span> <span class="n">St</span><span class="p">[:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_k</span><span class="p">]</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">spacing</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">U</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">V</span><span class="o">.</span><span class="n">T</span></div>
+
+<div class="viewcode-block" id="FixedRankEmbedded.norm"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.fixed_rank.FixedRankEmbedded.norm">[docs]</a>    <span class="k">def</span> <span class="nf">norm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">G</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">G</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="FixedRankEmbedded.rand"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.fixed_rank.FixedRankEmbedded.rand">[docs]</a>    <span class="k">def</span> <span class="nf">rand</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">u</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stiefel_m</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_k</span><span class="p">))[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">vt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stiefel_n</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span><span class="o">.</span><span class="n">T</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">vt</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_tangent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Z</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Project componenets of ``Z`` to tangent space at ``X``.</span>
+
+<span class="sd">        Given Z in tangent vector format, projects the components Up and Vp</span>
+<span class="sd">        such that they satisfy the tangent space constraints up to numerical</span>
+<span class="sd">        errors.</span>
+<span class="sd">        If Z was indeed a tangent vector at X, this should barely affect Z.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Up</span> <span class="o">=</span> <span class="n">Z</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">@</span> <span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">Z</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">Vp</span> <span class="o">=</span> <span class="n">Z</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">X</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">X</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">@</span> <span class="n">Z</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">_FixedRankTangentVector</span><span class="p">(</span><span class="n">Up</span><span class="p">,</span> <span class="n">Z</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">Vp</span><span class="p">)</span>
+
+<div class="viewcode-block" id="FixedRankEmbedded.randvec"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.fixed_rank.FixedRankEmbedded.randvec">[docs]</a>    <span class="k">def</span> <span class="nf">randvec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="n">Up</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_m</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_k</span><span class="p">)</span>
+        <span class="n">Vp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_k</span><span class="p">)</span>
+        <span class="n">M</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_k</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_k</span><span class="p">)</span>
+
+        <span class="n">Z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tangent</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="p">(</span><span class="n">Up</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="n">Vp</span><span class="p">))</span>
+
+        <span class="n">nrm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Z</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">_FixedRankTangentVector</span><span class="p">(</span><span class="n">Z</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">nrm</span><span class="p">,</span> <span class="n">Z</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="n">nrm</span><span class="p">,</span> <span class="n">Z</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">/</span> <span class="n">nrm</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FixedRankEmbedded.tangent2ambient"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.fixed_rank.FixedRankEmbedded.tangent2ambient">[docs]</a>    <span class="k">def</span> <span class="nf">tangent2ambient</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Z</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Represent tangent vector in ambient space.</span>
+
+<span class="sd">        Transforms a tangent vector Z represented as a structure (Up, M, Vp)</span>
+<span class="sd">        into a structure with fields (U, S, V) that represents that same</span>
+<span class="sd">        tangent vector in the ambient space of mxn matrices, as U*S*V&#39;.</span>
+<span class="sd">        This matrix is equal to X.U*Z.M*X.V&#39; + Z.Up*X.V&#39; + X.U*Z.Vp&#39;.</span>
+<span class="sd">        The latter is an mxn matrix, which could be too large to build</span>
+<span class="sd">        explicitly, and this is why we return a low-rank representation</span>
+<span class="sd">        instead.</span>
+<span class="sd">        Note that there are no guarantees on U, S and V other than that USV&#39; is</span>
+<span class="sd">        the desired matrix.</span>
+<span class="sd">        In particular, U and V are not (in general) orthonormal and S is not</span>
+<span class="sd">        (in general) diagonal.</span>
+<span class="sd">        Currently, S is identity, but this might change.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">U</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">@</span> <span class="n">Z</span><span class="o">.</span><span class="n">M</span> <span class="o">+</span> <span class="n">Z</span><span class="o">.</span><span class="n">Up</span><span class="p">,</span> <span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="n">S</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_k</span><span class="p">)</span>
+        <span class="n">V</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">(([</span><span class="n">X</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">Z</span><span class="o">.</span><span class="n">Vp</span><span class="p">]))</span>
+        <span class="k">return</span> <span class="n">U</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">V</span></div>
+
+    <span class="c1"># Comment from Manopt:</span>
+    <span class="c1"># New vector transport on June 24, 2014 (as indicated by Bart)</span>
+    <span class="c1"># Reference: Absil, Mahony, Sepulchre 2008 section 8.1.3:</span>
+    <span class="c1"># For Riemannian submanifolds of a Euclidean space, it is acceptable to</span>
+    <span class="c1"># transport simply by orthogonal projection of the tangent vector</span>
+    <span class="c1"># translated in the ambient space.</span>
+<div class="viewcode-block" id="FixedRankEmbedded.transp"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.fixed_rank.FixedRankEmbedded.transp">[docs]</a>    <span class="k">def</span> <span class="nf">transp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X1</span><span class="p">,</span> <span class="n">X2</span><span class="p">,</span> <span class="n">G</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">proj</span><span class="p">(</span><span class="n">X2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tangent2ambient</span><span class="p">(</span><span class="n">X1</span><span class="p">,</span> <span class="n">G</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="FixedRankEmbedded.zerovec"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.fixed_rank.FixedRankEmbedded.zerovec">[docs]</a>    <span class="k">def</span> <span class="nf">zerovec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">_FixedRankTangentVector</span><span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_m</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_k</span><span class="p">)),</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_k</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_k</span><span class="p">)),</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_k</span><span class="p">)),</span>
+        <span class="p">)</span></div></div>
+
+
+<span class="k">class</span> <span class="nc">_FixedRankTangentVector</span><span class="p">(</span>
+    <span class="n">collections</span><span class="o">.</span><span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;_Triplet&quot;</span><span class="p">,</span> <span class="n">field_names</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;Up&quot;</span><span class="p">,</span> <span class="s2">&quot;M&quot;</span><span class="p">,</span> <span class="s2">&quot;Vp&quot;</span><span class="p">)),</span>
+    <span class="n">ndarraySequenceMixin</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;_FixedRankTangentVector: &quot;</span> <span class="o">+</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">to_ambient</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">Z1</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">@</span> <span class="bp">self</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">@</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">Z2</span> <span class="o">=</span> <span class="bp">self</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">@</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">Z3</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">@</span> <span class="bp">self</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">T</span>
+        <span class="k">return</span> <span class="n">Z1</span> <span class="o">+</span> <span class="n">Z2</span> <span class="o">+</span> <span class="n">Z3</span>
+
+    <span class="k">def</span> <span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">_FixedRankTangentVector</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">s</span> <span class="o">+</span> <span class="n">o</span> <span class="k">for</span> <span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">o</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)])</span>
+
+    <span class="k">def</span> <span class="fm">__sub__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">_FixedRankTangentVector</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">s</span> <span class="o">-</span> <span class="n">o</span> <span class="k">for</span> <span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">o</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)])</span>
+
+    <span class="k">def</span> <span class="fm">__mul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">_FixedRankTangentVector</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">other</span> <span class="o">*</span> <span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">])</span>
+
+    <span class="fm">__rmul__</span> <span class="o">=</span> <span class="fm">__mul__</span>
+
+    <span class="k">def</span> <span class="nf">__div__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">_FixedRankTangentVector</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">val</span> <span class="o">/</span> <span class="n">other</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="fm">__neg__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">_FixedRankTangentVector</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="o">-</span><span class="n">val</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">])</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
+      <span class="lastupdated">Last updated on Jan 06, 2022.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: latest
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl>
+      <dt>Versions</dt>
+      <dd><a href="/docs/latest">latest</a></dd>
+    </dl>
+  </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

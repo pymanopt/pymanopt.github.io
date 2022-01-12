@@ -5,7 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pymanopt.core.problem &mdash; Pymanopt latest documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/style.css" type="text/css" />
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/katex-math.css" type="text/css" />
     <link rel="canonical" href="pymanopt.org/_modules/pymanopt/core/problem.html" />
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
@@ -15,6 +17,10 @@
         <script src="../../../_static/jquery.js"></script>
         <script src="../../../_static/underscore.js"></script>
         <script src="../../../_static/doctools.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js"></script>
+        <script src="../../../_static/katex_autorenderer.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -26,6 +32,7 @@
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
             <a href="../../../index.html" class="icon icon-home"> Pymanopt
+            <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
                 latest
@@ -40,7 +47,14 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/pymanopt/pymanopt/tree/master/examples">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api-reference.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributing</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Notebooks</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/notebooks/mixture_of_gaussians.html">Riemannian Optimization for Inference in MoG models</a></li>
 </ul>
 
         </div>
@@ -68,61 +82,69 @@
            <div itemprop="articleBody">
              
   <h1>Source code for pymanopt.core.problem</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Module containing pymanopt problem class. Use this to build a problem</span>
-<span class="sd">object to feed to one of the solvers.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">&quot;&quot;&quot;The Pymanopt problem class.&quot;&quot;&quot;</span>
+
 <span class="kn">import</span> <span class="nn">functools</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Optional</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="kn">from</span> <span class="nn">..autodiff</span> <span class="kn">import</span> <span class="n">Function</span>
+<span class="kn">from</span> <span class="nn">..manifolds.manifold</span> <span class="kn">import</span> <span class="n">Manifold</span>
 
 
-<div class="viewcode-block" id="Problem"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.core.problem.Problem">[docs]</a><span class="k">class</span> <span class="nc">Problem</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Problem class for setting up a problem to feed to one of the</span>
-<span class="sd">    pymanopt solvers.</span>
+<div class="viewcode-block" id="Problem"><a class="viewcode-back" href="../../../problem.html#pymanopt.core.problem.Problem">[docs]</a><span class="k">class</span> <span class="nc">Problem</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Problem class to define a Riemannian optimization problem.</span>
 
-<span class="sd">    Attributes:</span>
-<span class="sd">        - manifold</span>
-<span class="sd">            Manifold to optimize over.</span>
-<span class="sd">        - cost</span>
-<span class="sd">            A callable which takes an element of manifold and returns a</span>
-<span class="sd">            real number, or a symbolic Theano or TensorFlow expression.</span>
-<span class="sd">            In case of a symbolic expression, the gradient (and if</span>
-<span class="sd">            necessary the Hessian) are computed automatically if they are</span>
-<span class="sd">            not explicitly given. We recommend you take this approach</span>
-<span class="sd">            rather than calculating gradients and Hessians by hand.</span>
-<span class="sd">        - grad</span>
-<span class="sd">            grad(x) is the gradient of cost at x. This must take an</span>
-<span class="sd">            element X of manifold and return an element of the tangent space</span>
-<span class="sd">            to manifold at X. This is usually computed automatically and</span>
-<span class="sd">            doesn&#39;t need to be set by the user.</span>
-<span class="sd">        - hess</span>
-<span class="sd">            hess(x, a) is the directional derivative of grad at x, in</span>
-<span class="sd">            direction a. It should return an element of the tangent</span>
-<span class="sd">            space to manifold at x.</span>
-<span class="sd">        - egrad</span>
-<span class="sd">            The &#39;Euclidean gradient&#39;, egrad(x) should return the grad of</span>
-<span class="sd">            cost in the usual sense, i.e. egrad(x) need not lie in the</span>
-<span class="sd">            tangent space.</span>
-<span class="sd">        - ehess</span>
-<span class="sd">            The &#39;Euclidean Hessian&#39;, ehess(x, a) should return the</span>
-<span class="sd">            directional derivative of egrad at x in direction a. This</span>
-<span class="sd">            need not lie in the tangent space.</span>
-<span class="sd">        - verbosity (2)</span>
-<span class="sd">            Level of information printed by the solver while it operates, 0</span>
-<span class="sd">            is silent, 2 is most information.</span>
+<span class="sd">    Args:</span>
+<span class="sd">        manifold: Manifold to optimize over.</span>
+<span class="sd">        cost: A callable decorated with a decorator from</span>
+<span class="sd">            :mod:`pymanopt.functions` which takes a point on a manifold and</span>
+<span class="sd">            returns a real scalar.</span>
+<span class="sd">            If any decorator other than</span>
+<span class="sd">            :func:`pymanopt.function.Callable` is used the gradient and</span>
+<span class="sd">            Hessian-vector production functions are computed automatically if</span>
+<span class="sd">            needed and no ``(e)grad`` or ``(e)hess`` arguments are provided.</span>
+<span class="sd">        egrad: The Euclidean gradient, i.e., the gradient of the cost function</span>
+<span class="sd">            in the typical sense in the ambient space.</span>
+<span class="sd">            The returned value need not belong to the tangent space of</span>
+<span class="sd">            ``manifold``.</span>
+<span class="sd">        ehess: The Euclidean Hessian-vector product, i.e., the directional</span>
+<span class="sd">            derivative of ``egrad`` in the direction of a tangent vector.</span>
+<span class="sd">        grad: The Riemannian gradient.</span>
+<span class="sd">            For embeddes submanifolds this is simply the projection of</span>
+<span class="sd">            ``egrad`` on the tangent space of ``manifold``.</span>
+<span class="sd">            In most cases this need not be provided and the Riemannian gradient</span>
+<span class="sd">            is instead computed internally.</span>
+<span class="sd">            If provided, the function needs to return a vector in the tangent</span>
+<span class="sd">            space of ``manifold``.</span>
+<span class="sd">        hess: The Riemannian Hessian-vector product, i.e., the directional</span>
+<span class="sd">            derivative of ``grad`` in the direction of a tangent vector.</span>
+<span class="sd">            As with ``grad`` this usually need not be provided explicitly.</span>
+<span class="sd">        verbosity: Level of information printed by the solver while it</span>
+<span class="sd">            operates: 0 is silent, 2 is most verbose.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">manifold</span><span class="p">,</span> <span class="n">cost</span><span class="p">,</span> <span class="n">egrad</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ehess</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">grad</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">hess</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">precon</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">manifold</span><span class="p">:</span> <span class="n">Manifold</span><span class="p">,</span>
+        <span class="n">cost</span><span class="p">:</span> <span class="n">Function</span><span class="p">,</span>
+        <span class="n">egrad</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Function</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">ehess</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Function</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">grad</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Function</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">hess</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Function</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">precon</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">verbosity</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">manifold</span> <span class="o">=</span> <span class="n">manifold</span>
 
         <span class="k">for</span> <span class="n">function</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">(</span>
-                <span class="p">(</span><span class="n">cost</span><span class="p">,</span> <span class="s2">&quot;cost&quot;</span><span class="p">),</span> <span class="p">(</span><span class="n">egrad</span><span class="p">,</span> <span class="s2">&quot;egrad&quot;</span><span class="p">),</span> <span class="p">(</span><span class="n">ehess</span><span class="p">,</span> <span class="s2">&quot;ehess&quot;</span><span class="p">),</span>
-                <span class="p">(</span><span class="n">grad</span><span class="p">,</span> <span class="s2">&quot;grad&quot;</span><span class="p">),</span> <span class="p">(</span><span class="n">hess</span><span class="p">,</span> <span class="s2">&quot;hess&quot;</span><span class="p">)):</span>
+            <span class="p">(</span><span class="n">cost</span><span class="p">,</span> <span class="s2">&quot;cost&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">egrad</span><span class="p">,</span> <span class="s2">&quot;egrad&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">ehess</span><span class="p">,</span> <span class="s2">&quot;ehess&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">grad</span><span class="p">,</span> <span class="s2">&quot;grad&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">hess</span><span class="p">,</span> <span class="s2">&quot;hess&quot;</span><span class="p">),</span>
+        <span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_validate_function</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_original_cost</span> <span class="o">=</span> <span class="n">cost</span>
@@ -143,29 +165,32 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_hess</span> <span class="o">=</span> <span class="n">hess</span>
 
         <span class="k">if</span> <span class="n">precon</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+
             <span class="k">def</span> <span class="nf">precon</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
                 <span class="k">return</span> <span class="n">d</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">precon</span> <span class="o">=</span> <span class="n">precon</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">=</span> <span class="n">verbosity</span>
 
     <span class="k">def</span> <span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;verbosity&quot;</span>
-                    <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">or</span> <span class="n">value</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;verbosity&quot;</span> <span class="ow">and</span> <span class="p">(</span>
+                <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">or</span> <span class="n">value</span> <span class="o">&lt;</span> <span class="mi">0</span>
+            <span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                    <span class="s2">&quot;Verbosity level must be an nonnegative integer&quot;</span><span class="p">)</span>
+                    <span class="s2">&quot;Verbosity level must be an nonnegative integer&quot;</span>
+                <span class="p">)</span>
             <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;manifold&quot;</span><span class="p">,</span> <span class="s2">&quot;precon&quot;</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span>
-                    <span class="s2">&quot;Cannot override &#39;</span><span class="si">{:s}</span><span class="s2">&#39; attribute&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">))</span>
+                <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cannot override &#39;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&#39; attribute&quot;</span><span class="p">)</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_validate_function</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">function</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="n">Function</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;Function &#39;</span><span class="si">{:s}</span><span class="s2">&#39; must be decorated with one of the decorators &quot;</span>
-                <span class="s2">&quot;from &#39;pymanopt.function&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+                <span class="sa">f</span><span class="s2">&quot;Function &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39; must be decorated with a backend decorator&quot;</span>
+            <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_flatten_arguments</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arguments</span><span class="p">,</span> <span class="n">signature</span><span class="p">):</span>
         <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">arguments</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">signature</span><span class="p">)</span>
@@ -182,7 +207,9 @@
         <span class="k">return</span> <span class="n">flattened_arguments</span>
 
     <span class="k">def</span> <span class="nf">_group_return_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">function</span><span class="p">,</span> <span class="n">signature</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Wraps a function inside another function which groups the return</span>
+        <span class="sd">&quot;&quot;&quot;Decorator to group return values according to a given signature.</span>
+
+<span class="sd">        Wraps a function inside another function which groups the return</span>
 <span class="sd">        values of ``function`` according to the group sizes delineated by</span>
 <span class="sd">        ``signature``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -197,37 +224,45 @@
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Function returned an unexpected value&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">return_values</span><span class="p">)</span> <span class="o">!=</span> <span class="n">num_return_values</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                    <span class="s2">&quot;Function returned an unexpected number of arguments&quot;</span><span class="p">)</span>
+                    <span class="s2">&quot;Function returned an unexpected number of arguments&quot;</span>
+                <span class="p">)</span>
             <span class="n">groups</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="k">for</span> <span class="n">group_size</span> <span class="ow">in</span> <span class="n">signature</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">group_size</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
                     <span class="n">group</span> <span class="o">=</span> <span class="n">return_values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="n">group</span> <span class="o">=</span> <span class="n">return_values</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="n">group_size</span><span class="p">]</span>
+                    <span class="n">group</span> <span class="o">=</span> <span class="n">return_values</span><span class="p">[</span><span class="n">i</span> <span class="p">:</span> <span class="n">i</span> <span class="o">+</span> <span class="n">group_size</span><span class="p">]</span>
                 <span class="n">groups</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">group</span><span class="p">)</span>
                 <span class="n">i</span> <span class="o">+=</span> <span class="n">group_size</span>
             <span class="k">return</span> <span class="n">groups</span>
+
         <span class="k">return</span> <span class="n">wrapper</span>
 
     <span class="k">def</span> <span class="nf">_wrap_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">function</span><span class="p">):</span>
         <span class="n">point_layout</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">manifold</span><span class="o">.</span><span class="n">point_layout</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">point_layout</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">)):</span>
+
             <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">function</span><span class="p">)</span>
             <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">point</span><span class="p">):</span>
                 <span class="k">return</span> <span class="n">function</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_flatten_arguments</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">point_layout</span><span class="p">))</span>
+
             <span class="k">return</span> <span class="n">wrapper</span>
 
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">point_layout</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">point_layout</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+
             <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">function</span><span class="p">)</span>
             <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">point</span><span class="p">):</span>
                 <span class="k">return</span> <span class="n">function</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
+
         <span class="k">else</span><span class="p">:</span>
+
             <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">function</span><span class="p">)</span>
             <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">point</span><span class="p">):</span>
                 <span class="k">return</span> <span class="n">function</span><span class="p">(</span><span class="o">*</span><span class="n">point</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="n">wrapper</span>
 
     <span class="k">def</span> <span class="nf">_wrap_gradient</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gradient</span><span class="p">):</span>
@@ -240,21 +275,28 @@
     <span class="k">def</span> <span class="nf">_wrap_hessian_vector_product</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hessian_vector_product</span><span class="p">):</span>
         <span class="n">point_layout</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">manifold</span><span class="o">.</span><span class="n">point_layout</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">point_layout</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+
             <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">hessian_vector_product</span><span class="p">)</span>
             <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">vector</span><span class="p">):</span>
                 <span class="k">return</span> <span class="n">hessian_vector_product</span><span class="p">(</span>
                     <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_flatten_arguments</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">point_layout</span><span class="p">),</span>
-                    <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_flatten_arguments</span><span class="p">(</span><span class="n">vector</span><span class="p">,</span> <span class="n">point_layout</span><span class="p">))</span>
+                    <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_flatten_arguments</span><span class="p">(</span><span class="n">vector</span><span class="p">,</span> <span class="n">point_layout</span><span class="p">),</span>
+                <span class="p">)</span>
+
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_group_return_values</span><span class="p">(</span><span class="n">wrapper</span><span class="p">,</span> <span class="n">point_layout</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">point_layout</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+
             <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">hessian_vector_product</span><span class="p">)</span>
             <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">vector</span><span class="p">):</span>
                 <span class="k">return</span> <span class="n">hessian_vector_product</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">vector</span><span class="p">)</span>
+
         <span class="k">else</span><span class="p">:</span>
+
             <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">hessian_vector_product</span><span class="p">)</span>
             <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">vector</span><span class="p">):</span>
                 <span class="k">return</span> <span class="n">hessian_vector_product</span><span class="p">(</span><span class="o">*</span><span class="n">point</span><span class="p">,</span> <span class="o">*</span><span class="n">vector</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="n">wrapper</span>
 
     <span class="nd">@property</span>
@@ -265,7 +307,8 @@
     <span class="k">def</span> <span class="nf">egrad</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_egrad</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_egrad</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wrap_gradient</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_original_cost</span><span class="o">.</span><span class="n">compute_gradient</span><span class="p">())</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_original_cost</span><span class="o">.</span><span class="n">compute_gradient</span><span class="p">()</span>
+            <span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_egrad</span>
 
     <span class="nd">@property</span>
@@ -275,6 +318,7 @@
 
             <span class="k">def</span> <span class="nf">grad</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">manifold</span><span class="o">.</span><span class="n">egrad2rgrad</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">egrad</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+
             <span class="bp">self</span><span class="o">.</span><span class="n">_grad</span> <span class="o">=</span> <span class="n">grad</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_grad</span>
 
@@ -282,7 +326,8 @@
     <span class="k">def</span> <span class="nf">ehess</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ehess</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_ehess</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wrap_hessian_vector_product</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_original_cost</span><span class="o">.</span><span class="n">compute_hessian_vector_product</span><span class="p">())</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_original_cost</span><span class="o">.</span><span class="n">compute_hessian_vector_product</span><span class="p">()</span>
+            <span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ehess</span>
 
     <span class="nd">@property</span>
@@ -292,7 +337,9 @@
 
             <span class="k">def</span> <span class="nf">hess</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">manifold</span><span class="o">.</span><span class="n">ehess2rhess</span><span class="p">(</span>
-                    <span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">egrad</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">ehess</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="p">),</span> <span class="n">a</span><span class="p">)</span>
+                    <span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">egrad</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">ehess</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="p">),</span> <span class="n">a</span>
+                <span class="p">)</span>
+
             <span class="bp">self</span><span class="o">.</span><span class="n">_hess</span> <span class="o">=</span> <span class="n">hess</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hess</span></div>
 </pre></div>
@@ -304,8 +351,8 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2016-2021, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Dec 27, 2021.
+    <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
+      <span class="lastupdated">Last updated on Jan 06, 2022.
       </span></p>
   </div>
 
@@ -316,7 +363,19 @@
       </div>
     </section>
   </div>
-  <script>
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: latest
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl>
+      <dt>Versions</dt>
+      <dd><a href="/docs/latest">latest</a></dd>
+    </dl>
+  </div>
+</div><script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });

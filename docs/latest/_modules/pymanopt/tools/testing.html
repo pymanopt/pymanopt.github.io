@@ -5,7 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pymanopt.tools.testing &mdash; Pymanopt latest documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/style.css" type="text/css" />
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/katex-math.css" type="text/css" />
     <link rel="canonical" href="pymanopt.org/_modules/pymanopt/tools/testing.html" />
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
@@ -15,6 +17,10 @@
         <script src="../../../_static/jquery.js"></script>
         <script src="../../../_static/underscore.js"></script>
         <script src="../../../_static/doctools.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js"></script>
+        <script src="../../../_static/katex_autorenderer.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -26,6 +32,7 @@
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
             <a href="../../../index.html" class="icon icon-home"> Pymanopt
+            <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
                 latest
@@ -40,7 +47,14 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/pymanopt/pymanopt/tree/master/examples">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api-reference.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributing</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Notebooks</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/notebooks/mixture_of_gaussians.html">Riemannian Optimization for Inference in MoG models</a></li>
 </ul>
 
         </div>
@@ -68,65 +82,58 @@
            <div itemprop="articleBody">
              
   <h1>Source code for pymanopt.tools.testing</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Module containing tools for testing correctness in Pymanopt. Note, these</span>
-<span class="sd">currently require autograd.</span>
+<span></span><span class="sd">&quot;&quot;&quot;Tools for testing numerical correctness in Pymanopt.</span>
 
-<span class="sd">Note: the methods for generating rgrad, egrad2rgrad, ehess and ehess2rhess</span>
-<span class="sd">will only be correct if the manifold is a submanifold of Euclidean space,</span>
-<span class="sd">that is if the projection is an orthogonal projection onto the tangent space.</span>
+<span class="sd">Note:</span>
+<span class="sd">    The functions :func:`rgrad`, :func:`egrad2rgrad`, :func:`ehess` and</span>
+<span class="sd">    :func:`ehess2rhess` will only be correct if the manifold is a submanifold</span>
+<span class="sd">    of Euclidean space, that is if the projection is an orthogonal projection</span>
+<span class="sd">    onto the tangent space.</span>
 <span class="sd">&quot;&quot;&quot;</span>
+
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">autograd</span> <span class="kn">import</span> <span class="n">grad</span><span class="p">,</span> <span class="n">jacobian</span>
 
 
-<div class="viewcode-block" id="rgrad"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.tools.testing.rgrad">[docs]</a><span class="k">def</span> <span class="nf">rgrad</span><span class="p">(</span><span class="n">cost</span><span class="p">,</span> <span class="n">proj</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Generates the Riemannain gradient of cost. Cost must be defined using</span>
-<span class="sd">    autograd.numpy.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="rgrad"><a class="viewcode-back" href="../../../tools.html#pymanopt.tools.testing.rgrad">[docs]</a><span class="k">def</span> <span class="nf">rgrad</span><span class="p">(</span><span class="n">cost</span><span class="p">,</span> <span class="n">proj</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Generates the Riemannian gradient of a cost function.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">proj</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">grad</span><span class="p">(</span><span class="n">cost</span><span class="p">)(</span><span class="n">x</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="egrad2rgrad"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.tools.testing.egrad2rgrad">[docs]</a><span class="k">def</span> <span class="nf">egrad2rgrad</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Generates an egrad2rgrad function.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="egrad2rgrad"><a class="viewcode-back" href="../../../tools.html#pymanopt.tools.testing.egrad2rgrad">[docs]</a><span class="k">def</span> <span class="nf">egrad2rgrad</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Generates an egrad2rgrad function.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">g</span><span class="p">:</span> <span class="n">proj</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">g</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="rhess"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.tools.testing.rhess">[docs]</a><span class="k">def</span> <span class="nf">rhess</span><span class="p">(</span><span class="n">cost</span><span class="p">,</span> <span class="n">proj</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Generates the Riemannian hessian of the cost. Specifically, rhess(cost,</span>
-<span class="sd">    proj)(x, u) is the directional derivatative of cost at point X on the</span>
-<span class="sd">    manifold, in direction u.</span>
-<span class="sd">    cost and proj must be defined using autograd.numpy.</span>
-<span class="sd">    See http://sites.uclouvain.be/absil/2013-01/Weingarten_07PA_techrep.pdf</span>
-<span class="sd">    for some discussion.</span>
-<span class="sd">    proj and cost must be defined using autograd.</span>
-<span class="sd">    Currently this is correct but not efficient, because of the jacobian-</span>
-<span class="sd">    vector product. Hopefully this can be fixed in future.</span>
+<div class="viewcode-block" id="rhess"><a class="viewcode-back" href="../../../tools.html#pymanopt.tools.testing.rhess">[docs]</a><span class="k">def</span> <span class="nf">rhess</span><span class="p">(</span><span class="n">cost</span><span class="p">,</span> <span class="n">proj</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Generates the Riemannian hessian of a cost function.</span>
+
+<span class="sd">    Specifically, ``rhess(cost, proj)(x, u)`` is the directional derivative of</span>
+<span class="sd">    cost at ``x`` on the manifold in the direction of a tangent vector ``u``.</span>
+<span class="sd">    Both ``cost`` and ``proj`` must be defined using Autograd.</span>
+<span class="sd">    The current implementation is not efficient because of the explicit</span>
+<span class="sd">    Jacobian-vector product.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">u</span><span class="p">:</span> <span class="n">proj</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">tensordot</span><span class="p">(</span><span class="n">jacobian</span><span class="p">(</span><span class="n">rgrad</span><span class="p">(</span><span class="n">cost</span><span class="p">,</span> <span class="n">proj</span><span class="p">))(</span><span class="n">x</span><span class="p">),</span> <span class="n">u</span><span class="p">,</span>
-                                             <span class="n">axes</span><span class="o">=</span><span class="n">u</span><span class="o">.</span><span class="n">ndim</span><span class="p">))</span></div>
+    <span class="k">return</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">u</span><span class="p">:</span> <span class="n">proj</span><span class="p">(</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">tensordot</span><span class="p">(</span><span class="n">jacobian</span><span class="p">(</span><span class="n">rgrad</span><span class="p">(</span><span class="n">cost</span><span class="p">,</span> <span class="n">proj</span><span class="p">))(</span><span class="n">x</span><span class="p">),</span> <span class="n">u</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">u</span><span class="o">.</span><span class="n">ndim</span><span class="p">)</span>
+    <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="ehess2rhess"><a class="viewcode-back" href="../../../api-reference.html#pymanopt.tools.testing.ehess2rhess">[docs]</a><span class="k">def</span> <span class="nf">ehess2rhess</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Generates an ehess2rhess function for a manifold which is a sub-manifold</span>
-<span class="sd">    of Euclidean space.</span>
-<span class="sd">    ehess2rhess(proj)(x, egrad, ehess, u) converts the Euclidean hessian ehess</span>
-<span class="sd">    at the point x to a Riemannian hessian. That is the directional</span>
-<span class="sd">    derivatative of the gradient in the direction u.</span>
-<span class="sd">    proj must be defined using autograd.numpy.</span>
-<span class="sd">    This will not be an efficient implementation because of missing support</span>
-<span class="sd">    for efficient jacobian-vector products in autograd.</span>
+<div class="viewcode-block" id="ehess2rhess"><a class="viewcode-back" href="../../../tools.html#pymanopt.tools.testing.ehess2rhess">[docs]</a><span class="k">def</span> <span class="nf">ehess2rhess</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Generates an ehess2rhess function.</span>
+
+<span class="sd">    Specifically, ``ehess2rhess(proj)(x, egrad, ehess, u)`` converts the</span>
+<span class="sd">    Euclidean Hessian-vector product ``ehess`` at a point ``x`` to a Riemannian</span>
+<span class="sd">    Hessian-vector product, i.e., the directional derivative of the gradient in</span>
+<span class="sd">    the tangent direction ``u``.</span>
+<span class="sd">    Similar to :func:`rhess`, this is not efficient as it computes the Jacobian</span>
+<span class="sd">    explicitly.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Differentiate proj w.r.t. the first argument</span>
     <span class="n">d_proj</span> <span class="o">=</span> <span class="n">jacobian</span><span class="p">(</span><span class="n">proj</span><span class="p">)</span>
-    <span class="k">return</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">egrad</span><span class="p">,</span> <span class="n">ehess</span><span class="p">,</span> <span class="n">u</span><span class="p">:</span> <span class="n">proj</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">ehess</span> <span class="o">+</span>
-                                           <span class="n">np</span><span class="o">.</span><span class="n">tensordot</span><span class="p">(</span><span class="n">d_proj</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">egrad</span><span class="p">),</span> <span class="n">u</span><span class="p">,</span>
-                                                        <span class="n">axes</span><span class="o">=</span><span class="n">u</span><span class="o">.</span><span class="n">ndim</span><span class="p">))</span></div>
+    <span class="k">return</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">egrad</span><span class="p">,</span> <span class="n">ehess</span><span class="p">,</span> <span class="n">u</span><span class="p">:</span> <span class="n">proj</span><span class="p">(</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">ehess</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">tensordot</span><span class="p">(</span><span class="n">d_proj</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">egrad</span><span class="p">),</span> <span class="n">u</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">u</span><span class="o">.</span><span class="n">ndim</span><span class="p">)</span>
+    <span class="p">)</span></div>
 </pre></div>
 
            </div>
@@ -136,8 +143,8 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2016-2021, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Dec 27, 2021.
+    <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
+      <span class="lastupdated">Last updated on Jan 06, 2022.
       </span></p>
   </div>
 
@@ -148,7 +155,19 @@
       </div>
     </section>
   </div>
-  <script>
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: latest
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl>
+      <dt>Versions</dt>
+      <dd><a href="/docs/latest">latest</a></dd>
+    </dl>
+  </div>
+</div><script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });

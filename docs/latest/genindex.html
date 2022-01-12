@@ -5,7 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Index &mdash; Pymanopt latest documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/style.css" type="text/css" />
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" type="text/css" />
+      <link rel="stylesheet" href="_static/katex-math.css" type="text/css" />
     <link rel="canonical" href="pymanopt.org/genindex.html" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
@@ -15,6 +17,10 @@
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js"></script>
+        <script src="_static/katex_autorenderer.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="#" />
     <link rel="search" title="Search" href="search.html" /> 
@@ -26,6 +32,7 @@
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
             <a href="index.html" class="icon icon-home"> Pymanopt
+            <img src="_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
                 latest
@@ -40,7 +47,14 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/pymanopt/pymanopt/tree/master/examples">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api-reference.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING.html">Contributing</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Notebooks</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="examples/notebooks/mixture_of_gaussians.html">Riemannian Optimization for Inference in MoG models</a></li>
 </ul>
 
         </div>
@@ -70,9 +84,11 @@
 <h1 id="index">Index</h1>
 
 <div class="genindex-jumpbox">
- <a href="#C"><strong>C</strong></a>
+ <a href="#A"><strong>A</strong></a>
+ | <a href="#C"><strong>C</strong></a>
  | <a href="#D"><strong>D</strong></a>
  | <a href="#E"><strong>E</strong></a>
+ | <a href="#F"><strong>F</strong></a>
  | <a href="#G"><strong>G</strong></a>
  | <a href="#H"><strong>H</strong></a>
  | <a href="#I"><strong>I</strong></a>
@@ -88,16 +104,38 @@
  | <a href="#Z"><strong>Z</strong></a>
  
 </div>
+<h2 id="A">A</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autodiff.html#pymanopt.function.Autograd">Autograd() (in module pymanopt.function)</a>
+</li>
+  </ul></td>
+</tr></table>
+
 <h2 id="C">C</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api-reference.html#pymanopt.solvers.nelder_mead.compute_centroid">compute_centroid() (in module pymanopt.solvers.nelder_mead)</a>
+      <li><a href="autodiff.html#pymanopt.function.Callable">Callable() (in module pymanopt.function)</a>
+</li>
+      <li><a href="tools.html#pymanopt.tools.diagnostics.check_directional_derivative">check_directional_derivative() (in module pymanopt.tools.diagnostics)</a>
+</li>
+      <li><a href="tools.html#pymanopt.tools.diagnostics.check_gradient">check_gradient() (in module pymanopt.tools.diagnostics)</a>
+</li>
+      <li><a href="manifolds.html#pymanopt.manifolds.complex_circle.ComplexCircle">ComplexCircle (class in pymanopt.manifolds.complex_circle)</a>
+</li>
+      <li><a href="manifolds.html#pymanopt.manifolds.complex_grassmann.ComplexGrassmann">ComplexGrassmann (class in pymanopt.manifolds.complex_grassmann)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api-reference.html#pymanopt.solvers.conjugate_gradient.ConjugateGradient">ConjugateGradient (class in pymanopt.solvers.conjugate_gradient)</a>
+      <li><a href="solvers.html#pymanopt.solvers.nelder_mead.compute_centroid">compute_centroid() (in module pymanopt.solvers.nelder_mead)</a>
 </li>
-      <li><a href="api-reference.html#pymanopt.core.problem.Problem.cost">cost (pymanopt.core.problem.Problem property)</a>
+      <li><a href="autodiff.html#pymanopt.autodiff.Function.compute_gradient">compute_gradient() (pymanopt.autodiff.Function method)</a>
+</li>
+      <li><a href="autodiff.html#pymanopt.autodiff.Function.compute_hessian_vector_product">compute_hessian_vector_product() (pymanopt.autodiff.Function method)</a>
+</li>
+      <li><a href="solvers.html#pymanopt.solvers.conjugate_gradient.ConjugateGradient">ConjugateGradient (class in pymanopt.solvers.conjugate_gradient)</a>
+</li>
+      <li><a href="problem.html#pymanopt.core.problem.Problem.cost">cost (pymanopt.core.problem.Problem property)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -105,20 +143,28 @@
 <h2 id="D">D</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api-reference.html#pymanopt.manifolds.manifold.Manifold.dim">dim (pymanopt.manifolds.manifold.Manifold property)</a>
+      <li><a href="manifolds.html#pymanopt.manifolds.manifold.Manifold.dim">dim (pymanopt.manifolds.manifold.Manifold property)</a>
 </li>
-      <li><a href="api-reference.html#pymanopt.manifolds.grassmann.Grassmann.dist">dist() (pymanopt.manifolds.grassmann.Grassmann method)</a>
+      <li><a href="manifolds.html#pymanopt.manifolds.complex_circle.ComplexCircle.dist">dist() (pymanopt.manifolds.complex_circle.ComplexCircle method)</a>
 
       <ul>
-        <li><a href="api-reference.html#pymanopt.manifolds.manifold.Manifold.dist">(pymanopt.manifolds.manifold.Manifold method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.complex_grassmann.ComplexGrassmann.dist">(pymanopt.manifolds.complex_grassmann.ComplexGrassmann method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.oblique.Oblique.dist">(pymanopt.manifolds.oblique.Oblique method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.grassmann.Grassmann.dist">(pymanopt.manifolds.grassmann.Grassmann method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.product.Product.dist">(pymanopt.manifolds.product.Product method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.manifold.Manifold.dist">(pymanopt.manifolds.manifold.Manifold method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.psd.PSDFixedRankComplex.dist">(pymanopt.manifolds.psd.PSDFixedRankComplex method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.oblique.Oblique.dist">(pymanopt.manifolds.oblique.Oblique method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.psd.SymmetricPositiveDefinite.dist">(pymanopt.manifolds.psd.SymmetricPositiveDefinite method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.product.Product.dist">(pymanopt.manifolds.product.Product method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.psd.PSDFixedRankComplex.dist">(pymanopt.manifolds.psd.PSDFixedRankComplex method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.psd.SymmetricPositiveDefinite.dist">(pymanopt.manifolds.psd.SymmetricPositiveDefinite method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.dist">(pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.strictly_positive_vectors.StrictlyPositiveVectors.dist">(pymanopt.manifolds.strictly_positive_vectors.StrictlyPositiveVectors method)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -127,85 +173,119 @@
 <h2 id="E">E</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api-reference.html#pymanopt.core.problem.Problem.egrad">egrad (pymanopt.core.problem.Problem property)</a>
+      <li><a href="problem.html#pymanopt.core.problem.Problem.egrad">egrad (pymanopt.core.problem.Problem property)</a>
 </li>
-      <li><a href="api-reference.html#pymanopt.tools.testing.egrad2rgrad">egrad2rgrad() (in module pymanopt.tools.testing)</a>
+      <li><a href="tools.html#pymanopt.tools.testing.egrad2rgrad">egrad2rgrad() (in module pymanopt.tools.testing)</a>
 
       <ul>
-        <li><a href="api-reference.html#pymanopt.manifolds.grassmann.Grassmann.egrad2rgrad">(pymanopt.manifolds.grassmann.Grassmann method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.complex_grassmann.ComplexGrassmann.egrad2rgrad">(pymanopt.manifolds.complex_grassmann.ComplexGrassmann method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold.egrad2rgrad">(pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.fixed_rank.FixedRankEmbedded.egrad2rgrad">(pymanopt.manifolds.fixed_rank.FixedRankEmbedded method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.manifold.Manifold.egrad2rgrad">(pymanopt.manifolds.manifold.Manifold method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.grassmann.Grassmann.egrad2rgrad">(pymanopt.manifolds.grassmann.Grassmann method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.product.Product.egrad2rgrad">(pymanopt.manifolds.product.Product method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold.egrad2rgrad">(pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.psd.Elliptope.egrad2rgrad">(pymanopt.manifolds.psd.Elliptope method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.manifold.Manifold.egrad2rgrad">(pymanopt.manifolds.manifold.Manifold method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.psd.SymmetricPositiveDefinite.egrad2rgrad">(pymanopt.manifolds.psd.SymmetricPositiveDefinite method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.product.Product.egrad2rgrad">(pymanopt.manifolds.product.Product method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.psd.Elliptope.egrad2rgrad">(pymanopt.manifolds.psd.Elliptope method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.psd.SymmetricPositiveDefinite.egrad2rgrad">(pymanopt.manifolds.psd.SymmetricPositiveDefinite method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.strictly_positive_vectors.StrictlyPositiveVectors.egrad2rgrad">(pymanopt.manifolds.strictly_positive_vectors.StrictlyPositiveVectors method)</a>
 </li>
       </ul></li>
-      <li><a href="api-reference.html#pymanopt.core.problem.Problem.ehess">ehess (pymanopt.core.problem.Problem property)</a>
+      <li><a href="problem.html#pymanopt.core.problem.Problem.ehess">ehess (pymanopt.core.problem.Problem property)</a>
 </li>
-      <li><a href="api-reference.html#pymanopt.tools.testing.ehess2rhess">ehess2rhess() (in module pymanopt.tools.testing)</a>
+      <li><a href="tools.html#pymanopt.tools.testing.ehess2rhess">ehess2rhess() (in module pymanopt.tools.testing)</a>
 
       <ul>
-        <li><a href="api-reference.html#pymanopt.manifolds.euclidean.SkewSymmetric.ehess2rhess">(pymanopt.manifolds.euclidean.SkewSymmetric method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.complex_circle.ComplexCircle.ehess2rhess">(pymanopt.manifolds.complex_circle.ComplexCircle method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.euclidean.Symmetric.ehess2rhess">(pymanopt.manifolds.euclidean.Symmetric method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.complex_grassmann.ComplexGrassmann.ehess2rhess">(pymanopt.manifolds.complex_grassmann.ComplexGrassmann method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.grassmann.Grassmann.ehess2rhess">(pymanopt.manifolds.grassmann.Grassmann method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.euclidean.SkewSymmetric.ehess2rhess">(pymanopt.manifolds.euclidean.SkewSymmetric method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold.ehess2rhess">(pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.euclidean.Symmetric.ehess2rhess">(pymanopt.manifolds.euclidean.Symmetric method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.manifold.Manifold.ehess2rhess">(pymanopt.manifolds.manifold.Manifold method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.grassmann.Grassmann.ehess2rhess">(pymanopt.manifolds.grassmann.Grassmann method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.oblique.Oblique.ehess2rhess">(pymanopt.manifolds.oblique.Oblique method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold.ehess2rhess">(pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.product.Product.ehess2rhess">(pymanopt.manifolds.product.Product method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.manifold.Manifold.ehess2rhess">(pymanopt.manifolds.manifold.Manifold method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.psd.Elliptope.ehess2rhess">(pymanopt.manifolds.psd.Elliptope method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.oblique.Oblique.ehess2rhess">(pymanopt.manifolds.oblique.Oblique method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.psd.SymmetricPositiveDefinite.ehess2rhess">(pymanopt.manifolds.psd.SymmetricPositiveDefinite method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.product.Product.ehess2rhess">(pymanopt.manifolds.product.Product method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.stiefel.Stiefel.ehess2rhess">(pymanopt.manifolds.stiefel.Stiefel method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.psd.Elliptope.ehess2rhess">(pymanopt.manifolds.psd.Elliptope method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.psd.SymmetricPositiveDefinite.ehess2rhess">(pymanopt.manifolds.psd.SymmetricPositiveDefinite method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.ehess2rhess">(pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.stiefel.Stiefel.ehess2rhess">(pymanopt.manifolds.stiefel.Stiefel method)</a>
 </li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api-reference.html#pymanopt.manifolds.psd.Elliptope">Elliptope (class in pymanopt.manifolds.psd)</a>
+      <li><a href="manifolds.html#pymanopt.manifolds.psd.Elliptope">Elliptope (class in pymanopt.manifolds.psd)</a>
 </li>
-      <li><a href="api-reference.html#pymanopt.manifolds.euclidean.Euclidean">Euclidean (class in pymanopt.manifolds.euclidean)</a>
+      <li><a href="manifolds.html#pymanopt.manifolds.euclidean.Euclidean">Euclidean (class in pymanopt.manifolds.euclidean)</a>
 </li>
-      <li><a href="api-reference.html#pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold">EuclideanEmbeddedSubmanifold (class in pymanopt.manifolds.manifold)</a>
+      <li><a href="manifolds.html#pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold">EuclideanEmbeddedSubmanifold (class in pymanopt.manifolds.manifold)</a>
 </li>
-      <li><a href="api-reference.html#pymanopt.solvers.trust_regions.TrustRegions.EXCEEDED_TR">EXCEEDED_TR (pymanopt.solvers.trust_regions.TrustRegions attribute)</a>
+      <li><a href="solvers.html#pymanopt.solvers.trust_regions.TrustRegions.EXCEEDED_TR">EXCEEDED_TR (pymanopt.solvers.trust_regions.TrustRegions attribute)</a>
 </li>
-      <li><a href="api-reference.html#pymanopt.manifolds.grassmann.Grassmann.exp">exp() (pymanopt.manifolds.grassmann.Grassmann method)</a>
+      <li><a href="manifolds.html#pymanopt.manifolds.complex_circle.ComplexCircle.exp">exp() (pymanopt.manifolds.complex_circle.ComplexCircle method)</a>
 
       <ul>
-        <li><a href="api-reference.html#pymanopt.manifolds.manifold.Manifold.exp">(pymanopt.manifolds.manifold.Manifold method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.complex_grassmann.ComplexGrassmann.exp">(pymanopt.manifolds.complex_grassmann.ComplexGrassmann method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.oblique.Oblique.exp">(pymanopt.manifolds.oblique.Oblique method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.grassmann.Grassmann.exp">(pymanopt.manifolds.grassmann.Grassmann method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.product.Product.exp">(pymanopt.manifolds.product.Product method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.manifold.Manifold.exp">(pymanopt.manifolds.manifold.Manifold method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.psd.SymmetricPositiveDefinite.exp">(pymanopt.manifolds.psd.SymmetricPositiveDefinite method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.manifold.RetrAsExpMixin.exp">(pymanopt.manifolds.manifold.RetrAsExpMixin method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.stiefel.Stiefel.exp">(pymanopt.manifolds.stiefel.Stiefel method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.oblique.Oblique.exp">(pymanopt.manifolds.oblique.Oblique method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.product.Product.exp">(pymanopt.manifolds.product.Product method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.psd.SymmetricPositiveDefinite.exp">(pymanopt.manifolds.psd.SymmetricPositiveDefinite method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.exp">(pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.stiefel.Stiefel.exp">(pymanopt.manifolds.stiefel.Stiefel method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.strictly_positive_vectors.StrictlyPositiveVectors.exp">(pymanopt.manifolds.strictly_positive_vectors.StrictlyPositiveVectors method)</a>
 </li>
       </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="F">F</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="manifolds.html#pymanopt.manifolds.fixed_rank.FixedRankEmbedded">FixedRankEmbedded (class in pymanopt.manifolds.fixed_rank)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autodiff.html#pymanopt.autodiff.Function">Function (class in pymanopt.autodiff)</a>
+</li>
   </ul></td>
 </tr></table>
 
 <h2 id="G">G</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api-reference.html#pymanopt.core.problem.Problem.grad">grad (pymanopt.core.problem.Problem property)</a>
+      <li><a href="problem.html#pymanopt.core.problem.Problem.grad">grad (pymanopt.core.problem.Problem property)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api-reference.html#pymanopt.manifolds.grassmann.Grassmann">Grassmann (class in pymanopt.manifolds.grassmann)</a>
+      <li><a href="manifolds.html#pymanopt.manifolds.grassmann.Grassmann">Grassmann (class in pymanopt.manifolds.grassmann)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -213,7 +293,7 @@
 <h2 id="H">H</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api-reference.html#pymanopt.core.problem.Problem.hess">hess (pymanopt.core.problem.Problem property)</a>
+      <li><a href="problem.html#pymanopt.core.problem.Problem.hess">hess (pymanopt.core.problem.Problem property)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -221,22 +301,34 @@
 <h2 id="I">I</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api-reference.html#pymanopt.manifolds.grassmann.Grassmann.inner">inner() (pymanopt.manifolds.grassmann.Grassmann method)</a>
+      <li><a href="tools.html#pymanopt.tools.diagnostics.identify_linear_piece">identify_linear_piece() (in module pymanopt.tools.diagnostics)</a>
+</li>
+      <li><a href="manifolds.html#pymanopt.manifolds.complex_circle.ComplexCircle.inner">inner() (pymanopt.manifolds.complex_circle.ComplexCircle method)</a>
 
       <ul>
-        <li><a href="api-reference.html#pymanopt.manifolds.manifold.Manifold.inner">(pymanopt.manifolds.manifold.Manifold method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.complex_grassmann.ComplexGrassmann.inner">(pymanopt.manifolds.complex_grassmann.ComplexGrassmann method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.oblique.Oblique.inner">(pymanopt.manifolds.oblique.Oblique method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.fixed_rank.FixedRankEmbedded.inner">(pymanopt.manifolds.fixed_rank.FixedRankEmbedded method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.product.Product.inner">(pymanopt.manifolds.product.Product method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.grassmann.Grassmann.inner">(pymanopt.manifolds.grassmann.Grassmann method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.psd.Elliptope.inner">(pymanopt.manifolds.psd.Elliptope method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.manifold.Manifold.inner">(pymanopt.manifolds.manifold.Manifold method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.psd.PSDFixedRankComplex.inner">(pymanopt.manifolds.psd.PSDFixedRankComplex method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.oblique.Oblique.inner">(pymanopt.manifolds.oblique.Oblique method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.psd.SymmetricPositiveDefinite.inner">(pymanopt.manifolds.psd.SymmetricPositiveDefinite method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.product.Product.inner">(pymanopt.manifolds.product.Product method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.stiefel.Stiefel.inner">(pymanopt.manifolds.stiefel.Stiefel method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.psd.Elliptope.inner">(pymanopt.manifolds.psd.Elliptope method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.psd.PSDFixedRankComplex.inner">(pymanopt.manifolds.psd.PSDFixedRankComplex method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.psd.SymmetricPositiveDefinite.inner">(pymanopt.manifolds.psd.SymmetricPositiveDefinite method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.inner">(pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.stiefel.Stiefel.inner">(pymanopt.manifolds.stiefel.Stiefel method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.strictly_positive_vectors.StrictlyPositiveVectors.inner">(pymanopt.manifolds.strictly_positive_vectors.StrictlyPositiveVectors method)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -245,20 +337,28 @@
 <h2 id="L">L</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api-reference.html#pymanopt.solvers.linesearch.LineSearchAdaptive">LineSearchAdaptive (class in pymanopt.solvers.linesearch)</a>
+      <li><a href="solvers.html#pymanopt.solvers.linesearch.LineSearchAdaptive">LineSearchAdaptive (class in pymanopt.solvers.linesearch)</a>
 </li>
-      <li><a href="api-reference.html#pymanopt.solvers.linesearch.LineSearchBackTracking">LineSearchBackTracking (class in pymanopt.solvers.linesearch)</a>
+      <li><a href="solvers.html#pymanopt.solvers.linesearch.LineSearchBackTracking">LineSearchBackTracking (class in pymanopt.solvers.linesearch)</a>
 </li>
-      <li><a href="api-reference.html#pymanopt.manifolds.grassmann.Grassmann.log">log() (pymanopt.manifolds.grassmann.Grassmann method)</a>
+      <li><a href="manifolds.html#pymanopt.manifolds.complex_circle.ComplexCircle.log">log() (pymanopt.manifolds.complex_circle.ComplexCircle method)</a>
 
       <ul>
-        <li><a href="api-reference.html#pymanopt.manifolds.manifold.Manifold.log">(pymanopt.manifolds.manifold.Manifold method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.complex_grassmann.ComplexGrassmann.log">(pymanopt.manifolds.complex_grassmann.ComplexGrassmann method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.oblique.Oblique.log">(pymanopt.manifolds.oblique.Oblique method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.grassmann.Grassmann.log">(pymanopt.manifolds.grassmann.Grassmann method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.product.Product.log">(pymanopt.manifolds.product.Product method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.manifold.Manifold.log">(pymanopt.manifolds.manifold.Manifold method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.psd.SymmetricPositiveDefinite.log">(pymanopt.manifolds.psd.SymmetricPositiveDefinite method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.oblique.Oblique.log">(pymanopt.manifolds.oblique.Oblique method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.product.Product.log">(pymanopt.manifolds.product.Product method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.psd.SymmetricPositiveDefinite.log">(pymanopt.manifolds.psd.SymmetricPositiveDefinite method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.log">(pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.strictly_positive_vectors.StrictlyPositiveVectors.log">(pymanopt.manifolds.strictly_positive_vectors.StrictlyPositiveVectors method)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -267,70 +367,88 @@
 <h2 id="M">M</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api-reference.html#pymanopt.manifolds.manifold.Manifold">Manifold (class in pymanopt.manifolds.manifold)</a>
+      <li><a href="autodiff.html#pymanopt.autodiff.make_tracing_backend_decorator">make_tracing_backend_decorator() (in module pymanopt.autodiff)</a>
 </li>
-      <li><a href="api-reference.html#pymanopt.solvers.trust_regions.TrustRegions.MAX_INNER_ITER">MAX_INNER_ITER (pymanopt.solvers.trust_regions.TrustRegions attribute)</a>
+      <li><a href="manifolds.html#pymanopt.manifolds.manifold.Manifold">Manifold (class in pymanopt.manifolds.manifold)</a>
 </li>
-      <li><a href="api-reference.html#pymanopt.solvers.trust_regions.TrustRegions.MODEL_INCREASED">MODEL_INCREASED (pymanopt.solvers.trust_regions.TrustRegions attribute)</a>
+      <li><a href="solvers.html#pymanopt.solvers.trust_regions.TrustRegions.MAX_INNER_ITER">MAX_INNER_ITER (pymanopt.solvers.trust_regions.TrustRegions attribute)</a>
+</li>
+      <li><a href="solvers.html#pymanopt.solvers.trust_regions.TrustRegions.MODEL_INCREASED">MODEL_INCREASED (pymanopt.solvers.trust_regions.TrustRegions attribute)</a>
 </li>
       <li>
     module
 
       <ul>
-        <li><a href="api-reference.html#module-pymanopt.core.problem">pymanopt.core.problem</a>
+        <li><a href="autodiff.html#module-pymanopt.autodiff">pymanopt.autodiff</a>
 </li>
-        <li><a href="api-reference.html#module-pymanopt.manifolds.euclidean">pymanopt.manifolds.euclidean</a>
+        <li><a href="problem.html#module-pymanopt.core.problem">pymanopt.core.problem</a>
 </li>
-        <li><a href="api-reference.html#module-pymanopt.manifolds.grassmann">pymanopt.manifolds.grassmann</a>
+        <li><a href="autodiff.html#module-pymanopt.function">pymanopt.function</a>
 </li>
-        <li><a href="api-reference.html#module-pymanopt.manifolds.manifold">pymanopt.manifolds.manifold</a>
+        <li><a href="manifolds.html#module-pymanopt.manifolds.complex_circle">pymanopt.manifolds.complex_circle</a>
 </li>
-        <li><a href="api-reference.html#module-pymanopt.manifolds.oblique">pymanopt.manifolds.oblique</a>
+        <li><a href="manifolds.html#module-pymanopt.manifolds.complex_grassmann">pymanopt.manifolds.complex_grassmann</a>
 </li>
-        <li><a href="api-reference.html#module-pymanopt.manifolds.product">pymanopt.manifolds.product</a>
+        <li><a href="manifolds.html#module-pymanopt.manifolds.euclidean">pymanopt.manifolds.euclidean</a>
 </li>
-        <li><a href="api-reference.html#module-pymanopt.manifolds.psd">pymanopt.manifolds.psd</a>
+        <li><a href="manifolds.html#module-pymanopt.manifolds.fixed_rank">pymanopt.manifolds.fixed_rank</a>
 </li>
-        <li><a href="api-reference.html#module-pymanopt.manifolds.sphere">pymanopt.manifolds.sphere</a>
+        <li><a href="manifolds.html#module-pymanopt.manifolds.grassmann">pymanopt.manifolds.grassmann</a>
 </li>
-        <li><a href="api-reference.html#module-pymanopt.manifolds.stiefel">pymanopt.manifolds.stiefel</a>
+        <li><a href="manifolds.html#module-pymanopt.manifolds.manifold">pymanopt.manifolds.manifold</a>
 </li>
-        <li><a href="api-reference.html#module-pymanopt.solvers.conjugate_gradient">pymanopt.solvers.conjugate_gradient</a>
+        <li><a href="manifolds.html#module-pymanopt.manifolds.oblique">pymanopt.manifolds.oblique</a>
 </li>
-        <li><a href="api-reference.html#module-pymanopt.solvers.linesearch">pymanopt.solvers.linesearch</a>
+        <li><a href="manifolds.html#module-pymanopt.manifolds.product">pymanopt.manifolds.product</a>
 </li>
-        <li><a href="api-reference.html#module-pymanopt.solvers.nelder_mead">pymanopt.solvers.nelder_mead</a>
+        <li><a href="manifolds.html#module-pymanopt.manifolds.psd">pymanopt.manifolds.psd</a>
 </li>
-        <li><a href="api-reference.html#module-pymanopt.solvers.particle_swarm">pymanopt.solvers.particle_swarm</a>
+        <li><a href="manifolds.html#module-pymanopt.manifolds.special_orthogonal_group">pymanopt.manifolds.special_orthogonal_group</a>
 </li>
-        <li><a href="api-reference.html#module-pymanopt.solvers.solver">pymanopt.solvers.solver</a>
+        <li><a href="manifolds.html#module-pymanopt.manifolds.sphere">pymanopt.manifolds.sphere</a>
 </li>
-        <li><a href="api-reference.html#module-pymanopt.solvers.steepest_descent">pymanopt.solvers.steepest_descent</a>
+        <li><a href="manifolds.html#module-pymanopt.manifolds.stiefel">pymanopt.manifolds.stiefel</a>
 </li>
-        <li><a href="api-reference.html#module-pymanopt.solvers.trust_regions">pymanopt.solvers.trust_regions</a>
+        <li><a href="manifolds.html#module-pymanopt.manifolds.strictly_positive_vectors">pymanopt.manifolds.strictly_positive_vectors</a>
 </li>
-        <li><a href="api-reference.html#module-pymanopt.tools.multi">pymanopt.tools.multi</a>
+        <li><a href="solvers.html#module-pymanopt.solvers.conjugate_gradient">pymanopt.solvers.conjugate_gradient</a>
 </li>
-        <li><a href="api-reference.html#module-pymanopt.tools.testing">pymanopt.tools.testing</a>
+        <li><a href="solvers.html#module-pymanopt.solvers.linesearch">pymanopt.solvers.linesearch</a>
+</li>
+        <li><a href="solvers.html#module-pymanopt.solvers.nelder_mead">pymanopt.solvers.nelder_mead</a>
+</li>
+        <li><a href="solvers.html#module-pymanopt.solvers.particle_swarm">pymanopt.solvers.particle_swarm</a>
+</li>
+        <li><a href="solvers.html#module-pymanopt.solvers.solver">pymanopt.solvers.solver</a>
+</li>
+        <li><a href="solvers.html#module-pymanopt.solvers.steepest_descent">pymanopt.solvers.steepest_descent</a>
+</li>
+        <li><a href="solvers.html#module-pymanopt.solvers.trust_regions">pymanopt.solvers.trust_regions</a>
+</li>
+        <li><a href="tools.html#module-pymanopt.tools.diagnostics">pymanopt.tools.diagnostics</a>
+</li>
+        <li><a href="tools.html#module-pymanopt.tools.multi">pymanopt.tools.multi</a>
+</li>
+        <li><a href="tools.html#module-pymanopt.tools.testing">pymanopt.tools.testing</a>
 </li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api-reference.html#pymanopt.tools.multi.multiexp">multiexp() (in module pymanopt.tools.multi)</a>
+      <li><a href="tools.html#pymanopt.tools.multi.multiexp">multiexp() (in module pymanopt.tools.multi)</a>
 </li>
-      <li><a href="api-reference.html#pymanopt.tools.multi.multieye">multieye() (in module pymanopt.tools.multi)</a>
+      <li><a href="tools.html#pymanopt.tools.multi.multieye">multieye() (in module pymanopt.tools.multi)</a>
 </li>
-      <li><a href="api-reference.html#pymanopt.tools.multi.multihconj">multihconj() (in module pymanopt.tools.multi)</a>
+      <li><a href="tools.html#pymanopt.tools.multi.multihconj">multihconj() (in module pymanopt.tools.multi)</a>
 </li>
-      <li><a href="api-reference.html#pymanopt.tools.multi.multilog">multilog() (in module pymanopt.tools.multi)</a>
+      <li><a href="tools.html#pymanopt.tools.multi.multilog">multilog() (in module pymanopt.tools.multi)</a>
 </li>
-      <li><a href="api-reference.html#pymanopt.tools.multi.multiprod">multiprod() (in module pymanopt.tools.multi)</a>
+      <li><a href="tools.html#pymanopt.tools.multi.multiprod">multiprod() (in module pymanopt.tools.multi)</a>
 </li>
-      <li><a href="api-reference.html#pymanopt.tools.multi.multiskew">multiskew() (in module pymanopt.tools.multi)</a>
+      <li><a href="tools.html#pymanopt.tools.multi.multiskew">multiskew() (in module pymanopt.tools.multi)</a>
 </li>
-      <li><a href="api-reference.html#pymanopt.tools.multi.multisym">multisym() (in module pymanopt.tools.multi)</a>
+      <li><a href="tools.html#pymanopt.tools.multi.multisym">multisym() (in module pymanopt.tools.multi)</a>
 </li>
-      <li><a href="api-reference.html#pymanopt.tools.multi.multitransp">multitransp() (in module pymanopt.tools.multi)</a>
+      <li><a href="tools.html#pymanopt.tools.multi.multitransp">multitransp() (in module pymanopt.tools.multi)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -338,35 +456,49 @@
 <h2 id="N">N</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api-reference.html#pymanopt.solvers.trust_regions.TrustRegions.NEGATIVE_CURVATURE">NEGATIVE_CURVATURE (pymanopt.solvers.trust_regions.TrustRegions attribute)</a>
+      <li><a href="solvers.html#pymanopt.solvers.trust_regions.TrustRegions.NEGATIVE_CURVATURE">NEGATIVE_CURVATURE (pymanopt.solvers.trust_regions.TrustRegions attribute)</a>
 </li>
-      <li><a href="api-reference.html#pymanopt.solvers.nelder_mead.NelderMead">NelderMead (class in pymanopt.solvers.nelder_mead)</a>
+      <li><a href="solvers.html#pymanopt.solvers.nelder_mead.NelderMead">NelderMead (class in pymanopt.solvers.nelder_mead)</a>
 </li>
-      <li><a href="api-reference.html#pymanopt.manifolds.grassmann.Grassmann.norm">norm() (pymanopt.manifolds.grassmann.Grassmann method)</a>
+      <li><a href="manifolds.html#pymanopt.manifolds.complex_circle.ComplexCircle.norm">norm() (pymanopt.manifolds.complex_circle.ComplexCircle method)</a>
 
       <ul>
-        <li><a href="api-reference.html#pymanopt.manifolds.manifold.Manifold.norm">(pymanopt.manifolds.manifold.Manifold method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.complex_grassmann.ComplexGrassmann.norm">(pymanopt.manifolds.complex_grassmann.ComplexGrassmann method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.oblique.Oblique.norm">(pymanopt.manifolds.oblique.Oblique method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.fixed_rank.FixedRankEmbedded.norm">(pymanopt.manifolds.fixed_rank.FixedRankEmbedded method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.product.Product.norm">(pymanopt.manifolds.product.Product method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.grassmann.Grassmann.norm">(pymanopt.manifolds.grassmann.Grassmann method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.psd.Elliptope.norm">(pymanopt.manifolds.psd.Elliptope method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.manifold.Manifold.norm">(pymanopt.manifolds.manifold.Manifold method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.psd.PSDFixedRankComplex.norm">(pymanopt.manifolds.psd.PSDFixedRankComplex method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.oblique.Oblique.norm">(pymanopt.manifolds.oblique.Oblique method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.psd.SymmetricPositiveDefinite.norm">(pymanopt.manifolds.psd.SymmetricPositiveDefinite method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.product.Product.norm">(pymanopt.manifolds.product.Product method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.stiefel.Stiefel.norm">(pymanopt.manifolds.stiefel.Stiefel method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.psd.Elliptope.norm">(pymanopt.manifolds.psd.Elliptope method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.psd.PSDFixedRankComplex.norm">(pymanopt.manifolds.psd.PSDFixedRankComplex method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.psd.SymmetricPositiveDefinite.norm">(pymanopt.manifolds.psd.SymmetricPositiveDefinite method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.norm">(pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.stiefel.Stiefel.norm">(pymanopt.manifolds.stiefel.Stiefel method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.strictly_positive_vectors.StrictlyPositiveVectors.norm">(pymanopt.manifolds.strictly_positive_vectors.StrictlyPositiveVectors method)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="manifolds.html#pymanopt.manifolds.manifold.Manifold.num_values">num_values (pymanopt.manifolds.manifold.Manifold property)</a>
+</li>
   </ul></td>
 </tr></table>
 
 <h2 id="O">O</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api-reference.html#pymanopt.manifolds.oblique.Oblique">Oblique (class in pymanopt.manifolds.oblique)</a>
+      <li><a href="manifolds.html#pymanopt.manifolds.oblique.Oblique">Oblique (class in pymanopt.manifolds.oblique)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -374,247 +506,353 @@
 <h2 id="P">P</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api-reference.html#pymanopt.manifolds.manifold.Manifold.pairmean">pairmean() (pymanopt.manifolds.manifold.Manifold method)</a>
+      <li><a href="manifolds.html#pymanopt.manifolds.complex_circle.ComplexCircle.pairmean">pairmean() (pymanopt.manifolds.complex_circle.ComplexCircle method)</a>
 
       <ul>
-        <li><a href="api-reference.html#pymanopt.manifolds.oblique.Oblique.pairmean">(pymanopt.manifolds.oblique.Oblique method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.manifold.Manifold.pairmean">(pymanopt.manifolds.manifold.Manifold method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.product.Product.pairmean">(pymanopt.manifolds.product.Product method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.oblique.Oblique.pairmean">(pymanopt.manifolds.oblique.Oblique method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.product.Product.pairmean">(pymanopt.manifolds.product.Product method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.pairmean">(pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup method)</a>
 </li>
       </ul></li>
-      <li><a href="api-reference.html#pymanopt.solvers.particle_swarm.ParticleSwarm">ParticleSwarm (class in pymanopt.solvers.particle_swarm)</a>
+      <li><a href="solvers.html#pymanopt.solvers.particle_swarm.ParticleSwarm">ParticleSwarm (class in pymanopt.solvers.particle_swarm)</a>
 </li>
-      <li><a href="api-reference.html#pymanopt.manifolds.manifold.Manifold.point_layout">point_layout (pymanopt.manifolds.manifold.Manifold property)</a>
+      <li><a href="manifolds.html#pymanopt.manifolds.manifold.Manifold.point_layout">point_layout (pymanopt.manifolds.manifold.Manifold property)</a>
 </li>
-      <li><a href="api-reference.html#pymanopt.core.problem.Problem">Problem (class in pymanopt.core.problem)</a>
+      <li><a href="problem.html#pymanopt.core.problem.Problem">Problem (class in pymanopt.core.problem)</a>
 </li>
-      <li><a href="api-reference.html#pymanopt.manifolds.product.Product">Product (class in pymanopt.manifolds.product)</a>
+      <li><a href="manifolds.html#pymanopt.manifolds.product.Product">Product (class in pymanopt.manifolds.product)</a>
 </li>
-      <li><a href="api-reference.html#pymanopt.manifolds.euclidean.SkewSymmetric.proj">proj() (pymanopt.manifolds.euclidean.SkewSymmetric method)</a>
+      <li><a href="manifolds.html#pymanopt.manifolds.complex_circle.ComplexCircle.proj">proj() (pymanopt.manifolds.complex_circle.ComplexCircle method)</a>
 
       <ul>
-        <li><a href="api-reference.html#pymanopt.manifolds.euclidean.Symmetric.proj">(pymanopt.manifolds.euclidean.Symmetric method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.complex_grassmann.ComplexGrassmann.proj">(pymanopt.manifolds.complex_grassmann.ComplexGrassmann method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.grassmann.Grassmann.proj">(pymanopt.manifolds.grassmann.Grassmann method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.euclidean.SkewSymmetric.proj">(pymanopt.manifolds.euclidean.SkewSymmetric method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.manifold.Manifold.proj">(pymanopt.manifolds.manifold.Manifold method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.euclidean.Symmetric.proj">(pymanopt.manifolds.euclidean.Symmetric method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.oblique.Oblique.proj">(pymanopt.manifolds.oblique.Oblique method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.fixed_rank.FixedRankEmbedded.proj">(pymanopt.manifolds.fixed_rank.FixedRankEmbedded method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.product.Product.proj">(pymanopt.manifolds.product.Product method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.grassmann.Grassmann.proj">(pymanopt.manifolds.grassmann.Grassmann method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.psd.Elliptope.proj">(pymanopt.manifolds.psd.Elliptope method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.manifold.Manifold.proj">(pymanopt.manifolds.manifold.Manifold method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.psd.SymmetricPositiveDefinite.proj">(pymanopt.manifolds.psd.SymmetricPositiveDefinite method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.oblique.Oblique.proj">(pymanopt.manifolds.oblique.Oblique method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.stiefel.Stiefel.proj">(pymanopt.manifolds.stiefel.Stiefel method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.product.Product.proj">(pymanopt.manifolds.product.Product method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.psd.Elliptope.proj">(pymanopt.manifolds.psd.Elliptope method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.psd.SymmetricPositiveDefinite.proj">(pymanopt.manifolds.psd.SymmetricPositiveDefinite method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.proj">(pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.stiefel.Stiefel.proj">(pymanopt.manifolds.stiefel.Stiefel method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.strictly_positive_vectors.StrictlyPositiveVectors.proj">(pymanopt.manifolds.strictly_positive_vectors.StrictlyPositiveVectors method)</a>
 </li>
       </ul></li>
-      <li><a href="api-reference.html#pymanopt.manifolds.psd.PSDFixedRank">PSDFixedRank (class in pymanopt.manifolds.psd)</a>
+      <li><a href="manifolds.html#pymanopt.manifolds.psd.PSDFixedRank">PSDFixedRank (class in pymanopt.manifolds.psd)</a>
 </li>
-      <li><a href="api-reference.html#pymanopt.manifolds.psd.PSDFixedRankComplex">PSDFixedRankComplex (class in pymanopt.manifolds.psd)</a>
+      <li><a href="manifolds.html#pymanopt.manifolds.psd.PSDFixedRankComplex">PSDFixedRankComplex (class in pymanopt.manifolds.psd)</a>
 </li>
+      <li>
+    pymanopt.autodiff
+
+      <ul>
+        <li><a href="autodiff.html#module-pymanopt.autodiff">module</a>
+</li>
+      </ul></li>
       <li>
     pymanopt.core.problem
 
       <ul>
-        <li><a href="api-reference.html#module-pymanopt.core.problem">module</a>
+        <li><a href="problem.html#module-pymanopt.core.problem">module</a>
+</li>
+      </ul></li>
+      <li>
+    pymanopt.function
+
+      <ul>
+        <li><a href="autodiff.html#module-pymanopt.function">module</a>
+</li>
+      </ul></li>
+      <li>
+    pymanopt.manifolds.complex_circle
+
+      <ul>
+        <li><a href="manifolds.html#module-pymanopt.manifolds.complex_circle">module</a>
+</li>
+      </ul></li>
+      <li>
+    pymanopt.manifolds.complex_grassmann
+
+      <ul>
+        <li><a href="manifolds.html#module-pymanopt.manifolds.complex_grassmann">module</a>
 </li>
       </ul></li>
       <li>
     pymanopt.manifolds.euclidean
 
       <ul>
-        <li><a href="api-reference.html#module-pymanopt.manifolds.euclidean">module</a>
+        <li><a href="manifolds.html#module-pymanopt.manifolds.euclidean">module</a>
 </li>
       </ul></li>
+      <li>
+    pymanopt.manifolds.fixed_rank
+
+      <ul>
+        <li><a href="manifolds.html#module-pymanopt.manifolds.fixed_rank">module</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     pymanopt.manifolds.grassmann
 
       <ul>
-        <li><a href="api-reference.html#module-pymanopt.manifolds.grassmann">module</a>
+        <li><a href="manifolds.html#module-pymanopt.manifolds.grassmann">module</a>
 </li>
       </ul></li>
       <li>
     pymanopt.manifolds.manifold
 
       <ul>
-        <li><a href="api-reference.html#module-pymanopt.manifolds.manifold">module</a>
+        <li><a href="manifolds.html#module-pymanopt.manifolds.manifold">module</a>
 </li>
       </ul></li>
       <li>
     pymanopt.manifolds.oblique
 
       <ul>
-        <li><a href="api-reference.html#module-pymanopt.manifolds.oblique">module</a>
+        <li><a href="manifolds.html#module-pymanopt.manifolds.oblique">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     pymanopt.manifolds.product
 
       <ul>
-        <li><a href="api-reference.html#module-pymanopt.manifolds.product">module</a>
+        <li><a href="manifolds.html#module-pymanopt.manifolds.product">module</a>
 </li>
       </ul></li>
       <li>
     pymanopt.manifolds.psd
 
       <ul>
-        <li><a href="api-reference.html#module-pymanopt.manifolds.psd">module</a>
+        <li><a href="manifolds.html#module-pymanopt.manifolds.psd">module</a>
+</li>
+      </ul></li>
+      <li>
+    pymanopt.manifolds.special_orthogonal_group
+
+      <ul>
+        <li><a href="manifolds.html#module-pymanopt.manifolds.special_orthogonal_group">module</a>
 </li>
       </ul></li>
       <li>
     pymanopt.manifolds.sphere
 
       <ul>
-        <li><a href="api-reference.html#module-pymanopt.manifolds.sphere">module</a>
+        <li><a href="manifolds.html#module-pymanopt.manifolds.sphere">module</a>
 </li>
       </ul></li>
       <li>
     pymanopt.manifolds.stiefel
 
       <ul>
-        <li><a href="api-reference.html#module-pymanopt.manifolds.stiefel">module</a>
+        <li><a href="manifolds.html#module-pymanopt.manifolds.stiefel">module</a>
+</li>
+      </ul></li>
+      <li>
+    pymanopt.manifolds.strictly_positive_vectors
+
+      <ul>
+        <li><a href="manifolds.html#module-pymanopt.manifolds.strictly_positive_vectors">module</a>
 </li>
       </ul></li>
       <li>
     pymanopt.solvers.conjugate_gradient
 
       <ul>
-        <li><a href="api-reference.html#module-pymanopt.solvers.conjugate_gradient">module</a>
+        <li><a href="solvers.html#module-pymanopt.solvers.conjugate_gradient">module</a>
 </li>
       </ul></li>
       <li>
     pymanopt.solvers.linesearch
 
       <ul>
-        <li><a href="api-reference.html#module-pymanopt.solvers.linesearch">module</a>
+        <li><a href="solvers.html#module-pymanopt.solvers.linesearch">module</a>
 </li>
       </ul></li>
       <li>
     pymanopt.solvers.nelder_mead
 
       <ul>
-        <li><a href="api-reference.html#module-pymanopt.solvers.nelder_mead">module</a>
+        <li><a href="solvers.html#module-pymanopt.solvers.nelder_mead">module</a>
 </li>
       </ul></li>
       <li>
     pymanopt.solvers.particle_swarm
 
       <ul>
-        <li><a href="api-reference.html#module-pymanopt.solvers.particle_swarm">module</a>
+        <li><a href="solvers.html#module-pymanopt.solvers.particle_swarm">module</a>
 </li>
       </ul></li>
       <li>
     pymanopt.solvers.solver
 
       <ul>
-        <li><a href="api-reference.html#module-pymanopt.solvers.solver">module</a>
+        <li><a href="solvers.html#module-pymanopt.solvers.solver">module</a>
 </li>
       </ul></li>
       <li>
     pymanopt.solvers.steepest_descent
 
       <ul>
-        <li><a href="api-reference.html#module-pymanopt.solvers.steepest_descent">module</a>
+        <li><a href="solvers.html#module-pymanopt.solvers.steepest_descent">module</a>
 </li>
       </ul></li>
       <li>
     pymanopt.solvers.trust_regions
 
       <ul>
-        <li><a href="api-reference.html#module-pymanopt.solvers.trust_regions">module</a>
+        <li><a href="solvers.html#module-pymanopt.solvers.trust_regions">module</a>
+</li>
+      </ul></li>
+      <li>
+    pymanopt.tools.diagnostics
+
+      <ul>
+        <li><a href="tools.html#module-pymanopt.tools.diagnostics">module</a>
 </li>
       </ul></li>
       <li>
     pymanopt.tools.multi
 
       <ul>
-        <li><a href="api-reference.html#module-pymanopt.tools.multi">module</a>
+        <li><a href="tools.html#module-pymanopt.tools.multi">module</a>
 </li>
       </ul></li>
       <li>
     pymanopt.tools.testing
 
       <ul>
-        <li><a href="api-reference.html#module-pymanopt.tools.testing">module</a>
+        <li><a href="tools.html#module-pymanopt.tools.testing">module</a>
 </li>
       </ul></li>
+      <li><a href="autodiff.html#pymanopt.function.PyTorch">PyTorch() (in module pymanopt.function)</a>
+</li>
   </ul></td>
 </tr></table>
 
 <h2 id="R">R</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api-reference.html#pymanopt.manifolds.euclidean.SkewSymmetric.rand">rand() (pymanopt.manifolds.euclidean.SkewSymmetric method)</a>
+      <li><a href="manifolds.html#pymanopt.manifolds.complex_circle.ComplexCircle.rand">rand() (pymanopt.manifolds.complex_circle.ComplexCircle method)</a>
 
       <ul>
-        <li><a href="api-reference.html#pymanopt.manifolds.euclidean.Symmetric.rand">(pymanopt.manifolds.euclidean.Symmetric method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.complex_grassmann.ComplexGrassmann.rand">(pymanopt.manifolds.complex_grassmann.ComplexGrassmann method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.grassmann.Grassmann.rand">(pymanopt.manifolds.grassmann.Grassmann method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.euclidean.SkewSymmetric.rand">(pymanopt.manifolds.euclidean.SkewSymmetric method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.manifold.Manifold.rand">(pymanopt.manifolds.manifold.Manifold method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.euclidean.Symmetric.rand">(pymanopt.manifolds.euclidean.Symmetric method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.oblique.Oblique.rand">(pymanopt.manifolds.oblique.Oblique method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.fixed_rank.FixedRankEmbedded.rand">(pymanopt.manifolds.fixed_rank.FixedRankEmbedded method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.product.Product.rand">(pymanopt.manifolds.product.Product method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.grassmann.Grassmann.rand">(pymanopt.manifolds.grassmann.Grassmann method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.psd.Elliptope.rand">(pymanopt.manifolds.psd.Elliptope method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.manifold.Manifold.rand">(pymanopt.manifolds.manifold.Manifold method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.psd.PSDFixedRankComplex.rand">(pymanopt.manifolds.psd.PSDFixedRankComplex method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.oblique.Oblique.rand">(pymanopt.manifolds.oblique.Oblique method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.psd.SymmetricPositiveDefinite.rand">(pymanopt.manifolds.psd.SymmetricPositiveDefinite method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.product.Product.rand">(pymanopt.manifolds.product.Product method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.stiefel.Stiefel.rand">(pymanopt.manifolds.stiefel.Stiefel method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.psd.Elliptope.rand">(pymanopt.manifolds.psd.Elliptope method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.psd.PSDFixedRankComplex.rand">(pymanopt.manifolds.psd.PSDFixedRankComplex method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.psd.SymmetricPositiveDefinite.rand">(pymanopt.manifolds.psd.SymmetricPositiveDefinite method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.rand">(pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.stiefel.Stiefel.rand">(pymanopt.manifolds.stiefel.Stiefel method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.strictly_positive_vectors.StrictlyPositiveVectors.rand">(pymanopt.manifolds.strictly_positive_vectors.StrictlyPositiveVectors method)</a>
 </li>
       </ul></li>
-      <li><a href="api-reference.html#pymanopt.manifolds.euclidean.SkewSymmetric.randvec">randvec() (pymanopt.manifolds.euclidean.SkewSymmetric method)</a>
+      <li><a href="manifolds.html#pymanopt.manifolds.complex_circle.ComplexCircle.randvec">randvec() (pymanopt.manifolds.complex_circle.ComplexCircle method)</a>
 
       <ul>
-        <li><a href="api-reference.html#pymanopt.manifolds.euclidean.Symmetric.randvec">(pymanopt.manifolds.euclidean.Symmetric method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.complex_grassmann.ComplexGrassmann.randvec">(pymanopt.manifolds.complex_grassmann.ComplexGrassmann method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.grassmann.Grassmann.randvec">(pymanopt.manifolds.grassmann.Grassmann method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.euclidean.SkewSymmetric.randvec">(pymanopt.manifolds.euclidean.SkewSymmetric method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.manifold.Manifold.randvec">(pymanopt.manifolds.manifold.Manifold method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.euclidean.Symmetric.randvec">(pymanopt.manifolds.euclidean.Symmetric method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.oblique.Oblique.randvec">(pymanopt.manifolds.oblique.Oblique method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.fixed_rank.FixedRankEmbedded.randvec">(pymanopt.manifolds.fixed_rank.FixedRankEmbedded method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.product.Product.randvec">(pymanopt.manifolds.product.Product method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.grassmann.Grassmann.randvec">(pymanopt.manifolds.grassmann.Grassmann method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.psd.Elliptope.randvec">(pymanopt.manifolds.psd.Elliptope method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.manifold.Manifold.randvec">(pymanopt.manifolds.manifold.Manifold method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.psd.SymmetricPositiveDefinite.randvec">(pymanopt.manifolds.psd.SymmetricPositiveDefinite method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.oblique.Oblique.randvec">(pymanopt.manifolds.oblique.Oblique method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.stiefel.Stiefel.randvec">(pymanopt.manifolds.stiefel.Stiefel method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.product.Product.randvec">(pymanopt.manifolds.product.Product method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.psd.Elliptope.randvec">(pymanopt.manifolds.psd.Elliptope method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.psd.SymmetricPositiveDefinite.randvec">(pymanopt.manifolds.psd.SymmetricPositiveDefinite method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.randvec">(pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.stiefel.Stiefel.randvec">(pymanopt.manifolds.stiefel.Stiefel method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.strictly_positive_vectors.StrictlyPositiveVectors.randvec">(pymanopt.manifolds.strictly_positive_vectors.StrictlyPositiveVectors method)</a>
 </li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api-reference.html#pymanopt.solvers.trust_regions.TrustRegions.REACHED_TARGET_LINEAR">REACHED_TARGET_LINEAR (pymanopt.solvers.trust_regions.TrustRegions attribute)</a>
+      <li><a href="solvers.html#pymanopt.solvers.trust_regions.TrustRegions.REACHED_TARGET_LINEAR">REACHED_TARGET_LINEAR (pymanopt.solvers.trust_regions.TrustRegions attribute)</a>
 </li>
-      <li><a href="api-reference.html#pymanopt.solvers.trust_regions.TrustRegions.REACHED_TARGET_SUPERLINEAR">REACHED_TARGET_SUPERLINEAR (pymanopt.solvers.trust_regions.TrustRegions attribute)</a>
+      <li><a href="solvers.html#pymanopt.solvers.trust_regions.TrustRegions.REACHED_TARGET_SUPERLINEAR">REACHED_TARGET_SUPERLINEAR (pymanopt.solvers.trust_regions.TrustRegions attribute)</a>
 </li>
-      <li><a href="api-reference.html#pymanopt.manifolds.grassmann.Grassmann.retr">retr() (pymanopt.manifolds.grassmann.Grassmann method)</a>
+      <li><a href="manifolds.html#pymanopt.manifolds.complex_circle.ComplexCircle.retr">retr() (pymanopt.manifolds.complex_circle.ComplexCircle method)</a>
 
       <ul>
-        <li><a href="api-reference.html#pymanopt.manifolds.manifold.Manifold.retr">(pymanopt.manifolds.manifold.Manifold method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.complex_grassmann.ComplexGrassmann.retr">(pymanopt.manifolds.complex_grassmann.ComplexGrassmann method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.oblique.Oblique.retr">(pymanopt.manifolds.oblique.Oblique method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.fixed_rank.FixedRankEmbedded.retr">(pymanopt.manifolds.fixed_rank.FixedRankEmbedded method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.product.Product.retr">(pymanopt.manifolds.product.Product method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.grassmann.Grassmann.retr">(pymanopt.manifolds.grassmann.Grassmann method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.psd.Elliptope.retr">(pymanopt.manifolds.psd.Elliptope method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.manifold.Manifold.retr">(pymanopt.manifolds.manifold.Manifold method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.psd.SymmetricPositiveDefinite.retr">(pymanopt.manifolds.psd.SymmetricPositiveDefinite method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.oblique.Oblique.retr">(pymanopt.manifolds.oblique.Oblique method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.stiefel.Stiefel.retr">(pymanopt.manifolds.stiefel.Stiefel method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.product.Product.retr">(pymanopt.manifolds.product.Product method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.psd.Elliptope.retr">(pymanopt.manifolds.psd.Elliptope method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.psd.SymmetricPositiveDefinite.retr">(pymanopt.manifolds.psd.SymmetricPositiveDefinite method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.retr">(pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.stiefel.Stiefel.retr">(pymanopt.manifolds.stiefel.Stiefel method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.strictly_positive_vectors.StrictlyPositiveVectors.retr">(pymanopt.manifolds.strictly_positive_vectors.StrictlyPositiveVectors method)</a>
 </li>
       </ul></li>
-      <li><a href="api-reference.html#pymanopt.tools.testing.rgrad">rgrad() (in module pymanopt.tools.testing)</a>
+      <li><a href="manifolds.html#pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.retr2">retr2() (pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup method)</a>
 </li>
-      <li><a href="api-reference.html#pymanopt.tools.testing.rhess">rhess() (in module pymanopt.tools.testing)</a>
+      <li><a href="manifolds.html#pymanopt.manifolds.manifold.RetrAsExpMixin">RetrAsExpMixin (class in pymanopt.manifolds.manifold)</a>
+</li>
+      <li><a href="tools.html#pymanopt.tools.testing.rgrad">rgrad() (in module pymanopt.tools.testing)</a>
+</li>
+      <li><a href="tools.html#pymanopt.tools.testing.rhess">rhess() (in module pymanopt.tools.testing)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -622,45 +860,49 @@
 <h2 id="S">S</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api-reference.html#pymanopt.solvers.linesearch.LineSearchAdaptive.search">search() (pymanopt.solvers.linesearch.LineSearchAdaptive method)</a>
+      <li><a href="solvers.html#pymanopt.solvers.linesearch.LineSearchAdaptive.search">search() (pymanopt.solvers.linesearch.LineSearchAdaptive method)</a>
 
       <ul>
-        <li><a href="api-reference.html#pymanopt.solvers.linesearch.LineSearchBackTracking.search">(pymanopt.solvers.linesearch.LineSearchBackTracking method)</a>
+        <li><a href="solvers.html#pymanopt.solvers.linesearch.LineSearchBackTracking.search">(pymanopt.solvers.linesearch.LineSearchBackTracking method)</a>
 </li>
       </ul></li>
-      <li><a href="api-reference.html#pymanopt.manifolds.euclidean.SkewSymmetric">SkewSymmetric (class in pymanopt.manifolds.euclidean)</a>
+      <li><a href="manifolds.html#pymanopt.manifolds.euclidean.SkewSymmetric">SkewSymmetric (class in pymanopt.manifolds.euclidean)</a>
 </li>
-      <li><a href="api-reference.html#pymanopt.solvers.conjugate_gradient.ConjugateGradient.solve">solve() (pymanopt.solvers.conjugate_gradient.ConjugateGradient method)</a>
+      <li><a href="solvers.html#pymanopt.solvers.conjugate_gradient.ConjugateGradient.solve">solve() (pymanopt.solvers.conjugate_gradient.ConjugateGradient method)</a>
 
       <ul>
-        <li><a href="api-reference.html#pymanopt.solvers.nelder_mead.NelderMead.solve">(pymanopt.solvers.nelder_mead.NelderMead method)</a>
+        <li><a href="solvers.html#pymanopt.solvers.nelder_mead.NelderMead.solve">(pymanopt.solvers.nelder_mead.NelderMead method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.solvers.particle_swarm.ParticleSwarm.solve">(pymanopt.solvers.particle_swarm.ParticleSwarm method)</a>
+        <li><a href="solvers.html#pymanopt.solvers.particle_swarm.ParticleSwarm.solve">(pymanopt.solvers.particle_swarm.ParticleSwarm method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.solvers.solver.Solver.solve">(pymanopt.solvers.solver.Solver method)</a>
+        <li><a href="solvers.html#pymanopt.solvers.solver.Solver.solve">(pymanopt.solvers.solver.Solver method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.solvers.steepest_descent.SteepestDescent.solve">(pymanopt.solvers.steepest_descent.SteepestDescent method)</a>
+        <li><a href="solvers.html#pymanopt.solvers.steepest_descent.SteepestDescent.solve">(pymanopt.solvers.steepest_descent.SteepestDescent method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.solvers.trust_regions.TrustRegions.solve">(pymanopt.solvers.trust_regions.TrustRegions method)</a>
+        <li><a href="solvers.html#pymanopt.solvers.trust_regions.TrustRegions.solve">(pymanopt.solvers.trust_regions.TrustRegions method)</a>
 </li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api-reference.html#pymanopt.solvers.solver.Solver">Solver (class in pymanopt.solvers.solver)</a>
+      <li><a href="solvers.html#pymanopt.solvers.solver.Solver">Solver (class in pymanopt.solvers.solver)</a>
 </li>
-      <li><a href="api-reference.html#pymanopt.manifolds.sphere.Sphere">Sphere (class in pymanopt.manifolds.sphere)</a>
+      <li><a href="manifolds.html#pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup">SpecialOrthogonalGroup (class in pymanopt.manifolds.special_orthogonal_group)</a>
 </li>
-      <li><a href="api-reference.html#pymanopt.manifolds.sphere.SphereSubspaceComplementIntersection">SphereSubspaceComplementIntersection (class in pymanopt.manifolds.sphere)</a>
+      <li><a href="manifolds.html#pymanopt.manifolds.sphere.Sphere">Sphere (class in pymanopt.manifolds.sphere)</a>
 </li>
-      <li><a href="api-reference.html#pymanopt.manifolds.sphere.SphereSubspaceIntersection">SphereSubspaceIntersection (class in pymanopt.manifolds.sphere)</a>
+      <li><a href="manifolds.html#pymanopt.manifolds.sphere.SphereSubspaceComplementIntersection">SphereSubspaceComplementIntersection (class in pymanopt.manifolds.sphere)</a>
 </li>
-      <li><a href="api-reference.html#pymanopt.solvers.steepest_descent.SteepestDescent">SteepestDescent (class in pymanopt.solvers.steepest_descent)</a>
+      <li><a href="manifolds.html#pymanopt.manifolds.sphere.SphereSubspaceIntersection">SphereSubspaceIntersection (class in pymanopt.manifolds.sphere)</a>
 </li>
-      <li><a href="api-reference.html#pymanopt.manifolds.stiefel.Stiefel">Stiefel (class in pymanopt.manifolds.stiefel)</a>
+      <li><a href="solvers.html#pymanopt.solvers.steepest_descent.SteepestDescent">SteepestDescent (class in pymanopt.solvers.steepest_descent)</a>
 </li>
-      <li><a href="api-reference.html#pymanopt.manifolds.euclidean.Symmetric">Symmetric (class in pymanopt.manifolds.euclidean)</a>
+      <li><a href="manifolds.html#pymanopt.manifolds.stiefel.Stiefel">Stiefel (class in pymanopt.manifolds.stiefel)</a>
 </li>
-      <li><a href="api-reference.html#pymanopt.manifolds.psd.SymmetricPositiveDefinite">SymmetricPositiveDefinite (class in pymanopt.manifolds.psd)</a>
+      <li><a href="manifolds.html#pymanopt.manifolds.strictly_positive_vectors.StrictlyPositiveVectors">StrictlyPositiveVectors (class in pymanopt.manifolds.strictly_positive_vectors)</a>
+</li>
+      <li><a href="manifolds.html#pymanopt.manifolds.euclidean.Symmetric">Symmetric (class in pymanopt.manifolds.euclidean)</a>
+</li>
+      <li><a href="manifolds.html#pymanopt.manifolds.psd.SymmetricPositiveDefinite">SymmetricPositiveDefinite (class in pymanopt.manifolds.psd)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -668,42 +910,74 @@
 <h2 id="T">T</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api-reference.html#pymanopt.solvers.trust_regions.TrustRegions.TCG_STOP_REASONS">TCG_STOP_REASONS (pymanopt.solvers.trust_regions.TrustRegions attribute)</a>
-</li>
-      <li><a href="api-reference.html#pymanopt.manifolds.grassmann.Grassmann.transp">transp() (pymanopt.manifolds.grassmann.Grassmann method)</a>
+      <li><a href="manifolds.html#pymanopt.manifolds.complex_circle.ComplexCircle.tangent">tangent() (pymanopt.manifolds.complex_circle.ComplexCircle method)</a>
 
       <ul>
-        <li><a href="api-reference.html#pymanopt.manifolds.manifold.Manifold.transp">(pymanopt.manifolds.manifold.Manifold method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.tangent">(pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.oblique.Oblique.transp">(pymanopt.manifolds.oblique.Oblique method)</a>
+      </ul></li>
+      <li><a href="manifolds.html#pymanopt.manifolds.fixed_rank.FixedRankEmbedded.tangent2ambient">tangent2ambient() (pymanopt.manifolds.fixed_rank.FixedRankEmbedded method)</a>
+
+      <ul>
+        <li><a href="manifolds.html#pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.tangent2ambient">(pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.product.Product.transp">(pymanopt.manifolds.product.Product method)</a>
+      </ul></li>
+      <li><a href="solvers.html#pymanopt.solvers.trust_regions.TrustRegions.TCG_STOP_REASONS">TCG_STOP_REASONS (pymanopt.solvers.trust_regions.TrustRegions attribute)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.psd.Elliptope.transp">(pymanopt.manifolds.psd.Elliptope method)</a>
+      <li><a href="autodiff.html#pymanopt.function.TensorFlow">TensorFlow() (in module pymanopt.function)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.psd.SymmetricPositiveDefinite.transp">(pymanopt.manifolds.psd.SymmetricPositiveDefinite method)</a>
+      <li><a href="manifolds.html#pymanopt.manifolds.complex_circle.ComplexCircle.transp">transp() (pymanopt.manifolds.complex_circle.ComplexCircle method)</a>
+
+      <ul>
+        <li><a href="manifolds.html#pymanopt.manifolds.complex_grassmann.ComplexGrassmann.transp">(pymanopt.manifolds.complex_grassmann.ComplexGrassmann method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.stiefel.Stiefel.transp">(pymanopt.manifolds.stiefel.Stiefel method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.fixed_rank.FixedRankEmbedded.transp">(pymanopt.manifolds.fixed_rank.FixedRankEmbedded method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.grassmann.Grassmann.transp">(pymanopt.manifolds.grassmann.Grassmann method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.manifold.Manifold.transp">(pymanopt.manifolds.manifold.Manifold method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.oblique.Oblique.transp">(pymanopt.manifolds.oblique.Oblique method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.product.Product.transp">(pymanopt.manifolds.product.Product method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.psd.Elliptope.transp">(pymanopt.manifolds.psd.Elliptope method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.psd.SymmetricPositiveDefinite.transp">(pymanopt.manifolds.psd.SymmetricPositiveDefinite method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.transp">(pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.stiefel.Stiefel.transp">(pymanopt.manifolds.stiefel.Stiefel method)</a>
 </li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api-reference.html#pymanopt.solvers.trust_regions.TrustRegions">TrustRegions (class in pymanopt.solvers.trust_regions)</a>
+      <li><a href="solvers.html#pymanopt.solvers.trust_regions.TrustRegions">TrustRegions (class in pymanopt.solvers.trust_regions)</a>
 </li>
-      <li><a href="api-reference.html#pymanopt.manifolds.grassmann.Grassmann.typicaldist">typicaldist (pymanopt.manifolds.grassmann.Grassmann property)</a>
+      <li><a href="manifolds.html#pymanopt.manifolds.complex_circle.ComplexCircle.typicaldist">typicaldist (pymanopt.manifolds.complex_circle.ComplexCircle property)</a>
 
       <ul>
-        <li><a href="api-reference.html#pymanopt.manifolds.manifold.Manifold.typicaldist">(pymanopt.manifolds.manifold.Manifold property)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.complex_grassmann.ComplexGrassmann.typicaldist">(pymanopt.manifolds.complex_grassmann.ComplexGrassmann property)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.oblique.Oblique.typicaldist">(pymanopt.manifolds.oblique.Oblique property)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.fixed_rank.FixedRankEmbedded.typicaldist">(pymanopt.manifolds.fixed_rank.FixedRankEmbedded property)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.product.Product.typicaldist">(pymanopt.manifolds.product.Product property)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.grassmann.Grassmann.typicaldist">(pymanopt.manifolds.grassmann.Grassmann property)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.psd.Elliptope.typicaldist">(pymanopt.manifolds.psd.Elliptope property)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.manifold.Manifold.typicaldist">(pymanopt.manifolds.manifold.Manifold property)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.psd.SymmetricPositiveDefinite.typicaldist">(pymanopt.manifolds.psd.SymmetricPositiveDefinite property)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.oblique.Oblique.typicaldist">(pymanopt.manifolds.oblique.Oblique property)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.stiefel.Stiefel.typicaldist">(pymanopt.manifolds.stiefel.Stiefel property)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.product.Product.typicaldist">(pymanopt.manifolds.product.Product property)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.psd.Elliptope.typicaldist">(pymanopt.manifolds.psd.Elliptope property)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.psd.SymmetricPositiveDefinite.typicaldist">(pymanopt.manifolds.psd.SymmetricPositiveDefinite property)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.typicaldist">(pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup property)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.stiefel.Stiefel.typicaldist">(pymanopt.manifolds.stiefel.Stiefel property)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.strictly_positive_vectors.StrictlyPositiveVectors.typicaldist">(pymanopt.manifolds.strictly_positive_vectors.StrictlyPositiveVectors property)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -712,7 +986,7 @@
 <h2 id="W">W</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api-reference.html#pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold.weingarten">weingarten() (pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold method)</a>
+      <li><a href="manifolds.html#pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold.weingarten">weingarten() (pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -720,20 +994,30 @@
 <h2 id="Z">Z</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api-reference.html#pymanopt.manifolds.grassmann.Grassmann.zerovec">zerovec() (pymanopt.manifolds.grassmann.Grassmann method)</a>
+      <li><a href="manifolds.html#pymanopt.manifolds.complex_circle.ComplexCircle.zerovec">zerovec() (pymanopt.manifolds.complex_circle.ComplexCircle method)</a>
 
       <ul>
-        <li><a href="api-reference.html#pymanopt.manifolds.manifold.Manifold.zerovec">(pymanopt.manifolds.manifold.Manifold method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.complex_grassmann.ComplexGrassmann.zerovec">(pymanopt.manifolds.complex_grassmann.ComplexGrassmann method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.oblique.Oblique.zerovec">(pymanopt.manifolds.oblique.Oblique method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.fixed_rank.FixedRankEmbedded.zerovec">(pymanopt.manifolds.fixed_rank.FixedRankEmbedded method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.product.Product.zerovec">(pymanopt.manifolds.product.Product method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.grassmann.Grassmann.zerovec">(pymanopt.manifolds.grassmann.Grassmann method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.psd.Elliptope.zerovec">(pymanopt.manifolds.psd.Elliptope method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.manifold.Manifold.zerovec">(pymanopt.manifolds.manifold.Manifold method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.psd.SymmetricPositiveDefinite.zerovec">(pymanopt.manifolds.psd.SymmetricPositiveDefinite method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.oblique.Oblique.zerovec">(pymanopt.manifolds.oblique.Oblique method)</a>
 </li>
-        <li><a href="api-reference.html#pymanopt.manifolds.stiefel.Stiefel.zerovec">(pymanopt.manifolds.stiefel.Stiefel method)</a>
+        <li><a href="manifolds.html#pymanopt.manifolds.product.Product.zerovec">(pymanopt.manifolds.product.Product method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.psd.Elliptope.zerovec">(pymanopt.manifolds.psd.Elliptope method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.psd.SymmetricPositiveDefinite.zerovec">(pymanopt.manifolds.psd.SymmetricPositiveDefinite method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.zerovec">(pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.stiefel.Stiefel.zerovec">(pymanopt.manifolds.stiefel.Stiefel method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.strictly_positive_vectors.StrictlyPositiveVectors.zerovec">(pymanopt.manifolds.strictly_positive_vectors.StrictlyPositiveVectors method)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -748,8 +1032,8 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2016-2021, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Dec 27, 2021.
+    <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
+      <span class="lastupdated">Last updated on Jan 06, 2022.
       </span></p>
   </div>
 
@@ -760,7 +1044,19 @@
       </div>
     </section>
   </div>
-  <script>
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: latest
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl>
+      <dt>Versions</dt>
+      <dd><a href="/docs/latest">latest</a></dd>
+    </dl>
+  </div>
+</div><script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
