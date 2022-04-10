@@ -82,151 +82,148 @@
            <div itemprop="articleBody">
              
   <h1>Source code for pymanopt.manifolds.product</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span></span><span class="kn">import</span> <span class="nn">functools</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="kn">from</span> <span class="nn">pymanopt.manifolds.manifold</span> <span class="kn">import</span> <span class="n">Manifold</span>
-<span class="kn">from</span> <span class="nn">pymanopt.tools</span> <span class="kn">import</span> <span class="n">ndarraySequenceMixin</span>
+<span class="kn">from</span> <span class="nn">pymanopt.tools</span> <span class="kn">import</span> <span class="n">ndarraySequenceMixin</span><span class="p">,</span> <span class="n">return_as_class_instance</span>
 
 
 <div class="viewcode-block" id="Product"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.product.Product">[docs]</a><span class="k">class</span> <span class="nc">Product</span><span class="p">(</span><span class="n">Manifold</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Product manifold, i.e., the cartesian product of multiple manifolds.&quot;&quot;&quot;</span>
 
-    <span class="c1"># TODO(nkoep): Change the argument to *manifold so we can do Product(man1,</span>
-    <span class="c1">#              man2).</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">manifolds</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">manifold</span> <span class="ow">in</span> <span class="n">manifolds</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">manifold</span><span class="p">,</span> <span class="n">Product</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Nested product manifolds are not supported&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_manifolds</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">manifolds</span><span class="p">)</span>
-        <span class="n">manifold_names</span> <span class="o">=</span> <span class="s2">&quot; x &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">man</span><span class="p">)</span> <span class="k">for</span> <span class="n">man</span> <span class="ow">in</span> <span class="n">manifolds</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manifolds</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">manifolds</span><span class="p">)</span>
+        <span class="n">manifold_names</span> <span class="o">=</span> <span class="s2">&quot; x &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">manifold</span><span class="p">)</span> <span class="k">for</span> <span class="n">manifold</span> <span class="ow">in</span> <span class="n">manifolds</span><span class="p">])</span>
         <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Product manifold: </span><span class="si">{</span><span class="n">manifold_names</span><span class="si">}</span><span class="s2">&quot;</span>
 
-        <span class="n">dimension</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">([</span><span class="n">man</span><span class="o">.</span><span class="n">dim</span> <span class="k">for</span> <span class="n">man</span> <span class="ow">in</span> <span class="n">manifolds</span><span class="p">])</span>
+        <span class="n">dimension</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">([</span><span class="n">manifold</span><span class="o">.</span><span class="n">dim</span> <span class="k">for</span> <span class="n">manifold</span> <span class="ow">in</span> <span class="n">manifolds</span><span class="p">])</span>
         <span class="n">point_layout</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">manifold</span><span class="o">.</span><span class="n">point_layout</span> <span class="k">for</span> <span class="n">manifold</span> <span class="ow">in</span> <span class="n">manifolds</span><span class="p">)</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">dimension</span><span class="p">,</span> <span class="n">point_layout</span><span class="o">=</span><span class="n">point_layout</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;manifolds&quot;</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;Cannot override &#39;manifolds&#39; attribute&quot;</span><span class="p">)</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">typicaldist</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span>
-            <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">([</span><span class="n">man</span><span class="o">.</span><span class="n">typicaldist</span> <span class="o">**</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">man</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_manifolds</span><span class="p">])</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">([</span><span class="n">manifold</span><span class="o">.</span><span class="n">typicaldist</span><span class="o">**</span><span class="mi">2</span> <span class="k">for</span> <span class="n">manifold</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">manifolds</span><span class="p">])</span>
         <span class="p">)</span>
 
-<div class="viewcode-block" id="Product.inner"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.product.Product.inner">[docs]</a>    <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">H</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span>
-            <span class="p">[</span>
-                <span class="n">man</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">G</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">H</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
-                <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">man</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_manifolds</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_dispatch</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">method_name</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">transform</span><span class="o">=</span><span class="k">lambda</span> <span class="n">value</span><span class="p">:</span> <span class="n">value</span><span class="p">,</span>
+        <span class="n">reduction</span><span class="o">=</span><span class="k">lambda</span> <span class="n">values</span><span class="p">:</span> <span class="n">values</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Wrapper to delegate method calls to individual manifolds.&quot;&quot;&quot;</span>
+
+        <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method_name</span><span class="p">))</span>
+        <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="n">return_values</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">transform</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">manifold</span><span class="p">,</span> <span class="n">method_name</span><span class="p">)(</span><span class="o">*</span><span class="n">arguments</span><span class="p">))</span>
+                <span class="k">for</span> <span class="n">manifold</span><span class="p">,</span> <span class="o">*</span><span class="n">arguments</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">manifolds</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
             <span class="p">]</span>
+            <span class="k">return</span> <span class="n">reduction</span><span class="p">(</span><span class="n">return_values</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">wrapper</span>
+
+<div class="viewcode-block" id="Product.norm"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.product.Product.norm">[docs]</a>    <span class="k">def</span> <span class="nf">norm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Product.inner"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.product.Product.inner">[docs]</a>    <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector_a</span><span class="p">,</span> <span class="n">tangent_vector_b</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dispatch</span><span class="p">(</span><span class="s2">&quot;inner&quot;</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">)(</span>
+            <span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector_a</span><span class="p">,</span> <span class="n">tangent_vector_b</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="Product.norm"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.product.Product.norm">[docs]</a>    <span class="k">def</span> <span class="nf">norm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">G</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">G</span><span class="p">))</span></div>
+<div class="viewcode-block" id="Product.dist"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.product.Product.dist">[docs]</a>    <span class="k">def</span> <span class="nf">dist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point_a</span><span class="p">,</span> <span class="n">point_b</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dispatch</span><span class="p">(</span>
+            <span class="s2">&quot;dist&quot;</span><span class="p">,</span>
+            <span class="n">transform</span><span class="o">=</span><span class="k">lambda</span> <span class="n">value</span><span class="p">:</span> <span class="n">value</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">reduction</span><span class="o">=</span><span class="k">lambda</span> <span class="n">values</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">values</span><span class="p">)),</span>
+        <span class="p">)(</span><span class="n">point_a</span><span class="p">,</span> <span class="n">point_b</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Product.dist"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.product.Product.dist">[docs]</a>    <span class="k">def</span> <span class="nf">dist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span>
-            <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span>
-                <span class="p">[</span>
-                    <span class="n">man</span><span class="o">.</span><span class="n">dist</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">Y</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span>
-                    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">man</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_manifolds</span><span class="p">)</span>
-                <span class="p">]</span>
-            <span class="p">)</span>
+<div class="viewcode-block" id="Product.proj"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.product.Product.proj">[docs]</a>    <span class="k">def</span> <span class="nf">proj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">vector</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dispatch</span><span class="p">(</span><span class="s2">&quot;proj&quot;</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="n">_ProductTangentVector</span><span class="p">)(</span>
+            <span class="n">point</span><span class="p">,</span> <span class="n">vector</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="Product.proj"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.product.Product.proj">[docs]</a>    <span class="k">def</span> <span class="nf">proj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">U</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">_ProductTangentVector</span><span class="p">(</span>
-            <span class="p">[</span><span class="n">man</span><span class="o">.</span><span class="n">proj</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">U</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">man</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_manifolds</span><span class="p">)]</span>
+<div class="viewcode-block" id="Product.egrad2rgrad"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.product.Product.egrad2rgrad">[docs]</a>    <span class="k">def</span> <span class="nf">egrad2rgrad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">euclidean_gradient</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dispatch</span><span class="p">(</span><span class="s2">&quot;egrad2rgrad&quot;</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="n">_ProductTangentVector</span><span class="p">)(</span>
+            <span class="n">point</span><span class="p">,</span> <span class="n">euclidean_gradient</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="Product.egrad2rgrad"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.product.Product.egrad2rgrad">[docs]</a>    <span class="k">def</span> <span class="nf">egrad2rgrad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">U</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">_ProductTangentVector</span><span class="p">(</span>
-            <span class="p">[</span>
-                <span class="n">man</span><span class="o">.</span><span class="n">egrad2rgrad</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">U</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
-                <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">man</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_manifolds</span><span class="p">)</span>
-            <span class="p">]</span>
+<div class="viewcode-block" id="Product.ehess2rhess"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.product.Product.ehess2rhess">[docs]</a>    <span class="k">def</span> <span class="nf">ehess2rhess</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">euclidean_gradient</span><span class="p">,</span> <span class="n">euclidean_hvp</span><span class="p">,</span> <span class="n">tangent_vector</span>
+    <span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dispatch</span><span class="p">(</span><span class="s2">&quot;ehess2rhess&quot;</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="n">_ProductTangentVector</span><span class="p">)(</span>
+            <span class="n">point</span><span class="p">,</span> <span class="n">euclidean_gradient</span><span class="p">,</span> <span class="n">euclidean_hvp</span><span class="p">,</span> <span class="n">tangent_vector</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="Product.ehess2rhess"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.product.Product.ehess2rhess">[docs]</a>    <span class="k">def</span> <span class="nf">ehess2rhess</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">egrad</span><span class="p">,</span> <span class="n">ehess</span><span class="p">,</span> <span class="n">H</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">_ProductTangentVector</span><span class="p">(</span>
-            <span class="p">[</span>
-                <span class="n">man</span><span class="o">.</span><span class="n">ehess2rhess</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">egrad</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">ehess</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">H</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
-                <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">man</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_manifolds</span><span class="p">)</span>
-            <span class="p">]</span>
-        <span class="p">)</span></div>
+<div class="viewcode-block" id="Product.exp"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.product.Product.exp">[docs]</a>    <span class="k">def</span> <span class="nf">exp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dispatch</span><span class="p">(</span><span class="s2">&quot;exp&quot;</span><span class="p">)(</span><span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Product.exp"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.product.Product.exp">[docs]</a>    <span class="k">def</span> <span class="nf">exp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">U</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">man</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">U</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">man</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_manifolds</span><span class="p">)]</span></div>
+<div class="viewcode-block" id="Product.retr"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.product.Product.retr">[docs]</a>    <span class="k">def</span> <span class="nf">retr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dispatch</span><span class="p">(</span><span class="s2">&quot;retr&quot;</span><span class="p">)(</span><span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Product.retr"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.product.Product.retr">[docs]</a>    <span class="k">def</span> <span class="nf">retr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">U</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">man</span><span class="o">.</span><span class="n">retr</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">U</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">man</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_manifolds</span><span class="p">)]</span></div>
-
-<div class="viewcode-block" id="Product.log"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.product.Product.log">[docs]</a>    <span class="k">def</span> <span class="nf">log</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">U</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">_ProductTangentVector</span><span class="p">(</span>
-            <span class="p">[</span><span class="n">man</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">U</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">man</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_manifolds</span><span class="p">)]</span>
+<div class="viewcode-block" id="Product.log"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.product.Product.log">[docs]</a>    <span class="k">def</span> <span class="nf">log</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point_a</span><span class="p">,</span> <span class="n">point_b</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dispatch</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="n">_ProductTangentVector</span><span class="p">)(</span>
+            <span class="n">point_a</span><span class="p">,</span> <span class="n">point_b</span>
         <span class="p">)</span></div>
 
 <div class="viewcode-block" id="Product.rand"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.product.Product.rand">[docs]</a>    <span class="k">def</span> <span class="nf">rand</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">man</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span> <span class="k">for</span> <span class="n">man</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_manifolds</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dispatch</span><span class="p">(</span><span class="s2">&quot;rand&quot;</span><span class="p">)()</span></div>
 
-<div class="viewcode-block" id="Product.randvec"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.product.Product.randvec">[docs]</a>    <span class="k">def</span> <span class="nf">randvec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
-        <span class="n">scale</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_manifolds</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">_ProductTangentVector</span><span class="p">(</span>
-            <span class="p">[</span>
-                <span class="n">scale</span> <span class="o">*</span> <span class="n">man</span><span class="o">.</span><span class="n">randvec</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
-                <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">man</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_manifolds</span><span class="p">)</span>
-            <span class="p">]</span>
+<div class="viewcode-block" id="Product.randvec"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.product.Product.randvec">[docs]</a>    <span class="k">def</span> <span class="nf">randvec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
+        <span class="n">scale</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">manifolds</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dispatch</span><span class="p">(</span>
+            <span class="s2">&quot;randvec&quot;</span><span class="p">,</span>
+            <span class="n">transform</span><span class="o">=</span><span class="k">lambda</span> <span class="n">value</span><span class="p">:</span> <span class="n">scale</span> <span class="o">*</span> <span class="n">value</span><span class="p">,</span>
+            <span class="n">reduction</span><span class="o">=</span><span class="n">_ProductTangentVector</span><span class="p">,</span>
+        <span class="p">)(</span><span class="n">point</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Product.transp"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.product.Product.transp">[docs]</a>    <span class="k">def</span> <span class="nf">transp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point_a</span><span class="p">,</span> <span class="n">point_b</span><span class="p">,</span> <span class="n">tangent_vector_a</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dispatch</span><span class="p">(</span><span class="s2">&quot;transp&quot;</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="n">_ProductTangentVector</span><span class="p">)(</span>
+            <span class="n">point_a</span><span class="p">,</span> <span class="n">point_b</span><span class="p">,</span> <span class="n">tangent_vector_a</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="Product.transp"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.product.Product.transp">[docs]</a>    <span class="k">def</span> <span class="nf">transp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X1</span><span class="p">,</span> <span class="n">X2</span><span class="p">,</span> <span class="n">G</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">_ProductTangentVector</span><span class="p">(</span>
-            <span class="p">[</span>
-                <span class="n">man</span><span class="o">.</span><span class="n">transp</span><span class="p">(</span><span class="n">X1</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">X2</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">G</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
-                <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">man</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_manifolds</span><span class="p">)</span>
-            <span class="p">]</span>
-        <span class="p">)</span></div>
+<div class="viewcode-block" id="Product.pairmean"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.product.Product.pairmean">[docs]</a>    <span class="k">def</span> <span class="nf">pairmean</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point_a</span><span class="p">,</span> <span class="n">point_b</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dispatch</span><span class="p">(</span><span class="s2">&quot;pairmean&quot;</span><span class="p">)(</span><span class="n">point_a</span><span class="p">,</span> <span class="n">point_b</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Product.pairmean"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.product.Product.pairmean">[docs]</a>    <span class="k">def</span> <span class="nf">pairmean</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">[</span>
-            <span class="n">man</span><span class="o">.</span><span class="n">pairmean</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">Y</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">man</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_manifolds</span><span class="p">)</span>
-        <span class="p">]</span></div>
-
-<div class="viewcode-block" id="Product.zerovec"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.product.Product.zerovec">[docs]</a>    <span class="k">def</span> <span class="nf">zerovec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">_ProductTangentVector</span><span class="p">(</span>
-            <span class="p">[</span><span class="n">man</span><span class="o">.</span><span class="n">zerovec</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">man</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_manifolds</span><span class="p">)]</span>
+<div class="viewcode-block" id="Product.zerovec"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.product.Product.zerovec">[docs]</a>    <span class="k">def</span> <span class="nf">zerovec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dispatch</span><span class="p">(</span><span class="s2">&quot;zerovec&quot;</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="n">_ProductTangentVector</span><span class="p">)(</span>
+            <span class="n">point</span>
         <span class="p">)</span></div></div>
 
 
-<span class="k">class</span> <span class="nc">_ProductTangentVector</span><span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">ndarraySequenceMixin</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;_ProductTangentVector: &quot;</span> <span class="o">+</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">()</span>
-
+<span class="k">class</span> <span class="nc">_ProductTangentVector</span><span class="p">(</span><span class="n">ndarraySequenceMixin</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+    <span class="nd">@return_as_class_instance</span><span class="p">(</span><span class="n">unpack</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="k">def</span> <span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">_ProductTangentVector</span><span class="p">(</span>
-            <span class="p">[</span><span class="n">v</span> <span class="o">+</span> <span class="n">other</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="p">)]</span>
-        <span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">other</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Arguments must be same length&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">v</span> <span class="o">+</span> <span class="n">other</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="p">)]</span>
 
+    <span class="nd">@return_as_class_instance</span><span class="p">(</span><span class="n">unpack</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="k">def</span> <span class="fm">__sub__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">_ProductTangentVector</span><span class="p">(</span>
-            <span class="p">[</span><span class="n">v</span> <span class="o">-</span> <span class="n">other</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="p">)]</span>
-        <span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">other</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Arguments must be same length&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">v</span> <span class="o">-</span> <span class="n">other</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="p">)]</span>
 
+    <span class="nd">@return_as_class_instance</span><span class="p">(</span><span class="n">unpack</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="k">def</span> <span class="fm">__mul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">_ProductTangentVector</span><span class="p">([</span><span class="n">other</span> <span class="o">*</span> <span class="n">val</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">])</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">other</span> <span class="o">*</span> <span class="n">val</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">]</span>
 
     <span class="fm">__rmul__</span> <span class="o">=</span> <span class="fm">__mul__</span>
 
-    <span class="k">def</span> <span class="nf">__div__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">_ProductTangentVector</span><span class="p">([</span><span class="n">val</span> <span class="o">/</span> <span class="n">other</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">])</span>
+    <span class="nd">@return_as_class_instance</span><span class="p">(</span><span class="n">unpack</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__truediv__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">val</span> <span class="o">/</span> <span class="n">other</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">]</span>
 
+    <span class="nd">@return_as_class_instance</span><span class="p">(</span><span class="n">unpack</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="k">def</span> <span class="fm">__neg__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">_ProductTangentVector</span><span class="p">([</span><span class="o">-</span><span class="n">val</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">])</span>
+        <span class="k">return</span> <span class="p">[</span><span class="o">-</span><span class="n">val</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">]</span>
 </pre></div>
 
            </div>
@@ -237,7 +234,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Jan 06, 2022.
+      <span class="lastupdated">Last updated on Apr 10, 2022.
       </span></p>
   </div>
 

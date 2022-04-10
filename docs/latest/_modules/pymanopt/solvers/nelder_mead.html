@@ -87,6 +87,7 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="kn">import</span> <span class="nn">pymanopt</span>
+<span class="kn">from</span> <span class="nn">pymanopt</span> <span class="kn">import</span> <span class="n">tools</span>
 <span class="kn">from</span> <span class="nn">pymanopt.solvers.solver</span> <span class="kn">import</span> <span class="n">Solver</span>
 <span class="kn">from</span> <span class="nn">pymanopt.solvers.steepest_descent</span> <span class="kn">import</span> <span class="n">SteepestDescent</span>
 
@@ -94,13 +95,13 @@
 <div class="viewcode-block" id="compute_centroid"><a class="viewcode-back" href="../../../solvers.html#pymanopt.solvers.nelder_mead.compute_centroid">[docs]</a><span class="k">def</span> <span class="nf">compute_centroid</span><span class="p">(</span><span class="n">manifold</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Compute the centroid of `points` on the `manifold` as Karcher mean.&quot;&quot;&quot;</span>
 
-    <span class="nd">@pymanopt</span><span class="o">.</span><span class="n">function</span><span class="o">.</span><span class="n">Callable</span><span class="p">(</span><span class="n">manifold</span><span class="p">)</span>
+    <span class="nd">@pymanopt</span><span class="o">.</span><span class="n">function</span><span class="o">.</span><span class="n">numpy</span><span class="p">(</span><span class="n">manifold</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">objective</span><span class="p">(</span><span class="o">*</span><span class="n">y</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">manifold</span><span class="o">.</span><span class="n">num_values</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="p">(</span><span class="n">y</span><span class="p">,)</span> <span class="o">=</span> <span class="n">y</span>
         <span class="k">return</span> <span class="nb">sum</span><span class="p">([</span><span class="n">manifold</span><span class="o">.</span><span class="n">dist</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">point</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span>
 
-    <span class="nd">@pymanopt</span><span class="o">.</span><span class="n">function</span><span class="o">.</span><span class="n">Callable</span><span class="p">(</span><span class="n">manifold</span><span class="p">)</span>
+    <span class="nd">@pymanopt</span><span class="o">.</span><span class="n">function</span><span class="o">.</span><span class="n">numpy</span><span class="p">(</span><span class="n">manifold</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">gradient</span><span class="p">(</span><span class="o">*</span><span class="n">y</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">manifold</span><span class="o">.</span><span class="n">num_values</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="p">(</span><span class="n">y</span><span class="p">,)</span> <span class="o">=</span> <span class="n">y</span>
@@ -161,32 +162,28 @@
 <span class="sd">            Local minimum of the cost function, or the most recent iterate if</span>
 <span class="sd">            algorithm terminated before convergence.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">man</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">manifold</span>
+        <span class="n">manifold</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">manifold</span>
         <span class="n">verbosity</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">verbosity</span>
         <span class="n">objective</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">cost</span>
 
         <span class="c1"># Choose proper default algorithm parameters. We need to know about the</span>
         <span class="c1"># dimension of the manifold to limit the parameter range, so we have to</span>
         <span class="c1"># defer proper initialization until this point.</span>
-        <span class="n">dim</span> <span class="o">=</span> <span class="n">man</span><span class="o">.</span><span class="n">dim</span>
+        <span class="n">dim</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">dim</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_maxcostevals</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_maxcostevals</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">dim</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_maxiter</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_maxiter</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">2000</span><span class="p">,</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">dim</span><span class="p">)</span>
 
         <span class="c1"># If no initial simplex x is given by the user, generate one at random.</span>
+        <span class="n">num_points</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">dim</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">man</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">dim</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))]</span>
-        <span class="k">elif</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s2">&quot;__iter__&quot;</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The initial simplex x must be iterable&quot;</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="c1"># XXX: Is this necessary?</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">!=</span> <span class="n">dim</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span>
-                    <span class="s2">&quot;The simplex size was adapted to the dimension &quot;</span>
-                    <span class="s2">&quot;of the manifold&quot;</span>
-                <span class="p">)</span>
-                <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="p">[:</span> <span class="n">dim</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">manifold</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_points</span><span class="p">)]</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="n">tools</span><span class="o">.</span><span class="n">is_sequence</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">!=</span> <span class="n">num_points</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;The initial simplex x must be a sequence of </span><span class="si">{</span><span class="n">num_points</span><span class="si">}</span><span class="s2"> &quot;</span>
+                <span class="s2">&quot;points&quot;</span>
+            <span class="p">)</span>
 
         <span class="c1"># Compute objective-related quantities for x, and setup a function</span>
         <span class="c1"># evaluations counter.</span>
@@ -196,7 +193,7 @@
         <span class="c1"># Sort simplex points by cost.</span>
         <span class="n">order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">costs</span><span class="p">)</span>
         <span class="n">costs</span> <span class="o">=</span> <span class="n">costs</span><span class="p">[</span><span class="n">order</span><span class="p">]</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">order</span><span class="p">]</span>  <span class="c1"># XXX: Probably inefficient</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">order</span><span class="p">]</span>
 
         <span class="c1"># Iteration counter (at any point, iter is the number of fully executed</span>
         <span class="c1"># iterations so far).</span>
@@ -218,7 +215,7 @@
             <span class="c1"># Sort simplex points by cost.</span>
             <span class="n">order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">costs</span><span class="p">)</span>
             <span class="n">costs</span> <span class="o">=</span> <span class="n">costs</span><span class="p">[</span><span class="n">order</span><span class="p">]</span>
-            <span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">order</span><span class="p">]</span>  <span class="c1"># XXX: Probably inefficient</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">order</span><span class="p">]</span>
 
             <span class="n">stop_reason</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_stopping_criterion</span><span class="p">(</span>
                 <span class="n">time0</span><span class="p">,</span> <span class="nb">iter</span><span class="o">=</span><span class="nb">iter</span><span class="p">,</span> <span class="n">costevals</span><span class="o">=</span><span class="n">costevals</span>
@@ -230,13 +227,13 @@
                 <span class="k">break</span>
 
             <span class="c1"># Compute a centroid for the dim best points.</span>
-            <span class="n">xbar</span> <span class="o">=</span> <span class="n">compute_centroid</span><span class="p">(</span><span class="n">man</span><span class="p">,</span> <span class="n">x</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">xbar</span> <span class="o">=</span> <span class="n">compute_centroid</span><span class="p">(</span><span class="n">manifold</span><span class="p">,</span> <span class="n">x</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
 
             <span class="c1"># Compute the direction for moving along the axis xbar - worst x.</span>
-            <span class="n">vec</span> <span class="o">=</span> <span class="n">man</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">xbar</span><span class="p">,</span> <span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">vec</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">xbar</span><span class="p">,</span> <span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
 
             <span class="c1"># Reflection step</span>
-            <span class="n">xr</span> <span class="o">=</span> <span class="n">man</span><span class="o">.</span><span class="n">retr</span><span class="p">(</span><span class="n">xbar</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">_reflection</span> <span class="o">*</span> <span class="n">vec</span><span class="p">)</span>
+            <span class="n">xr</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">retr</span><span class="p">(</span><span class="n">xbar</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">_reflection</span> <span class="o">*</span> <span class="n">vec</span><span class="p">)</span>
             <span class="n">costr</span> <span class="o">=</span> <span class="n">objective</span><span class="p">(</span><span class="n">xr</span><span class="p">)</span>
             <span class="n">costevals</span> <span class="o">+=</span> <span class="mi">1</span>
 
@@ -251,7 +248,7 @@
 
             <span class="c1"># If the reflected point is better than the best point, expand.</span>
             <span class="k">if</span> <span class="n">costr</span> <span class="o">&lt;</span> <span class="n">costs</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
-                <span class="n">xe</span> <span class="o">=</span> <span class="n">man</span><span class="o">.</span><span class="n">retr</span><span class="p">(</span><span class="n">xbar</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">_expansion</span> <span class="o">*</span> <span class="n">vec</span><span class="p">)</span>
+                <span class="n">xe</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">retr</span><span class="p">(</span><span class="n">xbar</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">_expansion</span> <span class="o">*</span> <span class="n">vec</span><span class="p">)</span>
                 <span class="n">coste</span> <span class="o">=</span> <span class="n">objective</span><span class="p">(</span><span class="n">xe</span><span class="p">)</span>
                 <span class="n">costevals</span> <span class="o">+=</span> <span class="mi">1</span>
                 <span class="k">if</span> <span class="n">coste</span> <span class="o">&lt;</span> <span class="n">costr</span><span class="p">:</span>
@@ -272,7 +269,7 @@
             <span class="k">if</span> <span class="n">costr</span> <span class="o">&gt;=</span> <span class="n">costs</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]:</span>
                 <span class="k">if</span> <span class="n">costr</span> <span class="o">&lt;</span> <span class="n">costs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
                     <span class="c1"># do an outside contraction</span>
-                    <span class="n">xoc</span> <span class="o">=</span> <span class="n">man</span><span class="o">.</span><span class="n">retr</span><span class="p">(</span><span class="n">xbar</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">_contraction</span> <span class="o">*</span> <span class="n">vec</span><span class="p">)</span>
+                    <span class="n">xoc</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">retr</span><span class="p">(</span><span class="n">xbar</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">_contraction</span> <span class="o">*</span> <span class="n">vec</span><span class="p">)</span>
                     <span class="n">costoc</span> <span class="o">=</span> <span class="n">objective</span><span class="p">(</span><span class="n">xoc</span><span class="p">)</span>
                     <span class="n">costevals</span> <span class="o">+=</span> <span class="mi">1</span>
                     <span class="k">if</span> <span class="n">costoc</span> <span class="o">&lt;=</span> <span class="n">costr</span><span class="p">:</span>
@@ -283,7 +280,7 @@
                         <span class="k">continue</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="c1"># do an inside contraction</span>
-                    <span class="n">xic</span> <span class="o">=</span> <span class="n">man</span><span class="o">.</span><span class="n">retr</span><span class="p">(</span><span class="n">xbar</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_contraction</span> <span class="o">*</span> <span class="n">vec</span><span class="p">)</span>
+                    <span class="n">xic</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">retr</span><span class="p">(</span><span class="n">xbar</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_contraction</span> <span class="o">*</span> <span class="n">vec</span><span class="p">)</span>
                     <span class="n">costic</span> <span class="o">=</span> <span class="n">objective</span><span class="p">(</span><span class="n">xic</span><span class="p">)</span>
                     <span class="n">costevals</span> <span class="o">+=</span> <span class="mi">1</span>
                     <span class="k">if</span> <span class="n">costic</span> <span class="o">&lt;=</span> <span class="n">costs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
@@ -298,7 +295,7 @@
                 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Shrinkage&quot;</span><span class="p">)</span>
             <span class="n">x0</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">dim</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-                <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">man</span><span class="o">.</span><span class="n">pairmean</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+                <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">pairmean</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
                 <span class="n">costs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">objective</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
             <span class="n">costevals</span> <span class="o">+=</span> <span class="n">dim</span>
 
@@ -324,7 +321,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Jan 06, 2022.
+      <span class="lastupdated">Last updated on Apr 10, 2022.
       </span></p>
   </div>
 

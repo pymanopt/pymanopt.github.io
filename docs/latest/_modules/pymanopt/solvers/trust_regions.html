@@ -295,7 +295,7 @@
                 <span class="k">if</span> <span class="n">g_Hg</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
                     <span class="n">tau_c</span> <span class="o">=</span> <span class="mi">1</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="n">tau_c</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">norm_grad</span> <span class="o">**</span> <span class="mi">3</span> <span class="o">/</span> <span class="p">(</span><span class="n">Delta</span> <span class="o">*</span> <span class="n">g_Hg</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+                    <span class="n">tau_c</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">norm_grad</span><span class="o">**</span><span class="mi">3</span> <span class="o">/</span> <span class="p">(</span><span class="n">Delta</span> <span class="o">*</span> <span class="n">g_Hg</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
 
                 <span class="c1"># and generate the Cauchy point.</span>
                 <span class="n">eta_c</span> <span class="o">=</span> <span class="o">-</span><span class="n">tau_c</span> <span class="o">*</span> <span class="n">Delta</span> <span class="o">/</span> <span class="n">norm_grad</span> <span class="o">*</span> <span class="n">fgradx</span>
@@ -590,19 +590,19 @@
                 <span class="c1"># &lt;eta,eta&gt;_P</span>
                 <span class="c1"># + 2*alpha*&lt;eta,delta&gt;_P</span>
                 <span class="c1"># + alpha*alpha*&lt;delta,delta&gt;_P</span>
-                <span class="n">e_Pe_new</span> <span class="o">=</span> <span class="n">e_Pe</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">e_Pd</span> <span class="o">+</span> <span class="n">alpha</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">d_Pd</span>
+                <span class="n">e_Pe_new</span> <span class="o">=</span> <span class="n">e_Pe</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">e_Pd</span> <span class="o">+</span> <span class="n">alpha</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">d_Pd</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">e_Pe_new</span> <span class="o">=</span> <span class="n">e_Pe</span>
 
             <span class="c1"># Check against negative curvature and trust-region radius</span>
             <span class="c1"># violation. If either condition triggers, we bail out.</span>
-            <span class="k">if</span> <span class="n">d_Hd</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">e_Pe_new</span> <span class="o">&gt;=</span> <span class="n">Delta</span> <span class="o">**</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">d_Hd</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">e_Pe_new</span> <span class="o">&gt;=</span> <span class="n">Delta</span><span class="o">**</span><span class="mi">2</span><span class="p">:</span>
                 <span class="c1"># want</span>
                 <span class="c1">#  ee = &lt;eta,eta&gt;_prec,x</span>
                 <span class="c1">#  ed = &lt;eta,delta&gt;_prec,x</span>
                 <span class="c1">#  dd = &lt;delta,delta&gt;_prec,x</span>
                 <span class="n">tau</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="o">-</span><span class="n">e_Pd</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">e_Pd</span> <span class="o">*</span> <span class="n">e_Pd</span> <span class="o">+</span> <span class="n">d_Pd</span> <span class="o">*</span> <span class="p">(</span><span class="n">Delta</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">e_Pe</span><span class="p">))</span>
+                    <span class="o">-</span><span class="n">e_Pd</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">e_Pd</span> <span class="o">*</span> <span class="n">e_Pd</span> <span class="o">+</span> <span class="n">d_Pd</span> <span class="o">*</span> <span class="p">(</span><span class="n">Delta</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">e_Pe</span><span class="p">))</span>
                 <span class="p">)</span> <span class="o">/</span> <span class="n">d_Pd</span>
 
                 <span class="n">eta</span> <span class="o">=</span> <span class="n">eta</span> <span class="o">+</span> <span class="n">tau</span> <span class="o">*</span> <span class="n">delta</span>
@@ -662,10 +662,10 @@
             <span class="c1"># preconditioned gradients). [CGT2000], page 206, mentions both as</span>
             <span class="c1"># acceptable criteria.</span>
             <span class="k">if</span> <span class="n">j</span> <span class="o">&gt;=</span> <span class="n">mininner</span> <span class="ow">and</span> <span class="n">norm_r</span> <span class="o">&lt;=</span> <span class="n">norm_r0</span> <span class="o">*</span> <span class="nb">min</span><span class="p">(</span>
-                <span class="n">norm_r0</span> <span class="o">**</span> <span class="n">theta</span><span class="p">,</span> <span class="n">kappa</span>
+                <span class="n">norm_r0</span><span class="o">**</span><span class="n">theta</span><span class="p">,</span> <span class="n">kappa</span>
             <span class="p">):</span>
                 <span class="c1"># Residual is small enough to quit</span>
-                <span class="k">if</span> <span class="n">kappa</span> <span class="o">&lt;</span> <span class="n">norm_r0</span> <span class="o">**</span> <span class="n">theta</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">kappa</span> <span class="o">&lt;</span> <span class="n">norm_r0</span><span class="o">**</span><span class="n">theta</span><span class="p">:</span>
                     <span class="n">stop_tCG</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">REACHED_TARGET_LINEAR</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">stop_tCG</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">REACHED_TARGET_SUPERLINEAR</span>
@@ -701,7 +701,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Jan 06, 2022.
+      <span class="lastupdated">Last updated on Apr 10, 2022.
       </span></p>
   </div>
 

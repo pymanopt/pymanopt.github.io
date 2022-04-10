@@ -430,7 +430,7 @@ and mixture probability vector <span class="math">\(\boldsymbol{\pi}=\left[0.1, 
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-/opt/hostedtoolcache/Python/3.9.9/x64/lib/python3.9/site-packages/traitlets/traitlets.py:3044: FutureWarning: --rc={&#39;figure.dpi&#39;: 96} for dict-traits is deprecated in traitlets 5.0. You can pass --rc &lt;key=value&gt; ... multiple times to add items to a dict.
+/opt/hostedtoolcache/Python/3.9.12/x64/lib/python3.9/site-packages/traitlets/traitlets.py:3044: FutureWarning: --rc={&#39;figure.dpi&#39;: 96} for dict-traits is deprecated in traitlets 5.0. You can pass --rc &lt;key=value&gt; ... multiple times to add items to a dict.
   warn(
 </pre></div></div>
 </div>
@@ -481,7 +481,7 @@ q_\mathcal{N}(\mathbf{y}_n;\mathbf{S}_m)
 
 <span class="c1"># (2) Define cost function</span>
 <span class="c1"># The parameters must be contained in a list theta.</span>
-<span class="nd">@pymanopt</span><span class="o">.</span><span class="n">function</span><span class="o">.</span><span class="n">Autograd</span><span class="p">(</span><span class="n">manifold</span><span class="p">)</span>
+<span class="nd">@pymanopt</span><span class="o">.</span><span class="n">function</span><span class="o">.</span><span class="n">autograd</span><span class="p">(</span><span class="n">manifold</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">cost</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
     <span class="c1"># Unpack parameters</span>
     <span class="n">nu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
@@ -519,7 +519,7 @@ q_\mathcal{N}(\mathbf{y}_n;\mathbf{S}_m)
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Optimizing...
-Terminated - min stepsize reached after 190 iterations, 1.63 seconds.
+Terminated - min stepsize reached after 98 iterations, 0.57 seconds.
 
 </pre></div></div>
 </div>
@@ -601,21 +601,21 @@ Terminated - min stepsize reached after 190 iterations, 1.63 seconds.
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[[ 1.98]
- [-1.01]]
-[[0.45 0.02]
- [0.02 0.47]]
-[[-4.19]
- [ 0.8 ]]
-[[ 2.16 -0.19]
- [-0.19  0.93]]
-[[0.04]
- [0.09]]
-[[1.01 0.91]
- [0.91 2.95]]
-0.2862084359912672
-0.07824333779458896
-0.635548226214144
+[[-4.64]
+ [ 1.13]]
+[[2.5  0.29]
+ [0.29 1.16]]
+[[ 2.02]
+ [-1.02]]
+[[4.97e-01 2.59e-04]
+ [2.59e-04 5.70e-01]]
+[[-0.04]
+ [-0.03]]
+[[1.05 1.09]
+ [1.09 3.05]]
+0.09743970627571572
+0.3250903366245612
+0.577469957099723
 </pre></div></div>
 </div>
 <p>Et voilà – this was a brief demonstration of how to do inference for MoG models by performing Manifold optimisation using Pymanopt.</p>
@@ -745,7 +745,7 @@ Terminated - min stepsize reached after 190 iterations, 1.63 seconds.
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Jan 06, 2022.
+      <span class="lastupdated">Last updated on Apr 10, 2022.
       </span></p>
   </div>
 
