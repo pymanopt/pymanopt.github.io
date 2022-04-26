@@ -503,10 +503,10 @@ q_\mathcal{N}(\mathbf{y}_n;\mathbf{S}_m)
     <span class="k">return</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">loglikvec</span><span class="p">)</span>
 
 
-<span class="n">problem</span> <span class="o">=</span> <span class="n">Problem</span><span class="p">(</span><span class="n">manifold</span><span class="o">=</span><span class="n">manifold</span><span class="p">,</span> <span class="n">cost</span><span class="o">=</span><span class="n">cost</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">problem</span> <span class="o">=</span> <span class="n">Problem</span><span class="p">(</span><span class="n">manifold</span><span class="o">=</span><span class="n">manifold</span><span class="p">,</span> <span class="n">cost</span><span class="o">=</span><span class="n">cost</span><span class="p">)</span>
 
 <span class="c1"># (3) Instantiate a Pymanopt solver</span>
-<span class="n">solver</span> <span class="o">=</span> <span class="n">SteepestDescent</span><span class="p">()</span>
+<span class="n">solver</span> <span class="o">=</span> <span class="n">SteepestDescent</span><span class="p">(</span><span class="n">verbosity</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
 <span class="c1"># let Pymanopt do the rest</span>
 <span class="n">Xopt</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">problem</span><span class="p">)</span>
@@ -519,7 +519,7 @@ q_\mathcal{N}(\mathbf{y}_n;\mathbf{S}_m)
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Optimizing...
-Terminated - min stepsize reached after 131 iterations, 0.66 seconds.
+Terminated - min step_size reached after 178 iterations, 1.36 seconds.
 
 </pre></div></div>
 </div>
@@ -601,28 +601,28 @@ Terminated - min stepsize reached after 131 iterations, 0.66 seconds.
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[[-3.74]
- [ 1.18]]
-[[ 4.77 -0.3 ]
- [-0.3   1.  ]]
-[[ 0.02]
- [-0.02]]
-[[0.94 0.91]
- [0.91 2.88]]
-[[ 2.  ]
- [-1.07]]
-[[ 0.48 -0.  ]
- [-0.    0.46]]
-0.13128366225192298
-0.560655253685578
-0.30806108406249905
+[[ 1.94]
+ [-0.94]]
+[[0.51 0.02]
+ [0.02 0.48]]
+[[-0.  ]
+ [-0.01]]
+[[1.02 1.07]
+ [1.07 3.15]]
+[[-4.21]
+ [ 1.07]]
+[[2.75 0.35]
+ [0.35 1.17]]
+0.30609888722208295
+0.5939442211487967
+0.09995689162912022
 </pre></div></div>
 </div>
 <p>Et voilà – this was a brief demonstration of how to do inference for MoG models by performing Manifold optimisation using Pymanopt.</p>
 <div class="section" id="When-Things-Go-Astray">
 <h2>When Things Go Astray<a class="headerlink" href="#When-Things-Go-Astray" title="Permalink to this headline"></a></h2>
 <p>A well-known problem when fitting parameters of a MoG model is that one Gaussian may collapse onto a single data point resulting in singular covariance matrices (cf. e.g. p. 434 in Bishop, C. M. “Pattern Recognition and Machine Learning.” 2001). This problem can be avoided by the following heuristic: if a component’s covariance matrix is close to being singular we reset its mean and covariance matrix. Using Pymanopt this can be accomplished by using an appropriate line search rule (based on
-<a class="reference external" href="https://github.com/pymanopt/pymanopt/blob/master/pymanopt/solvers/linesearch.py">LineSearchBackTracking</a>) – here we demonstrate this approach:</p>
+<a class="reference external" href="https://github.com/pymanopt/pymanopt/blob/master/pymanopt/solvers/line_search.py">BackTrackingLineSearcher</a>) – here we demonstrate this approach:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
@@ -637,15 +637,15 @@ Terminated - min stepsize reached after 131 iterations, 0.66 seconds.
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">contraction_factor</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
         <span class="n">optimism</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-        <span class="n">suff_decr</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span>
-        <span class="n">maxiter</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span>
-        <span class="n">initial_stepsize</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">sufficient_decrease</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span>
+        <span class="n">max_iterations</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span>
+        <span class="n">initial_step_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">contraction_factor</span> <span class="o">=</span> <span class="n">contraction_factor</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">optimism</span> <span class="o">=</span> <span class="n">optimism</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">suff_decr</span> <span class="o">=</span> <span class="n">suff_decr</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">maxiter</span> <span class="o">=</span> <span class="n">maxiter</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">initial_stepsize</span> <span class="o">=</span> <span class="n">initial_stepsize</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sufficient_decrease</span> <span class="o">=</span> <span class="n">sufficient_decrease</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_iterations</span> <span class="o">=</span> <span class="n">max_iterations</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initial_step_size</span> <span class="o">=</span> <span class="n">initial_step_size</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_oldf0</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -664,7 +664,7 @@ Terminated - min stepsize reached after 131 iterations, 0.66 seconds.
 <span class="sd">            - df0</span>
 <span class="sd">                directional derivative at x along d</span>
 <span class="sd">        Returns:</span>
-<span class="sd">            - stepsize</span>
+<span class="sd">            - step_size</span>
 <span class="sd">                norm of the vector retracted to reach newx from x</span>
 <span class="sd">            - newx</span>
 <span class="sd">                next iterate suggested by the line-search</span>
@@ -678,7 +678,7 @@ Terminated - min stepsize reached after 131 iterations, 0.66 seconds.
             <span class="c1"># Look a little further</span>
             <span class="n">alpha</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimism</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">alpha</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_stepsize</span> <span class="o">/</span> <span class="n">norm_d</span>
+            <span class="n">alpha</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_step_size</span> <span class="o">/</span> <span class="n">norm_d</span>
         <span class="n">alpha</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">alpha</span><span class="p">)</span>
 
         <span class="c1"># Make the chosen step and compute the cost there.</span>
@@ -687,8 +687,8 @@ Terminated - min stepsize reached after 131 iterations, 0.66 seconds.
 
         <span class="c1"># Backtrack while the Armijo criterion is not satisfied</span>
         <span class="k">while</span> <span class="p">(</span>
-            <span class="n">newf</span> <span class="o">&gt;</span> <span class="n">f0</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">suff_decr</span> <span class="o">*</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">df0</span>
-            <span class="ow">and</span> <span class="n">step_count</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxiter</span>
+            <span class="n">newf</span> <span class="o">&gt;</span> <span class="n">f0</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">sufficient_decrease</span> <span class="o">*</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">df0</span>
+            <span class="ow">and</span> <span class="n">step_count</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_iterations</span>
             <span class="ow">and</span> <span class="ow">not</span> <span class="n">reset</span>
         <span class="p">):</span>
 
@@ -707,11 +707,11 @@ Terminated - min stepsize reached after 131 iterations, 0.66 seconds.
             <span class="n">alpha</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="n">newx</span> <span class="o">=</span> <span class="n">x</span>
 
-        <span class="n">stepsize</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">norm_d</span>
+        <span class="n">step_size</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">norm_d</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_oldf0</span> <span class="o">=</span> <span class="n">f0</span>
 
-        <span class="k">return</span> <span class="n">stepsize</span><span class="p">,</span> <span class="n">newx</span>
+        <span class="k">return</span> <span class="n">step_size</span><span class="p">,</span> <span class="n">newx</span>
 
     <span class="k">def</span> <span class="nf">_newxnewf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">objective</span><span class="p">,</span> <span class="n">manifold</span><span class="p">):</span>
         <span class="n">newx</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">retr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
@@ -745,7 +745,7 @@ Terminated - min stepsize reached after 131 iterations, 0.66 seconds.
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Apr 10, 2022.
+      <span class="lastupdated">Last updated on Apr 26, 2022.
       </span></p>
   </div>
 

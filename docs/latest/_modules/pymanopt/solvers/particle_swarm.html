@@ -87,6 +87,7 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">numpy.random</span> <span class="k">as</span> <span class="nn">rnd</span>
 
+<span class="kn">from</span> <span class="nn">pymanopt</span> <span class="kn">import</span> <span class="n">tools</span>
 <span class="kn">from</span> <span class="nn">pymanopt.solvers.solver</span> <span class="kn">import</span> <span class="n">Solver</span>
 <span class="kn">from</span> <span class="nn">pymanopt.tools</span> <span class="kn">import</span> <span class="n">printer</span>
 
@@ -98,18 +99,18 @@
 <span class="sd">    algorithm.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        maxcostevals: Maximum number of allowed cost evaluations.</span>
-<span class="sd">        maxiter: Maximum number of allowed iterations.</span>
-<span class="sd">        populationsize: Size of the considered swarm population.</span>
+<span class="sd">        max_cost_evaluations: Maximum number of allowed cost evaluations.</span>
+<span class="sd">        max_iterations: Maximum number of allowed iterations.</span>
+<span class="sd">        population_size: Size of the considered swarm population.</span>
 <span class="sd">        nostalgia: Quantifies performance relative to past performances.</span>
 <span class="sd">        social: Quantifies performance relative to neighbors.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">maxcostevals</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">maxiter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">populationsize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">max_cost_evaluations</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">max_iterations</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">population_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">nostalgia</span><span class="o">=</span><span class="mf">1.4</span><span class="p">,</span>
         <span class="n">social</span><span class="o">=</span><span class="mf">1.4</span><span class="p">,</span>
         <span class="o">*</span><span class="n">args</span><span class="p">,</span>
@@ -117,19 +118,19 @@
     <span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_maxcostevals</span> <span class="o">=</span> <span class="n">maxcostevals</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_maxiter</span> <span class="o">=</span> <span class="n">maxiter</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_populationsize</span> <span class="o">=</span> <span class="n">populationsize</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_max_cost_evaluations</span> <span class="o">=</span> <span class="n">max_cost_evaluations</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_max_iterations</span> <span class="o">=</span> <span class="n">max_iterations</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_population_size</span> <span class="o">=</span> <span class="n">population_size</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_nostalgia</span> <span class="o">=</span> <span class="n">nostalgia</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_social</span> <span class="o">=</span> <span class="n">social</span>
 
-<div class="viewcode-block" id="ParticleSwarm.solve"><a class="viewcode-back" href="../../../solvers.html#pymanopt.solvers.particle_swarm.ParticleSwarm.solve">[docs]</a>    <span class="k">def</span> <span class="nf">solve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">problem</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="ParticleSwarm.solve"><a class="viewcode-back" href="../../../solvers.html#pymanopt.solvers.particle_swarm.ParticleSwarm.solve">[docs]</a>    <span class="k">def</span> <span class="nf">solve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">problem</span><span class="p">,</span> <span class="n">initial_point</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Run PSO algorithm.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            problem: Pymanopt problem class instance exposing the cost function</span>
 <span class="sd">                and the manifold to optimize over.</span>
-<span class="sd">            x: Initial point on the manifold.</span>
+<span class="sd">            initial_point: Initial point on the manifold.</span>
 <span class="sd">                If no value is provided then a starting point will be randomly</span>
 <span class="sd">                generated.</span>
 
@@ -138,33 +139,33 @@
 <span class="sd">            algorithm terminated before convergence.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">man</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">manifold</span>
-        <span class="n">verbosity</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">verbosity</span>
         <span class="n">objective</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">cost</span>
 
         <span class="c1"># Choose proper default algorithm parameters. We need to know about the</span>
         <span class="c1"># dimension of the manifold to limit the parameter range, so we have to</span>
         <span class="c1"># defer proper initialization until this point.</span>
         <span class="n">dim</span> <span class="o">=</span> <span class="n">man</span><span class="o">.</span><span class="n">dim</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_maxcostevals</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_maxcostevals</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">5000</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">dim</span><span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_maxiter</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_maxiter</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">dim</span><span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_populationsize</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_populationsize</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">dim</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_cost_evaluations</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_max_cost_evaluations</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">5000</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">dim</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_iterations</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_max_iterations</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">dim</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_population_size</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_population_size</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">dim</span><span class="p">)</span>
 
         <span class="c1"># If no initial population x is given by the user, generate one at</span>
         <span class="c1"># random.</span>
-        <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">man</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_populationsize</span><span class="p">))]</span>
-        <span class="k">elif</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s2">&quot;__iter__&quot;</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The initial population x must be iterable&quot;</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_populationsize</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">initial_point</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">man</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_population_size</span><span class="p">))]</span>
+        <span class="k">elif</span> <span class="n">tools</span><span class="o">.</span><span class="n">is_sequence</span><span class="p">(</span><span class="n">initial_point</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">initial_point</span><span class="p">)</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_population_size</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span>
                     <span class="s2">&quot;The population size was forced to the size of &quot;</span>
                     <span class="s2">&quot;the given initial population&quot;</span>
                 <span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_populationsize</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_population_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">initial_point</span><span class="p">)</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">initial_point</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The initial population must be iterable&quot;</span><span class="p">)</span>
 
         <span class="c1"># Initialize personal best positions to the initial population.</span>
         <span class="n">y</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
@@ -178,18 +179,18 @@
         <span class="c1"># Compute cost for each particle xi.</span>
         <span class="n">costs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">objective</span><span class="p">(</span><span class="n">xi</span><span class="p">)</span> <span class="k">for</span> <span class="n">xi</span> <span class="ow">in</span> <span class="n">x</span><span class="p">])</span>
         <span class="n">fy</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">costs</span><span class="p">)</span>
-        <span class="n">costevals</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_populationsize</span>
+        <span class="n">cost_evaluations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_population_size</span>
 
         <span class="c1"># Identify the best particle and store its cost/position.</span>
         <span class="n">imin</span> <span class="o">=</span> <span class="n">costs</span><span class="o">.</span><span class="n">argmin</span><span class="p">()</span>
         <span class="n">fbest</span> <span class="o">=</span> <span class="n">costs</span><span class="p">[</span><span class="n">imin</span><span class="p">]</span>
         <span class="n">xbest</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">imin</span><span class="p">]</span>
 
-        <span class="k">if</span> <span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
-            <span class="n">iter_format_length</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_maxiter</span><span class="p">))</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_verbosity</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">iteration_format_length</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_max_iterations</span><span class="p">))</span> <span class="o">+</span> <span class="mi">1</span>
             <span class="n">column_printer</span> <span class="o">=</span> <span class="n">printer</span><span class="o">.</span><span class="n">ColumnPrinter</span><span class="p">(</span>
                 <span class="n">columns</span><span class="o">=</span><span class="p">[</span>
-                    <span class="p">(</span><span class="s2">&quot;Iteration&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">iter_format_length</span><span class="si">}</span><span class="s2">d&quot;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s2">&quot;Iteration&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">iteration_format_length</span><span class="si">}</span><span class="s2">d&quot;</span><span class="p">),</span>
                     <span class="p">(</span><span class="s2">&quot;Cost evaluations&quot;</span><span class="p">,</span> <span class="s2">&quot;7d&quot;</span><span class="p">),</span>
                     <span class="p">(</span><span class="s2">&quot;Best cost&quot;</span><span class="p">,</span> <span class="s2">&quot;+.8e&quot;</span><span class="p">),</span>
                 <span class="p">]</span>
@@ -199,34 +200,36 @@
 
         <span class="n">column_printer</span><span class="o">.</span><span class="n">print_header</span><span class="p">()</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_start_optlog</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_initialize_log</span><span class="p">()</span>
 
-        <span class="c1"># Iteration counter (at any point, iter is the number of fully executed</span>
+        <span class="c1"># Iteration counter (at any point, iteration is the number of fully executed</span>
         <span class="c1"># iterations so far).</span>
-        <span class="nb">iter</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">time0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="n">iteration</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 
         <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-            <span class="nb">iter</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">iteration</span> <span class="o">+=</span> <span class="mi">1</span>
 
-            <span class="n">column_printer</span><span class="o">.</span><span class="n">print_row</span><span class="p">([</span><span class="nb">iter</span><span class="p">,</span> <span class="n">costevals</span><span class="p">,</span> <span class="n">fbest</span><span class="p">])</span>
+            <span class="n">column_printer</span><span class="o">.</span><span class="n">print_row</span><span class="p">([</span><span class="n">iteration</span><span class="p">,</span> <span class="n">cost_evaluations</span><span class="p">,</span> <span class="n">fbest</span><span class="p">])</span>
 
             <span class="c1"># Stop if any particle triggers a stopping criterion.</span>
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">xi</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-                <span class="n">stop_reason</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_stopping_criterion</span><span class="p">(</span>
-                    <span class="n">time0</span><span class="p">,</span> <span class="nb">iter</span><span class="o">=</span><span class="nb">iter</span><span class="p">,</span> <span class="n">costevals</span><span class="o">=</span><span class="n">costevals</span>
+                <span class="n">stopping_criterion</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_stopping_criterion</span><span class="p">(</span>
+                    <span class="n">start_time</span><span class="o">=</span><span class="n">start_time</span><span class="p">,</span>
+                    <span class="n">iteration</span><span class="o">=</span><span class="n">iteration</span><span class="p">,</span>
+                    <span class="n">cost_evaluations</span><span class="o">=</span><span class="n">cost_evaluations</span><span class="p">,</span>
                 <span class="p">)</span>
-                <span class="k">if</span> <span class="n">stop_reason</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">stopping_criterion</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="k">break</span>
-            <span class="k">if</span> <span class="n">stop_reason</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="n">stop_reason</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">stopping_criterion</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_verbosity</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="n">stopping_criterion</span><span class="p">)</span>
                     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
                 <span class="k">break</span>
 
             <span class="c1"># Compute the inertia factor which we linearly decrease from 0.9 to</span>
-            <span class="c1"># 0.4 from iter = 0 to iter = maxiter.</span>
-            <span class="n">w</span> <span class="o">=</span> <span class="mf">0.4</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="nb">iter</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_maxiter</span><span class="p">)</span>
+            <span class="c1"># 0.4 from iteration = 0 to iteration = max_iterations.</span>
+            <span class="n">w</span> <span class="o">=</span> <span class="mf">0.4</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">iteration</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_iterations</span><span class="p">)</span>
 
             <span class="c1"># Compute the velocities.</span>
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">xi</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
@@ -265,20 +268,20 @@
                     <span class="k">if</span> <span class="n">fy</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">fbest</span><span class="p">:</span>
                         <span class="n">fbest</span> <span class="o">=</span> <span class="n">fy</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
                         <span class="n">xbest</span> <span class="o">=</span> <span class="n">xi</span>
-            <span class="n">costevals</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_populationsize</span>
+            <span class="n">cost_evaluations</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_population_size</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_logverbosity</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_log_verbosity</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">xbest</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_stop_optlog</span><span class="p">(</span>
-                <span class="n">xbest</span><span class="p">,</span>
-                <span class="n">fbest</span><span class="p">,</span>
-                <span class="n">stop_reason</span><span class="p">,</span>
-                <span class="n">time0</span><span class="p">,</span>
-                <span class="n">costevals</span><span class="o">=</span><span class="n">costevals</span><span class="p">,</span>
-                <span class="nb">iter</span><span class="o">=</span><span class="nb">iter</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_finalize_log</span><span class="p">(</span>
+                <span class="n">x</span><span class="o">=</span><span class="n">xbest</span><span class="p">,</span>
+                <span class="n">objective</span><span class="o">=</span><span class="n">fbest</span><span class="p">,</span>
+                <span class="n">stopping_criterion</span><span class="o">=</span><span class="n">stopping_criterion</span><span class="p">,</span>
+                <span class="n">start_time</span><span class="o">=</span><span class="n">start_time</span><span class="p">,</span>
+                <span class="n">cost_evaluations</span><span class="o">=</span><span class="n">cost_evaluations</span><span class="p">,</span>
+                <span class="n">iteration</span><span class="o">=</span><span class="n">iteration</span><span class="p">,</span>
             <span class="p">)</span>
-            <span class="k">return</span> <span class="n">xbest</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_optlog</span></div></div>
+            <span class="k">return</span> <span class="n">xbest</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_log</span></div></div>
 </pre></div>
 
            </div>
@@ -289,7 +292,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Apr 10, 2022.
+      <span class="lastupdated">Last updated on Apr 26, 2022.
       </span></p>
   </div>
 

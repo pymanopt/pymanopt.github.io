@@ -65,7 +65,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#module-pymanopt.solvers.trust_regions">Riemannian Trust Regions Algorithm</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#module-pymanopt.solvers.linesearch">Line-Search Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-pymanopt.solvers.line_search">Line-Search Methods</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="tools.html">Tools</a></li>
@@ -136,28 +136,45 @@
 <span id="solver"></span><h3>Solver<a class="headerlink" href="#module-pymanopt.solvers.solver" title="Permalink to this headline"></a></h3>
 <dl class="py class">
 <dt class="sig sig-object py" id="pymanopt.solvers.solver.Solver">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pymanopt.solvers.solver.</span></span><span class="sig-name descname"><span class="pre">Solver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">maxtime</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxiter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mingradnorm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minstepsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxcostevals</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logverbosity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/solvers/solver.html#Solver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.solvers.solver.Solver" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pymanopt.solvers.solver.</span></span><span class="sig-name descname"><span class="pre">Solver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iterations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_gradient_norm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_step_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_cost_evaluations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbosity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_verbosity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/solvers/solver.html#Solver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.solvers.solver.Solver" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Abstract base class for Pymanopt solvers.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>maxtime</strong> – Upper bound on the run time of a solver in seconds.</p></li>
-<li><p><strong>maxiter</strong> – The maximum number of iterations to perform.</p></li>
-<li><p><strong>mingradnorm</strong> – Termination threshold for the norm of the gradient.</p></li>
-<li><p><strong>minstepsize</strong> – Termination threshold for the line search step size.</p></li>
-<li><p><strong>maxcostevals</strong> – Maximum number of allowed cost function evaluations.</p></li>
-<li><p><strong>logverbosity</strong> – Level of information logged by the solver while it
-operates: 0 is silent, 2 ist most verbose.</p></li>
+<li><p><strong>max_time</strong> – Upper bound on the run time of a solver in seconds.</p></li>
+<li><p><strong>max_iterations</strong> – The maximum number of iterations to perform.</p></li>
+<li><p><strong>min_gradient_norm</strong> – Termination threshold for the norm of the
+gradient.</p></li>
+<li><p><strong>min_step_size</strong> – Termination threshold for the line search step
+size.</p></li>
+<li><p><strong>max_cost_evaluations</strong> – Maximum number of allowed cost function
+evaluations.</p></li>
+<li><p><strong>verbosity</strong> (<em>int</em>) – Level of information printed by the solver while it
+operates: 0 is silent, 2 is most verbose.</p></li>
+<li><p><strong>log_verbosity</strong> (<em>int</em>) – Level of information logged by the solver while it
+operates: 0 is silent, 2 is most verbose.</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pymanopt.solvers.solver.Solver.solve">
-<em class="property"><span class="pre">abstract</span> </em><span class="sig-name descname"><span class="pre">solve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">problem</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/solvers/solver.html#Solver.solve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.solvers.solver.Solver.solve" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">abstract</span> </em><span class="sig-name descname"><span class="pre">solve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">problem</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_point</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/solvers/solver.html#Solver.solve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.solvers.solver.Solver.solve" title="Permalink to this definition"></a></dt>
 <dd><p>Run a solver on a given optimization problem.</p>
-<p>Solve the given <a class="reference internal" href="problem.html#pymanopt.core.problem.Problem" title="pymanopt.core.problem.Problem"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.core.problem.Problem</span></code></a> starting from
-<code class="docutils literal notranslate"><span class="pre">x</span></code> if provided or from a random initial guess if not.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>problem</strong> – Pymanopt problem class instance exposing the cost function
+and the manifold to optimize over.
+The class must either</p></li>
+<li><p><strong>initial_point</strong> – Initial point on the manifold.
+If no value is provided then a starting point will be randomly
+generated.</p></li>
+<li><p><strong>*args</strong> – Potential solver-specific positional arguments.</p></li>
+<li><p><strong>**kwargs</strong> – Potential solver-specific keyword arguments.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -166,30 +183,58 @@ operates: 0 is silent, 2 ist most verbose.</p></li>
 <div class="section" id="module-pymanopt.solvers.conjugate_gradient">
 <span id="conjugate-gradients"></span><h3>Conjugate Gradients<a class="headerlink" href="#module-pymanopt.solvers.conjugate_gradient" title="Permalink to this headline"></a></h3>
 <dl class="py class">
+<dt class="sig sig-object py" id="pymanopt.solvers.conjugate_gradient.BetaRule">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pymanopt.solvers.conjugate_gradient.</span></span><span class="sig-name descname"><span class="pre">BetaRule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/solvers/conjugate_gradient.html#BetaRule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.solvers.conjugate_gradient.BetaRule" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pymanopt.solvers.conjugate_gradient.BetaRule.FletcherReeves">
+<span class="sig-name descname"><span class="pre">FletcherReeves</span></span><em class="property"> <span class="pre">=</span> <span class="pre">1</span></em><a class="headerlink" href="#pymanopt.solvers.conjugate_gradient.BetaRule.FletcherReeves" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pymanopt.solvers.conjugate_gradient.BetaRule.PolakRibiere">
+<span class="sig-name descname"><span class="pre">PolakRibiere</span></span><em class="property"> <span class="pre">=</span> <span class="pre">2</span></em><a class="headerlink" href="#pymanopt.solvers.conjugate_gradient.BetaRule.PolakRibiere" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pymanopt.solvers.conjugate_gradient.BetaRule.HestenesStiefel">
+<span class="sig-name descname"><span class="pre">HestenesStiefel</span></span><em class="property"> <span class="pre">=</span> <span class="pre">3</span></em><a class="headerlink" href="#pymanopt.solvers.conjugate_gradient.BetaRule.HestenesStiefel" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pymanopt.solvers.conjugate_gradient.BetaRule.HagerZhang">
+<span class="sig-name descname"><span class="pre">HagerZhang</span></span><em class="property"> <span class="pre">=</span> <span class="pre">4</span></em><a class="headerlink" href="#pymanopt.solvers.conjugate_gradient.BetaRule.HagerZhang" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="pymanopt.solvers.conjugate_gradient.ConjugateGradient">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pymanopt.solvers.conjugate_gradient.</span></span><span class="sig-name descname"><span class="pre">ConjugateGradient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">beta_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orth_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">inf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">linesearch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/solvers/conjugate_gradient.html#ConjugateGradient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.solvers.conjugate_gradient.ConjugateGradient" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pymanopt.solvers.conjugate_gradient.</span></span><span class="sig-name descname"><span class="pre">ConjugateGradient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">beta_rule</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'HestenesStiefel'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orth_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">inf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_searcher</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/solvers/conjugate_gradient.html#ConjugateGradient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.solvers.conjugate_gradient.ConjugateGradient" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pymanopt.solvers.solver.Solver" title="pymanopt.solvers.solver.Solver"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.solvers.solver.Solver</span></code></a></p>
 <p>Riemannian conjugate gradient method.</p>
 <p>Perform optimization using nonlinear conjugate gradient method with
-linesearch.
+line_searcher.
 This method first computes the gradient of the cost function, and then
 optimizes by moving in a direction that is conjugate to all previous search
 directions.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>beta_type</strong> – Conjugate gradient beta rule used to construct the new
-search direction.</p></li>
+<li><p><strong>beta_rule</strong> (<em>str</em>) – Conjugate gradient beta rule used to construct the new
+search direction. Valid choices are <code class="docutils literal notranslate"><span class="pre">{&quot;FletcherReeves&quot;,</span>
+<span class="pre">&quot;PolakRibiere&quot;,</span> <span class="pre">&quot;HestenesStiefel&quot;,</span> <span class="pre">&quot;HagerZhang&quot;}</span></code>.</p></li>
 <li><p><strong>orth_value</strong> – Parameter for Powell’s restart strategy.
 An infinite value disables this strategy.
 See in code formula for the specific criterion used.</p></li>
-<li><p><strong>linesearch</strong> – The line search method.</p></li>
+<li><p><strong>line_searcher</strong> – The line search method.</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pymanopt.solvers.conjugate_gradient.ConjugateGradient.solve">
-<span class="sig-name descname"><span class="pre">solve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">problem</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reuselinesearch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/solvers/conjugate_gradient.html#ConjugateGradient.solve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.solvers.conjugate_gradient.ConjugateGradient.solve" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">solve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">problem</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_point</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reuse_line_searcher</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/solvers/conjugate_gradient.html#ConjugateGradient.solve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.solvers.conjugate_gradient.ConjugateGradient.solve" title="Permalink to this definition"></a></dt>
 <dd><p>Run CG method.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -197,10 +242,10 @@ See in code formula for the specific criterion used.</p></li>
 <li><p><strong>problem</strong> – Pymanopt problem class instance exposing the cost function
 and the manifold to optimize over.
 The class must either</p></li>
-<li><p><strong>x</strong> – Initial point on the manifold.
+<li><p><strong>initial_point</strong> – Initial point on the manifold.
 If no value is provided then a starting point will be randomly
 generated.</p></li>
-<li><p><strong>reuselinesearch</strong> – Whether to reuse the previous linesearch object.
+<li><p><strong>reuse_line_searcher</strong> – Whether to reuse the previous line searcher.
 Allows to use information from a previous call to
 <a class="reference internal" href="#pymanopt.solvers.conjugate_gradient.ConjugateGradient.solve" title="pymanopt.solvers.conjugate_gradient.ConjugateGradient.solve"><code class="xref py py-meth docutils literal notranslate"><span class="pre">solve()</span></code></a>.</p></li>
 </ul>
@@ -225,7 +270,7 @@ algorithm terminated before convergence.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pymanopt.solvers.nelder_mead.NelderMead">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pymanopt.solvers.nelder_mead.</span></span><span class="sig-name descname"><span class="pre">NelderMead</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">maxcostevals</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxiter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reflection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expansion</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contraction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/solvers/nelder_mead.html#NelderMead"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.solvers.nelder_mead.NelderMead" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pymanopt.solvers.nelder_mead.</span></span><span class="sig-name descname"><span class="pre">NelderMead</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_cost_evaluations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iterations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reflection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expansion</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contraction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/solvers/nelder_mead.html#NelderMead"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.solvers.nelder_mead.NelderMead" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pymanopt.solvers.solver.Solver" title="pymanopt.solvers.solver.Solver"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.solvers.solver.Solver</span></code></a></p>
 <p>Nelder-Mead alglorithm.</p>
 <p>Perform optimization using the derivative-free Nelder-Mead minimization
@@ -233,8 +278,8 @@ algorithm.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>maxcostevals</strong> – Maximum number of allowed cost function evaluations.</p></li>
-<li><p><strong>maxiter</strong> – Maximum number of allowed iterations.</p></li>
+<li><p><strong>max_cost_evaluations</strong> – Maximum number of allowed cost function evaluations.</p></li>
+<li><p><strong>max_iterations</strong> – Maximum number of allowed iterations.</p></li>
 <li><p><strong>reflection</strong> – Determines how far to reflect away from the worst vertex:
 stretched (reflection &gt; 1), compressed (0 &lt; reflection &lt; 1),
 or exact (reflection = 1).</p></li>
@@ -245,14 +290,14 @@ or exact (reflection = 1).</p></li>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pymanopt.solvers.nelder_mead.NelderMead.solve">
-<span class="sig-name descname"><span class="pre">solve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">problem</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/solvers/nelder_mead.html#NelderMead.solve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.solvers.nelder_mead.NelderMead.solve" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">solve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">problem</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_point</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/solvers/nelder_mead.html#NelderMead.solve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.solvers.nelder_mead.NelderMead.solve" title="Permalink to this definition"></a></dt>
 <dd><p>Run Nelder-Mead algorithm.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>problem</strong> – Pymanopt problem class instance exposing the cost function
 and the manifold to optimize over.</p></li>
-<li><p><strong>x</strong> – Initial point on the manifold.
+<li><p><strong>initial_point</strong> – Initial point on the manifold.
 If no value is provided then a starting point will be randomly
 generated.</p></li>
 </ul>
@@ -271,7 +316,7 @@ algorithm terminated before convergence.</p>
 <span id="particle-swarms"></span><h3>Particle Swarms<a class="headerlink" href="#module-pymanopt.solvers.particle_swarm" title="Permalink to this headline"></a></h3>
 <dl class="py class">
 <dt class="sig sig-object py" id="pymanopt.solvers.particle_swarm.ParticleSwarm">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pymanopt.solvers.particle_swarm.</span></span><span class="sig-name descname"><span class="pre">ParticleSwarm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">maxcostevals</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxiter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">populationsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nostalgia</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">social</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.4</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/solvers/particle_swarm.html#ParticleSwarm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.solvers.particle_swarm.ParticleSwarm" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pymanopt.solvers.particle_swarm.</span></span><span class="sig-name descname"><span class="pre">ParticleSwarm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_cost_evaluations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iterations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">population_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nostalgia</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">social</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.4</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/solvers/particle_swarm.html#ParticleSwarm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.solvers.particle_swarm.ParticleSwarm" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pymanopt.solvers.solver.Solver" title="pymanopt.solvers.solver.Solver"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.solvers.solver.Solver</span></code></a></p>
 <p>Particle swarm optimization (PSO) method.</p>
 <p>Perform optimization using the derivative-free particle swarm optimization
@@ -279,9 +324,9 @@ algorithm.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>maxcostevals</strong> – Maximum number of allowed cost evaluations.</p></li>
-<li><p><strong>maxiter</strong> – Maximum number of allowed iterations.</p></li>
-<li><p><strong>populationsize</strong> – Size of the considered swarm population.</p></li>
+<li><p><strong>max_cost_evaluations</strong> – Maximum number of allowed cost evaluations.</p></li>
+<li><p><strong>max_iterations</strong> – Maximum number of allowed iterations.</p></li>
+<li><p><strong>population_size</strong> – Size of the considered swarm population.</p></li>
 <li><p><strong>nostalgia</strong> – Quantifies performance relative to past performances.</p></li>
 <li><p><strong>social</strong> – Quantifies performance relative to neighbors.</p></li>
 </ul>
@@ -289,14 +334,14 @@ algorithm.</p>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pymanopt.solvers.particle_swarm.ParticleSwarm.solve">
-<span class="sig-name descname"><span class="pre">solve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">problem</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/solvers/particle_swarm.html#ParticleSwarm.solve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.solvers.particle_swarm.ParticleSwarm.solve" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">solve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">problem</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_point</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/solvers/particle_swarm.html#ParticleSwarm.solve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.solvers.particle_swarm.ParticleSwarm.solve" title="Permalink to this definition"></a></dt>
 <dd><p>Run PSO algorithm.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>problem</strong> – Pymanopt problem class instance exposing the cost function
 and the manifold to optimize over.</p></li>
-<li><p><strong>x</strong> – Initial point on the manifold.
+<li><p><strong>initial_point</strong> – Initial point on the manifold.
 If no value is provided then a starting point will be randomly
 generated.</p></li>
 </ul>
@@ -315,7 +360,7 @@ algorithm terminated before convergence.</p>
 <span id="steepest-descent"></span><h3>Steepest Descent<a class="headerlink" href="#module-pymanopt.solvers.steepest_descent" title="Permalink to this headline"></a></h3>
 <dl class="py class">
 <dt class="sig sig-object py" id="pymanopt.solvers.steepest_descent.SteepestDescent">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pymanopt.solvers.steepest_descent.</span></span><span class="sig-name descname"><span class="pre">SteepestDescent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">linesearch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/solvers/steepest_descent.html#SteepestDescent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.solvers.steepest_descent.SteepestDescent" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pymanopt.solvers.steepest_descent.</span></span><span class="sig-name descname"><span class="pre">SteepestDescent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line_searcher</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/solvers/steepest_descent.html#SteepestDescent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.solvers.steepest_descent.SteepestDescent" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pymanopt.solvers.solver.Solver" title="pymanopt.solvers.solver.Solver"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.solvers.solver.Solver</span></code></a></p>
 <p>Riemannian steepest descent solver.</p>
 <p>Perform optimization using gradient descent with line search.
@@ -324,12 +369,12 @@ optimizes by moving in the direction of steepest descent (which is the
 opposite direction to the gradient).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>linesearch</strong> – The line search method.</p>
+<dd class="field-odd"><p><strong>line_searcher</strong> – The line search method.</p>
 </dd>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pymanopt.solvers.steepest_descent.SteepestDescent.solve">
-<span class="sig-name descname"><span class="pre">solve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">problem</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reuselinesearch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/solvers/steepest_descent.html#SteepestDescent.solve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.solvers.steepest_descent.SteepestDescent.solve" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">solve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">problem</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_point</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reuse_line_searcher</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/solvers/steepest_descent.html#SteepestDescent.solve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.solvers.steepest_descent.SteepestDescent.solve" title="Permalink to this definition"></a></dt>
 <dd><p>Run steepest descent algorithm.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -337,10 +382,10 @@ opposite direction to the gradient).</p>
 <li><p><strong>problem</strong> – Pymanopt problem class instance exposing the cost function
 and the manifold to optimize over.
 The class must either</p></li>
-<li><p><strong>x</strong> – Initial point on the manifold.
+<li><p><strong>initial_point</strong> – Initial point on the manifold.
 If no value is provided then a starting point will be randomly
 generated.</p></li>
-<li><p><strong>reuselinesearch</strong> – Whether to reuse the previous linesearch object.
+<li><p><strong>reuse_line_searcher</strong> – Whether to reuse the previous line searcher.
 Allows to use information from a previous call to
 <a class="reference internal" href="#pymanopt.solvers.steepest_descent.SteepestDescent.solve" title="pymanopt.solvers.steepest_descent.SteepestDescent.solve"><code class="xref py py-meth docutils literal notranslate"><span class="pre">solve()</span></code></a>.</p></li>
 </ul>
@@ -398,26 +443,38 @@ algorithm terminated before convergence.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pymanopt.solvers.trust_regions.TrustRegions.solve">
-<span class="sig-name descname"><span class="pre">solve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">problem</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mininner</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxinner</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Delta_bar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Delta0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/solvers/trust_regions.html#TrustRegions.solve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.solvers.trust_regions.TrustRegions.solve" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">solve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">problem</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_point</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mininner</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxinner</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Delta_bar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Delta0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/solvers/trust_regions.html#TrustRegions.solve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.solvers.trust_regions.TrustRegions.solve" title="Permalink to this definition"></a></dt>
 <dd><p>Run a solver on a given optimization problem.</p>
-<p>Solve the given <a class="reference internal" href="problem.html#pymanopt.core.problem.Problem" title="pymanopt.core.problem.Problem"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.core.problem.Problem</span></code></a> starting from
-<code class="docutils literal notranslate"><span class="pre">x</span></code> if provided or from a random initial guess if not.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>problem</strong> – Pymanopt problem class instance exposing the cost function
+and the manifold to optimize over.
+The class must either</p></li>
+<li><p><strong>initial_point</strong> – Initial point on the manifold.
+If no value is provided then a starting point will be randomly
+generated.</p></li>
+<li><p><strong>*args</strong> – Potential solver-specific positional arguments.</p></li>
+<li><p><strong>**kwargs</strong> – Potential solver-specific keyword arguments.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
 
 </div>
 </div>
-<div class="section" id="module-pymanopt.solvers.linesearch">
-<span id="line-search-methods"></span><h2>Line-Search Methods<a class="headerlink" href="#module-pymanopt.solvers.linesearch" title="Permalink to this headline"></a></h2>
+<div class="section" id="module-pymanopt.solvers.line_search">
+<span id="line-search-methods"></span><h2>Line-Search Methods<a class="headerlink" href="#module-pymanopt.solvers.line_search" title="Permalink to this headline"></a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="pymanopt.solvers.linesearch.LineSearchBackTracking">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pymanopt.solvers.linesearch.</span></span><span class="sig-name descname"><span class="pre">LineSearchBackTracking</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">contraction_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimism</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suff_decr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxiter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_stepsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/solvers/linesearch.html#LineSearchBackTracking"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.solvers.linesearch.LineSearchBackTracking" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="pymanopt.solvers.line_search.BackTrackingLineSearcher">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pymanopt.solvers.line_search.</span></span><span class="sig-name descname"><span class="pre">BackTrackingLineSearcher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">contraction_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimism</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sufficient_decrease</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iterations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_step_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/solvers/line_search.html#BackTrackingLineSearcher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.solvers.line_search.BackTrackingLineSearcher" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Back-tracking line-search algorithm.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="pymanopt.solvers.linesearch.LineSearchBackTracking.search">
-<span class="sig-name descname"><span class="pre">search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">objective</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">manifold</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/solvers/linesearch.html#LineSearchBackTracking.search"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.solvers.linesearch.LineSearchBackTracking.search" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="pymanopt.solvers.line_search.BackTrackingLineSearcher.search">
+<span class="sig-name descname"><span class="pre">search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">objective</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">manifold</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/solvers/line_search.html#BackTrackingLineSearcher.search"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.solvers.line_search.BackTrackingLineSearcher.search" title="Permalink to this definition"></a></dt>
 <dd><p>Function to perform backtracking line search.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -430,7 +487,7 @@ algorithm terminated before convergence.</p>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A tuple <code class="docutils literal notranslate"><span class="pre">(stepsize,</span> <span class="pre">newx)</span></code> where <code class="docutils literal notranslate"><span class="pre">stepsize</span></code> is the norm of the
+<dd class="field-even"><p>A tuple <code class="docutils literal notranslate"><span class="pre">(step_size,</span> <span class="pre">newx)</span></code> where <code class="docutils literal notranslate"><span class="pre">step_size</span></code> is the norm of the
 vector retracted to reach the suggested iterate <code class="docutils literal notranslate"><span class="pre">newx</span></code> from
 <code class="docutils literal notranslate"><span class="pre">x</span></code>.</p>
 </dd>
@@ -440,13 +497,13 @@ vector retracted to reach the suggested iterate <code class="docutils literal no
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="pymanopt.solvers.linesearch.LineSearchAdaptive">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pymanopt.solvers.linesearch.</span></span><span class="sig-name descname"><span class="pre">LineSearchAdaptive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">contraction_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suff_decr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxiter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_stepsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/solvers/linesearch.html#LineSearchAdaptive"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.solvers.linesearch.LineSearchAdaptive" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="pymanopt.solvers.line_search.AdaptiveLineSearcher">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pymanopt.solvers.line_search.</span></span><span class="sig-name descname"><span class="pre">AdaptiveLineSearcher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">contraction_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sufficient_decrease</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iterations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_step_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/solvers/line_search.html#AdaptiveLineSearcher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.solvers.line_search.AdaptiveLineSearcher" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Adaptive line-search.</p>
+<p>Adaptive line-search algorithm.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="pymanopt.solvers.linesearch.LineSearchAdaptive.search">
-<span class="sig-name descname"><span class="pre">search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">objective</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">man</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/solvers/linesearch.html#LineSearchAdaptive.search"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.solvers.linesearch.LineSearchAdaptive.search" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="pymanopt.solvers.line_search.AdaptiveLineSearcher.search">
+<span class="sig-name descname"><span class="pre">search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">objective</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">man</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/solvers/line_search.html#AdaptiveLineSearcher.search"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.solvers.line_search.AdaptiveLineSearcher.search" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -466,7 +523,7 @@ vector retracted to reach the suggested iterate <code class="docutils literal no
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Apr 10, 2022.
+      <span class="lastupdated">Last updated on Apr 26, 2022.
       </span></p>
   </div>
 

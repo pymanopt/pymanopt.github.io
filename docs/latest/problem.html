@@ -121,7 +121,7 @@
 <p>The Pymanopt problem class.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pymanopt.core.problem.Problem">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pymanopt.core.problem.</span></span><span class="sig-name descname"><span class="pre">Problem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">manifold</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cost</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">egrad</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ehess</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grad</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hess</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">precon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbosity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/core/problem.html#Problem"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.core.problem.Problem" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pymanopt.core.problem.</span></span><span class="sig-name descname"><span class="pre">Problem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">manifold</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cost</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">egrad</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ehess</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grad</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hess</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">preconditioner</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/core/problem.html#Problem"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.core.problem.Problem" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Problem class to define a Riemannian optimization problem.</p>
 <dl class="field-list simple">
@@ -151,9 +151,7 @@ space of <code class="docutils literal notranslate"><span class="pre">manifold</
 <li><p><strong>hess</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="autodiff.html#pymanopt.autodiff.Function" title="pymanopt.autodiff.Function"><em>pymanopt.autodiff.Function</em></a><em>]</em>) – The Riemannian Hessian-vector product, i.e., the directional
 derivative of <code class="docutils literal notranslate"><span class="pre">grad</span></code> in the direction of a tangent vector.
 As with <code class="docutils literal notranslate"><span class="pre">grad</span></code> this usually need not be provided explicitly.</p></li>
-<li><p><strong>verbosity</strong> (<em>int</em>) – Level of information printed by the solver while it
-operates: 0 is silent, 2 is most verbose.</p></li>
-<li><p><strong>precon</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>]</em>) – </p></li>
+<li><p><strong>preconditioner</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>]</em>) – </p></li>
 </ul>
 </dd>
 </dl>
@@ -198,7 +196,7 @@ operates: 0 is silent, 2 is most verbose.</p></li>
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Apr 10, 2022.
+      <span class="lastupdated">Last updated on Apr 26, 2022.
       </span></p>
   </div>
 
