@@ -124,8 +124,8 @@ package to optimize over.</p></li>
 backend decorators defined in <a class="reference internal" href="autodiff.html#module-pymanopt.function" title="pymanopt.function"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pymanopt.function</span></code></a>.</p></li>
 <li><p>Create a <code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.Problem</span></code> instance tying the
 optimization problem together.</p></li>
-<li><p>Instantiate a Pymanopt solver from <code class="xref py py-mod docutils literal notranslate"><span class="pre">pymanopt.solvers</span></code> and run it on the
-problem instance.</p></li>
+<li><p>Instantiate a Pymanopt optimizer from <code class="xref py py-mod docutils literal notranslate"><span class="pre">pymanopt.optimizers</span></code> and run it
+on the problem instance.</p></li>
 </ol>
 <div class="section" id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline"></a></h2>
@@ -172,11 +172,12 @@ using Pymanopt for a random symmetric matrix.
 As indicated in the introduction above, we follow four simple steps: we
 instantiate the manifold, create the cost function (using Autograd in this
 case), define a problem instance which we pass the manifold and the cost
-function, and run the minimization problem using one of the available solvers.</p>
+function, and run the minimization problem using one of the available
+optimizers.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">autograd.numpy</span> <span class="k">as</span> <span class="nn">anp</span>
 <span class="kn">import</span> <span class="nn">pymanopt</span>
 <span class="kn">import</span> <span class="nn">pymanopt.manifolds</span>
-<span class="kn">import</span> <span class="nn">pymanopt.solvers</span>
+<span class="kn">import</span> <span class="nn">pymanopt.optimizers</span>
 
 <span class="n">anp</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
 
@@ -192,8 +193,8 @@ function, and run the minimization problem using one of the available solvers.</
 
 <span class="n">problem</span> <span class="o">=</span> <span class="n">pymanopt</span><span class="o">.</span><span class="n">Problem</span><span class="p">(</span><span class="n">manifold</span><span class="o">=</span><span class="n">manifold</span><span class="p">,</span> <span class="n">cost</span><span class="o">=</span><span class="n">cost</span><span class="p">)</span>
 
-<span class="n">solver</span> <span class="o">=</span> <span class="n">pymanopt</span><span class="o">.</span><span class="n">solvers</span><span class="o">.</span><span class="n">SteepestDescent</span><span class="p">()</span>
-<span class="n">solution</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">problem</span><span class="p">)</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">pymanopt</span><span class="o">.</span><span class="n">optimizers</span><span class="o">.</span><span class="n">SteepestDescent</span><span class="p">()</span>
+<span class="n">solution</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">problem</span><span class="p">)</span>
 
 <span class="n">eigenvalues</span><span class="p">,</span> <span class="n">eigenvectors</span> <span class="o">=</span> <span class="n">anp</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
 <span class="n">dominant_eigenvector</span> <span class="o">=</span> <span class="n">eigenvectors</span><span class="p">[:,</span> <span class="n">eigenvalues</span><span class="o">.</span><span class="n">argmax</span><span class="p">()]</span>
@@ -266,7 +267,7 @@ Pymanopt in the context of inference in Gaussian mixture models.</p>
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Apr 26, 2022.
+      <span class="lastupdated">Last updated on Apr 29, 2022.
       </span></p>
   </div>
 

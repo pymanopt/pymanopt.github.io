@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pymanopt.solvers.line_search &mdash; Pymanopt latest documentation</title>
+  <title>pymanopt.optimizers.line_search &mdash; Pymanopt latest documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/style.css" type="text/css" />
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/katex-math.css" type="text/css" />
-    <link rel="canonical" href="pymanopt.org/_modules/pymanopt/solvers/line_search.html" />
+    <link rel="canonical" href="pymanopt.org/_modules/pymanopt/optimizers/line_search.html" />
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -72,7 +72,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="../../index.html">Module code</a> &raquo;</li>
-      <li>pymanopt.solvers.line_search</li>
+      <li>pymanopt.optimizers.line_search</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -81,8 +81,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <h1>Source code for pymanopt.solvers.line_search</h1><div class="highlight"><pre>
-<div class="viewcode-block" id="BackTrackingLineSearcher"><a class="viewcode-back" href="../../../solvers.html#pymanopt.solvers.line_search.BackTrackingLineSearcher">[docs]</a><span></span><span class="k">class</span> <span class="nc">BackTrackingLineSearcher</span><span class="p">:</span>
+  <h1>Source code for pymanopt.optimizers.line_search</h1><div class="highlight"><pre>
+<div class="viewcode-block" id="BackTrackingLineSearcher"><a class="viewcode-back" href="../../../optimizers.html#pymanopt.optimizers.line_search.BackTrackingLineSearcher">[docs]</a><span></span><span class="k">class</span> <span class="nc">BackTrackingLineSearcher</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Back-tracking line-search algorithm.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
@@ -101,7 +101,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_oldf0</span> <span class="o">=</span> <span class="kc">None</span>
 
-<div class="viewcode-block" id="BackTrackingLineSearcher.search"><a class="viewcode-back" href="../../../solvers.html#pymanopt.solvers.line_search.BackTrackingLineSearcher.search">[docs]</a>    <span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">objective</span><span class="p">,</span> <span class="n">manifold</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">f0</span><span class="p">,</span> <span class="n">df0</span><span class="p">):</span>
+<div class="viewcode-block" id="BackTrackingLineSearcher.search"><a class="viewcode-back" href="../../../optimizers.html#pymanopt.optimizers.line_search.BackTrackingLineSearcher.search">[docs]</a>    <span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">objective</span><span class="p">,</span> <span class="n">manifold</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">f0</span><span class="p">,</span> <span class="n">df0</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Function to perform backtracking line search.</span>
 
 <span class="sd">        Args:</span>
@@ -160,7 +160,7 @@
         <span class="k">return</span> <span class="n">step_size</span><span class="p">,</span> <span class="n">newx</span></div></div>
 
 
-<div class="viewcode-block" id="AdaptiveLineSearcher"><a class="viewcode-back" href="../../../solvers.html#pymanopt.solvers.line_search.AdaptiveLineSearcher">[docs]</a><span class="k">class</span> <span class="nc">AdaptiveLineSearcher</span><span class="p">:</span>
+<div class="viewcode-block" id="AdaptiveLineSearcher"><a class="viewcode-back" href="../../../optimizers.html#pymanopt.optimizers.line_search.AdaptiveLineSearcher">[docs]</a><span class="k">class</span> <span class="nc">AdaptiveLineSearcher</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Adaptive line-search algorithm.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
@@ -176,7 +176,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_initial_step_size</span> <span class="o">=</span> <span class="n">initial_step_size</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_oldalpha</span> <span class="o">=</span> <span class="kc">None</span>
 
-<div class="viewcode-block" id="AdaptiveLineSearcher.search"><a class="viewcode-back" href="../../../solvers.html#pymanopt.solvers.line_search.AdaptiveLineSearcher.search">[docs]</a>    <span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">objective</span><span class="p">,</span> <span class="n">man</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">f0</span><span class="p">,</span> <span class="n">df0</span><span class="p">):</span>
+<div class="viewcode-block" id="AdaptiveLineSearcher.search"><a class="viewcode-back" href="../../../optimizers.html#pymanopt.optimizers.line_search.AdaptiveLineSearcher.search">[docs]</a>    <span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">objective</span><span class="p">,</span> <span class="n">man</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">f0</span><span class="p">,</span> <span class="n">df0</span><span class="p">):</span>
         <span class="n">norm_d</span> <span class="o">=</span> <span class="n">man</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_oldalpha</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -233,7 +233,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Apr 26, 2022.
+      <span class="lastupdated">Last updated on Apr 29, 2022.
       </span></p>
   </div>
 

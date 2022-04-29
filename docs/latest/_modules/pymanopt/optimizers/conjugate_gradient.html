@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pymanopt.solvers.conjugate_gradient &mdash; Pymanopt latest documentation</title>
+  <title>pymanopt.optimizers.conjugate_gradient &mdash; Pymanopt latest documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/style.css" type="text/css" />
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/katex-math.css" type="text/css" />
-    <link rel="canonical" href="pymanopt.org/_modules/pymanopt/solvers/conjugate_gradient.html" />
+    <link rel="canonical" href="pymanopt.org/_modules/pymanopt/optimizers/conjugate_gradient.html" />
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -72,7 +72,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="../../index.html">Module code</a> &raquo;</li>
-      <li>pymanopt.solvers.conjugate_gradient</li>
+      <li>pymanopt.optimizers.conjugate_gradient</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -81,26 +81,26 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <h1>Source code for pymanopt.solvers.conjugate_gradient</h1><div class="highlight"><pre>
+  <h1>Source code for pymanopt.optimizers.conjugate_gradient</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">enum</span>
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">pymanopt.solvers.line_search</span> <span class="kn">import</span> <span class="n">AdaptiveLineSearcher</span>
-<span class="kn">from</span> <span class="nn">pymanopt.solvers.solver</span> <span class="kn">import</span> <span class="n">Solver</span>
+<span class="kn">from</span> <span class="nn">pymanopt.optimizers.line_search</span> <span class="kn">import</span> <span class="n">AdaptiveLineSearcher</span>
+<span class="kn">from</span> <span class="nn">pymanopt.optimizers.optimizer</span> <span class="kn">import</span> <span class="n">Optimizer</span>
 <span class="kn">from</span> <span class="nn">pymanopt.tools</span> <span class="kn">import</span> <span class="n">printer</span>
 
 
-<div class="viewcode-block" id="BetaRule"><a class="viewcode-back" href="../../../solvers.html#pymanopt.solvers.conjugate_gradient.BetaRule">[docs]</a><span class="k">class</span> <span class="nc">BetaRule</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
+<div class="viewcode-block" id="BetaRule"><a class="viewcode-back" href="../../../optimizers.html#pymanopt.optimizers.conjugate_gradient.BetaRule">[docs]</a><span class="k">class</span> <span class="nc">BetaRule</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
     <span class="n">FletcherReeves</span> <span class="o">=</span> <span class="n">enum</span><span class="o">.</span><span class="n">auto</span><span class="p">()</span>
     <span class="n">PolakRibiere</span> <span class="o">=</span> <span class="n">enum</span><span class="o">.</span><span class="n">auto</span><span class="p">()</span>
     <span class="n">HestenesStiefel</span> <span class="o">=</span> <span class="n">enum</span><span class="o">.</span><span class="n">auto</span><span class="p">()</span>
     <span class="n">HagerZhang</span> <span class="o">=</span> <span class="n">enum</span><span class="o">.</span><span class="n">auto</span><span class="p">()</span></div>
 
 
-<div class="viewcode-block" id="ConjugateGradient"><a class="viewcode-back" href="../../../solvers.html#pymanopt.solvers.conjugate_gradient.ConjugateGradient">[docs]</a><span class="k">class</span> <span class="nc">ConjugateGradient</span><span class="p">(</span><span class="n">Solver</span><span class="p">):</span>
+<div class="viewcode-block" id="ConjugateGradient"><a class="viewcode-back" href="../../../optimizers.html#pymanopt.optimizers.conjugate_gradient.ConjugateGradient">[docs]</a><span class="k">class</span> <span class="nc">ConjugateGradient</span><span class="p">(</span><span class="n">Optimizer</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Riemannian conjugate gradient method.</span>
 
 <span class="sd">    Perform optimization using nonlinear conjugate gradient method with</span>
@@ -144,7 +144,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_line_searcher</span> <span class="o">=</span> <span class="n">line_searcher</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">line_searcher</span> <span class="o">=</span> <span class="kc">None</span>
 
-<div class="viewcode-block" id="ConjugateGradient.solve"><a class="viewcode-back" href="../../../solvers.html#pymanopt.solvers.conjugate_gradient.ConjugateGradient.solve">[docs]</a>    <span class="k">def</span> <span class="nf">solve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">problem</span><span class="p">,</span> <span class="n">initial_point</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">reuse_line_searcher</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="ConjugateGradient.run"><a class="viewcode-back" href="../../../optimizers.html#pymanopt.optimizers.conjugate_gradient.ConjugateGradient.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">problem</span><span class="p">,</span> <span class="n">initial_point</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">reuse_line_searcher</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Run CG method.</span>
 
 <span class="sd">        Args:</span>
@@ -156,7 +156,7 @@
 <span class="sd">                generated.</span>
 <span class="sd">            reuse_line_searcher: Whether to reuse the previous line searcher.</span>
 <span class="sd">                Allows to use information from a previous call to</span>
-<span class="sd">                :meth:`solve`.</span>
+<span class="sd">                :meth:`run`.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Local minimum of the cost function, or the most recent iterate if</span>
@@ -203,7 +203,7 @@
         <span class="n">desc_dir</span> <span class="o">=</span> <span class="o">-</span><span class="n">Pgrad</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_initialize_log</span><span class="p">(</span>
-            <span class="n">solver_parameters</span><span class="o">=</span><span class="p">{</span>
+            <span class="n">optimizer_parameters</span><span class="o">=</span><span class="p">{</span>
                 <span class="s2">&quot;beta_rule&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_beta_rule</span><span class="p">,</span>
                 <span class="s2">&quot;orth_value&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_orth_value</span><span class="p">,</span>
                 <span class="s2">&quot;line_searcher&quot;</span><span class="p">:</span> <span class="n">line_searcher</span><span class="p">,</span>
@@ -353,7 +353,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Apr 26, 2022.
+      <span class="lastupdated">Last updated on Apr 29, 2022.
       </span></p>
   </div>
 

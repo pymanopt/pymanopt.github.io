@@ -107,12 +107,12 @@
 
 <span class="sd">    Abstract base class setting out a template for manifold classes.</span>
 
-<span class="sd">    Not all methods are required by all solvers.</span>
-<span class="sd">    In particular, first order gradient based solvers such as</span>
-<span class="sd">    :mod:`pymanopt.solvers.steepest_descent` and</span>
-<span class="sd">    :mod:`pymanopt.solvers.conjugate_gradient` require :meth:`egrad2rgrad` to</span>
+<span class="sd">    Not all methods are required by all optimizers.</span>
+<span class="sd">    In particular, first order gradient based optimizers such as</span>
+<span class="sd">    :mod:`pymanopt.optimizers.steepest_descent` and</span>
+<span class="sd">    :mod:`pymanopt.optimizers.conjugate_gradient` require :meth:`egrad2rgrad` to</span>
 <span class="sd">    be implemented but not :meth:`ehess2rhess`.</span>
-<span class="sd">    Second order solvers such as :mod:`pymanopt.solvers.trust_regions` will</span>
+<span class="sd">    Second order optimizers such as :mod:`pymanopt.optimizers.trust_regions` will</span>
 <span class="sd">    require :meth:`ehess2rhess`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -174,8 +174,8 @@
     <span class="k">def</span> <span class="nf">typicaldist</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Returns the `scale` of the manifold.</span>
 
-<span class="sd">        This is used by the trust-regions solver to determine default initial</span>
-<span class="sd">        and maximal trust-region radii.</span>
+<span class="sd">        This is used by the trust-regions optimizer to determine default</span>
+<span class="sd">        initial and maximal trust-region radii.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;Manifold &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&#39; does not provide a &quot;</span>
@@ -227,7 +227,7 @@
     <span class="k">def</span> <span class="nf">zerovec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Returns the zero vector in the tangent space at ``point``.&quot;&quot;&quot;</span></div>
 
-    <span class="c1"># Methods which are only required by certain solvers.</span>
+    <span class="c1"># Methods which are only required by certain optimizers.</span>
 
     <span class="k">def</span> <span class="nf">_raise_not_implemented_error</span><span class="p">(</span><span class="n">method</span><span class="p">):</span>
         <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">method</span><span class="p">)</span>
@@ -326,7 +326,7 @@
 <span class="sd">    Similarly, if the Weingarten map (also known as shape operator) is provided</span>
 <span class="sd">    via implementing the :meth:`weingarten` method, the class provides a</span>
 <span class="sd">    generic implementation of the :meth:`ehess2rhess` method required by</span>
-<span class="sd">    second-order solvers to translate Euclidean Hessian-vector products to</span>
+<span class="sd">    second-order optimizers to translate Euclidean Hessian-vector products to</span>
 <span class="sd">    their Riemannian counterparts.</span>
 
 <span class="sd">    Notes:</span>
@@ -364,7 +364,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Apr 26, 2022.
+      <span class="lastupdated">Last updated on Apr 29, 2022.
       </span></p>
   </div>
 

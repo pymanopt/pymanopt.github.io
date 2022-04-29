@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pymanopt.solvers.solver &mdash; Pymanopt latest documentation</title>
+  <title>pymanopt.optimizers.optimizer &mdash; Pymanopt latest documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/style.css" type="text/css" />
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/katex-math.css" type="text/css" />
-    <link rel="canonical" href="pymanopt.org/_modules/pymanopt/solvers/solver.html" />
+    <link rel="canonical" href="pymanopt.org/_modules/pymanopt/optimizers/optimizer.html" />
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -72,7 +72,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="../../index.html">Module code</a> &raquo;</li>
-      <li>pymanopt.solvers.solver</li>
+      <li>pymanopt.optimizers.optimizer</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -81,7 +81,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <h1>Source code for pymanopt.solvers.solver</h1><div class="highlight"><pre>
+  <h1>Source code for pymanopt.optimizers.optimizer</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">abc</span>
 <span class="kn">import</span> <span class="nn">collections</span>
 <span class="kn">import</span> <span class="nn">time</span>
@@ -89,11 +89,11 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 
-<div class="viewcode-block" id="Solver"><a class="viewcode-back" href="../../../solvers.html#pymanopt.solvers.solver.Solver">[docs]</a><span class="k">class</span> <span class="nc">Solver</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">abc</span><span class="o">.</span><span class="n">ABCMeta</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Abstract base class for Pymanopt solvers.</span>
+<div class="viewcode-block" id="Optimizer"><a class="viewcode-back" href="../../../optimizers.html#pymanopt.optimizers.optimizer.Optimizer">[docs]</a><span class="k">class</span> <span class="nc">Optimizer</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">abc</span><span class="o">.</span><span class="n">ABCMeta</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Abstract base class for Pymanopt optimizers.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        max_time: Upper bound on the run time of a solver in seconds.</span>
+<span class="sd">        max_time: Upper bound on the run time of an optimizer in seconds.</span>
 <span class="sd">        max_iterations: The maximum number of iterations to perform.</span>
 <span class="sd">        min_gradient_norm: Termination threshold for the norm of the</span>
 <span class="sd">            gradient.</span>
@@ -101,9 +101,9 @@
 <span class="sd">            size.</span>
 <span class="sd">        max_cost_evaluations: Maximum number of allowed cost function</span>
 <span class="sd">            evaluations.</span>
-<span class="sd">        verbosity: Level of information printed by the solver while it</span>
+<span class="sd">        verbosity: Level of information printed by the optimizer while it</span>
 <span class="sd">            operates: 0 is silent, 2 is most verbose.</span>
-<span class="sd">        log_verbosity: Level of information logged by the solver while it</span>
+<span class="sd">        log_verbosity: Level of information logged by the optimizer while it</span>
 <span class="sd">            operates: 0 is silent, 2 is most verbose.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -130,9 +130,9 @@
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span>
 
-<div class="viewcode-block" id="Solver.solve"><a class="viewcode-back" href="../../../solvers.html#pymanopt.solvers.solver.Solver.solve">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
-    <span class="k">def</span> <span class="nf">solve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">problem</span><span class="p">,</span> <span class="n">initial_point</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Run a solver on a given optimization problem.</span>
+<div class="viewcode-block" id="Optimizer.run"><a class="viewcode-back" href="../../../optimizers.html#pymanopt.optimizers.optimizer.Optimizer.run">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">problem</span><span class="p">,</span> <span class="n">initial_point</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Run an optimizer on a given optimization problem.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            problem: Pymanopt problem class instance exposing the cost function</span>
@@ -141,8 +141,8 @@
 <span class="sd">            initial_point: Initial point on the manifold.</span>
 <span class="sd">                If no value is provided then a starting point will be randomly</span>
 <span class="sd">                generated.</span>
-<span class="sd">            *args: Potential solver-specific positional arguments.</span>
-<span class="sd">            **kwargs: Potential solver-specific keyword arguments.</span>
+<span class="sd">            *args: Potential optimizer-specific positional arguments.</span>
+<span class="sd">            **kwargs: Potential optimizer-specific keyword arguments.</span>
 <span class="sd">        &quot;&quot;&quot;</span></div>
 
     <span class="k">def</span> <span class="nf">_check_stopping_criterion</span><span class="p">(</span>
@@ -182,12 +182,12 @@
             <span class="p">)</span>
         <span class="k">return</span> <span class="n">reason</span>
 
-    <span class="k">def</span> <span class="nf">_initialize_log</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">solver_parameters</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_initialize_log</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">optimizer_parameters</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_log_verbosity</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_log</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_log</span> <span class="o">=</span> <span class="p">{</span>
-                <span class="s2">&quot;solver&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span>
+                <span class="s2">&quot;optimizer&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span>
                 <span class="s2">&quot;stopping_criteria&quot;</span><span class="p">:</span> <span class="p">{</span>
                     <span class="s2">&quot;max_time&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_time</span><span class="p">,</span>
                     <span class="s2">&quot;max_iterations&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_iterations</span><span class="p">,</span>
@@ -195,7 +195,7 @@
                     <span class="s2">&quot;min_step_size&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_min_step_size</span><span class="p">,</span>
                     <span class="s2">&quot;max_cost_evaluations&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_cost_evaluations</span><span class="p">,</span>
                 <span class="p">},</span>
-                <span class="s2">&quot;solver_parameters&quot;</span><span class="p">:</span> <span class="n">solver_parameters</span><span class="p">,</span>
+                <span class="s2">&quot;optimizer_parameters&quot;</span><span class="p">:</span> <span class="n">optimizer_parameters</span><span class="p">,</span>
             <span class="p">}</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_log_verbosity</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="p">[</span><span class="s2">&quot;iterations&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
@@ -246,7 +246,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Apr 26, 2022.
+      <span class="lastupdated">Last updated on Apr 29, 2022.
       </span></p>
   </div>
 

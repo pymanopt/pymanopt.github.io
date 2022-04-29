@@ -70,7 +70,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="autodiff.html">Autodiff</a></li>
 <li class="toctree-l2"><a class="reference internal" href="problem.html">Problem</a></li>
-<li class="toctree-l2"><a class="reference internal" href="solvers.html">Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizers.html">Optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tools.html">Tools</a></li>
 <li class="toctree-l2"><a class="reference internal" href="bibliography.html">Bibliography</a></li>
 </ul>
@@ -171,12 +171,12 @@ class.</p>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Riemannian manifold base class.</p>
 <p>Abstract base class setting out a template for manifold classes.</p>
-<p>Not all methods are required by all solvers.
-In particular, first order gradient based solvers such as
-<a class="reference internal" href="solvers.html#module-pymanopt.solvers.steepest_descent" title="pymanopt.solvers.steepest_descent"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pymanopt.solvers.steepest_descent</span></code></a> and
-<a class="reference internal" href="solvers.html#module-pymanopt.solvers.conjugate_gradient" title="pymanopt.solvers.conjugate_gradient"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pymanopt.solvers.conjugate_gradient</span></code></a> require <a class="reference internal" href="#pymanopt.manifolds.manifold.Manifold.egrad2rgrad" title="pymanopt.manifolds.manifold.Manifold.egrad2rgrad"><code class="xref py py-meth docutils literal notranslate"><span class="pre">egrad2rgrad()</span></code></a> to
+<p>Not all methods are required by all optimizers.
+In particular, first order gradient based optimizers such as
+<a class="reference internal" href="optimizers.html#module-pymanopt.optimizers.steepest_descent" title="pymanopt.optimizers.steepest_descent"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pymanopt.optimizers.steepest_descent</span></code></a> and
+<a class="reference internal" href="optimizers.html#module-pymanopt.optimizers.conjugate_gradient" title="pymanopt.optimizers.conjugate_gradient"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pymanopt.optimizers.conjugate_gradient</span></code></a> require <a class="reference internal" href="#pymanopt.manifolds.manifold.Manifold.egrad2rgrad" title="pymanopt.manifolds.manifold.Manifold.egrad2rgrad"><code class="xref py py-meth docutils literal notranslate"><span class="pre">egrad2rgrad()</span></code></a> to
 be implemented but not <a class="reference internal" href="#pymanopt.manifolds.manifold.Manifold.ehess2rhess" title="pymanopt.manifolds.manifold.Manifold.ehess2rhess"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ehess2rhess()</span></code></a>.
-Second order solvers such as <a class="reference internal" href="solvers.html#module-pymanopt.solvers.trust_regions" title="pymanopt.solvers.trust_regions"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pymanopt.solvers.trust_regions</span></code></a> will
+Second order optimizers such as <a class="reference internal" href="optimizers.html#module-pymanopt.optimizers.trust_regions" title="pymanopt.optimizers.trust_regions"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pymanopt.optimizers.trust_regions</span></code></a> will
 require <a class="reference internal" href="#pymanopt.manifolds.manifold.Manifold.ehess2rhess" title="pymanopt.manifolds.manifold.Manifold.ehess2rhess"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ehess2rhess()</span></code></a>.</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="pymanopt.manifolds.manifold.Manifold.dim">
@@ -205,8 +205,8 @@ tuples/lists contain.</p>
 <dt class="sig sig-object py" id="pymanopt.manifolds.manifold.Manifold.typicaldist">
 <em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">typicaldist</span></span><a class="headerlink" href="#pymanopt.manifolds.manifold.Manifold.typicaldist" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the <cite>scale</cite> of the manifold.</p>
-<p>This is used by the trust-regions solver to determine default initial
-and maximal trust-region radii.</p>
+<p>This is used by the trust-regions optimizer to determine default
+initial and maximal trust-region radii.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -356,7 +356,7 @@ Riemannian counterparts via the <a class="reference internal" href="#pymanopt.ma
 Similarly, if the Weingarten map (also known as shape operator) is provided
 via implementing the <a class="reference internal" href="#pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold.weingarten" title="pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold.weingarten"><code class="xref py py-meth docutils literal notranslate"><span class="pre">weingarten()</span></code></a> method, the class provides a
 generic implementation of the <a class="reference internal" href="#pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold.ehess2rhess" title="pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold.ehess2rhess"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ehess2rhess()</span></code></a> method required by
-second-order solvers to translate Euclidean Hessian-vector products to
+second-order optimizers to translate Euclidean Hessian-vector products to
 their Riemannian counterparts.</p>
 <p class="rubric">Notes</p>
 <p>Refer to <a class="reference internal" href="bibliography.html#amt2013" id="id3"><span>[AMT2013]</span></a> for the exact definition of the Weingarten map.</p>
@@ -528,8 +528,8 @@ matrices if k &gt; 1 (Note that this is different to manopt!).</p>
 <dt class="sig sig-object py" id="pymanopt.manifolds.stiefel.Stiefel.typicaldist">
 <em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">typicaldist</span></span><a class="headerlink" href="#pymanopt.manifolds.stiefel.Stiefel.typicaldist" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the <cite>scale</cite> of the manifold.</p>
-<p>This is used by the trust-regions solver to determine default initial
-and maximal trust-region radii.</p>
+<p>This is used by the trust-regions optimizer to determine default
+initial and maximal trust-region radii.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -867,8 +867,8 @@ space at <code class="docutils literal notranslate"><span class="pre">point</spa
 <dt class="sig sig-object py" id="pymanopt.manifolds.complex_circle.ComplexCircle.typicaldist">
 <em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">typicaldist</span></span><a class="headerlink" href="#pymanopt.manifolds.complex_circle.ComplexCircle.typicaldist" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the <cite>scale</cite> of the manifold.</p>
-<p>This is used by the trust-regions solver to determine default initial
-and maximal trust-region radii.</p>
+<p>This is used by the trust-regions optimizer to determine default
+initial and maximal trust-region radii.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -1030,8 +1030,8 @@ space at <code class="docutils literal notranslate"><span class="pre">point</spa
 <dt class="sig sig-object py" id="pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.typicaldist">
 <em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">typicaldist</span></span><a class="headerlink" href="#pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.typicaldist" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the <cite>scale</cite> of the manifold.</p>
-<p>This is used by the trust-regions solver to determine default initial
-and maximal trust-region radii.</p>
+<p>This is used by the trust-regions optimizer to determine default
+initial and maximal trust-region radii.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -1144,8 +1144,8 @@ usual metric.</p>
 <dt class="sig sig-object py" id="pymanopt.manifolds.oblique.Oblique.typicaldist">
 <em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">typicaldist</span></span><a class="headerlink" href="#pymanopt.manifolds.oblique.Oblique.typicaldist" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the <cite>scale</cite> of the manifold.</p>
-<p>This is used by the trust-regions solver to determine default initial
-and maximal trust-region radii.</p>
+<p>This is used by the trust-regions optimizer to determine default
+initial and maximal trust-region radii.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -1279,8 +1279,8 @@ Also see <a class="reference internal" href="bibliography.html#sh2015" id="id6">
 <dt class="sig sig-object py" id="pymanopt.manifolds.positive_definite.SymmetricPositiveDefinite.typicaldist">
 <em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">typicaldist</span></span><a class="headerlink" href="#pymanopt.manifolds.positive_definite.SymmetricPositiveDefinite.typicaldist" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the <cite>scale</cite> of the manifold.</p>
-<p>This is used by the trust-regions solver to determine default initial
-and maximal trust-region radii.</p>
+<p>This is used by the trust-regions optimizer to determine default
+initial and maximal trust-region radii.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -1526,8 +1526,8 @@ Paper link: <a class="reference external" href="http://www.di.ens.fr/~fbach/jour
 <dt class="sig sig-object py" id="pymanopt.manifolds.psd.Elliptope.typicaldist">
 <em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">typicaldist</span></span><a class="headerlink" href="#pymanopt.manifolds.psd.Elliptope.typicaldist" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the <cite>scale</cite> of the manifold.</p>
-<p>This is used by the trust-regions solver to determine default initial
-and maximal trust-region radii.</p>
+<p>This is used by the trust-regions optimizer to determine default
+initial and maximal trust-region radii.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -1645,7 +1645,7 @@ It transports a vector <code class="docutils literal notranslate"><span class="p
 <li><p>The implementation follows the embedded geometry described in
 <a class="reference internal" href="bibliography.html#van2013" id="id7"><span>[Van2013]</span></a>.</p></li>
 <li><p>The class is currently not compatible with the
-<code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.solvers.TrustRegions</span></code> solver.</p></li>
+<code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.optimizers.TrustRegions</span></code> optimizer.</p></li>
 </ul>
 <p>Manifold of <code class="docutils literal notranslate"><span class="pre">m</span> <span class="pre">x</span> <span class="pre">n</span></code> real matrices of fixed rank <code class="docutils literal notranslate"><span class="pre">k</span></code>.
 For efficiency purposes, Pymanopt does not represent points on this
@@ -1699,8 +1699,8 @@ inner product.</p>
 <dt class="sig sig-object py" id="pymanopt.manifolds.fixed_rank.FixedRankEmbedded.typicaldist">
 <em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">typicaldist</span></span><a class="headerlink" href="#pymanopt.manifolds.fixed_rank.FixedRankEmbedded.typicaldist" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the <cite>scale</cite> of the manifold.</p>
-<p>This is used by the trust-regions solver to determine default initial
-and maximal trust-region radii.</p>
+<p>This is used by the trust-regions optimizer to determine default
+initial and maximal trust-region radii.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -1840,8 +1840,8 @@ positive definite matrices.</p>
 <dt class="sig sig-object py" id="pymanopt.manifolds.strictly_positive_vectors.StrictlyPositiveVectors.typicaldist">
 <em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">typicaldist</span></span><a class="headerlink" href="#pymanopt.manifolds.strictly_positive_vectors.StrictlyPositiveVectors.typicaldist" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the <cite>scale</cite> of the manifold.</p>
-<p>This is used by the trust-regions solver to determine default initial
-and maximal trust-region radii.</p>
+<p>This is used by the trust-regions optimizer to determine default
+initial and maximal trust-region radii.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -1951,8 +1951,8 @@ As such it is the inverse of <a class="reference internal" href="#pymanopt.manif
 <dt class="sig sig-object py" id="pymanopt.manifolds.product.Product.typicaldist">
 <em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">typicaldist</span></span><a class="headerlink" href="#pymanopt.manifolds.product.Product.typicaldist" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the <cite>scale</cite> of the manifold.</p>
-<p>This is used by the trust-regions solver to determine default initial
-and maximal trust-region radii.</p>
+<p>This is used by the trust-regions optimizer to determine default
+initial and maximal trust-region radii.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -2094,7 +2094,7 @@ the geodesic arc joining them.</p>
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Apr 26, 2022.
+      <span class="lastupdated">Last updated on Apr 29, 2022.
       </span></p>
   </div>
 

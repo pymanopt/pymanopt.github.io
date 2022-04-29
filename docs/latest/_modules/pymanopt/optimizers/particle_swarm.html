@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pymanopt.solvers.particle_swarm &mdash; Pymanopt latest documentation</title>
+  <title>pymanopt.optimizers.particle_swarm &mdash; Pymanopt latest documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/style.css" type="text/css" />
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/katex-math.css" type="text/css" />
-    <link rel="canonical" href="pymanopt.org/_modules/pymanopt/solvers/particle_swarm.html" />
+    <link rel="canonical" href="pymanopt.org/_modules/pymanopt/optimizers/particle_swarm.html" />
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -72,7 +72,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="../../index.html">Module code</a> &raquo;</li>
-      <li>pymanopt.solvers.particle_swarm</li>
+      <li>pymanopt.optimizers.particle_swarm</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -81,18 +81,18 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <h1>Source code for pymanopt.solvers.particle_swarm</h1><div class="highlight"><pre>
+  <h1>Source code for pymanopt.optimizers.particle_swarm</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">time</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">numpy.random</span> <span class="k">as</span> <span class="nn">rnd</span>
 
 <span class="kn">from</span> <span class="nn">pymanopt</span> <span class="kn">import</span> <span class="n">tools</span>
-<span class="kn">from</span> <span class="nn">pymanopt.solvers.solver</span> <span class="kn">import</span> <span class="n">Solver</span>
+<span class="kn">from</span> <span class="nn">pymanopt.optimizers.optimizer</span> <span class="kn">import</span> <span class="n">Optimizer</span>
 <span class="kn">from</span> <span class="nn">pymanopt.tools</span> <span class="kn">import</span> <span class="n">printer</span>
 
 
-<div class="viewcode-block" id="ParticleSwarm"><a class="viewcode-back" href="../../../solvers.html#pymanopt.solvers.particle_swarm.ParticleSwarm">[docs]</a><span class="k">class</span> <span class="nc">ParticleSwarm</span><span class="p">(</span><span class="n">Solver</span><span class="p">):</span>
+<div class="viewcode-block" id="ParticleSwarm"><a class="viewcode-back" href="../../../optimizers.html#pymanopt.optimizers.particle_swarm.ParticleSwarm">[docs]</a><span class="k">class</span> <span class="nc">ParticleSwarm</span><span class="p">(</span><span class="n">Optimizer</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Particle swarm optimization (PSO) method.</span>
 
 <span class="sd">    Perform optimization using the derivative-free particle swarm optimization</span>
@@ -124,7 +124,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_nostalgia</span> <span class="o">=</span> <span class="n">nostalgia</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_social</span> <span class="o">=</span> <span class="n">social</span>
 
-<div class="viewcode-block" id="ParticleSwarm.solve"><a class="viewcode-back" href="../../../solvers.html#pymanopt.solvers.particle_swarm.ParticleSwarm.solve">[docs]</a>    <span class="k">def</span> <span class="nf">solve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">problem</span><span class="p">,</span> <span class="n">initial_point</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="ParticleSwarm.run"><a class="viewcode-back" href="../../../optimizers.html#pymanopt.optimizers.particle_swarm.ParticleSwarm.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">problem</span><span class="p">,</span> <span class="n">initial_point</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Run PSO algorithm.</span>
 
 <span class="sd">        Args:</span>
@@ -292,7 +292,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Apr 26, 2022.
+      <span class="lastupdated">Last updated on Apr 29, 2022.
       </span></p>
   </div>
 

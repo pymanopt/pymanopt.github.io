@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pymanopt.solvers.trust_regions &mdash; Pymanopt latest documentation</title>
+  <title>pymanopt.optimizers.trust_regions &mdash; Pymanopt latest documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/style.css" type="text/css" />
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/katex-math.css" type="text/css" />
-    <link rel="canonical" href="pymanopt.org/_modules/pymanopt/solvers/trust_regions.html" />
+    <link rel="canonical" href="pymanopt.org/_modules/pymanopt/optimizers/trust_regions.html" />
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -72,7 +72,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="../../index.html">Module code</a> &raquo;</li>
-      <li>pymanopt.solvers.trust_regions</li>
+      <li>pymanopt.optimizers.trust_regions</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -81,7 +81,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <h1>Source code for pymanopt.solvers.trust_regions</h1><div class="highlight"><pre>
+  <h1>Source code for pymanopt.optimizers.trust_regions</h1><div class="highlight"><pre>
 <span></span><span class="c1"># References, taken from trustregions.m in manopt:</span>
 
 <span class="c1"># Please cite the Manopt paper as well as the research paper:</span>
@@ -139,10 +139,10 @@
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">pymanopt.solvers.solver</span> <span class="kn">import</span> <span class="n">Solver</span>
+<span class="kn">from</span> <span class="nn">pymanopt.optimizers.optimizer</span> <span class="kn">import</span> <span class="n">Optimizer</span>
 
 
-<div class="viewcode-block" id="TrustRegions"><a class="viewcode-back" href="../../../solvers.html#pymanopt.solvers.trust_regions.TrustRegions">[docs]</a><span class="k">class</span> <span class="nc">TrustRegions</span><span class="p">(</span><span class="n">Solver</span><span class="p">):</span>
+<div class="viewcode-block" id="TrustRegions"><a class="viewcode-back" href="../../../optimizers.html#pymanopt.optimizers.trust_regions.TrustRegions">[docs]</a><span class="k">class</span> <span class="nc">TrustRegions</span><span class="p">(</span><span class="n">Optimizer</span><span class="p">):</span>
     <span class="p">(</span>
         <span class="n">NEGATIVE_CURVATURE</span><span class="p">,</span>
         <span class="n">EXCEEDED_TR</span><span class="p">,</span>
@@ -172,7 +172,7 @@
         <span class="o">*</span><span class="n">args</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Riemannian Trust-Regions solver.</span>
+        <span class="sd">&quot;&quot;&quot;Riemannian Trust-Regions algorithm.</span>
 
 <span class="sd">        Second-order method that approximates the objective function by a</span>
 <span class="sd">        quadratic surface and then updates the current estimate based on that.</span>
@@ -188,7 +188,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">use_rand</span> <span class="o">=</span> <span class="n">use_rand</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rho_regularization</span> <span class="o">=</span> <span class="n">rho_regularization</span>
 
-<div class="viewcode-block" id="TrustRegions.solve"><a class="viewcode-back" href="../../../solvers.html#pymanopt.solvers.trust_regions.TrustRegions.solve">[docs]</a>    <span class="k">def</span> <span class="nf">solve</span><span class="p">(</span>
+<div class="viewcode-block" id="TrustRegions.run"><a class="viewcode-back" href="../../../optimizers.html#pymanopt.optimizers.trust_regions.TrustRegions.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">problem</span><span class="p">,</span>
         <span class="n">initial_point</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -708,7 +708,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Apr 26, 2022.
+      <span class="lastupdated">Last updated on Apr 29, 2022.
       </span></p>
   </div>
 
