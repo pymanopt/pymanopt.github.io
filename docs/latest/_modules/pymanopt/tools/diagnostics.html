@@ -133,14 +133,14 @@
             <span class="s2">&quot;If d is provided, x must be too, &quot;</span> <span class="s2">&quot;since d is tangent at x.&quot;</span>
         <span class="p">)</span>
     <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">manifold</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">manifold</span><span class="o">.</span><span class="n">random_point</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">d</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">manifold</span><span class="o">.</span><span class="n">randvec</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">manifold</span><span class="o">.</span><span class="n">random_tangent_vector</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 
     <span class="c1"># Compute the value f0 of f at x and directional derivative at x along d.</span>
     <span class="n">f0</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">cost</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-    <span class="n">grad</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-    <span class="n">df0</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">manifold</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">grad</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+    <span class="n">grad</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">riemannian_gradient</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">df0</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">manifold</span><span class="o">.</span><span class="n">inner_product</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">grad</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
 
     <span class="c1"># Compute the value of f at points on the geodesic (or approximation</span>
     <span class="c1"># of it) originating from x, along direction d, for step_sizes in a</span>
@@ -153,7 +153,7 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="n">y</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">manifold</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">h_k</span> <span class="o">*</span> <span class="n">d</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">NotImplementedError</span><span class="p">:</span>
-            <span class="n">y</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">manifold</span><span class="o">.</span><span class="n">retr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">h_k</span> <span class="o">*</span> <span class="n">d</span><span class="p">)</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">manifold</span><span class="o">.</span><span class="n">retraction</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">h_k</span> <span class="o">*</span> <span class="n">d</span><span class="p">)</span>
         <span class="n">value</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">cost</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
 
     <span class="c1"># Compute the linear approximation of the cost function using f0 and</span>
@@ -216,9 +216,9 @@
             <span class="s2">&quot;If d is provided, x must be too, since d is tangent at x.&quot;</span>
         <span class="p">)</span>
     <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">manifold</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">manifold</span><span class="o">.</span><span class="n">random_point</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">d</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">manifold</span><span class="o">.</span><span class="n">randvec</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">manifold</span><span class="o">.</span><span class="n">random_tangent_vector</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 
     <span class="n">h</span><span class="p">,</span> <span class="n">err</span><span class="p">,</span> <span class="n">segment</span><span class="p">,</span> <span class="n">poly</span> <span class="o">=</span> <span class="n">check_directional_derivative</span><span class="p">(</span><span class="n">problem</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
 
@@ -237,14 +237,14 @@
     <span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
-    <span class="n">grad</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">grad</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">riemannian_gradient</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">projected_grad</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">manifold</span><span class="o">.</span><span class="n">tangent</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">grad</span><span class="p">)</span>
+        <span class="n">projected_grad</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">manifold</span><span class="o">.</span><span class="n">to_tangent_space</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">grad</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">NotImplementedError</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span>
             <span class="s2">&quot;Pymanopt was unable to verify that the gradient is indeed a &quot;</span>
             <span class="sa">f</span><span class="s2">&quot;tangent vector since </span><span class="si">{</span><span class="n">problem</span><span class="o">.</span><span class="n">manifold</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> does &quot;</span>
-            <span class="s2">&quot;not provide a &#39;tangent&#39; method.&quot;</span>
+            <span class="s2">&quot;not provide a &#39;to_tangent_space&#39; implementation.&quot;</span>
         <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">residual</span> <span class="o">=</span> <span class="n">grad</span> <span class="o">-</span> <span class="n">projected_grad</span>
@@ -264,7 +264,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Apr 29, 2022.
+      <span class="lastupdated">Last updated on May 04, 2022.
       </span></p>
   </div>
 

@@ -85,8 +85,6 @@
 <span></span><span class="sd">&quot;&quot;&quot;Module containing manifolds of n-dimensional rotations.&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">linalg</span> <span class="k">as</span> <span class="n">la</span>
-<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">random</span> <span class="k">as</span> <span class="n">rnd</span>
 <span class="kn">from</span> <span class="nn">scipy.linalg</span> <span class="kn">import</span> <span class="n">expm</span><span class="p">,</span> <span class="n">logm</span>
 <span class="kn">from</span> <span class="nn">scipy.special</span> <span class="kn">import</span> <span class="n">comb</span>
 
@@ -107,15 +105,15 @@
 <span class="sd">    submanifold of (R^nxn)^k endowed with the usual trace inner product.</span>
 
 <span class="sd">    Tangent vectors are represented in the Lie algebra, i.e., as skew</span>
-<span class="sd">    symmetric matrices. Use the function manifold.tangent2ambient(X, H) to</span>
+<span class="sd">    symmetric matrices. Use the function manifold.embedding(X, H) to</span>
 <span class="sd">    switch from the Lie algebra representation to the embedding space</span>
 <span class="sd">    representation. This is often necessary when defining</span>
-<span class="sd">    problem.ehess(X, H).</span>
+<span class="sd">    problem.euclidean_hessian(X, H).</span>
 
 <span class="sd">    By default, the retraction is only a first-order approximation of the</span>
-<span class="sd">    exponential. To force the use of a second-order approximation, call</span>
-<span class="sd">    manifold.retr = manifold.retr2 after creating M. This switches from a</span>
-<span class="sd">    QR-based computation to an SVD-based computation.</span>
+<span class="sd">    exponential. To force the use of a second-order approximation, instantiate</span>
+<span class="sd">    the class with ``SpecialOrthogonalGroup(n, k, retraction=&quot;polar&quot;)``.</span>
+<span class="sd">    This switches from a QR-based computation to an SVD-based computation.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        n: The dimension of the space that elements of the group act on.</span>
@@ -138,48 +136,51 @@
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">dimension</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">retraction</span> <span class="o">==</span> <span class="s2">&quot;qr&quot;</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">retr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_retr_qr</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_retraction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_retraction_qr</span>
         <span class="k">elif</span> <span class="n">retraction</span> <span class="o">==</span> <span class="s2">&quot;polar&quot;</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">retr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_retr_polar</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_retractionretr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_retraction_polar</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid retraction type &#39;</span><span class="si">{</span><span class="n">retraction</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
 
-<div class="viewcode-block" id="SpecialOrthogonalGroup.inner"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.inner">[docs]</a>    <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector_a</span><span class="p">,</span> <span class="n">tangent_vector_b</span><span class="p">):</span>
+<div class="viewcode-block" id="SpecialOrthogonalGroup.inner_product"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.inner_product">[docs]</a>    <span class="k">def</span> <span class="nf">inner_product</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector_a</span><span class="p">,</span> <span class="n">tangent_vector_b</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">tensordot</span><span class="p">(</span>
             <span class="n">tangent_vector_a</span><span class="p">,</span> <span class="n">tangent_vector_b</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">tangent_vector_a</span><span class="o">.</span><span class="n">ndim</span>
         <span class="p">)</span></div>
 
 <div class="viewcode-block" id="SpecialOrthogonalGroup.norm"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.norm">[docs]</a>    <span class="k">def</span> <span class="nf">norm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">la</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">tangent_vector</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">tangent_vector</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">typicaldist</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">typical_dist</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_n</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_k</span><span class="p">)</span>
 
 <div class="viewcode-block" id="SpecialOrthogonalGroup.dist"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.dist">[docs]</a>    <span class="k">def</span> <span class="nf">dist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point_a</span><span class="p">,</span> <span class="n">point_b</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">point_a</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">point_a</span><span class="p">,</span> <span class="n">point_b</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="SpecialOrthogonalGroup.proj"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.proj">[docs]</a>    <span class="k">def</span> <span class="nf">proj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">vector</span><span class="p">):</span>
+<div class="viewcode-block" id="SpecialOrthogonalGroup.projection"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.projection">[docs]</a>    <span class="k">def</span> <span class="nf">projection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">vector</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">multiskew</span><span class="p">(</span><span class="n">multiprod</span><span class="p">(</span><span class="n">multitransp</span><span class="p">(</span><span class="n">point</span><span class="p">),</span> <span class="n">vector</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="SpecialOrthogonalGroup.tangent"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.tangent">[docs]</a>    <span class="k">def</span> <span class="nf">tangent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">vector</span><span class="p">):</span>
+<div class="viewcode-block" id="SpecialOrthogonalGroup.to_tangent_space"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.to_tangent_space">[docs]</a>    <span class="k">def</span> <span class="nf">to_tangent_space</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">vector</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">multiskew</span><span class="p">(</span><span class="n">vector</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="SpecialOrthogonalGroup.tangent2ambient"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.tangent2ambient">[docs]</a>    <span class="k">def</span> <span class="nf">tangent2ambient</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">):</span>
+<div class="viewcode-block" id="SpecialOrthogonalGroup.embedding"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.embedding">[docs]</a>    <span class="k">def</span> <span class="nf">embedding</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">multiprod</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="SpecialOrthogonalGroup.ehess2rhess"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.ehess2rhess">[docs]</a>    <span class="k">def</span> <span class="nf">ehess2rhess</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">euclidean_gradient</span><span class="p">,</span> <span class="n">euclidean_hvp</span><span class="p">,</span> <span class="n">tangent_vector</span>
+<div class="viewcode-block" id="SpecialOrthogonalGroup.euclidean_to_riemannian_hessian"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.euclidean_to_riemannian_hessian">[docs]</a>    <span class="k">def</span> <span class="nf">euclidean_to_riemannian_hessian</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">euclidean_gradient</span><span class="p">,</span> <span class="n">euclidean_hessian</span><span class="p">,</span> <span class="n">tangent_vector</span>
     <span class="p">):</span>
         <span class="n">Xt</span> <span class="o">=</span> <span class="n">multitransp</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
         <span class="n">Xtegrad</span> <span class="o">=</span> <span class="n">multiprod</span><span class="p">(</span><span class="n">Xt</span><span class="p">,</span> <span class="n">euclidean_gradient</span><span class="p">)</span>
         <span class="n">symXtegrad</span> <span class="o">=</span> <span class="n">multisym</span><span class="p">(</span><span class="n">Xtegrad</span><span class="p">)</span>
-        <span class="n">Xtehess</span> <span class="o">=</span> <span class="n">multiprod</span><span class="p">(</span><span class="n">Xt</span><span class="p">,</span> <span class="n">euclidean_hvp</span><span class="p">)</span>
+        <span class="n">Xtehess</span> <span class="o">=</span> <span class="n">multiprod</span><span class="p">(</span><span class="n">Xt</span><span class="p">,</span> <span class="n">euclidean_hessian</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">multiskew</span><span class="p">(</span><span class="n">Xtehess</span> <span class="o">-</span> <span class="n">multiprod</span><span class="p">(</span><span class="n">tangent_vector</span><span class="p">,</span> <span class="n">symXtegrad</span><span class="p">))</span></div>
 
-    <span class="k">def</span> <span class="nf">_retr_qr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">):</span>
+<div class="viewcode-block" id="SpecialOrthogonalGroup.retraction"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.retraction">[docs]</a>    <span class="k">def</span> <span class="nf">retraction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_retraction</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_retraction_qr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">):</span>
         <span class="k">def</span> <span class="nf">retri</span><span class="p">(</span><span class="n">array</span><span class="p">):</span>
-            <span class="n">q</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="n">la</span><span class="o">.</span><span class="n">qr</span><span class="p">(</span><span class="n">array</span><span class="p">)</span>
+            <span class="n">q</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">qr</span><span class="p">(</span><span class="n">array</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">q</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">r</span><span class="p">))</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">))</span>
 
         <span class="n">Y</span> <span class="o">=</span> <span class="n">point</span> <span class="o">+</span> <span class="n">multiprod</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">)</span>
@@ -190,9 +191,9 @@
             <span class="n">Y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">retri</span><span class="p">(</span><span class="n">Y</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">Y</span>
 
-    <span class="k">def</span> <span class="nf">_retr_polar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_retraction_polar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">):</span>
         <span class="k">def</span> <span class="nf">retri</span><span class="p">(</span><span class="n">array</span><span class="p">):</span>
-            <span class="n">u</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">vt</span> <span class="o">=</span> <span class="n">la</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">array</span><span class="p">)</span>
+            <span class="n">u</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">vt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">array</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">u</span> <span class="o">@</span> <span class="n">vt</span>
 
         <span class="n">Y</span> <span class="o">=</span> <span class="n">point</span> <span class="o">+</span> <span class="n">multiprod</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">)</span>
@@ -230,15 +231,15 @@
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
             <span class="c1"># Generated as such, Q is uniformly distributed over O(n), the</span>
             <span class="c1"># group of orthogonal n-by-n matrices.</span>
-            <span class="n">A</span> <span class="o">=</span> <span class="n">rnd</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
-            <span class="n">Q</span><span class="p">,</span> <span class="n">RR</span> <span class="o">=</span> <span class="n">la</span><span class="o">.</span><span class="n">qr</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+            <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>
+            <span class="n">Q</span><span class="p">,</span> <span class="n">RR</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">qr</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
             <span class="c1"># TODO(nkoep): Add a proper reference to Mezzadri 2007.</span>
             <span class="n">Q</span> <span class="o">=</span> <span class="n">Q</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">RR</span><span class="p">)))</span>
 
             <span class="c1"># If Q is in O(n) but not in SO(n), we permute the two first</span>
             <span class="c1"># columns of Q such that det(new Q) = -det(Q), hence the new Q will</span>
             <span class="c1"># be in SO(n), uniformly distributed.</span>
-            <span class="k">if</span> <span class="n">la</span><span class="o">.</span><span class="n">det</span><span class="p">(</span><span class="n">Q</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">det</span><span class="p">(</span><span class="n">Q</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="n">Q</span><span class="p">[:,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Q</span><span class="p">[:,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]</span>
             <span class="n">R</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">Q</span>
 
@@ -246,7 +247,7 @@
             <span class="k">return</span> <span class="n">R</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">R</span>
 
-<div class="viewcode-block" id="SpecialOrthogonalGroup.rand"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.rand">[docs]</a>    <span class="k">def</span> <span class="nf">rand</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="SpecialOrthogonalGroup.random_point"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.random_point">[docs]</a>    <span class="k">def</span> <span class="nf">random_point</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_randrot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_k</span><span class="p">)</span></div>
 
     <span class="nd">@staticmethod</span>
@@ -254,13 +255,13 @@
         <span class="n">idxs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">triu_indices</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
         <span class="n">S</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
-            <span class="n">S</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">idxs</span><span class="p">]</span> <span class="o">=</span> <span class="n">rnd</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">n</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span>
+            <span class="n">S</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">idxs</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">n</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span>
             <span class="n">S</span> <span class="o">=</span> <span class="n">S</span> <span class="o">-</span> <span class="n">multitransp</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">N</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">S</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">S</span>
 
-<div class="viewcode-block" id="SpecialOrthogonalGroup.randvec"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.randvec">[docs]</a>    <span class="k">def</span> <span class="nf">randvec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
+<div class="viewcode-block" id="SpecialOrthogonalGroup.random_tangent_vector"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.random_tangent_vector">[docs]</a>    <span class="k">def</span> <span class="nf">random_tangent_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
         <span class="n">tangent_vector</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_randskew</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_k</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">tangent_vector</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span>
             <span class="n">np</span><span class="o">.</span><span class="n">tensordot</span><span class="p">(</span>
@@ -268,15 +269,15 @@
             <span class="p">)</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="SpecialOrthogonalGroup.zerovec"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.zerovec">[docs]</a>    <span class="k">def</span> <span class="nf">zerovec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
+<div class="viewcode-block" id="SpecialOrthogonalGroup.zero_vector"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.zero_vector">[docs]</a>    <span class="k">def</span> <span class="nf">zero_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_k</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_k</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="SpecialOrthogonalGroup.transp"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.transp">[docs]</a>    <span class="k">def</span> <span class="nf">transp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point_a</span><span class="p">,</span> <span class="n">point_b</span><span class="p">,</span> <span class="n">tangent_vector_a</span><span class="p">):</span>
+<div class="viewcode-block" id="SpecialOrthogonalGroup.transport"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.transport">[docs]</a>    <span class="k">def</span> <span class="nf">transport</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point_a</span><span class="p">,</span> <span class="n">point_b</span><span class="p">,</span> <span class="n">tangent_vector_a</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">tangent_vector_a</span></div>
 
-<div class="viewcode-block" id="SpecialOrthogonalGroup.pairmean"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.pairmean">[docs]</a>    <span class="k">def</span> <span class="nf">pairmean</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point_a</span><span class="p">,</span> <span class="n">point_b</span><span class="p">):</span>
+<div class="viewcode-block" id="SpecialOrthogonalGroup.pair_mean"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.pair_mean">[docs]</a>    <span class="k">def</span> <span class="nf">pair_mean</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point_a</span><span class="p">,</span> <span class="n">point_b</span><span class="p">):</span>
         <span class="n">V</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">point_a</span><span class="p">,</span> <span class="n">point_b</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">point_a</span><span class="p">,</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">V</span><span class="p">)</span></div></div>
 </pre></div>
@@ -289,7 +290,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Apr 29, 2022.
+      <span class="lastupdated">Last updated on May 04, 2022.
       </span></p>
   </div>
 

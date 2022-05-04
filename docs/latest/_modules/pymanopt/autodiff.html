@@ -100,25 +100,25 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_function</span> <span class="o">=</span> <span class="n">backend</span><span class="o">.</span><span class="n">prepare_function</span><span class="p">(</span><span class="n">function</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_num_arguments</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">num_values</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_egrad</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_ehess</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_gradient</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_hvp</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Function &lt;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_backend</span><span class="si">}</span><span class="s2">&gt;&quot;</span>
 
 <div class="viewcode-block" id="Function.compute_gradient"><a class="viewcode-back" href="../../autodiff.html#pymanopt.autodiff.Function.compute_gradient">[docs]</a>    <span class="k">def</span> <span class="nf">compute_gradient</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_egrad</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_egrad</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span><span class="o">.</span><span class="n">compute_gradient</span><span class="p">(</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gradient</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_gradient</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span><span class="o">.</span><span class="n">compute_gradient</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_original_function</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_arguments</span>
             <span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_egrad</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gradient</span></div>
 
 <div class="viewcode-block" id="Function.compute_hessian_vector_product"><a class="viewcode-back" href="../../autodiff.html#pymanopt.autodiff.Function.compute_hessian_vector_product">[docs]</a>    <span class="k">def</span> <span class="nf">compute_hessian_vector_product</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ehess</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_ehess</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span><span class="o">.</span><span class="n">compute_hessian_vector_product</span><span class="p">(</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hvp</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_hvp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span><span class="o">.</span><span class="n">compute_hessian_vector_product</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_original_function</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_arguments</span>
             <span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ehess</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hvp</span></div>
 
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_function</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
@@ -179,7 +179,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Apr 29, 2022.
+      <span class="lastupdated">Last updated on May 04, 2022.
       </span></p>
   </div>
 

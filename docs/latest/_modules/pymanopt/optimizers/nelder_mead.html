@@ -106,12 +106,15 @@
         <span class="k">if</span> <span class="n">manifold</span><span class="o">.</span><span class="n">num_values</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="p">(</span><span class="n">y</span><span class="p">,)</span> <span class="o">=</span> <span class="n">y</span>
         <span class="k">return</span> <span class="o">-</span><span class="nb">sum</span><span class="p">(</span>
-            <span class="p">[</span><span class="n">manifold</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">point</span><span class="p">)</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points</span><span class="p">],</span> <span class="n">manifold</span><span class="o">.</span><span class="n">zerovec</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+            <span class="p">[</span><span class="n">manifold</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">point</span><span class="p">)</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points</span><span class="p">],</span>
+            <span class="n">manifold</span><span class="o">.</span><span class="n">zero_vector</span><span class="p">(</span><span class="n">y</span><span class="p">),</span>
         <span class="p">)</span>
 
     <span class="n">optimizer</span> <span class="o">=</span> <span class="n">SteepestDescent</span><span class="p">(</span><span class="n">max_iterations</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-    <span class="n">problem</span> <span class="o">=</span> <span class="n">pymanopt</span><span class="o">.</span><span class="n">Problem</span><span class="p">(</span><span class="n">manifold</span><span class="p">,</span> <span class="n">objective</span><span class="p">,</span> <span class="n">grad</span><span class="o">=</span><span class="n">gradient</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">problem</span><span class="p">)</span></div>
+    <span class="n">problem</span> <span class="o">=</span> <span class="n">pymanopt</span><span class="o">.</span><span class="n">Problem</span><span class="p">(</span>
+        <span class="n">manifold</span><span class="p">,</span> <span class="n">objective</span><span class="p">,</span> <span class="n">riemannian_gradient</span><span class="o">=</span><span class="n">gradient</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">problem</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="NelderMead"><a class="viewcode-back" href="../../../optimizers.html#pymanopt.optimizers.nelder_mead.NelderMead">[docs]</a><span class="k">class</span> <span class="nc">NelderMead</span><span class="p">(</span><span class="n">Optimizer</span><span class="p">):</span>
@@ -121,7 +124,8 @@
 <span class="sd">    algorithm.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        max_cost_evaluations: Maximum number of allowed cost function evaluations.</span>
+<span class="sd">        max_cost_evaluations: Maximum number of allowed cost function</span>
+<span class="sd">            evaluations.</span>
 <span class="sd">        max_iterations: Maximum number of allowed iterations.</span>
 <span class="sd">        reflection: Determines how far to reflect away from the worst vertex:</span>
 <span class="sd">            stretched (reflection &gt; 1), compressed (0 &lt; reflection &lt; 1),</span>
@@ -177,7 +181,7 @@
         <span class="c1"># If no initial simplex x is given by the user, generate one at random.</span>
         <span class="n">num_points</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">dim</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">initial_point</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">manifold</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_points</span><span class="p">)]</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">manifold</span><span class="o">.</span><span class="n">random_point</span><span class="p">()</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_points</span><span class="p">)]</span>
         <span class="k">elif</span> <span class="p">(</span>
             <span class="n">tools</span><span class="o">.</span><span class="n">is_sequence</span><span class="p">(</span><span class="n">initial_point</span><span class="p">)</span>
             <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">initial_point</span><span class="p">)</span> <span class="o">!=</span> <span class="n">num_points</span>
@@ -239,7 +243,7 @@
             <span class="n">vec</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">xbar</span><span class="p">,</span> <span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
 
             <span class="c1"># Reflection step</span>
-            <span class="n">xr</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">retr</span><span class="p">(</span><span class="n">xbar</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">_reflection</span> <span class="o">*</span> <span class="n">vec</span><span class="p">)</span>
+            <span class="n">xr</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">retraction</span><span class="p">(</span><span class="n">xbar</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">_reflection</span> <span class="o">*</span> <span class="n">vec</span><span class="p">)</span>
             <span class="n">costr</span> <span class="o">=</span> <span class="n">objective</span><span class="p">(</span><span class="n">xr</span><span class="p">)</span>
             <span class="n">cost_evaluations</span> <span class="o">+=</span> <span class="mi">1</span>
 
@@ -254,7 +258,7 @@
 
             <span class="c1"># If the reflected point is better than the best point, expand.</span>
             <span class="k">if</span> <span class="n">costr</span> <span class="o">&lt;</span> <span class="n">costs</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
-                <span class="n">xe</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">retr</span><span class="p">(</span><span class="n">xbar</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">_expansion</span> <span class="o">*</span> <span class="n">vec</span><span class="p">)</span>
+                <span class="n">xe</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">retraction</span><span class="p">(</span><span class="n">xbar</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">_expansion</span> <span class="o">*</span> <span class="n">vec</span><span class="p">)</span>
                 <span class="n">coste</span> <span class="o">=</span> <span class="n">objective</span><span class="p">(</span><span class="n">xe</span><span class="p">)</span>
                 <span class="n">cost_evaluations</span> <span class="o">+=</span> <span class="mi">1</span>
                 <span class="k">if</span> <span class="n">coste</span> <span class="o">&lt;</span> <span class="n">costr</span><span class="p">:</span>
@@ -275,7 +279,7 @@
             <span class="k">if</span> <span class="n">costr</span> <span class="o">&gt;=</span> <span class="n">costs</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]:</span>
                 <span class="k">if</span> <span class="n">costr</span> <span class="o">&lt;</span> <span class="n">costs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
                     <span class="c1"># do an outside contraction</span>
-                    <span class="n">xoc</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">retr</span><span class="p">(</span><span class="n">xbar</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">_contraction</span> <span class="o">*</span> <span class="n">vec</span><span class="p">)</span>
+                    <span class="n">xoc</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">retraction</span><span class="p">(</span><span class="n">xbar</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">_contraction</span> <span class="o">*</span> <span class="n">vec</span><span class="p">)</span>
                     <span class="n">costoc</span> <span class="o">=</span> <span class="n">objective</span><span class="p">(</span><span class="n">xoc</span><span class="p">)</span>
                     <span class="n">cost_evaluations</span> <span class="o">+=</span> <span class="mi">1</span>
                     <span class="k">if</span> <span class="n">costoc</span> <span class="o">&lt;=</span> <span class="n">costr</span><span class="p">:</span>
@@ -286,7 +290,7 @@
                         <span class="k">continue</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="c1"># do an inside contraction</span>
-                    <span class="n">xic</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">retr</span><span class="p">(</span><span class="n">xbar</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_contraction</span> <span class="o">*</span> <span class="n">vec</span><span class="p">)</span>
+                    <span class="n">xic</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">retraction</span><span class="p">(</span><span class="n">xbar</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_contraction</span> <span class="o">*</span> <span class="n">vec</span><span class="p">)</span>
                     <span class="n">costic</span> <span class="o">=</span> <span class="n">objective</span><span class="p">(</span><span class="n">xic</span><span class="p">)</span>
                     <span class="n">cost_evaluations</span> <span class="o">+=</span> <span class="mi">1</span>
                     <span class="k">if</span> <span class="n">costic</span> <span class="o">&lt;=</span> <span class="n">costs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
@@ -301,7 +305,7 @@
                 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Shrinkage&quot;</span><span class="p">)</span>
             <span class="n">x0</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">dim</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-                <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">pairmean</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+                <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">pair_mean</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
                 <span class="n">costs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">objective</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
             <span class="n">cost_evaluations</span> <span class="o">+=</span> <span class="n">dim</span>
 
@@ -327,7 +331,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Apr 29, 2022.
+      <span class="lastupdated">Last updated on May 04, 2022.
       </span></p>
   </div>
 

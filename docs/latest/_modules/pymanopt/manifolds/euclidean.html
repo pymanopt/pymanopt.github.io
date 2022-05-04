@@ -83,8 +83,6 @@
              
   <h1>Source code for pymanopt.manifolds.euclidean</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">linalg</span> <span class="k">as</span> <span class="n">la</span>
-<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">random</span> <span class="k">as</span> <span class="n">rnd</span>
 
 <span class="kn">from</span> <span class="nn">pymanopt.manifolds.manifold</span> <span class="kn">import</span> <span class="n">EuclideanEmbeddedSubmanifold</span>
 <span class="kn">from</span> <span class="nn">pymanopt.tools.multi</span> <span class="kn">import</span> <span class="n">multiskew</span><span class="p">,</span> <span class="n">multisym</span>
@@ -98,10 +96,10 @@
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">dimension</span><span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">typicaldist</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">typical_dist</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector_a</span><span class="p">,</span> <span class="n">tangent_vector_b</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">inner_product</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector_a</span><span class="p">,</span> <span class="n">tangent_vector_b</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">float</span><span class="p">(</span>
             <span class="n">np</span><span class="o">.</span><span class="n">tensordot</span><span class="p">(</span>
                 <span class="n">tangent_vector_a</span><span class="p">,</span> <span class="n">tangent_vector_b</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">tangent_vector_a</span><span class="o">.</span><span class="n">ndim</span>
@@ -109,41 +107,41 @@
         <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">norm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">la</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">tangent_vector</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">tangent_vector</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">dist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point_a</span><span class="p">,</span> <span class="n">point_b</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">la</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">point_a</span> <span class="o">-</span> <span class="n">point_b</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">point_a</span> <span class="o">-</span> <span class="n">point_b</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">proj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">vector</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">projection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">vector</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">vector</span>
 
-    <span class="k">def</span> <span class="nf">ehess2rhess</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">euclidean_gradient</span><span class="p">,</span> <span class="n">euclidean_hvp</span><span class="p">,</span> <span class="n">tangent_vector</span>
+    <span class="k">def</span> <span class="nf">euclidean_to_riemannian_hessian</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">euclidean_gradient</span><span class="p">,</span> <span class="n">euclidean_hessian</span><span class="p">,</span> <span class="n">tangent_vector</span>
     <span class="p">):</span>
-        <span class="k">return</span> <span class="n">euclidean_hvp</span>
+        <span class="k">return</span> <span class="n">euclidean_hessian</span>
 
     <span class="k">def</span> <span class="nf">exp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">point</span> <span class="o">+</span> <span class="n">tangent_vector</span>
 
-    <span class="n">retr</span> <span class="o">=</span> <span class="n">exp</span>
+    <span class="n">retraction</span> <span class="o">=</span> <span class="n">exp</span>
 
     <span class="k">def</span> <span class="nf">log</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point_a</span><span class="p">,</span> <span class="n">point_b</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">point_b</span> <span class="o">-</span> <span class="n">point_a</span>
 
-    <span class="k">def</span> <span class="nf">rand</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">rnd</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">random_point</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">randvec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
-        <span class="n">tangent_vector</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">random_tangent_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
+        <span class="n">tangent_vector</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">random_point</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">tangent_vector</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">transp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point_a</span><span class="p">,</span> <span class="n">point_b</span><span class="p">,</span> <span class="n">tangent_vector_a</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">transport</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point_a</span><span class="p">,</span> <span class="n">point_b</span><span class="p">,</span> <span class="n">tangent_vector_a</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">tangent_vector_a</span>
 
-    <span class="k">def</span> <span class="nf">pairmean</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point_a</span><span class="p">,</span> <span class="n">point_b</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">pair_mean</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point_a</span><span class="p">,</span> <span class="n">point_b</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">point_a</span> <span class="o">+</span> <span class="n">point_b</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
 
-    <span class="k">def</span> <span class="nf">zerovec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">zero_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">)</span>
 
 
@@ -191,19 +189,19 @@
         <span class="n">dimension</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">k</span> <span class="o">*</span> <span class="n">n</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">dimension</span><span class="p">,</span> <span class="o">*</span><span class="n">shape</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Symmetric.proj"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.euclidean.Symmetric.proj">[docs]</a>    <span class="k">def</span> <span class="nf">proj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">vector</span><span class="p">):</span>
+<div class="viewcode-block" id="Symmetric.projection"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.euclidean.Symmetric.projection">[docs]</a>    <span class="k">def</span> <span class="nf">projection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">vector</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">multisym</span><span class="p">(</span><span class="n">vector</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Symmetric.ehess2rhess"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.euclidean.Symmetric.ehess2rhess">[docs]</a>    <span class="k">def</span> <span class="nf">ehess2rhess</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">euclidean_gradient</span><span class="p">,</span> <span class="n">euclidean_hvp</span><span class="p">,</span> <span class="n">tangent_vector</span>
+<div class="viewcode-block" id="Symmetric.euclidean_to_riemannian_hessian"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.euclidean.Symmetric.euclidean_to_riemannian_hessian">[docs]</a>    <span class="k">def</span> <span class="nf">euclidean_to_riemannian_hessian</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">euclidean_gradient</span><span class="p">,</span> <span class="n">euclidean_hessian</span><span class="p">,</span> <span class="n">tangent_vector</span>
     <span class="p">):</span>
-        <span class="k">return</span> <span class="n">multisym</span><span class="p">(</span><span class="n">euclidean_hvp</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">multisym</span><span class="p">(</span><span class="n">euclidean_hessian</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Symmetric.rand"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.euclidean.Symmetric.rand">[docs]</a>    <span class="k">def</span> <span class="nf">rand</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">multisym</span><span class="p">(</span><span class="n">rnd</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">))</span></div>
+<div class="viewcode-block" id="Symmetric.random_point"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.euclidean.Symmetric.random_point">[docs]</a>    <span class="k">def</span> <span class="nf">random_point</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">multisym</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="Symmetric.randvec"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.euclidean.Symmetric.randvec">[docs]</a>    <span class="k">def</span> <span class="nf">randvec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
-        <span class="n">tangent_vector</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span>
+<div class="viewcode-block" id="Symmetric.random_tangent_vector"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.euclidean.Symmetric.random_tangent_vector">[docs]</a>    <span class="k">def</span> <span class="nf">random_tangent_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
+        <span class="n">tangent_vector</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">random_point</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">multisym</span><span class="p">(</span><span class="n">tangent_vector</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">))</span></div></div>
 
 
@@ -226,19 +224,19 @@
         <span class="n">dimension</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">k</span> <span class="o">*</span> <span class="n">n</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">dimension</span><span class="p">,</span> <span class="o">*</span><span class="n">shape</span><span class="p">)</span>
 
-<div class="viewcode-block" id="SkewSymmetric.proj"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.euclidean.SkewSymmetric.proj">[docs]</a>    <span class="k">def</span> <span class="nf">proj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">vector</span><span class="p">):</span>
+<div class="viewcode-block" id="SkewSymmetric.projection"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.euclidean.SkewSymmetric.projection">[docs]</a>    <span class="k">def</span> <span class="nf">projection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">vector</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">multiskew</span><span class="p">(</span><span class="n">vector</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="SkewSymmetric.ehess2rhess"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.euclidean.SkewSymmetric.ehess2rhess">[docs]</a>    <span class="k">def</span> <span class="nf">ehess2rhess</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">euclidean_gradient</span><span class="p">,</span> <span class="n">euclidean_hvp</span><span class="p">,</span> <span class="n">tangent_vector</span>
+<div class="viewcode-block" id="SkewSymmetric.euclidean_to_riemannian_hessian"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.euclidean.SkewSymmetric.euclidean_to_riemannian_hessian">[docs]</a>    <span class="k">def</span> <span class="nf">euclidean_to_riemannian_hessian</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">euclidean_gradient</span><span class="p">,</span> <span class="n">euclidean_hessian</span><span class="p">,</span> <span class="n">tangent_vector</span>
     <span class="p">):</span>
-        <span class="k">return</span> <span class="n">multiskew</span><span class="p">(</span><span class="n">euclidean_hvp</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">multiskew</span><span class="p">(</span><span class="n">euclidean_hessian</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="SkewSymmetric.rand"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.euclidean.SkewSymmetric.rand">[docs]</a>    <span class="k">def</span> <span class="nf">rand</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">multiskew</span><span class="p">(</span><span class="n">rnd</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">))</span></div>
+<div class="viewcode-block" id="SkewSymmetric.random_point"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.euclidean.SkewSymmetric.random_point">[docs]</a>    <span class="k">def</span> <span class="nf">random_point</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">multiskew</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="SkewSymmetric.randvec"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.euclidean.SkewSymmetric.randvec">[docs]</a>    <span class="k">def</span> <span class="nf">randvec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
-        <span class="n">tangent_vector</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span>
+<div class="viewcode-block" id="SkewSymmetric.random_tangent_vector"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.euclidean.SkewSymmetric.random_tangent_vector">[docs]</a>    <span class="k">def</span> <span class="nf">random_tangent_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
+        <span class="n">tangent_vector</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">random_point</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">multiskew</span><span class="p">(</span><span class="n">tangent_vector</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">))</span></div></div>
 </pre></div>
 
@@ -250,7 +248,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Apr 29, 2022.
+      <span class="lastupdated">Last updated on May 04, 2022.
       </span></p>
   </div>
 

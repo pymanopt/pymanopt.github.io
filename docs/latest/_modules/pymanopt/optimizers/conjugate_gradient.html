@@ -162,9 +162,9 @@
 <span class="sd">            Local minimum of the cost function, or the most recent iterate if</span>
 <span class="sd">            algorithm terminated before convergence.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">man</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">manifold</span>
+        <span class="n">manifold</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">manifold</span>
         <span class="n">objective</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">cost</span>
-        <span class="n">gradient</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">grad</span>
+        <span class="n">gradient</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">riemannian_gradient</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">reuse_line_searcher</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">line_searcher</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">line_searcher</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_line_searcher</span><span class="p">)</span>
@@ -172,7 +172,7 @@
 
         <span class="c1"># If no starting point is specified, generate one at random.</span>
         <span class="k">if</span> <span class="n">initial_point</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">x</span> <span class="o">=</span> <span class="n">man</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">random_point</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">x</span> <span class="o">=</span> <span class="n">initial_point</span>
 
@@ -195,9 +195,9 @@
         <span class="c1"># Calculate initial cost-related quantities</span>
         <span class="n">cost</span> <span class="o">=</span> <span class="n">objective</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
         <span class="n">grad</span> <span class="o">=</span> <span class="n">gradient</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-        <span class="n">gradient_norm</span> <span class="o">=</span> <span class="n">man</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">grad</span><span class="p">)</span>
+        <span class="n">gradient_norm</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">grad</span><span class="p">)</span>
         <span class="n">Pgrad</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">preconditioner</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">grad</span><span class="p">)</span>
-        <span class="n">gradPgrad</span> <span class="o">=</span> <span class="n">man</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">grad</span><span class="p">,</span> <span class="n">Pgrad</span><span class="p">)</span>
+        <span class="n">gradPgrad</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">inner_product</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">grad</span><span class="p">,</span> <span class="n">Pgrad</span><span class="p">)</span>
 
         <span class="c1"># Initial descent direction is the negative gradient</span>
         <span class="n">desc_dir</span> <span class="o">=</span> <span class="o">-</span><span class="n">Pgrad</span>
@@ -242,7 +242,7 @@
 
             <span class="c1"># The line search algorithms require the directional derivative of</span>
             <span class="c1"># the cost at the current point x along the search direction.</span>
-            <span class="n">df0</span> <span class="o">=</span> <span class="n">man</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">grad</span><span class="p">,</span> <span class="n">desc_dir</span><span class="p">)</span>
+            <span class="n">df0</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">inner_product</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">grad</span><span class="p">,</span> <span class="n">desc_dir</span><span class="p">)</span>
 
             <span class="c1"># If we didn&#39;t get a descent direction: restart, i.e., switch to</span>
             <span class="c1"># the negative gradient. Equivalent to resetting the CG direction</span>
@@ -261,19 +261,22 @@
 
             <span class="c1"># Execute line search</span>
             <span class="n">step_size</span><span class="p">,</span> <span class="n">newx</span> <span class="o">=</span> <span class="n">line_searcher</span><span class="o">.</span><span class="n">search</span><span class="p">(</span>
-                <span class="n">objective</span><span class="p">,</span> <span class="n">man</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">desc_dir</span><span class="p">,</span> <span class="n">cost</span><span class="p">,</span> <span class="n">df0</span>
+                <span class="n">objective</span><span class="p">,</span> <span class="n">manifold</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">desc_dir</span><span class="p">,</span> <span class="n">cost</span><span class="p">,</span> <span class="n">df0</span>
             <span class="p">)</span>
 
             <span class="c1"># Compute the new cost-related quantities for newx</span>
             <span class="n">newcost</span> <span class="o">=</span> <span class="n">objective</span><span class="p">(</span><span class="n">newx</span><span class="p">)</span>
             <span class="n">newgrad</span> <span class="o">=</span> <span class="n">gradient</span><span class="p">(</span><span class="n">newx</span><span class="p">)</span>
-            <span class="n">newgradient_norm</span> <span class="o">=</span> <span class="n">man</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">newgrad</span><span class="p">)</span>
+            <span class="n">newgradient_norm</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">newgrad</span><span class="p">)</span>
             <span class="n">Pnewgrad</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">preconditioner</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">newgrad</span><span class="p">)</span>
-            <span class="n">newgradPnewgrad</span> <span class="o">=</span> <span class="n">man</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">newgrad</span><span class="p">,</span> <span class="n">Pnewgrad</span><span class="p">)</span>
+            <span class="n">newgradPnewgrad</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">inner_product</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">newgrad</span><span class="p">,</span> <span class="n">Pnewgrad</span><span class="p">)</span>
 
             <span class="c1"># Apply the CG scheme to compute the next search direction</span>
-            <span class="n">oldgrad</span> <span class="o">=</span> <span class="n">man</span><span class="o">.</span><span class="n">transp</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">newx</span><span class="p">,</span> <span class="n">grad</span><span class="p">)</span>
-            <span class="n">orth_grads</span> <span class="o">=</span> <span class="n">man</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">oldgrad</span><span class="p">,</span> <span class="n">Pnewgrad</span><span class="p">)</span> <span class="o">/</span> <span class="n">newgradPnewgrad</span>
+            <span class="n">oldgrad</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">transport</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">newx</span><span class="p">,</span> <span class="n">grad</span><span class="p">)</span>
+            <span class="n">orth_grads</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">manifold</span><span class="o">.</span><span class="n">inner_product</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">oldgrad</span><span class="p">,</span> <span class="n">Pnewgrad</span><span class="p">)</span>
+                <span class="o">/</span> <span class="n">newgradPnewgrad</span>
+            <span class="p">)</span>
 
             <span class="c1"># Powell&#39;s restart strategy (see page 12 of Hager and Zhang&#39;s</span>
             <span class="c1"># survey on conjugate gradient methods, for example)</span>
@@ -281,40 +284,42 @@
                 <span class="n">beta</span> <span class="o">=</span> <span class="mi">0</span>
                 <span class="n">desc_dir</span> <span class="o">=</span> <span class="o">-</span><span class="n">Pnewgrad</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">desc_dir</span> <span class="o">=</span> <span class="n">man</span><span class="o">.</span><span class="n">transp</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">newx</span><span class="p">,</span> <span class="n">desc_dir</span><span class="p">)</span>
+                <span class="n">desc_dir</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">transport</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">newx</span><span class="p">,</span> <span class="n">desc_dir</span><span class="p">)</span>
 
                 <span class="c1"># TODO(nkoep): Define closures for these in the constructor.</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_beta_rule</span> <span class="o">==</span> <span class="s2">&quot;FletcherReeves&quot;</span><span class="p">:</span>
                     <span class="n">beta</span> <span class="o">=</span> <span class="n">newgradPnewgrad</span> <span class="o">/</span> <span class="n">gradPgrad</span>
                 <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_beta_rule</span> <span class="o">==</span> <span class="s2">&quot;PolakRibiere&quot;</span><span class="p">:</span>
                     <span class="n">diff</span> <span class="o">=</span> <span class="n">newgrad</span> <span class="o">-</span> <span class="n">oldgrad</span>
-                    <span class="n">ip_diff</span> <span class="o">=</span> <span class="n">man</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">Pnewgrad</span><span class="p">,</span> <span class="n">diff</span><span class="p">)</span>
+                    <span class="n">ip_diff</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">inner_product</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">Pnewgrad</span><span class="p">,</span> <span class="n">diff</span><span class="p">)</span>
                     <span class="n">beta</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">ip_diff</span> <span class="o">/</span> <span class="n">gradPgrad</span><span class="p">)</span>
                 <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_beta_rule</span> <span class="o">==</span> <span class="s2">&quot;HestenesStiefel&quot;</span><span class="p">:</span>
                     <span class="n">diff</span> <span class="o">=</span> <span class="n">newgrad</span> <span class="o">-</span> <span class="n">oldgrad</span>
-                    <span class="n">ip_diff</span> <span class="o">=</span> <span class="n">man</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">Pnewgrad</span><span class="p">,</span> <span class="n">diff</span><span class="p">)</span>
+                    <span class="n">ip_diff</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">inner_product</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">Pnewgrad</span><span class="p">,</span> <span class="n">diff</span><span class="p">)</span>
                     <span class="k">try</span><span class="p">:</span>
                         <span class="n">beta</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span>
-                            <span class="mi">0</span><span class="p">,</span> <span class="n">ip_diff</span> <span class="o">/</span> <span class="n">man</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">diff</span><span class="p">,</span> <span class="n">desc_dir</span><span class="p">)</span>
+                            <span class="mi">0</span><span class="p">,</span>
+                            <span class="n">ip_diff</span>
+                            <span class="o">/</span> <span class="n">manifold</span><span class="o">.</span><span class="n">inner_product</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">diff</span><span class="p">,</span> <span class="n">desc_dir</span><span class="p">),</span>
                         <span class="p">)</span>
-                    <span class="c1"># if ip_diff = man.inner(newx, diff, desc_dir) = 0</span>
+                    <span class="c1"># if ip_diff = manifold.inner_product(newx, diff, desc_dir) = 0</span>
                     <span class="k">except</span> <span class="ne">ZeroDivisionError</span><span class="p">:</span>
                         <span class="n">beta</span> <span class="o">=</span> <span class="mi">1</span>
                 <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_beta_rule</span> <span class="o">==</span> <span class="s2">&quot;HagerZhang&quot;</span><span class="p">:</span>
                     <span class="n">diff</span> <span class="o">=</span> <span class="n">newgrad</span> <span class="o">-</span> <span class="n">oldgrad</span>
-                    <span class="n">Poldgrad</span> <span class="o">=</span> <span class="n">man</span><span class="o">.</span><span class="n">transp</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">newx</span><span class="p">,</span> <span class="n">Pgrad</span><span class="p">)</span>
+                    <span class="n">Poldgrad</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">transport</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">newx</span><span class="p">,</span> <span class="n">Pgrad</span><span class="p">)</span>
                     <span class="n">Pdiff</span> <span class="o">=</span> <span class="n">Pnewgrad</span> <span class="o">-</span> <span class="n">Poldgrad</span>
-                    <span class="n">deno</span> <span class="o">=</span> <span class="n">man</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">diff</span><span class="p">,</span> <span class="n">desc_dir</span><span class="p">)</span>
-                    <span class="n">numo</span> <span class="o">=</span> <span class="n">man</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">diff</span><span class="p">,</span> <span class="n">Pnewgrad</span><span class="p">)</span>
+                    <span class="n">deno</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">inner_product</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">diff</span><span class="p">,</span> <span class="n">desc_dir</span><span class="p">)</span>
+                    <span class="n">numo</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">inner_product</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">diff</span><span class="p">,</span> <span class="n">Pnewgrad</span><span class="p">)</span>
                     <span class="n">numo</span> <span class="o">-=</span> <span class="p">(</span>
                         <span class="mi">2</span>
-                        <span class="o">*</span> <span class="n">man</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">diff</span><span class="p">,</span> <span class="n">Pdiff</span><span class="p">)</span>
-                        <span class="o">*</span> <span class="n">man</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">desc_dir</span><span class="p">,</span> <span class="n">newgrad</span><span class="p">)</span>
+                        <span class="o">*</span> <span class="n">manifold</span><span class="o">.</span><span class="n">inner_product</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">diff</span><span class="p">,</span> <span class="n">Pdiff</span><span class="p">)</span>
+                        <span class="o">*</span> <span class="n">manifold</span><span class="o">.</span><span class="n">inner_product</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">desc_dir</span><span class="p">,</span> <span class="n">newgrad</span><span class="p">)</span>
                         <span class="o">/</span> <span class="n">deno</span>
                     <span class="p">)</span>
                     <span class="n">beta</span> <span class="o">=</span> <span class="n">numo</span> <span class="o">/</span> <span class="n">deno</span>
                     <span class="c1"># Robustness (see Hager-Zhang paper mentioned above)</span>
-                    <span class="n">desc_dir_norm</span> <span class="o">=</span> <span class="n">man</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">desc_dir</span><span class="p">)</span>
+                    <span class="n">desc_dir_norm</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">desc_dir</span><span class="p">)</span>
                     <span class="n">eta_HZ</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">desc_dir_norm</span> <span class="o">*</span> <span class="nb">min</span><span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">gradient_norm</span><span class="p">))</span>
                     <span class="n">beta</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">beta</span><span class="p">,</span> <span class="n">eta_HZ</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
@@ -353,7 +358,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Apr 29, 2022.
+      <span class="lastupdated">Last updated on May 04, 2022.
       </span></p>
   </div>
 

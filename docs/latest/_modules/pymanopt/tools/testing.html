@@ -84,56 +84,62 @@
   <h1>Source code for pymanopt.tools.testing</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Tools for testing numerical correctness in Pymanopt.</span>
 
-<span class="sd">Note:</span>
-<span class="sd">    The functions :func:`rgrad`, :func:`egrad2rgrad`, :func:`ehess` and</span>
-<span class="sd">    :func:`ehess2rhess` will only be correct if the manifold is a submanifold</span>
-<span class="sd">    of Euclidean space, that is if the projection is an orthogonal projection</span>
-<span class="sd">    onto the tangent space.</span>
+<span class="sd">Notes:</span>
+<span class="sd">    The functions :func:`rgrad`, :func:`euclidean_to_riemannian_gradient`,</span>
+<span class="sd">    :func:`ehess` and :func:`euclidean_to_riemannian_hessian` will only be correct</span>
+<span class="sd">    if the manifold is a submanifold of Euclidean space, that is if the</span>
+<span class="sd">    projection is an orthogonal projection onto the tangent space.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">autograd</span> <span class="kn">import</span> <span class="n">grad</span><span class="p">,</span> <span class="n">jacobian</span>
 
 
-<div class="viewcode-block" id="rgrad"><a class="viewcode-back" href="../../../tools.html#pymanopt.tools.testing.rgrad">[docs]</a><span class="k">def</span> <span class="nf">rgrad</span><span class="p">(</span><span class="n">cost</span><span class="p">,</span> <span class="n">proj</span><span class="p">):</span>
+<div class="viewcode-block" id="riemannian_gradient"><a class="viewcode-back" href="../../../tools.html#pymanopt.tools.testing.riemannian_gradient">[docs]</a><span class="k">def</span> <span class="nf">riemannian_gradient</span><span class="p">(</span><span class="n">cost</span><span class="p">,</span> <span class="n">projector</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Generates the Riemannian gradient of a cost function.&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">proj</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">grad</span><span class="p">(</span><span class="n">cost</span><span class="p">)(</span><span class="n">x</span><span class="p">))</span></div>
+
+    <span class="k">def</span> <span class="nf">gradient_function</span><span class="p">(</span><span class="n">point</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">projector</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">grad</span><span class="p">(</span><span class="n">cost</span><span class="p">)(</span><span class="n">point</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">gradient_function</span></div>
 
 
-<div class="viewcode-block" id="egrad2rgrad"><a class="viewcode-back" href="../../../tools.html#pymanopt.tools.testing.egrad2rgrad">[docs]</a><span class="k">def</span> <span class="nf">egrad2rgrad</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Generates an egrad2rgrad function.&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">g</span><span class="p">:</span> <span class="n">proj</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">g</span><span class="p">)</span></div>
+<div class="viewcode-block" id="euclidean_to_riemannian_gradient"><a class="viewcode-back" href="../../../tools.html#pymanopt.tools.testing.euclidean_to_riemannian_gradient">[docs]</a><span class="k">def</span> <span class="nf">euclidean_to_riemannian_gradient</span><span class="p">(</span><span class="n">projector</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Generates an euclidean_to_riemannian_gradient function.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">converter</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">euclidean_gradient</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">projector</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">euclidean_gradient</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">converter</span></div>
 
 
-<div class="viewcode-block" id="rhess"><a class="viewcode-back" href="../../../tools.html#pymanopt.tools.testing.rhess">[docs]</a><span class="k">def</span> <span class="nf">rhess</span><span class="p">(</span><span class="n">cost</span><span class="p">,</span> <span class="n">proj</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Generates the Riemannian hessian of a cost function.</span>
+<div class="viewcode-block" id="euclidean_to_riemannian_hessian"><a class="viewcode-back" href="../../../tools.html#pymanopt.tools.testing.euclidean_to_riemannian_hessian">[docs]</a><span class="k">def</span> <span class="nf">euclidean_to_riemannian_hessian</span><span class="p">(</span><span class="n">projector</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Generates an euclidean_to_riemannian_hessian function.</span>
 
-<span class="sd">    Specifically, ``rhess(cost, proj)(x, u)`` is the directional derivative of</span>
-<span class="sd">    cost at ``x`` on the manifold in the direction of a tangent vector ``u``.</span>
-<span class="sd">    Both ``cost`` and ``proj`` must be defined using Autograd.</span>
-<span class="sd">    The current implementation is not efficient because of the explicit</span>
-<span class="sd">    Jacobian-vector product.</span>
+<span class="sd">    Specifically, ``euclidean_to_riemannian_hessian(proj)(point,</span>
+<span class="sd">    euclidean_gradient, euclidean_hessian, tangent_vector)`` converts the Euclidean</span>
+<span class="sd">    Hessian-vector product ``euclidean_hessian`` at a point ``point`` to a</span>
+<span class="sd">    Riemannian Hessian-vector product, i.e., the directional derivative of the</span>
+<span class="sd">    gradient in the tangent direction ``tangent_vector``.</span>
+<span class="sd">    Similar to :func:`riemannian_hessian`, this is not efficient as it computes the</span>
+<span class="sd">    Jacobian explicitly.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">u</span><span class="p">:</span> <span class="n">proj</span><span class="p">(</span>
-        <span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">tensordot</span><span class="p">(</span><span class="n">jacobian</span><span class="p">(</span><span class="n">rgrad</span><span class="p">(</span><span class="n">cost</span><span class="p">,</span> <span class="n">proj</span><span class="p">))(</span><span class="n">x</span><span class="p">),</span> <span class="n">u</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">u</span><span class="o">.</span><span class="n">ndim</span><span class="p">)</span>
-    <span class="p">)</span></div>
+    <span class="n">jacobian_projector</span> <span class="o">=</span> <span class="n">jacobian</span><span class="p">(</span><span class="n">projector</span><span class="p">)</span>
 
+    <span class="k">def</span> <span class="nf">converter</span><span class="p">(</span>
+        <span class="n">point</span><span class="p">,</span> <span class="n">euclidean_gradient</span><span class="p">,</span> <span class="n">euclidean_hessian</span><span class="p">,</span> <span class="n">tangent_vector</span>
+    <span class="p">):</span>
+        <span class="k">return</span> <span class="n">projector</span><span class="p">(</span>
+            <span class="n">point</span><span class="p">,</span>
+            <span class="n">euclidean_hessian</span>
+            <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">tensordot</span><span class="p">(</span>
+                <span class="n">jacobian_projector</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">euclidean_gradient</span><span class="p">),</span>
+                <span class="n">tangent_vector</span><span class="p">,</span>
+                <span class="n">axes</span><span class="o">=</span><span class="n">tangent_vector</span><span class="o">.</span><span class="n">ndim</span><span class="p">,</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
 
-<div class="viewcode-block" id="ehess2rhess"><a class="viewcode-back" href="../../../tools.html#pymanopt.tools.testing.ehess2rhess">[docs]</a><span class="k">def</span> <span class="nf">ehess2rhess</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Generates an ehess2rhess function.</span>
-
-<span class="sd">    Specifically, ``ehess2rhess(proj)(x, egrad, ehess, u)`` converts the</span>
-<span class="sd">    Euclidean Hessian-vector product ``ehess`` at a point ``x`` to a Riemannian</span>
-<span class="sd">    Hessian-vector product, i.e., the directional derivative of the gradient in</span>
-<span class="sd">    the tangent direction ``u``.</span>
-<span class="sd">    Similar to :func:`rhess`, this is not efficient as it computes the Jacobian</span>
-<span class="sd">    explicitly.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Differentiate proj w.r.t. the first argument</span>
-    <span class="n">d_proj</span> <span class="o">=</span> <span class="n">jacobian</span><span class="p">(</span><span class="n">proj</span><span class="p">)</span>
-    <span class="k">return</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">egrad</span><span class="p">,</span> <span class="n">ehess</span><span class="p">,</span> <span class="n">u</span><span class="p">:</span> <span class="n">proj</span><span class="p">(</span>
-        <span class="n">x</span><span class="p">,</span> <span class="n">ehess</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">tensordot</span><span class="p">(</span><span class="n">d_proj</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">egrad</span><span class="p">),</span> <span class="n">u</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">u</span><span class="o">.</span><span class="n">ndim</span><span class="p">)</span>
-    <span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">converter</span></div>
 </pre></div>
 
            </div>
@@ -144,7 +150,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Apr 29, 2022.
+      <span class="lastupdated">Last updated on May 04, 2022.
       </span></p>
   </div>
 

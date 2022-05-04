@@ -197,29 +197,29 @@
         <span class="n">Delta_bar</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">Delta0</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="n">man</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">manifold</span>
+        <span class="n">manifold</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">manifold</span>
 
         <span class="k">if</span> <span class="n">maxinner</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">maxinner</span> <span class="o">=</span> <span class="n">man</span><span class="o">.</span><span class="n">dim</span>
+            <span class="n">maxinner</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">dim</span>
 
         <span class="c1"># Set default Delta_bar and Delta0 separately to deal with additional</span>
         <span class="c1"># logic: if Delta_bar is provided but not Delta0, let Delta0</span>
         <span class="c1"># automatically be some fraction of the provided Delta_bar.</span>
         <span class="k">if</span> <span class="n">Delta_bar</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="n">Delta_bar</span> <span class="o">=</span> <span class="n">man</span><span class="o">.</span><span class="n">typicaldist</span>
+                <span class="n">Delta_bar</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">typical_dist</span>
             <span class="k">except</span> <span class="ne">NotImplementedError</span><span class="p">:</span>
-                <span class="n">Delta_bar</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">man</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
+                <span class="n">Delta_bar</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">manifold</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">Delta0</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">Delta0</span> <span class="o">=</span> <span class="n">Delta_bar</span> <span class="o">/</span> <span class="mi">8</span>
 
         <span class="n">cost</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">cost</span>
-        <span class="n">grad</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">grad</span>
-        <span class="n">hess</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">hess</span>
+        <span class="n">gradient</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">riemannian_gradient</span>
+        <span class="n">hess</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">riemannian_hessian</span>
 
         <span class="c1"># If no starting point is specified, generate one at random.</span>
         <span class="k">if</span> <span class="n">initial_point</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">x</span> <span class="o">=</span> <span class="n">man</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">random_point</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">x</span> <span class="o">=</span> <span class="n">initial_point</span>
 
@@ -232,8 +232,8 @@
 
         <span class="c1"># Initialize solution and companion measures: f(x), fgrad(x)</span>
         <span class="n">fx</span> <span class="o">=</span> <span class="n">cost</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-        <span class="n">fgradx</span> <span class="o">=</span> <span class="n">grad</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-        <span class="n">norm_grad</span> <span class="o">=</span> <span class="n">man</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">fgradx</span><span class="p">)</span>
+        <span class="n">fgradx</span> <span class="o">=</span> <span class="n">gradient</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">norm_grad</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">fgradx</span><span class="p">)</span>
 
         <span class="c1"># Initialize the trust region radius</span>
         <span class="n">Delta</span> <span class="o">=</span> <span class="n">Delta0</span>
@@ -261,12 +261,12 @@
             <span class="c1"># Determine eta0</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_rand</span><span class="p">:</span>
                 <span class="c1"># Pick the zero vector</span>
-                <span class="n">eta</span> <span class="o">=</span> <span class="n">man</span><span class="o">.</span><span class="n">zerovec</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+                <span class="n">eta</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">zero_vector</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="c1"># Random vector in T_x M (this has to be very small)</span>
-                <span class="n">eta</span> <span class="o">=</span> <span class="mf">1e-6</span> <span class="o">*</span> <span class="n">man</span><span class="o">.</span><span class="n">randvec</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+                <span class="n">eta</span> <span class="o">=</span> <span class="mf">1e-6</span> <span class="o">*</span> <span class="n">manifold</span><span class="o">.</span><span class="n">random_tangent_vector</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
                 <span class="c1"># Must be inside trust region</span>
-                <span class="k">while</span> <span class="n">man</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">eta</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">Delta</span><span class="p">:</span>
+                <span class="k">while</span> <span class="n">manifold</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">eta</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">Delta</span><span class="p">:</span>
                     <span class="n">eta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">spacing</span><span class="p">(</span><span class="mi">1</span><span class="p">)))</span> <span class="o">*</span> <span class="n">eta</span>
 
             <span class="c1"># Solve TR subproblem approximately</span>
@@ -294,7 +294,7 @@
                 <span class="n">used_cauchy</span> <span class="o">=</span> <span class="kc">False</span>
                 <span class="c1"># Check the curvature</span>
                 <span class="n">Hg</span> <span class="o">=</span> <span class="n">hess</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">fgradx</span><span class="p">)</span>
-                <span class="n">g_Hg</span> <span class="o">=</span> <span class="n">man</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">fgradx</span><span class="p">,</span> <span class="n">Hg</span><span class="p">)</span>
+                <span class="n">g_Hg</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">inner_product</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">fgradx</span><span class="p">,</span> <span class="n">Hg</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">g_Hg</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
                     <span class="n">tau_c</span> <span class="o">=</span> <span class="mi">1</span>
                 <span class="k">else</span><span class="p">:</span>
@@ -308,13 +308,13 @@
                 <span class="c1"># returned eta, we might as well keep the best of them.</span>
                 <span class="n">mdle</span> <span class="o">=</span> <span class="p">(</span>
                     <span class="n">fx</span>
-                    <span class="o">+</span> <span class="n">man</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">fgradx</span><span class="p">,</span> <span class="n">eta</span><span class="p">)</span>
-                    <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">man</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">Heta</span><span class="p">,</span> <span class="n">eta</span><span class="p">)</span>
+                    <span class="o">+</span> <span class="n">manifold</span><span class="o">.</span><span class="n">inner_product</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">fgradx</span><span class="p">,</span> <span class="n">eta</span><span class="p">)</span>
+                    <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">manifold</span><span class="o">.</span><span class="n">inner_product</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">Heta</span><span class="p">,</span> <span class="n">eta</span><span class="p">)</span>
                 <span class="p">)</span>
                 <span class="n">mdlec</span> <span class="o">=</span> <span class="p">(</span>
                     <span class="n">fx</span>
-                    <span class="o">+</span> <span class="n">man</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">fgradx</span><span class="p">,</span> <span class="n">eta_c</span><span class="p">)</span>
-                    <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">man</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">Heta_c</span><span class="p">,</span> <span class="n">eta_c</span><span class="p">)</span>
+                    <span class="o">+</span> <span class="n">manifold</span><span class="o">.</span><span class="n">inner_product</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">fgradx</span><span class="p">,</span> <span class="n">eta_c</span><span class="p">)</span>
+                    <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">manifold</span><span class="o">.</span><span class="n">inner_product</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">Heta_c</span><span class="p">,</span> <span class="n">eta_c</span><span class="p">)</span>
                 <span class="p">)</span>
                 <span class="k">if</span> <span class="n">mdlec</span> <span class="o">&lt;</span> <span class="n">mdle</span><span class="p">:</span>
                     <span class="n">eta</span> <span class="o">=</span> <span class="n">eta_c</span>
@@ -325,10 +325,10 @@
             <span class="c1"># useful for some user-defined stopping criteria. If this is not</span>
             <span class="c1"># cheap for specific applications (compared to evaluating the</span>
             <span class="c1"># cost), we should reconsider this.</span>
-            <span class="c1"># norm_eta = man.norm(x, eta)</span>
+            <span class="c1"># norm_eta = manifold.norm(x, eta)</span>
 
             <span class="c1"># Compute the tentative next iterate (the proposal)</span>
-            <span class="n">x_prop</span> <span class="o">=</span> <span class="n">man</span><span class="o">.</span><span class="n">retr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">eta</span><span class="p">)</span>
+            <span class="n">x_prop</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">retraction</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">eta</span><span class="p">)</span>
 
             <span class="c1"># Compute the function value of the proposal</span>
             <span class="n">fx_prop</span> <span class="o">=</span> <span class="n">cost</span><span class="p">(</span><span class="n">x_prop</span><span class="p">)</span>
@@ -336,7 +336,9 @@
             <span class="c1"># Will we accept the proposal or not? Check the performance of the</span>
             <span class="c1"># quadratic model against the actual cost.</span>
             <span class="n">rhonum</span> <span class="o">=</span> <span class="n">fx</span> <span class="o">-</span> <span class="n">fx_prop</span>
-            <span class="n">rhoden</span> <span class="o">=</span> <span class="o">-</span><span class="n">man</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">fgradx</span><span class="p">,</span> <span class="n">eta</span><span class="p">)</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">man</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">eta</span><span class="p">,</span> <span class="n">Heta</span><span class="p">)</span>
+            <span class="n">rhoden</span> <span class="o">=</span> <span class="o">-</span><span class="n">manifold</span><span class="o">.</span><span class="n">inner_product</span><span class="p">(</span>
+                <span class="n">x</span><span class="p">,</span> <span class="n">fgradx</span><span class="p">,</span> <span class="n">eta</span>
+            <span class="p">)</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">manifold</span><span class="o">.</span><span class="n">inner_product</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">eta</span><span class="p">,</span> <span class="n">Heta</span><span class="p">)</span>
 
             <span class="c1"># rhonum could be anything.</span>
             <span class="c1"># rhoden should be nonnegative, as guaranteed by tCG, baring</span>
@@ -474,8 +476,8 @@
                 <span class="n">accstr</span> <span class="o">=</span> <span class="s2">&quot;acc&quot;</span>
                 <span class="n">x</span> <span class="o">=</span> <span class="n">x_prop</span>
                 <span class="n">fx</span> <span class="o">=</span> <span class="n">fx_prop</span>
-                <span class="n">fgradx</span> <span class="o">=</span> <span class="n">grad</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-                <span class="n">norm_grad</span> <span class="o">=</span> <span class="n">man</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">fgradx</span><span class="p">)</span>
+                <span class="n">fgradx</span> <span class="o">=</span> <span class="n">gradient</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+                <span class="n">norm_grad</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">fgradx</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="c1"># accept = False</span>
                 <span class="n">accstr</span> <span class="o">=</span> <span class="s2">&quot;REJ&quot;</span>
@@ -526,13 +528,13 @@
     <span class="k">def</span> <span class="nf">_truncated_conjugate_gradient</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">problem</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">fgradx</span><span class="p">,</span> <span class="n">eta</span><span class="p">,</span> <span class="n">Delta</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">kappa</span><span class="p">,</span> <span class="n">mininner</span><span class="p">,</span> <span class="n">maxinner</span>
     <span class="p">):</span>
-        <span class="n">man</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">manifold</span>
-        <span class="n">inner</span> <span class="o">=</span> <span class="n">man</span><span class="o">.</span><span class="n">inner</span>
-        <span class="n">hess</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">hess</span>
+        <span class="n">manifold</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">manifold</span>
+        <span class="n">inner</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">inner_product</span>
+        <span class="n">hess</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">riemannian_hessian</span>
         <span class="n">preconditioner</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">preconditioner</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_rand</span><span class="p">:</span>  <span class="c1"># and therefore, eta == 0</span>
-            <span class="n">Heta</span> <span class="o">=</span> <span class="n">man</span><span class="o">.</span><span class="n">zerovec</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="n">Heta</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">zero_vector</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
             <span class="n">r</span> <span class="o">=</span> <span class="n">fgradx</span>
             <span class="n">e_Pe</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">else</span><span class="p">:</span>  <span class="c1"># and therefore, no preconditioner</span>
@@ -708,7 +710,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Apr 29, 2022.
+      <span class="lastupdated">Last updated on May 04, 2022.
       </span></p>
   </div>
 

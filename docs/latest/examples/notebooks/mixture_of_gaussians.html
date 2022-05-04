@@ -503,7 +503,7 @@ q_\mathcal{N}(\mathbf{y}_n;\mathbf{S}_m)
     <span class="k">return</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">loglikvec</span><span class="p">)</span>
 
 
-<span class="n">problem</span> <span class="o">=</span> <span class="n">Problem</span><span class="p">(</span><span class="n">manifold</span><span class="o">=</span><span class="n">manifold</span><span class="p">,</span> <span class="n">cost</span><span class="o">=</span><span class="n">cost</span><span class="p">)</span>
+<span class="n">problem</span> <span class="o">=</span> <span class="n">Problem</span><span class="p">(</span><span class="n">manifold</span><span class="p">,</span> <span class="n">cost</span><span class="p">)</span>
 
 <span class="c1"># (3) Instantiate a Pymanopt optimizer</span>
 <span class="n">optimizer</span> <span class="o">=</span> <span class="n">SteepestDescent</span><span class="p">(</span><span class="n">verbosity</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -519,7 +519,7 @@ q_\mathcal{N}(\mathbf{y}_n;\mathbf{S}_m)
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Optimizing...
-Terminated - min step_size reached after 190 iterations, 1.44 seconds.
+Terminated - min step_size reached after 170 iterations, 0.87 seconds.
 
 </pre></div></div>
 </div>
@@ -601,21 +601,21 @@ Terminated - min step_size reached after 190 iterations, 1.44 seconds.
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[[-3.66]
- [ 0.96]]
-[[ 3.66 -1.04]
- [-1.04  1.22]]
-[[ 2.04]
+[[-3.93]
+ [ 1.05]]
+[[ 2.17 -0.09]
+ [-0.09  0.89]]
+[[ 2.  ]
  [-1.01]]
-[[0.55 0.04]
- [0.04 0.52]]
-[[0.03]
+[[0.41 0.03]
+ [0.03 0.51]]
+[[0.06]
  [0.01]]
-[[0.97 0.97]
- [0.97 2.9 ]]
-0.11426801245908663
-0.2930355424091625
-0.5926964451317509
+[[0.94 0.96]
+ [0.96 3.01]]
+0.08982568697027023
+0.2756989810554438
+0.634475331974286
 </pre></div></div>
 </div>
 <p>Et voilà – this was a brief demonstration of how to do inference for MoG models by performing Manifold optimisation using Pymanopt.</p>
@@ -714,7 +714,7 @@ Terminated - min step_size reached after 190 iterations, 1.44 seconds.
         <span class="k">return</span> <span class="n">step_size</span><span class="p">,</span> <span class="n">newx</span>
 
     <span class="k">def</span> <span class="nf">_newxnewf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">objective</span><span class="p">,</span> <span class="n">manifold</span><span class="p">):</span>
-        <span class="n">newx</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">retr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+        <span class="n">newx</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">retraction</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">newf</span> <span class="o">=</span> <span class="n">objective</span><span class="p">(</span><span class="n">newx</span><span class="p">)</span>
         <span class="k">except</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">LinAlgError</span><span class="p">:</span>
@@ -725,7 +725,7 @@ Terminated - min step_size reached after 190 iterations, 1.44 seconds.
                     <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">newx</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
                 <span class="p">]</span>
             <span class="p">)</span>
-            <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">replace</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">rand</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="n">replace</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span>
+            <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">replace</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">random_point</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="n">replace</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span>
             <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">objective</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="kc">True</span>
         <span class="k">return</span> <span class="n">newx</span><span class="p">,</span> <span class="n">newf</span><span class="p">,</span> <span class="kc">False</span>
 </pre></div>
@@ -745,7 +745,7 @@ Terminated - min step_size reached after 190 iterations, 1.44 seconds.
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Apr 29, 2022.
+      <span class="lastupdated">Last updated on May 04, 2022.
       </span></p>
   </div>
 

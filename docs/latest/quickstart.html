@@ -191,7 +191,7 @@ optimizers.</p>
 <span class="k">def</span> <span class="nf">cost</span><span class="p">(</span><span class="n">point</span><span class="p">):</span>
     <span class="k">return</span> <span class="o">-</span><span class="n">point</span> <span class="o">@</span> <span class="n">matrix</span> <span class="o">@</span> <span class="n">point</span>
 
-<span class="n">problem</span> <span class="o">=</span> <span class="n">pymanopt</span><span class="o">.</span><span class="n">Problem</span><span class="p">(</span><span class="n">manifold</span><span class="o">=</span><span class="n">manifold</span><span class="p">,</span> <span class="n">cost</span><span class="o">=</span><span class="n">cost</span><span class="p">)</span>
+<span class="n">problem</span> <span class="o">=</span> <span class="n">pymanopt</span><span class="o">.</span><span class="n">Problem</span><span class="p">(</span><span class="n">manifold</span><span class="p">,</span> <span class="n">cost</span><span class="p">)</span>
 
 <span class="n">optimizer</span> <span class="o">=</span> <span class="n">pymanopt</span><span class="o">.</span><span class="n">optimizers</span><span class="o">.</span><span class="n">SteepestDescent</span><span class="p">()</span>
 <span class="n">solution</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">problem</span><span class="p">)</span>
@@ -267,7 +267,7 @@ Pymanopt in the context of inference in Gaussian mixture models.</p>
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Apr 29, 2022.
+      <span class="lastupdated">Last updated on May 04, 2022.
       </span></p>
   </div>
 

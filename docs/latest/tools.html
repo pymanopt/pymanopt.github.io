@@ -250,46 +250,34 @@ truncated Taylor series.</p>
 <div class="section" id="module-pymanopt.tools.testing">
 <span id="testing"></span><h2>Testing<a class="headerlink" href="#module-pymanopt.tools.testing" title="Permalink to this headline"></a></h2>
 <p>Tools for testing numerical correctness in Pymanopt.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The functions <a class="reference internal" href="#pymanopt.tools.testing.rgrad" title="pymanopt.tools.testing.rgrad"><code class="xref py py-func docutils literal notranslate"><span class="pre">rgrad()</span></code></a>, <a class="reference internal" href="#pymanopt.tools.testing.egrad2rgrad" title="pymanopt.tools.testing.egrad2rgrad"><code class="xref py py-func docutils literal notranslate"><span class="pre">egrad2rgrad()</span></code></a>, <code class="xref py py-func docutils literal notranslate"><span class="pre">ehess()</span></code> and
-<a class="reference internal" href="#pymanopt.tools.testing.ehess2rhess" title="pymanopt.tools.testing.ehess2rhess"><code class="xref py py-func docutils literal notranslate"><span class="pre">ehess2rhess()</span></code></a> will only be correct if the manifold is a submanifold
-of Euclidean space, that is if the projection is an orthogonal projection
-onto the tangent space.</p>
-</div>
+<p class="rubric">Notes</p>
+<p>The functions <code class="xref py py-func docutils literal notranslate"><span class="pre">rgrad()</span></code>, <a class="reference internal" href="#pymanopt.tools.testing.euclidean_to_riemannian_gradient" title="pymanopt.tools.testing.euclidean_to_riemannian_gradient"><code class="xref py py-func docutils literal notranslate"><span class="pre">euclidean_to_riemannian_gradient()</span></code></a>,
+<code class="xref py py-func docutils literal notranslate"><span class="pre">ehess()</span></code> and <a class="reference internal" href="#pymanopt.tools.testing.euclidean_to_riemannian_hessian" title="pymanopt.tools.testing.euclidean_to_riemannian_hessian"><code class="xref py py-func docutils literal notranslate"><span class="pre">euclidean_to_riemannian_hessian()</span></code></a> will only be correct
+if the manifold is a submanifold of Euclidean space, that is if the
+projection is an orthogonal projection onto the tangent space.</p>
 <dl class="py function">
-<dt class="sig sig-object py" id="pymanopt.tools.testing.rgrad">
-<span class="sig-prename descclassname"><span class="pre">pymanopt.tools.testing.</span></span><span class="sig-name descname"><span class="pre">rgrad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cost</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/tools/testing.html#rgrad"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.tools.testing.rgrad" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="pymanopt.tools.testing.riemannian_gradient">
+<span class="sig-prename descclassname"><span class="pre">pymanopt.tools.testing.</span></span><span class="sig-name descname"><span class="pre">riemannian_gradient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cost</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">projector</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/tools/testing.html#riemannian_gradient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.tools.testing.riemannian_gradient" title="Permalink to this definition"></a></dt>
 <dd><p>Generates the Riemannian gradient of a cost function.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="pymanopt.tools.testing.egrad2rgrad">
-<span class="sig-prename descclassname"><span class="pre">pymanopt.tools.testing.</span></span><span class="sig-name descname"><span class="pre">egrad2rgrad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">proj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/tools/testing.html#egrad2rgrad"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.tools.testing.egrad2rgrad" title="Permalink to this definition"></a></dt>
-<dd><p>Generates an egrad2rgrad function.</p>
+<dt class="sig sig-object py" id="pymanopt.tools.testing.euclidean_to_riemannian_gradient">
+<span class="sig-prename descclassname"><span class="pre">pymanopt.tools.testing.</span></span><span class="sig-name descname"><span class="pre">euclidean_to_riemannian_gradient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">projector</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/tools/testing.html#euclidean_to_riemannian_gradient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.tools.testing.euclidean_to_riemannian_gradient" title="Permalink to this definition"></a></dt>
+<dd><p>Generates an euclidean_to_riemannian_gradient function.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="pymanopt.tools.testing.rhess">
-<span class="sig-prename descclassname"><span class="pre">pymanopt.tools.testing.</span></span><span class="sig-name descname"><span class="pre">rhess</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cost</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/tools/testing.html#rhess"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.tools.testing.rhess" title="Permalink to this definition"></a></dt>
-<dd><p>Generates the Riemannian hessian of a cost function.</p>
-<p>Specifically, <code class="docutils literal notranslate"><span class="pre">rhess(cost,</span> <span class="pre">proj)(x,</span> <span class="pre">u)</span></code> is the directional derivative of
-cost at <code class="docutils literal notranslate"><span class="pre">x</span></code> on the manifold in the direction of a tangent vector <code class="docutils literal notranslate"><span class="pre">u</span></code>.
-Both <code class="docutils literal notranslate"><span class="pre">cost</span></code> and <code class="docutils literal notranslate"><span class="pre">proj</span></code> must be defined using Autograd.
-The current implementation is not efficient because of the explicit
-Jacobian-vector product.</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pymanopt.tools.testing.ehess2rhess">
-<span class="sig-prename descclassname"><span class="pre">pymanopt.tools.testing.</span></span><span class="sig-name descname"><span class="pre">ehess2rhess</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">proj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/tools/testing.html#ehess2rhess"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.tools.testing.ehess2rhess" title="Permalink to this definition"></a></dt>
-<dd><p>Generates an ehess2rhess function.</p>
-<p>Specifically, <code class="docutils literal notranslate"><span class="pre">ehess2rhess(proj)(x,</span> <span class="pre">egrad,</span> <span class="pre">ehess,</span> <span class="pre">u)</span></code> converts the
-Euclidean Hessian-vector product <code class="docutils literal notranslate"><span class="pre">ehess</span></code> at a point <code class="docutils literal notranslate"><span class="pre">x</span></code> to a Riemannian
-Hessian-vector product, i.e., the directional derivative of the gradient in
-the tangent direction <code class="docutils literal notranslate"><span class="pre">u</span></code>.
-Similar to <a class="reference internal" href="#pymanopt.tools.testing.rhess" title="pymanopt.tools.testing.rhess"><code class="xref py py-func docutils literal notranslate"><span class="pre">rhess()</span></code></a>, this is not efficient as it computes the Jacobian
-explicitly.</p>
+<dt class="sig sig-object py" id="pymanopt.tools.testing.euclidean_to_riemannian_hessian">
+<span class="sig-prename descclassname"><span class="pre">pymanopt.tools.testing.</span></span><span class="sig-name descname"><span class="pre">euclidean_to_riemannian_hessian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">projector</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/tools/testing.html#euclidean_to_riemannian_hessian"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.tools.testing.euclidean_to_riemannian_hessian" title="Permalink to this definition"></a></dt>
+<dd><p>Generates an euclidean_to_riemannian_hessian function.</p>
+<p>Specifically, <code class="docutils literal notranslate"><span class="pre">euclidean_to_riemannian_hessian(proj)(point,</span>
+<span class="pre">euclidean_gradient,</span> <span class="pre">euclidean_hessian,</span> <span class="pre">tangent_vector)</span></code> converts the Euclidean
+Hessian-vector product <code class="docutils literal notranslate"><span class="pre">euclidean_hessian</span></code> at a point <code class="docutils literal notranslate"><span class="pre">point</span></code> to a
+Riemannian Hessian-vector product, i.e., the directional derivative of the
+gradient in the tangent direction <code class="docutils literal notranslate"><span class="pre">tangent_vector</span></code>.
+Similar to <code class="xref py py-func docutils literal notranslate"><span class="pre">riemannian_hessian()</span></code>, this is not efficient as it computes the
+Jacobian explicitly.</p>
 </dd></dl>
 
 </div>
@@ -307,7 +295,7 @@ explicitly.</p>
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Apr 29, 2022.
+      <span class="lastupdated">Last updated on May 04, 2022.
       </span></p>
   </div>
 
