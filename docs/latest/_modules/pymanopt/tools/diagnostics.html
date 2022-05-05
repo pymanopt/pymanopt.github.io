@@ -167,7 +167,7 @@
         <span class="nb">print</span><span class="p">(</span>
             <span class="s2">&quot;Directional derivative check. &quot;</span>
             <span class="s2">&quot;It seems the linear model is exact: &quot;</span>
-            <span class="s2">&quot;Model error is numerically zero for all h.&quot;</span>
+            <span class="s2">&quot;model error is numerically zero for all h.&quot;</span>
         <span class="p">)</span>
         <span class="c1"># The 1st order model is exact: all errors are (numerically) zero.</span>
         <span class="c1"># Fit line from all points, use log scale only in h.</span>
@@ -254,6 +254,90 @@
             <span class="s2">&quot;If it is far from 0, then the gradient &quot;</span>
             <span class="s2">&quot;is not in the tangent space.&quot;</span>
         <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="check_retraction"><a class="viewcode-back" href="../../../tools.html#pymanopt.tools.diagnostics.check_retraction">[docs]</a><span class="k">def</span> <span class="nf">check_retraction</span><span class="p">(</span><span class="n">manifold</span><span class="p">,</span> <span class="n">point</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Check order of agreement between a retraction and the exponential.&quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">point</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">point</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">random_point</span><span class="p">()</span>
+        <span class="n">tangent_vector</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">random_tangent_vector</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">tangent_vector</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">tangent_vector</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">random_tangent_vector</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
+
+    <span class="n">manifold_class</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">manifold</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;The manifold &#39;</span><span class="si">{</span><span class="n">manifold_class</span><span class="si">}</span><span class="s2">&#39; provides no exponential map as &quot;</span>
+            <span class="s2">&quot;reference to compare the retraction.&quot;</span>
+        <span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">manifold</span><span class="o">.</span><span class="n">retraction</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;The manifold &#39;</span><span class="si">{</span><span class="n">manifold_class</span><span class="si">}</span><span class="s2">&#39; provides no retraction.&quot;</span>
+        <span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">manifold</span><span class="o">.</span><span class="n">retraction</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">NotImplementedError</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;This manifold &#39;</span><span class="si">{</span><span class="n">manifold_class</span><span class="si">}</span><span class="s2">&#39;provides no distance map which &quot;</span>
+            <span class="s2">&quot;is required to run this check.&quot;</span>
+        <span class="p">)</span>
+
+    <span class="c1"># Compare the retraction and the exponential over steps of varying</span>
+    <span class="c1"># length, on a wide log-scale.</span>
+    <span class="n">step_sizes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logspace</span><span class="p">(</span><span class="o">-</span><span class="mi">12</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">251</span><span class="p">)</span>
+    <span class="n">errors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">step_sizes</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">step_size</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">step_sizes</span><span class="p">):</span>
+        <span class="n">errors</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">dist</span><span class="p">(</span>
+            <span class="n">manifold</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">step_size</span> <span class="o">*</span> <span class="n">tangent_vector</span><span class="p">),</span>
+            <span class="n">manifold</span><span class="o">.</span><span class="n">retraction</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">step_size</span> <span class="o">*</span> <span class="n">tangent_vector</span><span class="p">),</span>
+        <span class="p">)</span>
+
+    <span class="c1"># Figure out the slope of the error in log-log, by identifying a piece of</span>
+    <span class="c1"># the error curve which is mostly linear.</span>
+    <span class="n">window_length</span> <span class="o">=</span> <span class="mi">10</span>
+    <span class="n">segment</span><span class="p">,</span> <span class="n">poly</span> <span class="o">=</span> <span class="n">identify_linear_piece</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">step_sizes</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">errors</span><span class="p">),</span> <span class="n">window_length</span>
+    <span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="s2">&quot;The slope must be at least 2 to have a proper retraction.</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="s2">&quot;For the retraction to be second order, the slope should be 3.</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;It appears the slope is: </span><span class="si">{</span><span class="n">poly</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">.</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="s2">&quot;Note: if the implementation of the exponential map and the</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="s2">&quot;retraction are identical, this should be zero: &quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span><span class="si">}</span><span class="s2">.</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="s2">&quot;In that case, the slope test is irrelevant.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+    <span class="c1"># Plot the difference between the exponential and the retraction over that</span>
+    <span class="c1"># span of steps on a doubly-logarithmic scale.</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">step_sizes</span><span class="p">,</span> <span class="n">errors</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+        <span class="p">[</span><span class="mf">1e-12</span><span class="p">,</span> <span class="mf">1e0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1e-30</span><span class="p">,</span> <span class="mf">1e6</span><span class="p">],</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Slope 3&quot;</span>
+    <span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+        <span class="p">[</span><span class="mf">1e-14</span><span class="p">,</span> <span class="mf">1e0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1e-20</span><span class="p">,</span> <span class="mf">1e8</span><span class="p">],</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Slope 2&quot;</span>
+    <span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span>
+        <span class="n">step_sizes</span><span class="p">[</span><span class="n">segment</span><span class="p">],</span>
+        <span class="mi">10</span> <span class="o">**</span> <span class="n">np</span><span class="o">.</span><span class="n">polyval</span><span class="p">(</span><span class="n">poly</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">step_sizes</span><span class="p">[</span><span class="n">segment</span><span class="p">])),</span>
+        <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Step size multiplier t&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Distance between exp(x, v, t) and retraction(x, v, t)&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span>
+        <span class="s2">&quot;Retraction check.</span><span class="se">\n</span><span class="s2">A slope of 2 is required for a valid retraction, &quot;</span>
+        <span class="s2">&quot;3 is desired.&quot;</span>
+    <span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
 </pre></div>
 
            </div>
@@ -264,7 +348,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on May 04, 2022.
+      <span class="lastupdated">Last updated on May 05, 2022.
       </span></p>
   </div>
 

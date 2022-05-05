@@ -147,12 +147,12 @@ In most cases this need not be provided and the Riemannian gradient
 is instead computed internally.
 If provided, the function needs to return a vector in the tangent
 space of <code class="docutils literal notranslate"><span class="pre">manifold</span></code>.</p></li>
-<li><p><strong>euclidean_hessian</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="autodiff.html#pymanopt.autodiff.Function" title="pymanopt.autodiff.Function"><em>pymanopt.autodiff.Function</em></a><em>]</em>) – The Euclidean Hessian-vector product, i.e., the directional
-derivative of <code class="docutils literal notranslate"><span class="pre">euclidean_gradient</span></code> in the direction of a tangent
-vector.</p></li>
-<li><p><strong>riemannian_hessian</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="autodiff.html#pymanopt.autodiff.Function" title="pymanopt.autodiff.Function"><em>pymanopt.autodiff.Function</em></a><em>]</em>) – The Riemannian Hessian-vector product, i.e., the directional
-derivative of <code class="docutils literal notranslate"><span class="pre">riemannian_gradient</span></code> in the direction of a tangent
-vector.
+<li><p><strong>euclidean_hessian</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="autodiff.html#pymanopt.autodiff.Function" title="pymanopt.autodiff.Function"><em>pymanopt.autodiff.Function</em></a><em>]</em>) – The Euclidean Hessian-vector product, i.e., the
+directional derivative of <code class="docutils literal notranslate"><span class="pre">euclidean_gradient</span></code> in the direction
+of a tangent vector.</p></li>
+<li><p><strong>riemannian_hessian</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="autodiff.html#pymanopt.autodiff.Function" title="pymanopt.autodiff.Function"><em>pymanopt.autodiff.Function</em></a><em>]</em>) – The Riemannian Hessian-vector product, i.e., the
+directional derivative of <code class="docutils literal notranslate"><span class="pre">riemannian_gradient</span></code> in the direction
+of a tangent vector.
 As with <code class="docutils literal notranslate"><span class="pre">riemannian_gradient</span></code> this usually need not be provided
 explicitly.</p></li>
 <li><p><strong>preconditioner</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>]</em>) – </p></li>
@@ -200,7 +200,7 @@ explicitly.</p></li>
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on May 04, 2022.
+      <span class="lastupdated">Last updated on May 05, 2022.
       </span></p>
   </div>
 

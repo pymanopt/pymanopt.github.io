@@ -83,6 +83,7 @@
              
   <h1>Source code for pymanopt.tools.multi</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">scipy.linalg</span>
 
 
 <div class="viewcode-block" id="multiprod"><a class="viewcode-back" href="../../../tools.html#pymanopt.tools.multi.multiprod">[docs]</a><span class="k">def</span> <span class="nf">multiprod</span><span class="p">(</span><span class="n">A</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">B</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
@@ -124,7 +125,7 @@
 
 
 <div class="viewcode-block" id="multihconj"><a class="viewcode-back" href="../../../tools.html#pymanopt.tools.multi.multihconj">[docs]</a><span class="k">def</span> <span class="nf">multihconj</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Vectorized matrix Hermitian conjugate.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Vectorized matrix conjugate transpose.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">conjugate</span><span class="p">(</span><span class="n">multitransp</span><span class="p">(</span><span class="n">A</span><span class="p">))</span></div>
 
 
@@ -141,8 +142,8 @@
 <div class="viewcode-block" id="multiskew"><a class="viewcode-back" href="../../../tools.html#pymanopt.tools.multi.multiskew">[docs]</a><span class="k">def</span> <span class="nf">multiskew</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Vectorized matrix skew-symmetrization.</span>
 
-<span class="sd">    Same as :func:`multisym`, but returns an array where each matrix ``A[i]``</span>
-<span class="sd">    is skew-symmetric, i.e., the components of ``A`` satisfy ``A[i] ==</span>
+<span class="sd">    Similar to :func:`multisym`, but returns an array where each matrix</span>
+<span class="sd">    ``A[i]`` is skew-symmetric, i.e., the components of ``A`` satisfy ``A[i] ==</span>
 <span class="sd">    -A[i].T``.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">A</span> <span class="o">-</span> <span class="n">multitransp</span><span class="p">(</span><span class="n">A</span><span class="p">))</span></div>
@@ -153,24 +154,24 @@
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="multilog"><a class="viewcode-back" href="../../../tools.html#pymanopt.tools.multi.multilog">[docs]</a><span class="k">def</span> <span class="nf">multilog</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">pos_def</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="multilogm"><a class="viewcode-back" href="../../../tools.html#pymanopt.tools.multi.multilogm">[docs]</a><span class="k">def</span> <span class="nf">multilogm</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">positive_definite</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Vectorized matrix logarithm.&quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">pos_def</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">positive_definite</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">vectorize</span><span class="p">(</span><span class="n">scipy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">logm</span><span class="p">,</span> <span class="n">signature</span><span class="o">=</span><span class="s2">&quot;(m,m)-&gt;(m,m)&quot;</span><span class="p">)(</span><span class="n">A</span><span class="p">)</span>
 
     <span class="n">w</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
     <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">w</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">multiprod</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">w</span> <span class="o">*</span> <span class="n">multitransp</span><span class="p">(</span><span class="n">v</span><span class="p">))</span></div>
+    <span class="k">return</span> <span class="n">multiprod</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">w</span> <span class="o">*</span> <span class="n">multihconj</span><span class="p">(</span><span class="n">v</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="multiexp"><a class="viewcode-back" href="../../../tools.html#pymanopt.tools.multi.multiexp">[docs]</a><span class="k">def</span> <span class="nf">multiexp</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">sym</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="multiexpm"><a class="viewcode-back" href="../../../tools.html#pymanopt.tools.multi.multiexpm">[docs]</a><span class="k">def</span> <span class="nf">multiexpm</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">symmetric</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Vectorized matrix exponential.&quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">sym</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">symmetric</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">vectorize</span><span class="p">(</span><span class="n">scipy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">expm</span><span class="p">,</span> <span class="n">signature</span><span class="o">=</span><span class="s2">&quot;(m,m)-&gt;(m,m)&quot;</span><span class="p">)(</span><span class="n">A</span><span class="p">)</span>
 
     <span class="n">w</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
     <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">w</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">multiprod</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">w</span> <span class="o">*</span> <span class="n">multitransp</span><span class="p">(</span><span class="n">v</span><span class="p">))</span></div>
+    <span class="k">return</span> <span class="n">multiprod</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">w</span> <span class="o">*</span> <span class="n">multihconj</span><span class="p">(</span><span class="n">v</span><span class="p">))</span></div>
 </pre></div>
 
            </div>
@@ -181,7 +182,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on May 04, 2022.
+      <span class="lastupdated">Last updated on May 05, 2022.
       </span></p>
   </div>
 

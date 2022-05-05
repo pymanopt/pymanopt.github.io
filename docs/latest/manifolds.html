@@ -54,7 +54,7 @@
 <li class="toctree-l1 current"><a class="reference internal" href="api-reference.html">API Reference</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Manifolds</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#module-pymanopt.manifolds.manifold">Manifold</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id6">Euclidean Space</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id8">Euclidean Space</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-pymanopt.manifolds.sphere">Sphere Manifold</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-pymanopt.manifolds.stiefel">Stiefel Manifold</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-pymanopt.manifolds.grassmann">Grassmann Manifold</a></li>
@@ -64,7 +64,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#module-pymanopt.manifolds.positive_definite">Symmetric Positive Definite Matrices</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-pymanopt.manifolds.psd">Manifold of Positive Semidefinite Matrices</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-pymanopt.manifolds.fixed_rank">Fixed-Rank Matrices</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#module-pymanopt.manifolds.strictly_positive_vectors">Strictly-Positive Vectors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-pymanopt.manifolds.positive">Positive Matrices</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-pymanopt.manifolds.product">Product Manifold</a></li>
 </ul>
 </li>
@@ -149,7 +149,7 @@ We plan to implement more depending on the needs of users, so if there is a
 particular manifold you would like to optimize over, please let us know.
 If you wish to implement your own manifold for Pymanopt, you will
 need to inherit from the abstract <a class="reference internal" href="#pymanopt.manifolds.manifold.Manifold" title="pymanopt.manifolds.manifold.Manifold"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.manifolds.manifold.Manifold</span></code></a>
-or <a class="reference internal" href="#pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold" title="pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold</span></code></a> base
+or <a class="reference internal" href="#pymanopt.manifolds.manifold.RiemannianSubmanifold" title="pymanopt.manifolds.manifold.RiemannianSubmanifold"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.manifolds.manifold.RiemannianSubmanifold</span></code></a> base
 class.</p>
 <div class="section" id="module-pymanopt.manifolds.manifold">
 <span id="manifold"></span><h2>Manifold<a class="headerlink" href="#module-pymanopt.manifolds.manifold" title="Permalink to this headline"></a></h2>
@@ -174,10 +174,11 @@ class.</p>
 <p>Not all methods are required by all optimizers.
 In particular, first order gradient based optimizers such as
 <a class="reference internal" href="optimizers.html#module-pymanopt.optimizers.steepest_descent" title="pymanopt.optimizers.steepest_descent"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pymanopt.optimizers.steepest_descent</span></code></a> and
-<a class="reference internal" href="optimizers.html#module-pymanopt.optimizers.conjugate_gradient" title="pymanopt.optimizers.conjugate_gradient"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pymanopt.optimizers.conjugate_gradient</span></code></a> require <a class="reference internal" href="#pymanopt.manifolds.manifold.Manifold.euclidean_to_riemannian_gradient" title="pymanopt.manifolds.manifold.Manifold.euclidean_to_riemannian_gradient"><code class="xref py py-meth docutils literal notranslate"><span class="pre">euclidean_to_riemannian_gradient()</span></code></a> to
-be implemented but not <a class="reference internal" href="#pymanopt.manifolds.manifold.Manifold.euclidean_to_riemannian_hessian" title="pymanopt.manifolds.manifold.Manifold.euclidean_to_riemannian_hessian"><code class="xref py py-meth docutils literal notranslate"><span class="pre">euclidean_to_riemannian_hessian()</span></code></a>.
-Second order optimizers such as <a class="reference internal" href="optimizers.html#module-pymanopt.optimizers.trust_regions" title="pymanopt.optimizers.trust_regions"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pymanopt.optimizers.trust_regions</span></code></a> will
-require <a class="reference internal" href="#pymanopt.manifolds.manifold.Manifold.euclidean_to_riemannian_hessian" title="pymanopt.manifolds.manifold.Manifold.euclidean_to_riemannian_hessian"><code class="xref py py-meth docutils literal notranslate"><span class="pre">euclidean_to_riemannian_hessian()</span></code></a>.</p>
+<a class="reference internal" href="optimizers.html#module-pymanopt.optimizers.conjugate_gradient" title="pymanopt.optimizers.conjugate_gradient"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pymanopt.optimizers.conjugate_gradient</span></code></a> require
+<a class="reference internal" href="#pymanopt.manifolds.manifold.Manifold.euclidean_to_riemannian_gradient" title="pymanopt.manifolds.manifold.Manifold.euclidean_to_riemannian_gradient"><code class="xref py py-meth docutils literal notranslate"><span class="pre">euclidean_to_riemannian_gradient()</span></code></a> to be implemented but not
+<a class="reference internal" href="#pymanopt.manifolds.manifold.Manifold.euclidean_to_riemannian_hessian" title="pymanopt.manifolds.manifold.Manifold.euclidean_to_riemannian_hessian"><code class="xref py py-meth docutils literal notranslate"><span class="pre">euclidean_to_riemannian_hessian()</span></code></a>.
+Second-order optimizers such as <code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.optimizers.TrustRegions</span></code>
+will require <a class="reference internal" href="#pymanopt.manifolds.manifold.Manifold.euclidean_to_riemannian_hessian" title="pymanopt.manifolds.manifold.Manifold.euclidean_to_riemannian_hessian"><code class="xref py py-meth docutils literal notranslate"><span class="pre">euclidean_to_riemannian_hessian()</span></code></a>.</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="pymanopt.manifolds.manifold.Manifold.dim">
 <em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">dim</span></span><a class="headerlink" href="#pymanopt.manifolds.manifold.Manifold.dim" title="Permalink to this definition"></a></dt>
@@ -348,30 +349,38 @@ differ for certain manifolds.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pymanopt.manifolds.manifold.</span></span><span class="sig-name descname"><span class="pre">EuclideanEmbeddedSubmanifold</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dimension</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point_layout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/manifold.html#EuclideanEmbeddedSubmanifold"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="pymanopt.manifolds.manifold.RiemannianSubmanifold">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pymanopt.manifolds.manifold.</span></span><span class="sig-name descname"><span class="pre">RiemannianSubmanifold</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dimension</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point_layout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/manifold.html#RiemannianSubmanifold"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.manifold.RiemannianSubmanifold" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pymanopt.manifolds.manifold.Manifold" title="pymanopt.manifolds.manifold.Manifold"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.manifolds.manifold.Manifold</span></code></a></p>
-<p>Embedded submanifolds of Euclidean space.</p>
-<p>This class provides a generic way to project Euclidean gradients to their
-Riemannian counterparts via the <a class="reference internal" href="#pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold.euclidean_to_riemannian_gradient" title="pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold.euclidean_to_riemannian_gradient"><code class="xref py py-meth docutils literal notranslate"><span class="pre">euclidean_to_riemannian_gradient()</span></code></a> method.
+<p>Base class for Riemannian submanifolds of Euclidean space.</p>
+<p>This class provides a generic method to project Euclidean gradients to
+their Riemannian counterparts via the
+<a class="reference internal" href="#pymanopt.manifolds.manifold.RiemannianSubmanifold.euclidean_to_riemannian_gradient" title="pymanopt.manifolds.manifold.RiemannianSubmanifold.euclidean_to_riemannian_gradient"><code class="xref py py-meth docutils literal notranslate"><span class="pre">euclidean_to_riemannian_gradient()</span></code></a> method.
 Similarly, if the Weingarten map (also known as shape operator) is provided
-via implementing the <a class="reference internal" href="#pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold.weingarten" title="pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold.weingarten"><code class="xref py py-meth docutils literal notranslate"><span class="pre">weingarten()</span></code></a> method, the class provides a
-generic implementation of the <a class="reference internal" href="#pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold.euclidean_to_riemannian_hessian" title="pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold.euclidean_to_riemannian_hessian"><code class="xref py py-meth docutils literal notranslate"><span class="pre">euclidean_to_riemannian_hessian()</span></code></a> method required by
-second-order optimizers to translate Euclidean Hessian-vector products to
-their Riemannian counterparts.</p>
+via implementing the <a class="reference internal" href="#pymanopt.manifolds.manifold.RiemannianSubmanifold.weingarten" title="pymanopt.manifolds.manifold.RiemannianSubmanifold.weingarten"><code class="xref py py-meth docutils literal notranslate"><span class="pre">weingarten()</span></code></a> method, the class provides a
+generic implementation of the <a class="reference internal" href="#pymanopt.manifolds.manifold.RiemannianSubmanifold.euclidean_to_riemannian_hessian" title="pymanopt.manifolds.manifold.RiemannianSubmanifold.euclidean_to_riemannian_hessian"><code class="xref py py-meth docutils literal notranslate"><span class="pre">euclidean_to_riemannian_hessian()</span></code></a>
+method required by second-order optimizers to translate Euclidean
+Hessian-vector products to their Riemannian counterparts.</p>
 <p class="rubric">Notes</p>
-<p>Refer to <a class="reference internal" href="bibliography.html#amt2013" id="id5"><span>[AMT2013]</span></a> for the exact definition of the Weingarten map.</p>
+<p>This class follows definition 3.47 in <a class="reference internal" href="bibliography.html#bou2020" id="id5"><span>[Bou2020]</span></a> of “Riemannian
+submanifolds”.
+As such, manifolds derived from this class are assumed to be embedded
+submanifolds of Euclidean space with the Riemannian metric inherited
+from the embedding space obtained by restricting it to the tangent
+space at a given point.</p>
+<p>For the exact definition of the Weingarten map refer to <a class="reference internal" href="bibliography.html#amt2013" id="id6"><span>[AMT2013]</span></a> and
+the notes in section 5.11 of <a class="reference internal" href="bibliography.html#bou2020" id="id7"><span>[Bou2020]</span></a>.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold.euclidean_to_riemannian_gradient">
-<span class="sig-name descname"><span class="pre">euclidean_to_riemannian_gradient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">euclidean_gradient</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/manifold.html#EuclideanEmbeddedSubmanifold.euclidean_to_riemannian_gradient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold.euclidean_to_riemannian_gradient" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="pymanopt.manifolds.manifold.RiemannianSubmanifold.euclidean_to_riemannian_gradient">
+<span class="sig-name descname"><span class="pre">euclidean_to_riemannian_gradient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">euclidean_gradient</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/manifold.html#RiemannianSubmanifold.euclidean_to_riemannian_gradient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.manifold.RiemannianSubmanifold.euclidean_to_riemannian_gradient" title="Permalink to this definition"></a></dt>
 <dd><p>Converts the Euclidean to the Riemannian gradient.</p>
 <p>For embedded submanifolds of Euclidean space, this is simply the
 projection of <code class="docutils literal notranslate"><span class="pre">euclidean_gradient</span></code> on the tangent space at <code class="docutils literal notranslate"><span class="pre">point</span></code>.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold.euclidean_to_riemannian_hessian">
-<span class="sig-name descname"><span class="pre">euclidean_to_riemannian_hessian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">euclidean_gradient</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">euclidean_hessian</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/manifold.html#EuclideanEmbeddedSubmanifold.euclidean_to_riemannian_hessian"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold.euclidean_to_riemannian_hessian" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="pymanopt.manifolds.manifold.RiemannianSubmanifold.euclidean_to_riemannian_hessian">
+<span class="sig-name descname"><span class="pre">euclidean_to_riemannian_hessian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">euclidean_gradient</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">euclidean_hessian</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/manifold.html#RiemannianSubmanifold.euclidean_to_riemannian_hessian"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.manifold.RiemannianSubmanifold.euclidean_to_riemannian_hessian" title="Permalink to this definition"></a></dt>
 <dd><p>Converts the Euclidean to the Riemannian Hessian.</p>
 <p>This converts the Euclidean Hessian-vector product (hvp)
 <code class="docutils literal notranslate"><span class="pre">euclidean_hessian</span></code> of a function at a point <code class="docutils literal notranslate"><span class="pre">point</span></code> along a tangent
@@ -380,8 +389,8 @@ vector <code class="docutils literal notranslate"><span class="pre">tangent_vect
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold.weingarten">
-<span class="sig-name descname"><span class="pre">weingarten</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normal_vector</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/manifold.html#EuclideanEmbeddedSubmanifold.weingarten"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold.weingarten" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="pymanopt.manifolds.manifold.RiemannianSubmanifold.weingarten">
+<span class="sig-name descname"><span class="pre">weingarten</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normal_vector</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/manifold.html#RiemannianSubmanifold.weingarten"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.manifold.RiemannianSubmanifold.weingarten" title="Permalink to this definition"></a></dt>
 <dd><p>Compute the Weingarten map of the manifold.</p>
 <p>This map takes a vector <code class="docutils literal notranslate"><span class="pre">tangent_vector</span></code> in the tangent space at
 <code class="docutils literal notranslate"><span class="pre">point</span></code> and a vector <code class="docutils literal notranslate"><span class="pre">normal_vector</span></code> in the normal space at
@@ -391,8 +400,8 @@ vector <code class="docutils literal notranslate"><span class="pre">tangent_vect
 </dd></dl>
 
 </div>
-<div class="section" id="id6">
-<h2>Euclidean Space<a class="headerlink" href="#id6" title="Permalink to this headline"></a></h2>
+<div class="section" id="id8">
+<h2>Euclidean Space<a class="headerlink" href="#id8" title="Permalink to this headline"></a></h2>
 <span class="target" id="module-pymanopt.manifolds.euclidean"></span><dl class="py class">
 <dt class="sig sig-object py" id="pymanopt.manifolds.euclidean.Euclidean">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pymanopt.manifolds.euclidean.</span></span><span class="sig-name descname"><span class="pre">Euclidean</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">shape</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/euclidean.html#Euclidean"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.euclidean.Euclidean" title="Permalink to this definition"></a></dt>
@@ -519,12 +528,12 @@ the matrix <code class="docutils literal notranslate"><span class="pre">matrix</
 <dl class="py class">
 <dt class="sig sig-object py" id="pymanopt.manifolds.stiefel.Stiefel">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pymanopt.manifolds.stiefel.</span></span><span class="sig-name descname"><span class="pre">Stiefel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/stiefel.html#Stiefel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.stiefel.Stiefel" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold" title="pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#pymanopt.manifolds.manifold.RiemannianSubmanifold" title="pymanopt.manifolds.manifold.RiemannianSubmanifold"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.manifolds.manifold.RiemannianSubmanifold</span></code></a></p>
 <p>The Stiefel manifold.</p>
 <p>The optional argument k allows the user to optimize over the product of k
 Stiefels.
 Elements are represented as n x p matrices (if k == 1), and as k x n x p
-matrices if k &gt; 1 (Note that this is different to manopt!).</p>
+matrices if k &gt; 1.</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="pymanopt.manifolds.stiefel.Stiefel.typical_dist">
 <em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">typical_dist</span></span><a class="headerlink" href="#pymanopt.manifolds.stiefel.Stiefel.typical_dist" title="Permalink to this definition"></a></dt>
@@ -604,8 +613,8 @@ back to the manifold.</p>
 <span class="sig-name descname"><span class="pre">transport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point_a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point_b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector_a</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/stiefel.html#Stiefel.transport"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.stiefel.Stiefel.transport" title="Permalink to this definition"></a></dt>
 <dd><p>Compute transport of tangent vectors between tangent spaces.</p>
 <p>This may either be a vector transport (a generalization of parallel
-transport) as defined in section 8.1 of <a class="reference internal" href="bibliography.html#ams2008" id="id7"><span>[AMS2008]</span></a>, or a transporter
-(see e.g. section 10.5 of <a class="reference internal" href="bibliography.html#bou2020" id="id8"><span>[Bou2020]</span></a>).
+transport) as defined in section 8.1 of <a class="reference internal" href="bibliography.html#ams2008" id="id9"><span>[AMS2008]</span></a>, or a transporter
+(see e.g. section 10.5 of <a class="reference internal" href="bibliography.html#bou2020" id="id10"><span>[Bou2020]</span></a>).
 It transports a vector <code class="docutils literal notranslate"><span class="pre">tangent_vector_a</span></code> in the tangent space at
 <code class="docutils literal notranslate"><span class="pre">point_a</span></code> to the tangent space at <cite>point_b</cite>.</p>
 </dd></dl>
@@ -825,7 +834,7 @@ As such it is the inverse of <a class="reference internal" href="#pymanopt.manif
 <dl class="py class">
 <dt class="sig sig-object py" id="pymanopt.manifolds.complex_circle.ComplexCircle">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pymanopt.manifolds.complex_circle.</span></span><span class="sig-name descname"><span class="pre">ComplexCircle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dimension</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/complex_circle.html#ComplexCircle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.complex_circle.ComplexCircle" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold" title="pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#pymanopt.manifolds.manifold.RiemannianSubmanifold" title="pymanopt.manifolds.manifold.RiemannianSubmanifold"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.manifolds.manifold.RiemannianSubmanifold</span></code></a></p>
 <p>Manifold of unit-modulus complex numbers.</p>
 <p>Description of vectors z in C^n (complex) such that each component z(i)
 has unit modulus. The manifold structure is the Riemannian submanifold
@@ -939,8 +948,8 @@ As such it is the inverse of <a class="reference internal" href="#pymanopt.manif
 <span class="sig-name descname"><span class="pre">transport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point_a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point_b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector_a</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/complex_circle.html#ComplexCircle.transport"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.complex_circle.ComplexCircle.transport" title="Permalink to this definition"></a></dt>
 <dd><p>Compute transport of tangent vectors between tangent spaces.</p>
 <p>This may either be a vector transport (a generalization of parallel
-transport) as defined in section 8.1 of <a class="reference internal" href="bibliography.html#ams2008" id="id9"><span>[AMS2008]</span></a>, or a transporter
-(see e.g. section 10.5 of <a class="reference internal" href="bibliography.html#bou2020" id="id10"><span>[Bou2020]</span></a>).
+transport) as defined in section 8.1 of <a class="reference internal" href="bibliography.html#ams2008" id="id11"><span>[AMS2008]</span></a>, or a transporter
+(see e.g. section 10.5 of <a class="reference internal" href="bibliography.html#bou2020" id="id12"><span>[Bou2020]</span></a>).
 It transports a vector <code class="docutils literal notranslate"><span class="pre">tangent_vector_a</span></code> in the tangent space at
 <code class="docutils literal notranslate"><span class="pre">point_a</span></code> to the tangent space at <cite>point_b</cite>.</p>
 </dd></dl>
@@ -968,8 +977,8 @@ the geodesic arc joining them.</p>
 <p>Module containing manifolds of n-dimensional rotations.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pymanopt.manifolds.special_orthogonal_group.</span></span><span class="sig-name descname"><span class="pre">SpecialOrthogonalGroup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retraction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'qr'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/special_orthogonal_group.html#SpecialOrthogonalGroup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold" title="pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold</span></code></a></p>
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pymanopt.manifolds.special_orthogonal_group.</span></span><span class="sig-name descname"><span class="pre">SpecialOrthogonalGroup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retraction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'qr'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/special_orthogonal_group.html#SpecialOrthogonalGroup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pymanopt.manifolds.manifold.RiemannianSubmanifold" title="pymanopt.manifolds.manifold.RiemannianSubmanifold"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.manifolds.manifold.RiemannianSubmanifold</span></code></a></p>
 <p>The special orthogonal group.</p>
 <p>Special orthogonal group (the manifold of rotations): deals with matrices
 X of size k x n x n (or n x n if k = 1, which is the default) such that
@@ -982,7 +991,7 @@ submanifold of (R^nxn)^k endowed with the usual trace inner product.</p>
 symmetric matrices. Use the function manifold.embedding(X, H) to
 switch from the Lie algebra representation to the embedding space
 representation. This is often necessary when defining
-problem.euclidean_hessian(X, H).</p>
+<code class="docutils literal notranslate"><span class="pre">problem.euclidean_hessian</span></code>.</p>
 <p>By default, the retraction is only a first-order approximation of the
 exponential. To force the use of a second-order approximation, instantiate
 the class with <code class="docutils literal notranslate"><span class="pre">SpecialOrthogonalGroup(n,</span> <span class="pre">k,</span> <span class="pre">retraction=&quot;polar&quot;)</span></code>.
@@ -997,6 +1006,9 @@ Possible choices are <code class="docutils literal notranslate"><span class="pre
 </ul>
 </dd>
 </dl>
+<p class="rubric">Notes</p>
+<p>The procedure to generate random rotation matrices sampled uniformly
+from the Haar measure is detailed in <a class="reference internal" href="bibliography.html#mez2006" id="id13"><span>[Mez2006]</span></a>.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.inner_product">
 <span class="sig-name descname"><span class="pre">inner_product</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector_a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector_b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/special_orthogonal_group.html#SpecialOrthogonalGroup.inner_product"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.inner_product" title="Permalink to this definition"></a></dt>
@@ -1120,8 +1132,8 @@ As such it is the inverse of <a class="reference internal" href="#pymanopt.manif
 <span class="sig-name descname"><span class="pre">transport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point_a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point_b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector_a</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/special_orthogonal_group.html#SpecialOrthogonalGroup.transport"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.transport" title="Permalink to this definition"></a></dt>
 <dd><p>Compute transport of tangent vectors between tangent spaces.</p>
 <p>This may either be a vector transport (a generalization of parallel
-transport) as defined in section 8.1 of <a class="reference internal" href="bibliography.html#ams2008" id="id11"><span>[AMS2008]</span></a>, or a transporter
-(see e.g. section 10.5 of <a class="reference internal" href="bibliography.html#bou2020" id="id12"><span>[Bou2020]</span></a>).
+transport) as defined in section 8.1 of <a class="reference internal" href="bibliography.html#ams2008" id="id14"><span>[AMS2008]</span></a>, or a transporter
+(see e.g. section 10.5 of <a class="reference internal" href="bibliography.html#bou2020" id="id15"><span>[Bou2020]</span></a>).
 It transports a vector <code class="docutils literal notranslate"><span class="pre">tangent_vector_a</span></code> in the tangent space at
 <code class="docutils literal notranslate"><span class="pre">point_a</span></code> to the tangent space at <cite>point_b</cite>.</p>
 </dd></dl>
@@ -1143,13 +1155,12 @@ the geodesic arc joining them.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pymanopt.manifolds.oblique.Oblique">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pymanopt.manifolds.oblique.</span></span><span class="sig-name descname"><span class="pre">Oblique</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/oblique.html#Oblique"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.oblique.Oblique" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold" title="pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold</span></code></a></p>
-<p>Manifold of matrices w/ unit-norm columns.</p>
+<dd><p>Bases: <a class="reference internal" href="#pymanopt.manifolds.manifold.RiemannianSubmanifold" title="pymanopt.manifolds.manifold.RiemannianSubmanifold"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.manifolds.manifold.RiemannianSubmanifold</span></code></a></p>
+<p>Manifold of matrices with unit-norm columns.</p>
 <p>Oblique manifold: deals with matrices of size m-by-n such that each column
 has unit 2-norm, i.e., is a point on the unit sphere in R^m. The metric
 is such that the oblique manifold is a Riemannian submanifold of the
-space of m-by-n matrices with the usual trace inner product, i.e., the
-usual metric.</p>
+space of m-by-n matrices with the usual trace inner product.</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="pymanopt.manifolds.oblique.Oblique.typical_dist">
 <em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">typical_dist</span></span><a class="headerlink" href="#pymanopt.manifolds.oblique.Oblique.typical_dist" title="Permalink to this definition"></a></dt>
@@ -1252,8 +1263,8 @@ As such it is the inverse of <a class="reference internal" href="#pymanopt.manif
 <span class="sig-name descname"><span class="pre">transport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point_a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point_b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector_a</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/oblique.html#Oblique.transport"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.oblique.Oblique.transport" title="Permalink to this definition"></a></dt>
 <dd><p>Compute transport of tangent vectors between tangent spaces.</p>
 <p>This may either be a vector transport (a generalization of parallel
-transport) as defined in section 8.1 of <a class="reference internal" href="bibliography.html#ams2008" id="id13"><span>[AMS2008]</span></a>, or a transporter
-(see e.g. section 10.5 of <a class="reference internal" href="bibliography.html#bou2020" id="id14"><span>[Bou2020]</span></a>).
+transport) as defined in section 8.1 of <a class="reference internal" href="bibliography.html#ams2008" id="id16"><span>[AMS2008]</span></a>, or a transporter
+(see e.g. section 10.5 of <a class="reference internal" href="bibliography.html#bou2020" id="id17"><span>[Bou2020]</span></a>).
 It transports a vector <code class="docutils literal notranslate"><span class="pre">tangent_vector_a</span></code> in the tangent space at
 <code class="docutils literal notranslate"><span class="pre">point_a</span></code> to the tangent space at <cite>point_b</cite>.</p>
 </dd></dl>
@@ -1281,11 +1292,12 @@ the geodesic arc joining them.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pymanopt.manifolds.positive_definite.SymmetricPositiveDefinite">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pymanopt.manifolds.positive_definite.</span></span><span class="sig-name descname"><span class="pre">SymmetricPositiveDefinite</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/positive_definite.html#SymmetricPositiveDefinite"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.positive_definite.SymmetricPositiveDefinite" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold" title="pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#pymanopt.manifolds.manifold.RiemannianSubmanifold" title="pymanopt.manifolds.manifold.RiemannianSubmanifold"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.manifolds.manifold.RiemannianSubmanifold</span></code></a></p>
 <p>Manifold of symmetric positive definite matrices.</p>
 <p class="rubric">Notes</p>
-<p>The geometry is based on the discussion in chapter 6 of <a class="reference internal" href="bibliography.html#bha2007" id="id15"><span>[Bha2007]</span></a>.
-Also see <a class="reference internal" href="bibliography.html#sh2015" id="id16"><span>[SH2015]</span></a> for more details.</p>
+<p>The geometry is based on the discussion in chapter 6 of <a class="reference internal" href="bibliography.html#bha2007" id="id18"><span>[Bha2007]</span></a>.
+Also see <a class="reference internal" href="bibliography.html#sh2015" id="id19"><span>[SH2015]</span></a> for more details.</p>
+<p>The second-order retraction is taken from <span id="id20">[JVV20212]</span>.</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="pymanopt.manifolds.positive_definite.SymmetricPositiveDefinite.typical_dist">
 <em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">typical_dist</span></span><a class="headerlink" href="#pymanopt.manifolds.positive_definite.SymmetricPositiveDefinite.typical_dist" title="Permalink to this definition"></a></dt>
@@ -1369,8 +1381,8 @@ vector <code class="docutils literal notranslate"><span class="pre">tangent_vect
 <span class="sig-name descname"><span class="pre">transport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point_a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point_b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector_a</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/positive_definite.html#SymmetricPositiveDefinite.transport"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.positive_definite.SymmetricPositiveDefinite.transport" title="Permalink to this definition"></a></dt>
 <dd><p>Compute transport of tangent vectors between tangent spaces.</p>
 <p>This may either be a vector transport (a generalization of parallel
-transport) as defined in section 8.1 of <a class="reference internal" href="bibliography.html#ams2008" id="id17"><span>[AMS2008]</span></a>, or a transporter
-(see e.g. section 10.5 of <a class="reference internal" href="bibliography.html#bou2020" id="id18"><span>[Bou2020]</span></a>).
+transport) as defined in section 8.1 of <a class="reference internal" href="bibliography.html#ams2008" id="id21"><span>[AMS2008]</span></a>, or a transporter
+(see e.g. section 10.5 of <a class="reference internal" href="bibliography.html#bou2020" id="id22"><span>[Bou2020]</span></a>).
 It transports a vector <code class="docutils literal notranslate"><span class="pre">tangent_vector_a</span></code> in the tangent space at
 <code class="docutils literal notranslate"><span class="pre">point_a</span></code> to the tangent space at <cite>point_b</cite>.</p>
 </dd></dl>
@@ -1383,7 +1395,7 @@ It transports a vector <code class="docutils literal notranslate"><span class="p
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pymanopt.manifolds.positive_definite.SymmetricPositiveDefinite.retraction">
-<span class="sig-name descname"><span class="pre">retraction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.positive_definite.SymmetricPositiveDefinite.retraction" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">retraction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/positive_definite.html#SymmetricPositiveDefinite.retraction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.positive_definite.SymmetricPositiveDefinite.retraction" title="Permalink to this definition"></a></dt>
 <dd><p>Retracts a tangent vector back to the manifold.</p>
 <p>This generalizes the exponential map, and is often more efficient to
 compute numerically.
@@ -1621,8 +1633,8 @@ vector <code class="docutils literal notranslate"><span class="pre">tangent_vect
 <span class="sig-name descname"><span class="pre">transport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point_a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point_b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector_a</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/psd.html#Elliptope.transport"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.psd.Elliptope.transport" title="Permalink to this definition"></a></dt>
 <dd><p>Compute transport of tangent vectors between tangent spaces.</p>
 <p>This may either be a vector transport (a generalization of parallel
-transport) as defined in section 8.1 of <a class="reference internal" href="bibliography.html#ams2008" id="id19"><span>[AMS2008]</span></a>, or a transporter
-(see e.g. section 10.5 of <a class="reference internal" href="bibliography.html#bou2020" id="id20"><span>[Bou2020]</span></a>).
+transport) as defined in section 8.1 of <a class="reference internal" href="bibliography.html#ams2008" id="id23"><span>[AMS2008]</span></a>, or a transporter
+(see e.g. section 10.5 of <a class="reference internal" href="bibliography.html#bou2020" id="id24"><span>[Bou2020]</span></a>).
 It transports a vector <code class="docutils literal notranslate"><span class="pre">tangent_vector_a</span></code> in the tangent space at
 <code class="docutils literal notranslate"><span class="pre">point_a</span></code> to the tangent space at <cite>point_b</cite>.</p>
 </dd></dl>
@@ -1642,7 +1654,7 @@ It transports a vector <code class="docutils literal notranslate"><span class="p
 <dl class="py class">
 <dt class="sig sig-object py" id="pymanopt.manifolds.fixed_rank.FixedRankEmbedded">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pymanopt.manifolds.fixed_rank.</span></span><span class="sig-name descname"><span class="pre">FixedRankEmbedded</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/fixed_rank.html#FixedRankEmbedded"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.fixed_rank.FixedRankEmbedded" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold" title="pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#pymanopt.manifolds.manifold.RiemannianSubmanifold" title="pymanopt.manifolds.manifold.RiemannianSubmanifold"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.manifolds.manifold.RiemannianSubmanifold</span></code></a></p>
 <p>Manifold of fixed rank matrices.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1656,7 +1668,7 @@ It transports a vector <code class="docutils literal notranslate"><span class="p
 <p class="rubric">Notes</p>
 <ul class="simple">
 <li><p>The implementation follows the embedded geometry described in
-<a class="reference internal" href="bibliography.html#van2013" id="id21"><span>[Van2013]</span></a>.</p></li>
+<a class="reference internal" href="bibliography.html#van2013" id="id25"><span>[Van2013]</span></a>.</p></li>
 <li><p>The class is currently not compatible with the
 <code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.optimizers.TrustRegions</span></code> optimizer.</p></li>
 </ul>
@@ -1825,8 +1837,8 @@ Currently, S is identity, but this might change.</p>
 <span class="sig-name descname"><span class="pre">transport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point_a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point_b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector_a</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/fixed_rank.html#FixedRankEmbedded.transport"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.fixed_rank.FixedRankEmbedded.transport" title="Permalink to this definition"></a></dt>
 <dd><p>Compute transport of tangent vectors between tangent spaces.</p>
 <p>This may either be a vector transport (a generalization of parallel
-transport) as defined in section 8.1 of <a class="reference internal" href="bibliography.html#ams2008" id="id22"><span>[AMS2008]</span></a>, or a transporter
-(see e.g. section 10.5 of <a class="reference internal" href="bibliography.html#bou2020" id="id23"><span>[Bou2020]</span></a>).
+transport) as defined in section 8.1 of <a class="reference internal" href="bibliography.html#ams2008" id="id26"><span>[AMS2008]</span></a>, or a transporter
+(see e.g. section 10.5 of <a class="reference internal" href="bibliography.html#bou2020" id="id27"><span>[Bou2020]</span></a>).
 It transports a vector <code class="docutils literal notranslate"><span class="pre">tangent_vector_a</span></code> in the tangent space at
 <code class="docutils literal notranslate"><span class="pre">point_a</span></code> to the tangent space at <cite>point_b</cite>.</p>
 </dd></dl>
@@ -1840,27 +1852,50 @@ It transports a vector <code class="docutils literal notranslate"><span class="p
 </dd></dl>
 
 </div>
-<div class="section" id="module-pymanopt.manifolds.strictly_positive_vectors">
-<span id="strictly-positive-vectors"></span><h2>Strictly-Positive Vectors<a class="headerlink" href="#module-pymanopt.manifolds.strictly_positive_vectors" title="Permalink to this headline"></a></h2>
+<div class="section" id="module-pymanopt.manifolds.positive">
+<span id="positive-matrices"></span><h2>Positive Matrices<a class="headerlink" href="#module-pymanopt.manifolds.positive" title="Permalink to this headline"></a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="pymanopt.manifolds.strictly_positive_vectors.StrictlyPositiveVectors">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pymanopt.manifolds.strictly_positive_vectors.</span></span><span class="sig-name descname"><span class="pre">StrictlyPositiveVectors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/strictly_positive_vectors.html#StrictlyPositiveVectors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.strictly_positive_vectors.StrictlyPositiveVectors" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold" title="pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold</span></code></a></p>
-<p>Manifold of strictly positive vectors.</p>
-<p>Since <span class="math">\(((\R_{++})^n)^k\)</span> is isomorphic to the manifold of positive
-definite diagonal matrices the geometry is inherited from the geometry of
-positive definite matrices.</p>
+<dt class="sig sig-object py" id="pymanopt.manifolds.positive.Positive">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pymanopt.manifolds.positive.</span></span><span class="sig-name descname"><span class="pre">Positive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_parallel_transport</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/positive.html#Positive"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.positive.Positive" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pymanopt.manifolds.manifold.Manifold" title="pymanopt.manifolds.manifold.Manifold"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.manifolds.manifold.Manifold</span></code></a></p>
+<p>The (product) manifold of positive matrices.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>m</strong> (<em>int</em>) – The number of rows.</p></li>
+<li><p><strong>n</strong> (<em>int</em>) – The number of columns.</p></li>
+<li><p><strong>k</strong> (<em>int</em>) – The number of matrices in the product.</p></li>
+<li><p><strong>use_parallel_transport</strong> (<em>bool</em>) – Flag whether to use a parallel transport for
+<a class="reference internal" href="#pymanopt.manifolds.positive.Positive.transport" title="pymanopt.manifolds.positive.Positive.transport"><code class="xref py py-meth docutils literal notranslate"><span class="pre">transport()</span></code></a> or a transporter (the default).</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Points on the manifold are represented as arrays of size <code class="docutils literal notranslate"><span class="pre">m</span> <span class="pre">x</span> <span class="pre">n</span></code>
+(when <code class="docutils literal notranslate"><span class="pre">k</span></code> is 1), and <code class="docutils literal notranslate"><span class="pre">k</span> <span class="pre">x</span> <span class="pre">m</span> <span class="pre">x</span> <span class="pre">n</span></code> otherwise.</p>
+<p>The tangent spaces of the manifold correspond to copies of <span class="math">\(\R^{m
+\times n}\)</span>.
+As such, tangent vectors are represented as arrays of the same shape as
+points on the manifold without any positivity constraints on the
+individual elements.</p>
+<p>The Riemannian metric is the bi-invariant metric for positive definite
+matrices from chapter 6 of <a class="reference internal" href="bibliography.html#bha2007" id="id28"><span>[Bha2007]</span></a> on individual scalar coordinates
+of matrices.
+See also section 11.4 of <a class="reference internal" href="bibliography.html#bou2020" id="id29"><span>[Bou2020]</span></a> for further details.</p>
+<p>The second-order retraction is taken from <span id="id30">[JVV20212]</span>.</p>
+<p>The parallel transport that is used when <code class="docutils literal notranslate"><span class="pre">use_parallel_transport</span></code> is
+<code class="docutils literal notranslate"><span class="pre">True</span></code> is taken from <a class="reference internal" href="bibliography.html#sh2015" id="id31"><span>[SH2015]</span></a>.</p>
 <dl class="py property">
-<dt class="sig sig-object py" id="pymanopt.manifolds.strictly_positive_vectors.StrictlyPositiveVectors.typical_dist">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">typical_dist</span></span><a class="headerlink" href="#pymanopt.manifolds.strictly_positive_vectors.StrictlyPositiveVectors.typical_dist" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="pymanopt.manifolds.positive.Positive.typical_dist">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">typical_dist</span></span><a class="headerlink" href="#pymanopt.manifolds.positive.Positive.typical_dist" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the <cite>scale</cite> of the manifold.</p>
 <p>This is used by the trust-regions optimizer to determine default
 initial and maximal trust-region radii.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pymanopt.manifolds.strictly_positive_vectors.StrictlyPositiveVectors.inner_product">
-<span class="sig-name descname"><span class="pre">inner_product</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector_a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector_b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/strictly_positive_vectors.html#StrictlyPositiveVectors.inner_product"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.strictly_positive_vectors.StrictlyPositiveVectors.inner_product" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="pymanopt.manifolds.positive.Positive.inner_product">
+<span class="sig-name descname"><span class="pre">inner_product</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector_a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector_b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/positive.html#Positive.inner_product"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.positive.Positive.inner_product" title="Permalink to this definition"></a></dt>
 <dd><p>Inner product between tangent vectors at a point on the manifold.</p>
 <p>This method implements a Riemannian inner product between two tangent
 vectors <code class="docutils literal notranslate"><span class="pre">tangent_vector_a</span></code> and <code class="docutils literal notranslate"><span class="pre">tangent_vector_b</span></code> in the tangent
@@ -1881,58 +1916,79 @@ space at <code class="docutils literal notranslate"><span class="pre">point</spa
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pymanopt.manifolds.strictly_positive_vectors.StrictlyPositiveVectors.projection">
-<span class="sig-name descname"><span class="pre">projection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vector</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/strictly_positive_vectors.html#StrictlyPositiveVectors.projection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.strictly_positive_vectors.StrictlyPositiveVectors.projection" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="pymanopt.manifolds.positive.Positive.projection">
+<span class="sig-name descname"><span class="pre">projection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vector</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/positive.html#Positive.projection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.positive.Positive.projection" title="Permalink to this definition"></a></dt>
 <dd><p>Projects vector in the ambient space on the tangent space.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pymanopt.manifolds.strictly_positive_vectors.StrictlyPositiveVectors.norm">
-<span class="sig-name descname"><span class="pre">norm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/strictly_positive_vectors.html#StrictlyPositiveVectors.norm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.strictly_positive_vectors.StrictlyPositiveVectors.norm" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="pymanopt.manifolds.positive.Positive.norm">
+<span class="sig-name descname"><span class="pre">norm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/positive.html#Positive.norm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.positive.Positive.norm" title="Permalink to this definition"></a></dt>
 <dd><p>Computes the norm of a tangent vector at a point on the manifold.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pymanopt.manifolds.strictly_positive_vectors.StrictlyPositiveVectors.random_point">
-<span class="sig-name descname"><span class="pre">random_point</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/strictly_positive_vectors.html#StrictlyPositiveVectors.random_point"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.strictly_positive_vectors.StrictlyPositiveVectors.random_point" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="pymanopt.manifolds.positive.Positive.random_point">
+<span class="sig-name descname"><span class="pre">random_point</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/positive.html#Positive.random_point"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.positive.Positive.random_point" title="Permalink to this definition"></a></dt>
 <dd><p>Returns a random point on the manifold.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pymanopt.manifolds.strictly_positive_vectors.StrictlyPositiveVectors.random_tangent_vector">
-<span class="sig-name descname"><span class="pre">random_tangent_vector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/strictly_positive_vectors.html#StrictlyPositiveVectors.random_tangent_vector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.strictly_positive_vectors.StrictlyPositiveVectors.random_tangent_vector" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="pymanopt.manifolds.positive.Positive.random_tangent_vector">
+<span class="sig-name descname"><span class="pre">random_tangent_vector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/positive.html#Positive.random_tangent_vector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.positive.Positive.random_tangent_vector" title="Permalink to this definition"></a></dt>
 <dd><p>Returns a random vector in the tangent space at <code class="docutils literal notranslate"><span class="pre">point</span></code>.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pymanopt.manifolds.strictly_positive_vectors.StrictlyPositiveVectors.zero_vector">
-<span class="sig-name descname"><span class="pre">zero_vector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/strictly_positive_vectors.html#StrictlyPositiveVectors.zero_vector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.strictly_positive_vectors.StrictlyPositiveVectors.zero_vector" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="pymanopt.manifolds.positive.Positive.zero_vector">
+<span class="sig-name descname"><span class="pre">zero_vector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/positive.html#Positive.zero_vector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.positive.Positive.zero_vector" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the zero vector in the tangent space at <code class="docutils literal notranslate"><span class="pre">point</span></code>.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pymanopt.manifolds.strictly_positive_vectors.StrictlyPositiveVectors.dist">
-<span class="sig-name descname"><span class="pre">dist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point_a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point_b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/strictly_positive_vectors.html#StrictlyPositiveVectors.dist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.strictly_positive_vectors.StrictlyPositiveVectors.dist" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="pymanopt.manifolds.positive.Positive.dist">
+<span class="sig-name descname"><span class="pre">dist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point_a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point_b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/positive.html#Positive.dist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.positive.Positive.dist" title="Permalink to this definition"></a></dt>
 <dd><p>The geodesic distance between two points on the manifold.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pymanopt.manifolds.strictly_positive_vectors.StrictlyPositiveVectors.euclidean_to_riemannian_gradient">
-<span class="sig-name descname"><span class="pre">euclidean_to_riemannian_gradient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">euclidean_gradient</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/strictly_positive_vectors.html#StrictlyPositiveVectors.euclidean_to_riemannian_gradient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.strictly_positive_vectors.StrictlyPositiveVectors.euclidean_to_riemannian_gradient" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="pymanopt.manifolds.positive.Positive.euclidean_to_riemannian_gradient">
+<span class="sig-name descname"><span class="pre">euclidean_to_riemannian_gradient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">euclidean_gradient</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/positive.html#Positive.euclidean_to_riemannian_gradient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.positive.Positive.euclidean_to_riemannian_gradient" title="Permalink to this definition"></a></dt>
 <dd><p>Converts the Euclidean to the Riemannian gradient.</p>
 <p>For embedded submanifolds of Euclidean space, this is simply the
 projection of <code class="docutils literal notranslate"><span class="pre">euclidean_gradient</span></code> on the tangent space at <code class="docutils literal notranslate"><span class="pre">point</span></code>.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pymanopt.manifolds.strictly_positive_vectors.StrictlyPositiveVectors.exp">
-<span class="sig-name descname"><span class="pre">exp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/strictly_positive_vectors.html#StrictlyPositiveVectors.exp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.strictly_positive_vectors.StrictlyPositiveVectors.exp" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="pymanopt.manifolds.positive.Positive.euclidean_to_riemannian_hessian">
+<span class="sig-name descname"><span class="pre">euclidean_to_riemannian_hessian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">euclidean_gradient</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">euclidean_hessian</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/positive.html#Positive.euclidean_to_riemannian_hessian"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.positive.Positive.euclidean_to_riemannian_hessian" title="Permalink to this definition"></a></dt>
+<dd><p>Converts the Euclidean to the Riemannian Hessian.</p>
+<p>This converts the Euclidean Hessian-vector product (hvp)
+<code class="docutils literal notranslate"><span class="pre">euclidean_hessian</span></code> of a function at a point <code class="docutils literal notranslate"><span class="pre">point</span></code> along a tangent
+vector <code class="docutils literal notranslate"><span class="pre">tangent_vector</span></code> to the Riemannian hvp of <code class="docutils literal notranslate"><span class="pre">point</span></code> along
+<code class="docutils literal notranslate"><span class="pre">tangent_vector</span></code> on the manifold.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pymanopt.manifolds.positive.Positive.exp">
+<span class="sig-name descname"><span class="pre">exp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/positive.html#Positive.exp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.positive.Positive.exp" title="Permalink to this definition"></a></dt>
 <dd><p>Computes the exponential map on the manifold.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pymanopt.manifolds.strictly_positive_vectors.StrictlyPositiveVectors.retraction">
-<span class="sig-name descname"><span class="pre">retraction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/strictly_positive_vectors.html#StrictlyPositiveVectors.retraction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.strictly_positive_vectors.StrictlyPositiveVectors.retraction" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="pymanopt.manifolds.positive.Positive.log">
+<span class="sig-name descname"><span class="pre">log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point_a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point_b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/positive.html#Positive.log"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.positive.Positive.log" title="Permalink to this definition"></a></dt>
+<dd><p>Computes the logarithmic map on the manifold.</p>
+<p>The logarithmic map <code class="docutils literal notranslate"><span class="pre">log(point_a,</span> <span class="pre">point_b)</span></code> produces a tangent vector
+in the tangent space at <code class="docutils literal notranslate"><span class="pre">point_a</span></code> that points in the direction of
+<code class="docutils literal notranslate"><span class="pre">point_b</span></code>.
+In other words, <code class="docutils literal notranslate"><span class="pre">exp(point_a,</span> <span class="pre">log(point_a,</span> <span class="pre">point_b))</span> <span class="pre">==</span> <span class="pre">point_b</span></code>.
+As such it is the inverse of <a class="reference internal" href="#pymanopt.manifolds.positive.Positive.exp" title="pymanopt.manifolds.positive.Positive.exp"><code class="xref py py-meth docutils literal notranslate"><span class="pre">exp()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pymanopt.manifolds.positive.Positive.retraction">
+<span class="sig-name descname"><span class="pre">retraction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/positive.html#Positive.retraction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.positive.Positive.retraction" title="Permalink to this definition"></a></dt>
 <dd><p>Retracts a tangent vector back to the manifold.</p>
 <p>This generalizes the exponential map, and is often more efficient to
 compute numerically.
@@ -1941,14 +1997,14 @@ back to the manifold.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pymanopt.manifolds.strictly_positive_vectors.StrictlyPositiveVectors.log">
-<span class="sig-name descname"><span class="pre">log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point_a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point_b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/strictly_positive_vectors.html#StrictlyPositiveVectors.log"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.strictly_positive_vectors.StrictlyPositiveVectors.log" title="Permalink to this definition"></a></dt>
-<dd><p>Computes the logarithmic map on the manifold.</p>
-<p>The logarithmic map <code class="docutils literal notranslate"><span class="pre">log(point_a,</span> <span class="pre">point_b)</span></code> produces a tangent vector
-in the tangent space at <code class="docutils literal notranslate"><span class="pre">point_a</span></code> that points in the direction of
-<code class="docutils literal notranslate"><span class="pre">point_b</span></code>.
-In other words, <code class="docutils literal notranslate"><span class="pre">exp(point_a,</span> <span class="pre">log(point_a,</span> <span class="pre">point_b))</span> <span class="pre">==</span> <span class="pre">point_b</span></code>.
-As such it is the inverse of <a class="reference internal" href="#pymanopt.manifolds.strictly_positive_vectors.StrictlyPositiveVectors.exp" title="pymanopt.manifolds.strictly_positive_vectors.StrictlyPositiveVectors.exp"><code class="xref py py-meth docutils literal notranslate"><span class="pre">exp()</span></code></a>.</p>
+<dt class="sig sig-object py" id="pymanopt.manifolds.positive.Positive.transport">
+<span class="sig-name descname"><span class="pre">transport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point_a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point_b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector_a</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/positive.html#Positive.transport"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.positive.Positive.transport" title="Permalink to this definition"></a></dt>
+<dd><p>Compute transport of tangent vectors between tangent spaces.</p>
+<p>This may either be a vector transport (a generalization of parallel
+transport) as defined in section 8.1 of <a class="reference internal" href="bibliography.html#ams2008" id="id32"><span>[AMS2008]</span></a>, or a transporter
+(see e.g. section 10.5 of <a class="reference internal" href="bibliography.html#bou2020" id="id33"><span>[Bou2020]</span></a>).
+It transports a vector <code class="docutils literal notranslate"><span class="pre">tangent_vector_a</span></code> in the tangent space at
+<code class="docutils literal notranslate"><span class="pre">point_a</span></code> to the tangent space at <cite>point_b</cite>.</p>
 </dd></dl>
 
 </dd></dl>
@@ -2071,8 +2127,8 @@ As such it is the inverse of <a class="reference internal" href="#pymanopt.manif
 <span class="sig-name descname"><span class="pre">transport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point_a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point_b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector_a</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/product.html#Product.transport"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.product.Product.transport" title="Permalink to this definition"></a></dt>
 <dd><p>Compute transport of tangent vectors between tangent spaces.</p>
 <p>This may either be a vector transport (a generalization of parallel
-transport) as defined in section 8.1 of <a class="reference internal" href="bibliography.html#ams2008" id="id24"><span>[AMS2008]</span></a>, or a transporter
-(see e.g. section 10.5 of <a class="reference internal" href="bibliography.html#bou2020" id="id25"><span>[Bou2020]</span></a>).
+transport) as defined in section 8.1 of <a class="reference internal" href="bibliography.html#ams2008" id="id34"><span>[AMS2008]</span></a>, or a transporter
+(see e.g. section 10.5 of <a class="reference internal" href="bibliography.html#bou2020" id="id35"><span>[Bou2020]</span></a>).
 It transports a vector <code class="docutils literal notranslate"><span class="pre">tangent_vector_a</span></code> in the tangent space at
 <code class="docutils literal notranslate"><span class="pre">point_a</span></code> to the tangent space at <cite>point_b</cite>.</p>
 </dd></dl>
@@ -2109,7 +2165,7 @@ the geodesic arc joining them.</p>
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on May 04, 2022.
+      <span class="lastupdated">Last updated on May 05, 2022.
       </span></p>
   </div>
 

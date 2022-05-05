@@ -84,10 +84,10 @@
   <h1>Source code for pymanopt.manifolds.complex_circle</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">pymanopt.manifolds.manifold</span> <span class="kn">import</span> <span class="n">EuclideanEmbeddedSubmanifold</span>
+<span class="kn">from</span> <span class="nn">pymanopt.manifolds.manifold</span> <span class="kn">import</span> <span class="n">RiemannianSubmanifold</span>
 
 
-<div class="viewcode-block" id="ComplexCircle"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.complex_circle.ComplexCircle">[docs]</a><span class="k">class</span> <span class="nc">ComplexCircle</span><span class="p">(</span><span class="n">EuclideanEmbeddedSubmanifold</span><span class="p">):</span>
+<div class="viewcode-block" id="ComplexCircle"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.complex_circle.ComplexCircle">[docs]</a><span class="k">class</span> <span class="nc">ComplexCircle</span><span class="p">(</span><span class="n">RiemannianSubmanifold</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Manifold of unit-modulus complex numbers.</span>
 
 <span class="sd">    Description of vectors z in C^n (complex) such that each component z(i)</span>
@@ -189,7 +189,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on May 04, 2022.
+      <span class="lastupdated">Last updated on May 05, 2022.
       </span></p>
   </div>
 

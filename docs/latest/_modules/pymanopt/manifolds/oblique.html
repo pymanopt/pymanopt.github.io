@@ -84,17 +84,16 @@
   <h1>Source code for pymanopt.manifolds.oblique</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">pymanopt.manifolds.manifold</span> <span class="kn">import</span> <span class="n">EuclideanEmbeddedSubmanifold</span>
+<span class="kn">from</span> <span class="nn">pymanopt.manifolds.manifold</span> <span class="kn">import</span> <span class="n">RiemannianSubmanifold</span>
 
 
-<div class="viewcode-block" id="Oblique"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.oblique.Oblique">[docs]</a><span class="k">class</span> <span class="nc">Oblique</span><span class="p">(</span><span class="n">EuclideanEmbeddedSubmanifold</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Manifold of matrices w/ unit-norm columns.</span>
+<div class="viewcode-block" id="Oblique"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.oblique.Oblique">[docs]</a><span class="k">class</span> <span class="nc">Oblique</span><span class="p">(</span><span class="n">RiemannianSubmanifold</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Manifold of matrices with unit-norm columns.</span>
 
 <span class="sd">    Oblique manifold: deals with matrices of size m-by-n such that each column</span>
 <span class="sd">    has unit 2-norm, i.e., is a point on the unit sphere in R^m. The metric</span>
 <span class="sd">    is such that the oblique manifold is a Riemannian submanifold of the</span>
-<span class="sd">    space of m-by-n matrices with the usual trace inner product, i.e., the</span>
-<span class="sd">    usual metric.</span>
+<span class="sd">    space of m-by-n matrices with the usual trace inner product.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
@@ -184,7 +183,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on May 04, 2022.
+      <span class="lastupdated">Last updated on May 05, 2022.
       </span></p>
   </div>
 

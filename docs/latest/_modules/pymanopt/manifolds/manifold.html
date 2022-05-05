@@ -110,10 +110,11 @@
 <span class="sd">    Not all methods are required by all optimizers.</span>
 <span class="sd">    In particular, first order gradient based optimizers such as</span>
 <span class="sd">    :mod:`pymanopt.optimizers.steepest_descent` and</span>
-<span class="sd">    :mod:`pymanopt.optimizers.conjugate_gradient` require :meth:`euclidean_to_riemannian_gradient` to</span>
-<span class="sd">    be implemented but not :meth:`euclidean_to_riemannian_hessian`.</span>
-<span class="sd">    Second order optimizers such as :mod:`pymanopt.optimizers.trust_regions` will</span>
-<span class="sd">    require :meth:`euclidean_to_riemannian_hessian`.</span>
+<span class="sd">    :mod:`pymanopt.optimizers.conjugate_gradient` require</span>
+<span class="sd">    :meth:`euclidean_to_riemannian_gradient` to be implemented but not</span>
+<span class="sd">    :meth:`euclidean_to_riemannian_hessian`.</span>
+<span class="sd">    Second-order optimizers such as :class:`pymanopt.optimizers.TrustRegions`</span>
+<span class="sd">    will require :meth:`euclidean_to_riemannian_hessian`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">dimension</span><span class="p">,</span> <span class="n">point_layout</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
@@ -319,25 +320,34 @@
 <span class="sd">        &quot;&quot;&quot;</span></div></div>
 
 
-<div class="viewcode-block" id="EuclideanEmbeddedSubmanifold"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold">[docs]</a><span class="k">class</span> <span class="nc">EuclideanEmbeddedSubmanifold</span><span class="p">(</span><span class="n">Manifold</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">abc</span><span class="o">.</span><span class="n">ABCMeta</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Embedded submanifolds of Euclidean space.</span>
+<div class="viewcode-block" id="RiemannianSubmanifold"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.manifold.RiemannianSubmanifold">[docs]</a><span class="k">class</span> <span class="nc">RiemannianSubmanifold</span><span class="p">(</span><span class="n">Manifold</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">abc</span><span class="o">.</span><span class="n">ABCMeta</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Base class for Riemannian submanifolds of Euclidean space.</span>
 
-<span class="sd">    This class provides a generic way to project Euclidean gradients to their</span>
-<span class="sd">    Riemannian counterparts via the :meth:`euclidean_to_riemannian_gradient` method.</span>
+<span class="sd">    This class provides a generic method to project Euclidean gradients to</span>
+<span class="sd">    their Riemannian counterparts via the</span>
+<span class="sd">    :meth:`euclidean_to_riemannian_gradient` method.</span>
 <span class="sd">    Similarly, if the Weingarten map (also known as shape operator) is provided</span>
 <span class="sd">    via implementing the :meth:`weingarten` method, the class provides a</span>
-<span class="sd">    generic implementation of the :meth:`euclidean_to_riemannian_hessian` method required by</span>
-<span class="sd">    second-order optimizers to translate Euclidean Hessian-vector products to</span>
-<span class="sd">    their Riemannian counterparts.</span>
+<span class="sd">    generic implementation of the :meth:`euclidean_to_riemannian_hessian`</span>
+<span class="sd">    method required by second-order optimizers to translate Euclidean</span>
+<span class="sd">    Hessian-vector products to their Riemannian counterparts.</span>
 
 <span class="sd">    Notes:</span>
-<span class="sd">        Refer to [AMT2013]_ for the exact definition of the Weingarten map.</span>
+<span class="sd">        This class follows definition 3.47 in [Bou2020]_ of &quot;Riemannian</span>
+<span class="sd">        submanifolds&quot;.</span>
+<span class="sd">        As such, manifolds derived from this class are assumed to be embedded</span>
+<span class="sd">        submanifolds of Euclidean space with the Riemannian metric inherited</span>
+<span class="sd">        from the embedding space obtained by restricting it to the tangent</span>
+<span class="sd">        space at a given point.</span>
+
+<span class="sd">        For the exact definition of the Weingarten map refer to [AMT2013]_ and</span>
+<span class="sd">        the notes in section 5.11 of [Bou2020]_.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="EuclideanEmbeddedSubmanifold.euclidean_to_riemannian_gradient"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold.euclidean_to_riemannian_gradient">[docs]</a>    <span class="k">def</span> <span class="nf">euclidean_to_riemannian_gradient</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">euclidean_gradient</span><span class="p">):</span>
+<div class="viewcode-block" id="RiemannianSubmanifold.euclidean_to_riemannian_gradient"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.manifold.RiemannianSubmanifold.euclidean_to_riemannian_gradient">[docs]</a>    <span class="k">def</span> <span class="nf">euclidean_to_riemannian_gradient</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">euclidean_gradient</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">projection</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">euclidean_gradient</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="EuclideanEmbeddedSubmanifold.euclidean_to_riemannian_hessian"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold.euclidean_to_riemannian_hessian">[docs]</a>    <span class="k">def</span> <span class="nf">euclidean_to_riemannian_hessian</span><span class="p">(</span>
+<div class="viewcode-block" id="RiemannianSubmanifold.euclidean_to_riemannian_hessian"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.manifold.RiemannianSubmanifold.euclidean_to_riemannian_hessian">[docs]</a>    <span class="k">def</span> <span class="nf">euclidean_to_riemannian_hessian</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">euclidean_gradient</span><span class="p">,</span> <span class="n">euclidean_hessian</span><span class="p">,</span> <span class="n">tangent_vector</span>
     <span class="p">):</span>
         <span class="n">normal_gradient</span> <span class="o">=</span> <span class="n">euclidean_gradient</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">projection</span><span class="p">(</span>
@@ -347,7 +357,7 @@
             <span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">,</span> <span class="n">normal_gradient</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="EuclideanEmbeddedSubmanifold.weingarten"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.manifold.EuclideanEmbeddedSubmanifold.weingarten">[docs]</a>    <span class="nd">@Manifold</span><span class="o">.</span><span class="n">_raise_not_implemented_error</span>
+<div class="viewcode-block" id="RiemannianSubmanifold.weingarten"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.manifold.RiemannianSubmanifold.weingarten">[docs]</a>    <span class="nd">@Manifold</span><span class="o">.</span><span class="n">_raise_not_implemented_error</span>
     <span class="k">def</span> <span class="nf">weingarten</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">,</span> <span class="n">normal_vector</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Compute the Weingarten map of the manifold.</span>
 
@@ -365,7 +375,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on May 04, 2022.
+      <span class="lastupdated">Last updated on May 05, 2022.
       </span></p>
   </div>
 

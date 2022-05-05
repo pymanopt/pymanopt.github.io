@@ -85,17 +85,17 @@
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">scipy.linalg</span> <span class="kn">import</span> <span class="n">expm</span>
 
-<span class="kn">from</span> <span class="nn">pymanopt.manifolds.manifold</span> <span class="kn">import</span> <span class="n">EuclideanEmbeddedSubmanifold</span>
+<span class="kn">from</span> <span class="nn">pymanopt.manifolds.manifold</span> <span class="kn">import</span> <span class="n">RiemannianSubmanifold</span>
 <span class="kn">from</span> <span class="nn">pymanopt.tools.multi</span> <span class="kn">import</span> <span class="n">multiprod</span><span class="p">,</span> <span class="n">multisym</span><span class="p">,</span> <span class="n">multitransp</span>
 
 
-<div class="viewcode-block" id="Stiefel"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.stiefel.Stiefel">[docs]</a><span class="k">class</span> <span class="nc">Stiefel</span><span class="p">(</span><span class="n">EuclideanEmbeddedSubmanifold</span><span class="p">):</span>
+<div class="viewcode-block" id="Stiefel"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.stiefel.Stiefel">[docs]</a><span class="k">class</span> <span class="nc">Stiefel</span><span class="p">(</span><span class="n">RiemannianSubmanifold</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;The Stiefel manifold.</span>
 
 <span class="sd">    The optional argument k allows the user to optimize over the product of k</span>
 <span class="sd">    Stiefels.</span>
 <span class="sd">    Elements are represented as n x p matrices (if k == 1), and as k x n x p</span>
-<span class="sd">    matrices if k &gt; 1 (Note that this is different to manopt!).</span>
+<span class="sd">    matrices if k &gt; 1.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
@@ -232,7 +232,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on May 04, 2022.
+      <span class="lastupdated">Last updated on May 05, 2022.
       </span></p>
   </div>
 

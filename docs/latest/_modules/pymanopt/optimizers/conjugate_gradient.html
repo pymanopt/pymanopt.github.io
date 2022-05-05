@@ -302,7 +302,6 @@
                             <span class="n">ip_diff</span>
                             <span class="o">/</span> <span class="n">manifold</span><span class="o">.</span><span class="n">inner_product</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">diff</span><span class="p">,</span> <span class="n">desc_dir</span><span class="p">),</span>
                         <span class="p">)</span>
-                    <span class="c1"># if ip_diff = manifold.inner_product(newx, diff, desc_dir) = 0</span>
                     <span class="k">except</span> <span class="ne">ZeroDivisionError</span><span class="p">:</span>
                         <span class="n">beta</span> <span class="o">=</span> <span class="mi">1</span>
                 <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_beta_rule</span> <span class="o">==</span> <span class="s2">&quot;HagerZhang&quot;</span><span class="p">:</span>
@@ -358,7 +357,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on May 04, 2022.
+      <span class="lastupdated">Last updated on May 05, 2022.
       </span></p>
   </div>
 
