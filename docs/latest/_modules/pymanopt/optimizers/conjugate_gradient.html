@@ -89,7 +89,7 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="kn">from</span> <span class="nn">pymanopt.optimizers.line_search</span> <span class="kn">import</span> <span class="n">AdaptiveLineSearcher</span>
-<span class="kn">from</span> <span class="nn">pymanopt.optimizers.optimizer</span> <span class="kn">import</span> <span class="n">Optimizer</span>
+<span class="kn">from</span> <span class="nn">pymanopt.optimizers.optimizer</span> <span class="kn">import</span> <span class="n">Optimizer</span><span class="p">,</span> <span class="n">OptimizerResult</span>
 <span class="kn">from</span> <span class="nn">pymanopt.tools</span> <span class="kn">import</span> <span class="n">printer</span>
 
 
@@ -144,7 +144,9 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_line_searcher</span> <span class="o">=</span> <span class="n">line_searcher</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">line_searcher</span> <span class="o">=</span> <span class="kc">None</span>
 
-<div class="viewcode-block" id="ConjugateGradient.run"><a class="viewcode-back" href="../../../optimizers.html#pymanopt.optimizers.conjugate_gradient.ConjugateGradient.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">problem</span><span class="p">,</span> <span class="n">initial_point</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">reuse_line_searcher</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="ConjugateGradient.run"><a class="viewcode-back" href="../../../optimizers.html#pymanopt.optimizers.conjugate_gradient.ConjugateGradient.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">problem</span><span class="p">,</span> <span class="n">initial_point</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">reuse_line_searcher</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OptimizerResult</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Run CG method.</span>
 
 <span class="sd">        Args:</span>
@@ -222,8 +224,8 @@
 
             <span class="bp">self</span><span class="o">.</span><span class="n">_add_log_entry</span><span class="p">(</span>
                 <span class="n">iteration</span><span class="o">=</span><span class="n">iteration</span><span class="p">,</span>
-                <span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span>
-                <span class="n">objective</span><span class="o">=</span><span class="n">cost</span><span class="p">,</span>
+                <span class="n">point</span><span class="o">=</span><span class="n">x</span><span class="p">,</span>
+                <span class="n">cost</span><span class="o">=</span><span class="n">cost</span><span class="p">,</span>
                 <span class="n">gradient_norm</span><span class="o">=</span><span class="n">gradient_norm</span><span class="p">,</span>
             <span class="p">)</span>
 
@@ -334,19 +336,16 @@
             <span class="n">gradient_norm</span> <span class="o">=</span> <span class="n">newgradient_norm</span>
             <span class="n">gradPgrad</span> <span class="o">=</span> <span class="n">newgradPnewgrad</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_log_verbosity</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">x</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_finalize_log</span><span class="p">(</span>
-                <span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span>
-                <span class="n">objective</span><span class="o">=</span><span class="n">cost</span><span class="p">,</span>
-                <span class="n">stopping_criterion</span><span class="o">=</span><span class="n">stopping_criterion</span><span class="p">,</span>
-                <span class="n">start_time</span><span class="o">=</span><span class="n">start_time</span><span class="p">,</span>
-                <span class="n">step_size</span><span class="o">=</span><span class="n">step_size</span><span class="p">,</span>
-                <span class="n">gradient_norm</span><span class="o">=</span><span class="n">gradient_norm</span><span class="p">,</span>
-                <span class="n">iteration</span><span class="o">=</span><span class="n">iteration</span><span class="p">,</span>
-            <span class="p">)</span>
-            <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_log</span></div></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_return_result</span><span class="p">(</span>
+            <span class="n">start_time</span><span class="o">=</span><span class="n">start_time</span><span class="p">,</span>
+            <span class="n">point</span><span class="o">=</span><span class="n">x</span><span class="p">,</span>
+            <span class="n">cost</span><span class="o">=</span><span class="n">cost</span><span class="p">,</span>
+            <span class="n">iterations</span><span class="o">=</span><span class="n">iteration</span><span class="p">,</span>
+            <span class="n">stopping_criterion</span><span class="o">=</span><span class="n">stopping_criterion</span><span class="p">,</span>
+            <span class="n">cost_evaluations</span><span class="o">=</span><span class="n">iteration</span><span class="p">,</span>
+            <span class="n">step_size</span><span class="o">=</span><span class="n">step_size</span><span class="p">,</span>
+            <span class="n">gradient_norm</span><span class="o">=</span><span class="n">gradient_norm</span><span class="p">,</span>
+        <span class="p">)</span></div></div>
 </pre></div>
 
            </div>
@@ -357,7 +356,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on May 05, 2022.
+      <span class="lastupdated">Last updated on May 06, 2022.
       </span></p>
   </div>
 

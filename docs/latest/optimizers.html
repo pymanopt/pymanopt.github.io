@@ -135,6 +135,75 @@
 <div class="section" id="module-pymanopt.optimizers.optimizer">
 <span id="optimizer"></span><h3>Optimizer<a class="headerlink" href="#module-pymanopt.optimizers.optimizer" title="Permalink to this headline"></a></h3>
 <dl class="py class">
+<dt class="sig sig-object py" id="pymanopt.optimizers.optimizer.OptimizerResult">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pymanopt.optimizers.optimizer.</span></span><span class="sig-name descname"><span class="pre">OptimizerResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cost</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iterations</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stopping_criterion</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cost_evaluations</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step_size</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gradient_norm</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/optimizers/optimizer.html#OptimizerResult"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.optimizers.optimizer.OptimizerResult" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>point</strong> (<em>Any</em>) – </p></li>
+<li><p><strong>cost</strong> (<em>float</em>) – </p></li>
+<li><p><strong>iterations</strong> (<em>int</em>) – </p></li>
+<li><p><strong>stopping_criterion</strong> (<em>str</em>) – </p></li>
+<li><p><strong>time</strong> (<em>float</em>) – </p></li>
+<li><p><strong>cost_evaluations</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – </p></li>
+<li><p><strong>step_size</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – </p></li>
+<li><p><strong>gradient_norm</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – </p></li>
+<li><p><strong>log</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>]</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pymanopt.optimizers.optimizer.OptimizerResult.point">
+<span class="sig-name descname"><span class="pre">point</span></span><em class="property"><span class="pre">:</span> <span class="pre">Any</span></em><a class="headerlink" href="#pymanopt.optimizers.optimizer.OptimizerResult.point" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pymanopt.optimizers.optimizer.OptimizerResult.cost">
+<span class="sig-name descname"><span class="pre">cost</span></span><em class="property"><span class="pre">:</span> <span class="pre">float</span></em><a class="headerlink" href="#pymanopt.optimizers.optimizer.OptimizerResult.cost" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pymanopt.optimizers.optimizer.OptimizerResult.iterations">
+<span class="sig-name descname"><span class="pre">iterations</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#pymanopt.optimizers.optimizer.OptimizerResult.iterations" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pymanopt.optimizers.optimizer.OptimizerResult.stopping_criterion">
+<span class="sig-name descname"><span class="pre">stopping_criterion</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#pymanopt.optimizers.optimizer.OptimizerResult.stopping_criterion" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pymanopt.optimizers.optimizer.OptimizerResult.time">
+<span class="sig-name descname"><span class="pre">time</span></span><em class="property"><span class="pre">:</span> <span class="pre">float</span></em><a class="headerlink" href="#pymanopt.optimizers.optimizer.OptimizerResult.time" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pymanopt.optimizers.optimizer.OptimizerResult.cost_evaluations">
+<span class="sig-name descname"><span class="pre">cost_evaluations</span></span><em class="property"><span class="pre">:</span> <span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pymanopt.optimizers.optimizer.OptimizerResult.cost_evaluations" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pymanopt.optimizers.optimizer.OptimizerResult.step_size">
+<span class="sig-name descname"><span class="pre">step_size</span></span><em class="property"><span class="pre">:</span> <span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></em><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pymanopt.optimizers.optimizer.OptimizerResult.step_size" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pymanopt.optimizers.optimizer.OptimizerResult.gradient_norm">
+<span class="sig-name descname"><span class="pre">gradient_norm</span></span><em class="property"><span class="pre">:</span> <span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></em><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pymanopt.optimizers.optimizer.OptimizerResult.gradient_norm" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pymanopt.optimizers.optimizer.OptimizerResult.log">
+<span class="sig-name descname"><span class="pre">log</span></span><em class="property"><span class="pre">:</span> <span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></em><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pymanopt.optimizers.optimizer.OptimizerResult.log" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="pymanopt.optimizers.optimizer.Optimizer">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pymanopt.optimizers.optimizer.</span></span><span class="sig-name descname"><span class="pre">Optimizer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iterations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_gradient_norm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_step_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_cost_evaluations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbosity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_verbosity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/optimizers/optimizer.html#Optimizer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.optimizers.optimizer.Optimizer" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
@@ -142,18 +211,18 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>max_time</strong> – Upper bound on the run time of an optimizer in seconds.</p></li>
-<li><p><strong>max_iterations</strong> – The maximum number of iterations to perform.</p></li>
-<li><p><strong>min_gradient_norm</strong> – Termination threshold for the norm of the
-gradient.</p></li>
-<li><p><strong>min_step_size</strong> – Termination threshold for the line search step
+<li><p><strong>max_time</strong> (<em>float</em>) – Upper bound on the run time of an optimizer in seconds.</p></li>
+<li><p><strong>max_iterations</strong> (<em>int</em>) – The maximum number of iterations to perform.</p></li>
+<li><p><strong>min_gradient_norm</strong> (<em>float</em>) – Termination threshold for the norm of the
+(Riemannian) gradient.</p></li>
+<li><p><strong>min_step_size</strong> (<em>float</em>) – Termination threshold for the line search step
 size.</p></li>
-<li><p><strong>max_cost_evaluations</strong> – Maximum number of allowed cost function
+<li><p><strong>max_cost_evaluations</strong> (<em>int</em>) – Maximum number of allowed cost function
 evaluations.</p></li>
 <li><p><strong>verbosity</strong> (<em>int</em>) – Level of information printed by the optimizer while it
 operates: 0 is silent, 2 is most verbose.</p></li>
 <li><p><strong>log_verbosity</strong> (<em>int</em>) – Level of information logged by the optimizer while it
-operates: 0 is silent, 2 is most verbose.</p></li>
+operates: 0 logs nothing, 1 logs information for each iteration.</p></li>
 </ul>
 </dd>
 </dl>
@@ -173,6 +242,12 @@ generated.</p></li>
 <li><p><strong>*args</strong> – Potential optimizer-specific positional arguments.</p></li>
 <li><p><strong>**kwargs</strong> – Potential optimizer-specific keyword arguments.</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The optimization result.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pymanopt.optimizers.optimizer.OptimizerResult" title="pymanopt.optimizers.optimizer.OptimizerResult">pymanopt.optimizers.optimizer.OptimizerResult</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -254,6 +329,9 @@ Allows to use information from a previous call to
 <dd class="field-even"><p>Local minimum of the cost function, or the most recent iterate if
 algorithm terminated before convergence.</p>
 </dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pymanopt.optimizers.optimizer.OptimizerResult" title="pymanopt.optimizers.optimizer.OptimizerResult">pymanopt.optimizers.optimizer.OptimizerResult</a></p>
+</dd>
 </dl>
 </dd></dl>
 
@@ -307,6 +385,9 @@ generated.</p></li>
 <dd class="field-even"><p>Local minimum of the cost function, or the most recent iterate if
 algorithm terminated before convergence.</p>
 </dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pymanopt.optimizers.optimizer.OptimizerResult" title="pymanopt.optimizers.optimizer.OptimizerResult">pymanopt.optimizers.optimizer.OptimizerResult</a></p>
+</dd>
 </dl>
 </dd></dl>
 
@@ -351,6 +432,9 @@ generated.</p></li>
 <dd class="field-even"><p>Local minimum of the cost function, or the most recent iterate if
 algorithm terminated before convergence.</p>
 </dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pymanopt.optimizers.optimizer.OptimizerResult" title="pymanopt.optimizers.optimizer.OptimizerResult">pymanopt.optimizers.optimizer.OptimizerResult</a></p>
+</dd>
 </dl>
 </dd></dl>
 
@@ -394,6 +478,9 @@ Allows to use information from a previous call to
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>Local minimum of the cost function, or the most recent iterate if
 algorithm terminated before convergence.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pymanopt.optimizers.optimizer.OptimizerResult" title="pymanopt.optimizers.optimizer.OptimizerResult">pymanopt.optimizers.optimizer.OptimizerResult</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -458,6 +545,12 @@ generated.</p></li>
 <li><p><strong>*args</strong> – Potential optimizer-specific positional arguments.</p></li>
 <li><p><strong>**kwargs</strong> – Potential optimizer-specific keyword arguments.</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The optimization result.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pymanopt.optimizers.optimizer.OptimizerResult" title="pymanopt.optimizers.optimizer.OptimizerResult">pymanopt.optimizers.optimizer.OptimizerResult</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -524,7 +617,7 @@ the vector retracted to reach the suggested iterate <code class="docutils litera
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on May 05, 2022.
+      <span class="lastupdated">Last updated on May 06, 2022.
       </span></p>
   </div>
 

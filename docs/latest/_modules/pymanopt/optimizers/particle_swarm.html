@@ -87,7 +87,7 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="kn">from</span> <span class="nn">pymanopt</span> <span class="kn">import</span> <span class="n">tools</span>
-<span class="kn">from</span> <span class="nn">pymanopt.optimizers.optimizer</span> <span class="kn">import</span> <span class="n">Optimizer</span>
+<span class="kn">from</span> <span class="nn">pymanopt.optimizers.optimizer</span> <span class="kn">import</span> <span class="n">Optimizer</span><span class="p">,</span> <span class="n">OptimizerResult</span>
 <span class="kn">from</span> <span class="nn">pymanopt.tools</span> <span class="kn">import</span> <span class="n">printer</span>
 
 
@@ -123,7 +123,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_nostalgia</span> <span class="o">=</span> <span class="n">nostalgia</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_social</span> <span class="o">=</span> <span class="n">social</span>
 
-<div class="viewcode-block" id="ParticleSwarm.run"><a class="viewcode-back" href="../../../optimizers.html#pymanopt.optimizers.particle_swarm.ParticleSwarm.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">problem</span><span class="p">,</span> <span class="n">initial_point</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="ParticleSwarm.run"><a class="viewcode-back" href="../../../optimizers.html#pymanopt.optimizers.particle_swarm.ParticleSwarm.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">problem</span><span class="p">,</span> <span class="n">initial_point</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OptimizerResult</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Run PSO algorithm.</span>
 
 <span class="sd">        Args:</span>
@@ -280,18 +280,14 @@
                         <span class="n">xbest</span> <span class="o">=</span> <span class="n">xi</span>
             <span class="n">cost_evaluations</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_population_size</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_log_verbosity</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">xbest</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_finalize_log</span><span class="p">(</span>
-                <span class="n">x</span><span class="o">=</span><span class="n">xbest</span><span class="p">,</span>
-                <span class="n">objective</span><span class="o">=</span><span class="n">fbest</span><span class="p">,</span>
-                <span class="n">stopping_criterion</span><span class="o">=</span><span class="n">stopping_criterion</span><span class="p">,</span>
-                <span class="n">start_time</span><span class="o">=</span><span class="n">start_time</span><span class="p">,</span>
-                <span class="n">cost_evaluations</span><span class="o">=</span><span class="n">cost_evaluations</span><span class="p">,</span>
-                <span class="n">iteration</span><span class="o">=</span><span class="n">iteration</span><span class="p">,</span>
-            <span class="p">)</span>
-            <span class="k">return</span> <span class="n">xbest</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_log</span></div></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_return_result</span><span class="p">(</span>
+            <span class="n">start_time</span><span class="o">=</span><span class="n">start_time</span><span class="p">,</span>
+            <span class="n">point</span><span class="o">=</span><span class="n">xbest</span><span class="p">,</span>
+            <span class="n">cost</span><span class="o">=</span><span class="n">fbest</span><span class="p">,</span>
+            <span class="n">iterations</span><span class="o">=</span><span class="n">iteration</span><span class="p">,</span>
+            <span class="n">stopping_criterion</span><span class="o">=</span><span class="n">stopping_criterion</span><span class="p">,</span>
+            <span class="n">cost_evaluations</span><span class="o">=</span><span class="n">cost_evaluations</span><span class="p">,</span>
+        <span class="p">)</span></div></div>
 </pre></div>
 
            </div>
@@ -302,7 +298,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on May 05, 2022.
+      <span class="lastupdated">Last updated on May 06, 2022.
       </span></p>
   </div>
 

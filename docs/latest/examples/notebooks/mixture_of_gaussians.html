@@ -509,7 +509,7 @@ q_\mathcal{N}(\mathbf{y}_n;\mathbf{S}_m)
 <span class="n">optimizer</span> <span class="o">=</span> <span class="n">SteepestDescent</span><span class="p">(</span><span class="n">verbosity</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
 <span class="c1"># let Pymanopt do the rest</span>
-<span class="n">Xopt</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">problem</span><span class="p">)</span>
+<span class="n">Xopt</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">problem</span><span class="p">)</span><span class="o">.</span><span class="n">point</span>
 </pre></div>
 </div>
 </div>
@@ -519,7 +519,7 @@ q_\mathcal{N}(\mathbf{y}_n;\mathbf{S}_m)
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Optimizing...
-Terminated - min step_size reached after 148 iterations, 0.40 seconds.
+Terminated - min step_size reached after 167 iterations, 0.46 seconds.
 
 </pre></div></div>
 </div>
@@ -601,21 +601,21 @@ Terminated - min step_size reached after 148 iterations, 0.40 seconds.
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[[-0.01]
+[[-4.23]
+ [ 0.91]]
+[[2.2  0.19]
+ [0.19 0.76]]
+[[-0.07]
  [-0.06]]
-[[1.09 1.08]
- [1.08 3.23]]
-[[-4.14]
- [ 0.97]]
-[[2.52 0.44]
- [0.44 0.88]]
-[[ 2.  ]
- [-0.98]]
-[[0.53 0.02]
- [0.02 0.5 ]]
-0.6068626261858747
-0.07412452452048113
-0.31901284929364415
+[[1.01 0.89]
+ [0.89 2.74]]
+[[ 2.03]
+ [-1.04]]
+[[ 0.49 -0.06]
+ [-0.06  0.5 ]]
+0.08199908279922774
+0.6168099776408833
+0.301190939559889
 </pre></div></div>
 </div>
 <p>Et voilà – this was a brief demonstration of how to do inference for MoG models by performing Manifold optimisation using Pymanopt.</p>
@@ -745,7 +745,7 @@ Terminated - min step_size reached after 148 iterations, 0.40 seconds.
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on May 05, 2022.
+      <span class="lastupdated">Last updated on May 06, 2022.
       </span></p>
   </div>
 

@@ -194,16 +194,16 @@ optimizers.</p>
 <span class="n">problem</span> <span class="o">=</span> <span class="n">pymanopt</span><span class="o">.</span><span class="n">Problem</span><span class="p">(</span><span class="n">manifold</span><span class="p">,</span> <span class="n">cost</span><span class="p">)</span>
 
 <span class="n">optimizer</span> <span class="o">=</span> <span class="n">pymanopt</span><span class="o">.</span><span class="n">optimizers</span><span class="o">.</span><span class="n">SteepestDescent</span><span class="p">()</span>
-<span class="n">solution</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">problem</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">problem</span><span class="p">)</span>
 
 <span class="n">eigenvalues</span><span class="p">,</span> <span class="n">eigenvectors</span> <span class="o">=</span> <span class="n">anp</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
 <span class="n">dominant_eigenvector</span> <span class="o">=</span> <span class="n">eigenvectors</span><span class="p">[:,</span> <span class="n">eigenvalues</span><span class="o">.</span><span class="n">argmax</span><span class="p">()]</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Dominant eigenvector:&quot;</span><span class="p">,</span> <span class="n">dominant_eigenvector</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Pymanopt solution:&quot;</span><span class="p">,</span> <span class="n">solution</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Pymanopt solution:&quot;</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">point</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Running this example will produce (something like) the following output:</p>
+<p>Running this example will produce (something like) the following:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Optimizing...
 Iteration    Cost                       Gradient norm
 ---------    -----------------------    --------------
@@ -267,7 +267,7 @@ Pymanopt in the context of inference in Gaussian mixture models.</p>
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on May 05, 2022.
+      <span class="lastupdated">Last updated on May 06, 2022.
       </span></p>
   </div>
 
