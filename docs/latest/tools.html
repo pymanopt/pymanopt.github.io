@@ -53,7 +53,7 @@
 <li class="toctree-l1"><a class="reference external" href="https://github.com/pymanopt/pymanopt/tree/master/examples">Examples</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="api-reference.html">API Reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="manifolds.html">Manifolds</a></li>
-<li class="toctree-l2"><a class="reference internal" href="autodiff.html">Autodiff</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autodiff.html">Automatic Differentiation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="problem.html">Problem</a></li>
 <li class="toctree-l2"><a class="reference internal" href="optimizers.html">Optimization</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Tools</a><ul>
@@ -256,11 +256,13 @@ truncated Taylor series.</p>
 <div class="section" id="module-pymanopt.tools.testing">
 <span id="testing"></span><h2>Testing<a class="headerlink" href="#module-pymanopt.tools.testing" title="Permalink to this headline"></a></h2>
 <p>Tools for testing numerical correctness in Pymanopt.</p>
-<p class="rubric">Notes</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
 <p>The functions <code class="xref py py-func docutils literal notranslate"><span class="pre">rgrad()</span></code>, <a class="reference internal" href="#pymanopt.tools.testing.euclidean_to_riemannian_gradient" title="pymanopt.tools.testing.euclidean_to_riemannian_gradient"><code class="xref py py-func docutils literal notranslate"><span class="pre">euclidean_to_riemannian_gradient()</span></code></a>,
-<code class="xref py py-func docutils literal notranslate"><span class="pre">ehess()</span></code> and <a class="reference internal" href="#pymanopt.tools.testing.euclidean_to_riemannian_hessian" title="pymanopt.tools.testing.euclidean_to_riemannian_hessian"><code class="xref py py-func docutils literal notranslate"><span class="pre">euclidean_to_riemannian_hessian()</span></code></a> will only be correct
-if the manifold is a submanifold of Euclidean space, that is if the
+<code class="xref py py-func docutils literal notranslate"><span class="pre">ehess()</span></code> and <a class="reference internal" href="#pymanopt.tools.testing.euclidean_to_riemannian_hessian" title="pymanopt.tools.testing.euclidean_to_riemannian_hessian"><code class="xref py py-func docutils literal notranslate"><span class="pre">euclidean_to_riemannian_hessian()</span></code></a> will only be
+correct if the manifold is a submanifold of Euclidean space, that is if the
 projection is an orthogonal projection onto the tangent space.</p>
+</div>
 <dl class="py function">
 <dt class="sig sig-object py" id="pymanopt.tools.testing.riemannian_gradient">
 <span class="sig-prename descclassname"><span class="pre">pymanopt.tools.testing.</span></span><span class="sig-name descname"><span class="pre">riemannian_gradient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cost</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">projector</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/tools/testing.html#riemannian_gradient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.tools.testing.riemannian_gradient" title="Permalink to this definition"></a></dt>
@@ -301,7 +303,7 @@ Jacobian explicitly.</p>
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on May 06, 2022.
+      <span class="lastupdated">Last updated on May 12, 2022.
       </span></p>
   </div>
 

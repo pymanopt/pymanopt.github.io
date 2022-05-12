@@ -85,21 +85,9 @@
 <span></span><span class="kn">import</span> <span class="nn">abc</span>
 <span class="kn">import</span> <span class="nn">functools</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-
-
-<div class="viewcode-block" id="RetrAsExpMixin"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.manifold.RetrAsExpMixin">[docs]</a><span class="k">class</span> <span class="nc">RetrAsExpMixin</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Mixin which defers calls to the exponential map to the retraction.&quot;&quot;&quot;</span>
-
-<div class="viewcode-block" id="RetrAsExpMixin.exp"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.manifold.RetrAsExpMixin.exp">[docs]</a>    <span class="k">def</span> <span class="nf">exp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">):</span>
-        <span class="n">class_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
-        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Exponential map for manifold &#39;</span><span class="si">{</span><span class="n">class_name</span><span class="si">}</span><span class="s2">&#39; not available. &quot;</span>
-            <span class="s2">&quot;Using retraction instead.&quot;</span><span class="p">,</span>
-            <span class="ne">RuntimeWarning</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">retraction</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="Manifold"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.manifold.Manifold">[docs]</a><span class="k">class</span> <span class="nc">Manifold</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">abc</span><span class="o">.</span><span class="n">ABCMeta</span><span class="p">):</span>
@@ -107,18 +95,39 @@
 
 <span class="sd">    Abstract base class setting out a template for manifold classes.</span>
 
-<span class="sd">    Not all methods are required by all optimizers.</span>
-<span class="sd">    In particular, first order gradient based optimizers such as</span>
-<span class="sd">    :mod:`pymanopt.optimizers.steepest_descent.SteepestDescent` and</span>
-<span class="sd">    :mod:`pymanopt.optimizers.conjugate_gradient.ConjugateGradient` require</span>
-<span class="sd">    :meth:`euclidean_to_riemannian_gradient` to be implemented but not</span>
-<span class="sd">    :meth:`euclidean_to_riemannian_hessian`.</span>
-<span class="sd">    Second-order optimizers such as</span>
-<span class="sd">    :class:`pymanopt.optimizers.trust_regions.TrustRegions` will require</span>
-<span class="sd">    :meth:`euclidean_to_riemannian_hessian`.</span>
+<span class="sd">    Args:</span>
+<span class="sd">        name: String representation of the manifold.</span>
+<span class="sd">        dimension: The dimension of the manifold, i.e., the vector space</span>
+<span class="sd">            dimension of the tangent spaces.</span>
+<span class="sd">        point_layout: Abstract description of the representation of points on</span>
+<span class="sd">            the manifold.</span>
+<span class="sd">            For manifolds representing points as simple numpy arrays,</span>
+<span class="sd">            ``point_layout`` is ``1``.</span>
+<span class="sd">            For more complicated manifolds which might represent points as a</span>
+<span class="sd">            tuple or list of ``n`` arrays, `point_layout` would be ``n``.</span>
+<span class="sd">            Finally, in the special case of the</span>
+<span class="sd">            :class:`pymanopt.manifolds.product.Product` manifold</span>
+<span class="sd">            ``point_layout`` will be a compound sequence of point layouts of</span>
+<span class="sd">            manifolds involved in the product.</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        Not all methods are required by all optimizers.</span>
+<span class="sd">        In particular, first order gradient based optimizers such as</span>
+<span class="sd">        :mod:`pymanopt.optimizers.steepest_descent.SteepestDescent` and</span>
+<span class="sd">        :mod:`pymanopt.optimizers.conjugate_gradient.ConjugateGradient` require</span>
+<span class="sd">        :meth:`euclidean_to_riemannian_gradient` to be implemented but not</span>
+<span class="sd">        :meth:`euclidean_to_riemannian_hessian`.</span>
+<span class="sd">        Second-order optimizers such as</span>
+<span class="sd">        :class:`pymanopt.optimizers.trust_regions.TrustRegions` will require</span>
+<span class="sd">        :meth:`euclidean_to_riemannian_hessian`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">dimension</span><span class="p">,</span> <span class="n">point_layout</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">dimension</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">point_layout</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dimension</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">)):</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Manifold dimension must be of type int&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">dimension</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
@@ -192,7 +201,7 @@
         <span class="n">point</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
         <span class="n">tangent_vector_a</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
         <span class="n">tangent_vector_b</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Inner product between tangent vectors at a point on the manifold.</span>
 
 <span class="sd">        This method implements a Riemannian inner product between two tangent</span>
@@ -211,23 +220,59 @@
 
 <div class="viewcode-block" id="Manifold.projection"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.manifold.Manifold.projection">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
     <span class="k">def</span> <span class="nf">projection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">vector</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Projects vector in the ambient space on the tangent space.&quot;&quot;&quot;</span></div>
+        <span class="sd">&quot;&quot;&quot;Projects vector in the ambient space on the tangent space.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            point: A point on the manifold.</span>
+<span class="sd">            vector: A vector in the ambient space of the tangent space at</span>
+<span class="sd">                ``point``.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            An element of the tangent space at ``point`` closest to ``vector``</span>
+<span class="sd">            in the ambient space.</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
 
 <div class="viewcode-block" id="Manifold.norm"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.manifold.Manifold.norm">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
     <span class="k">def</span> <span class="nf">norm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Computes the norm of a tangent vector at a point on the manifold.&quot;&quot;&quot;</span></div>
+        <span class="sd">&quot;&quot;&quot;Computes the norm of a tangent vector at a point on the manifold.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            point: A point on the manifold.</span>
+<span class="sd">            tangent_vector: A tangent vector in the tangent space at ``point``.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The norm of ``tangent_vector``.</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
 
 <div class="viewcode-block" id="Manifold.random_point"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.manifold.Manifold.random_point">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
     <span class="k">def</span> <span class="nf">random_point</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returns a random point on the manifold.&quot;&quot;&quot;</span></div>
+        <span class="sd">&quot;&quot;&quot;Returns a random point on the manifold.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A randomly chosen point on the manifold.</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
 
 <div class="viewcode-block" id="Manifold.random_tangent_vector"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.manifold.Manifold.random_tangent_vector">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
     <span class="k">def</span> <span class="nf">random_tangent_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returns a random vector in the tangent space at ``point``.&quot;&quot;&quot;</span></div>
+        <span class="sd">&quot;&quot;&quot;Returns a random vector in the tangent space at ``point``.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            point: A point on the manifold.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A randomly chosen tangent vector in the tangent space at ``point``.</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
 
 <div class="viewcode-block" id="Manifold.zero_vector"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.manifold.Manifold.zero_vector">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
     <span class="k">def</span> <span class="nf">zero_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returns the zero vector in the tangent space at ``point``.&quot;&quot;&quot;</span></div>
+        <span class="sd">&quot;&quot;&quot;Returns the zero vector in the tangent space at ``point``.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            point: A point on the manifold.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The origin of the tangent space at ``point``.</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
 
     <span class="c1"># Methods which are only required by certain optimizers.</span>
 
@@ -243,14 +288,29 @@
 
 <div class="viewcode-block" id="Manifold.dist"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.manifold.Manifold.dist">[docs]</a>    <span class="nd">@_raise_not_implemented_error</span>
     <span class="k">def</span> <span class="nf">dist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point_a</span><span class="p">,</span> <span class="n">point_b</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;The geodesic distance between two points on the manifold.&quot;&quot;&quot;</span></div>
+        <span class="sd">&quot;&quot;&quot;The geodesic distance between two points on the manifold.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            point_a: The first point on the manifold.</span>
+<span class="sd">            point_b: The second point on the manifold.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The distance between ``point_a`` and ``point_b`` on the manifold.</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
 
 <div class="viewcode-block" id="Manifold.euclidean_to_riemannian_gradient"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.manifold.Manifold.euclidean_to_riemannian_gradient">[docs]</a>    <span class="nd">@_raise_not_implemented_error</span>
     <span class="k">def</span> <span class="nf">euclidean_to_riemannian_gradient</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">euclidean_gradient</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Converts the Euclidean to the Riemannian gradient.</span>
 
-<span class="sd">        For embedded submanifolds of Euclidean space, this is simply the</span>
-<span class="sd">        projection of ``euclidean_gradient`` on the tangent space at ``point``.</span>
+<span class="sd">        Args:</span>
+<span class="sd">            point: The point on the manifold at which the Euclidean gradient</span>
+<span class="sd">                was evaluated.</span>
+<span class="sd">            euclidean_gradient: The Euclidean gradient as a vector in the</span>
+<span class="sd">                ambient space of the tangent space at ``point``.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The Riemannian gradient at ``point``.</span>
+<span class="sd">            This must be a tangent vector at ``point``.</span>
 <span class="sd">        &quot;&quot;&quot;</span></div>
 
 <div class="viewcode-block" id="Manifold.euclidean_to_riemannian_hessian"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.manifold.Manifold.euclidean_to_riemannian_hessian">[docs]</a>    <span class="nd">@_raise_not_implemented_error</span>
@@ -259,10 +319,22 @@
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Converts the Euclidean to the Riemannian Hessian.</span>
 
-<span class="sd">        This converts the Euclidean Hessian-vector product (hvp)</span>
-<span class="sd">        ``euclidean_hessian`` of a function at a point ``point`` along a tangent</span>
-<span class="sd">        vector ``tangent_vector`` to the Riemannian hvp of ``point`` along</span>
-<span class="sd">        ``tangent_vector`` on the manifold.</span>
+<span class="sd">        This converts the Euclidean Hessian ``euclidean_hessian`` of a function</span>
+<span class="sd">        at a point ``point`` along a tangent vector ``tangent_vector`` to the</span>
+<span class="sd">        Riemannian Hessian of ``point`` along ``tangent_vector`` on the</span>
+<span class="sd">        manifold.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            point: The point on the manifold at which the Euclidean gradient</span>
+<span class="sd">                and Hessian was evaluated.</span>
+<span class="sd">            euclidean_gradient: The Euclidean gradient at ``point``.</span>
+<span class="sd">            euclidean_hessian: The Euclidean Hessian at ``point`` along the</span>
+<span class="sd">                direction ``tangent_vector``.</span>
+<span class="sd">            tangent_vector: The tangent vector in the direction of which the</span>
+<span class="sd">                Riemannian Hessian is to be calculated.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The Riemannian Hessian as a tangent vector at ``point``.</span>
 <span class="sd">        &quot;&quot;&quot;</span></div>
 
 <div class="viewcode-block" id="Manifold.retraction"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.manifold.Manifold.retraction">[docs]</a>    <span class="nd">@_raise_not_implemented_error</span>
@@ -273,11 +345,28 @@
 <span class="sd">        compute numerically.</span>
 <span class="sd">        It maps a vector ``tangent_vector`` in the tangent space at ``point``</span>
 <span class="sd">        back to the manifold.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            point: A point on the manifold.</span>
+<span class="sd">            tangent_vector: A tangent vector at ``point``.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A point on the manifold reached by moving away from ``point`` in</span>
+<span class="sd">            the direction of ``tangent_vector``.</span>
 <span class="sd">        &quot;&quot;&quot;</span></div>
 
 <div class="viewcode-block" id="Manifold.exp"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.manifold.Manifold.exp">[docs]</a>    <span class="nd">@_raise_not_implemented_error</span>
     <span class="k">def</span> <span class="nf">exp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Computes the exponential map on the manifold.&quot;&quot;&quot;</span></div>
+        <span class="sd">&quot;&quot;&quot;Computes the exponential map on the manifold.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            point: A point on the manifold.</span>
+<span class="sd">            tangent_vector: A tangent vector at ``point``.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The point on the manifold reached by moving away from ``point``</span>
+<span class="sd">            along a geodesic in the direction of ``tangent_vector``.</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
 
 <div class="viewcode-block" id="Manifold.log"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.manifold.Manifold.log">[docs]</a>    <span class="nd">@_raise_not_implemented_error</span>
     <span class="k">def</span> <span class="nf">log</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point_a</span><span class="p">,</span> <span class="n">point_b</span><span class="p">):</span>
@@ -288,6 +377,13 @@
 <span class="sd">        ``point_b``.</span>
 <span class="sd">        In other words, ``exp(point_a, log(point_a, point_b)) == point_b``.</span>
 <span class="sd">        As such it is the inverse of :meth:`exp`.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            point_a: First point on the manifold.</span>
+<span class="sd">            point_b: Second point on the manifold.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A tangent vector in the tangent space at ``point_a``.</span>
 <span class="sd">        &quot;&quot;&quot;</span></div>
 
 <div class="viewcode-block" id="Manifold.transport"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.manifold.Manifold.transport">[docs]</a>    <span class="nd">@_raise_not_implemented_error</span>
@@ -299,15 +395,31 @@
 <span class="sd">        (see e.g. section 10.5 of [Bou2020]_).</span>
 <span class="sd">        It transports a vector ``tangent_vector_a`` in the tangent space at</span>
 <span class="sd">        ``point_a`` to the tangent space at `point_b`.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            point_a: The first point on the manifold.</span>
+<span class="sd">            point_b: The second point on the manifold.</span>
+<span class="sd">            tangent_vector_a: The tangent vector at ``point_a`` to transport to</span>
+<span class="sd">                the tangent space at ``point_b``.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A tangent vector at ``point_b``.</span>
 <span class="sd">        &quot;&quot;&quot;</span></div>
 
 <div class="viewcode-block" id="Manifold.pair_mean"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.manifold.Manifold.pair_mean">[docs]</a>    <span class="nd">@_raise_not_implemented_error</span>
     <span class="k">def</span> <span class="nf">pair_mean</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point_a</span><span class="p">,</span> <span class="n">point_b</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Computes the intrinsic mean of two points on the manifold.</span>
 
-<span class="sd">        Returns the intrinsic mean of two points ``X`` and ``Y`` on the</span>
-<span class="sd">        manifold, i.e., a point that lies mid-way between ``X`` and ``Y`` on</span>
-<span class="sd">        the geodesic arc joining them.</span>
+<span class="sd">        Returns the intrinsic mean of two points ``point_a`` and ``point_b`` on</span>
+<span class="sd">        the manifold, i.e., a point that lies mid-way between ``point_a`` and</span>
+<span class="sd">        ``point_b`` on the geodesic arc joining them.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            point_a: The first point on the manifold.</span>
+<span class="sd">            point_b: The second point on the manifold.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The mid-way point between ``point_a`` and ``point_b``.</span>
 <span class="sd">        &quot;&quot;&quot;</span></div>
 
 <div class="viewcode-block" id="Manifold.to_tangent_space"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.manifold.Manifold.to_tangent_space">[docs]</a>    <span class="nd">@_raise_not_implemented_error</span>
@@ -318,6 +430,13 @@
 <span class="sd">        at ``point`` on the manifold.</span>
 <span class="sd">        Typically this simply corresponds to ``proj(point, vector)`` but may</span>
 <span class="sd">        differ for certain manifolds.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            point: A point on the manifold.</span>
+<span class="sd">            vector: A vector close to the tangent space at ``point``.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The tangent vector at ``point`` closest to ``vector``.</span>
 <span class="sd">        &quot;&quot;&quot;</span></div></div>
 
 
@@ -333,7 +452,7 @@
 <span class="sd">    method required by second-order optimizers to translate Euclidean</span>
 <span class="sd">    Hessian-vector products to their Riemannian counterparts.</span>
 
-<span class="sd">    Notes:</span>
+<span class="sd">    Note:</span>
 <span class="sd">        This class follows definition 3.47 in [Bou2020]_ of &quot;Riemannian</span>
 <span class="sd">        submanifolds&quot;.</span>
 <span class="sd">        As such, manifolds derived from this class are assumed to be embedded</span>
@@ -344,6 +463,24 @@
 <span class="sd">        For the exact definition of the Weingarten map refer to [AMT2013]_ and</span>
 <span class="sd">        the notes in section 5.11 of [Bou2020]_.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="RiemannianSubmanifold.weingarten"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.manifold.RiemannianSubmanifold.weingarten">[docs]</a>    <span class="nd">@Manifold</span><span class="o">.</span><span class="n">_raise_not_implemented_error</span>
+    <span class="k">def</span> <span class="nf">weingarten</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">,</span> <span class="n">normal_vector</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute the Weingarten map of the manifold.</span>
+
+<span class="sd">        This map takes a vector ``tangent_vector`` in the tangent space at</span>
+<span class="sd">        ``point`` and a vector ``normal_vector`` in the normal space at</span>
+<span class="sd">        ``point`` to produce another tangent vector.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            point: A point on the manifold.</span>
+<span class="sd">            tangent_vector: A tangent vector at ``point``.</span>
+<span class="sd">            normal_vector: A vector orthogonal to the tangent space at</span>
+<span class="sd">                ``point``.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A tangent vector.</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
 
 <div class="viewcode-block" id="RiemannianSubmanifold.euclidean_to_riemannian_gradient"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.manifold.RiemannianSubmanifold.euclidean_to_riemannian_gradient">[docs]</a>    <span class="k">def</span> <span class="nf">euclidean_to_riemannian_gradient</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">euclidean_gradient</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">projection</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">euclidean_gradient</span><span class="p">)</span></div>
@@ -356,16 +493,22 @@
         <span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">projection</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">euclidean_hessian</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">weingarten</span><span class="p">(</span>
             <span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">,</span> <span class="n">normal_gradient</span>
-        <span class="p">)</span></div>
+        <span class="p">)</span></div></div>
 
-<div class="viewcode-block" id="RiemannianSubmanifold.weingarten"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.manifold.RiemannianSubmanifold.weingarten">[docs]</a>    <span class="nd">@Manifold</span><span class="o">.</span><span class="n">_raise_not_implemented_error</span>
-    <span class="k">def</span> <span class="nf">weingarten</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">,</span> <span class="n">normal_vector</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Compute the Weingarten map of the manifold.</span>
 
-<span class="sd">        This map takes a vector ``tangent_vector`` in the tangent space at</span>
-<span class="sd">        ``point`` and a vector ``normal_vector`` in the normal space at</span>
-<span class="sd">        ``point`` to produce another tangent vector.</span>
-<span class="sd">        &quot;&quot;&quot;</span></div></div>
+<div class="viewcode-block" id="RetrAsExpMixin"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.manifold.RetrAsExpMixin">[docs]</a><span class="k">class</span> <span class="nc">RetrAsExpMixin</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Mixin which defers calls to the exponential map to the retraction.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="RetrAsExpMixin.exp"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.manifold.RetrAsExpMixin.exp">[docs]</a>    <span class="k">def</span> <span class="nf">exp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">):</span>
+        <span class="n">class_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Exponential map for manifold &#39;</span><span class="si">{</span><span class="n">class_name</span><span class="si">}</span><span class="s2">&#39; not available. &quot;</span>
+            <span class="s2">&quot;Using retraction instead.&quot;</span><span class="p">,</span>
+            <span class="ne">RuntimeWarning</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">retraction</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">)</span></div>
+
+    <span class="n">exp</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="n">Manifold</span><span class="o">.</span><span class="n">exp</span><span class="o">.</span><span class="vm">__doc__</span></div>
 </pre></div>
 
            </div>
@@ -376,7 +519,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on May 06, 2022.
+      <span class="lastupdated">Last updated on May 12, 2022.
       </span></p>
   </div>
 

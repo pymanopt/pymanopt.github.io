@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Autodiff &mdash; Pymanopt latest documentation</title>
+  <title>Automatic Differentiation &mdash; Pymanopt latest documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/style.css" type="text/css" />
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" type="text/css" />
@@ -53,8 +53,8 @@
 <li class="toctree-l1"><a class="reference external" href="https://github.com/pymanopt/pymanopt/tree/master/examples">Examples</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="api-reference.html">API Reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="manifolds.html">Manifolds</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Autodiff</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#module-pymanopt.function">Backend Decorators</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Automatic Differentiation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-pymanopt.function">Backends</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="problem.html">Problem</a></li>
@@ -85,7 +85,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="api-reference.html">API Reference</a> &raquo;</li>
-      <li>Autodiff</li>
+      <li>Automatic Differentiation</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/autodiff.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -119,11 +119,11 @@
     text-align: unset;
 }
 </style>
-<div class="section" id="autodiff">
-<h1>Autodiff<a class="headerlink" href="#autodiff" title="Permalink to this headline"></a></h1>
+<div class="section" id="automatic-differentiation">
+<h1>Automatic Differentiation<a class="headerlink" href="#automatic-differentiation" title="Permalink to this headline"></a></h1>
 <p>Cost functions, gradients and Hessian-vector products (hvps) in Pymanopt must
-be defined as Python callables annotated with one of the <a class="reference internal" href="#module-pymanopt.function"><span class="std std-ref">backend
-decorators</span></a> below.
+be defined as Python callables annotated with one of the <span class="xref std std-ref">backend
+decorators</span> below.
 Decorating a callable with a backend decorator will wrap it in an instance of
 the <a class="reference internal" href="#pymanopt.autodiff.Function" title="pymanopt.autodiff.Function"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.autodiff.Function</span></code></a> class that provides a backend-agnostic
 API to the <a class="reference internal" href="problem.html#pymanopt.core.problem.Problem" title="pymanopt.core.problem.Problem"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.core.problem.Problem</span></code></a> class to compute derivatives.</p>
@@ -131,16 +131,15 @@ API to the <a class="reference internal" href="problem.html#pymanopt.core.proble
 signature of the decorated callable must match the point layout of the manifold
 it is defined on.
 For instance, for memory efficiency points on the
-<code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.manifolds.FixedRankEmbedded</span></code> manifold are not represented as
-<code class="docutils literal notranslate"><span class="pre">m</span> <span class="pre">x</span> <span class="pre">n</span></code> matrices in the ambient space but as a singular value decomposition.
+<code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.manifolds.fixed_rink.FixedRankEmbedded</span></code> manifold are not
+represented as <code class="docutils literal notranslate"><span class="pre">m</span> <span class="pre">x</span> <span class="pre">n</span></code> matrices in the ambient space but as a singular value
+decomposition.
 As such a cost function defined on the manifold must accept three arguments
-<code class="docutils literal notranslate"><span class="pre">u</span></code>, <code class="docutils literal notranslate"><span class="pre">s</span></code> and <code class="docutils literal notranslate"><span class="pre">vt</span></code>.
-Refer to the documentation of the respective manifold on how points are
-represented.</p>
+<code class="docutils literal notranslate"><span class="pre">u</span></code>, <code class="docutils literal notranslate"><span class="pre">s</span></code> and <code class="docutils literal notranslate"><span class="pre">vt</span></code>. Refer to the documentation of the respective manifold
+on how points are represented.</p>
 <p>New backends can be created by inheriting from the
 <code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.autodiff.backends._backend._Backend</span></code> class, and creating a
-backend decorator using
-<code class="xref py py-func docutils literal notranslate"><span class="pre">pymanopt.autodiff.make_tracing_backend_decorator()</span></code>.</p>
+backend decorator using <a class="reference internal" href="#pymanopt.autodiff.backend_decorator_factory" title="pymanopt.autodiff.backend_decorator_factory"><code class="xref py py-func docutils literal notranslate"><span class="pre">pymanopt.autodiff.backend_decorator_factory()</span></code></a>.</p>
 <span class="target" id="module-pymanopt.autodiff"></span><dl class="py class">
 <dt class="sig sig-object py" id="pymanopt.autodiff.Function">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pymanopt.autodiff.</span></span><span class="sig-name descname"><span class="pre">Function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">function</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">manifold</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backend</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/autodiff.html#Function"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.autodiff.Function" title="Permalink to this definition"></a></dt>
@@ -185,7 +184,7 @@ callable:</p>
 </dd></dl>
 
 <div class="section" id="module-pymanopt.function">
-<span id="backend-decorators"></span><h2>Backend Decorators<a class="headerlink" href="#module-pymanopt.function" title="Permalink to this headline"></a></h2>
+<span id="backends"></span><h2>Backends<a class="headerlink" href="#module-pymanopt.function" title="Permalink to this headline"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="pymanopt.function.autograd">
 <span class="sig-prename descclassname"><span class="pre">pymanopt.function.</span></span><span class="sig-name descname"><span class="pre">autograd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">manifold</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.function.autograd" title="Permalink to this definition"></a></dt>
@@ -221,7 +220,7 @@ callable:</p>
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on May 06, 2022.
+      <span class="lastupdated">Last updated on May 12, 2022.
       </span></p>
   </div>
 

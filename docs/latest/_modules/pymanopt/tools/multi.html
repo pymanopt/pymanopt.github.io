@@ -161,7 +161,10 @@
 
     <span class="n">w</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
     <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">w</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">multiprod</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">w</span> <span class="o">*</span> <span class="n">multihconj</span><span class="p">(</span><span class="n">v</span><span class="p">))</span></div>
+    <span class="n">logmA</span> <span class="o">=</span> <span class="n">multiprod</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">w</span> <span class="o">*</span> <span class="n">multihconj</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isrealobj</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">logmA</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">logmA</span></div>
 
 
 <div class="viewcode-block" id="multiexpm"><a class="viewcode-back" href="../../../tools.html#pymanopt.tools.multi.multiexpm">[docs]</a><span class="k">def</span> <span class="nf">multiexpm</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">symmetric</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
@@ -171,7 +174,10 @@
 
     <span class="n">w</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
     <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">w</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">multiprod</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">w</span> <span class="o">*</span> <span class="n">multihconj</span><span class="p">(</span><span class="n">v</span><span class="p">))</span></div>
+    <span class="n">expmA</span> <span class="o">=</span> <span class="n">multiprod</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">w</span> <span class="o">*</span> <span class="n">multihconj</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isrealobj</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">expmA</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">expmA</span></div>
 </pre></div>
 
            </div>
@@ -182,7 +188,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on May 06, 2022.
+      <span class="lastupdated">Last updated on May 12, 2022.
       </span></p>
   </div>
 

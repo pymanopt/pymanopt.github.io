@@ -83,6 +83,7 @@
              
   <h1>Source code for pymanopt.manifolds.product</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">functools</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Sequence</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
@@ -91,9 +92,18 @@
 
 
 <div class="viewcode-block" id="Product"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.product.Product">[docs]</a><span class="k">class</span> <span class="nc">Product</span><span class="p">(</span><span class="n">Manifold</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Product manifold, i.e., the cartesian product of multiple manifolds.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Cartesian product manifold.</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">manifolds</span><span class="p">):</span>
+<span class="sd">    Points on the manifold and tangent vectors are represented as lists of</span>
+<span class="sd">    points and tangent vectors of the individual manifolds.</span>
+<span class="sd">    The metric is obtained by element-wise extension of the individual</span>
+<span class="sd">    manifolds.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        manifolds: The collection of manifolds in the product.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">manifolds</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Manifold</span><span class="p">]):</span>
         <span class="k">for</span> <span class="n">manifold</span> <span class="ow">in</span> <span class="n">manifolds</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">manifold</span><span class="p">,</span> <span class="n">Product</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Nested product manifolds are not supported&quot;</span><span class="p">)</span>
@@ -236,7 +246,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on May 06, 2022.
+      <span class="lastupdated">Last updated on May 12, 2022.
       </span></p>
   </div>
 

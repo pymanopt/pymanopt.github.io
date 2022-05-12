@@ -82,9 +82,7 @@
            <div itemprop="articleBody">
              
   <h1>Source code for pymanopt.manifolds.special_orthogonal_group</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Module containing manifolds of n-dimensional rotations.&quot;&quot;&quot;</span>
-
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">scipy.linalg</span> <span class="kn">import</span> <span class="n">expm</span><span class="p">,</span> <span class="n">logm</span>
 <span class="kn">from</span> <span class="nn">scipy.special</span> <span class="kn">import</span> <span class="n">comb</span>
 
@@ -93,27 +91,26 @@
 
 
 <div class="viewcode-block" id="SpecialOrthogonalGroup"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup">[docs]</a><span class="k">class</span> <span class="nc">SpecialOrthogonalGroup</span><span class="p">(</span><span class="n">RiemannianSubmanifold</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;The special orthogonal group.</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;The (product) manifold of rotation matrices.</span>
 
-<span class="sd">    Special orthogonal group (the manifold of rotations): deals with matrices</span>
-<span class="sd">    X of size k x n x n (or n x n if k = 1, which is the default) such that</span>
-<span class="sd">    each n x n matrix is orthogonal, with determinant 1, i.e.,</span>
-<span class="sd">    dot(X.T, X) = eye(n) if k = 1, or dot(X[i].T, X[i]) = eye(n) if k &gt; 1.</span>
+<span class="sd">    The special orthgonal group :math:`\SO(n)`.</span>
+<span class="sd">    Points on the manifold are matrices :math:`\vmQ \in \R^{n</span>
+<span class="sd">    \times n}` such that each matrix is orthogonal with determinant 1, i.e.,</span>
+<span class="sd">    :math:`\transp{\vmQ}\vmQ = \vmQ\transp{\vmQ} = \Id_n` and :math:`\det(\vmQ)</span>
+<span class="sd">    = 1`.</span>
+<span class="sd">    For ``k &gt; 1``, the class can be used to optimize over the product manifold</span>
+<span class="sd">    of rotation matrices :math:`\SO(n)^k`.</span>
+<span class="sd">    In that case points on the manifold are represented as arrays of shape</span>
+<span class="sd">    ``(k, n, n)``.</span>
 
-<span class="sd">    This is a description of SO(n)^k with the induced metric from the</span>
-<span class="sd">    embedding space (R^nxn)^k, i.e., this manifold is a Riemannian</span>
-<span class="sd">    submanifold of (R^nxn)^k endowed with the usual trace inner product.</span>
+<span class="sd">    The metric is the usual Euclidean one inherited from the embedding space</span>
+<span class="sd">    :math:`(\R^{n \times n})^k`.</span>
+<span class="sd">    As such :math:`\SO(n)^k` forms a Riemannian submanifold.</span>
 
-<span class="sd">    Tangent vectors are represented in the Lie algebra, i.e., as skew</span>
-<span class="sd">    symmetric matrices. Use the function manifold.embedding(X, H) to</span>
-<span class="sd">    switch from the Lie algebra representation to the embedding space</span>
-<span class="sd">    representation. This is often necessary when defining</span>
-<span class="sd">    ``problem.euclidean_hessian``.</span>
-
-<span class="sd">    By default, the retraction is only a first-order approximation of the</span>
-<span class="sd">    exponential. To force the use of a second-order approximation, instantiate</span>
-<span class="sd">    the class with ``SpecialOrthogonalGroup(n, k, retraction=&quot;polar&quot;)``.</span>
-<span class="sd">    This switches from a QR-based computation to an SVD-based computation.</span>
+<span class="sd">    Tangent vectors are represented in the Lie algebra of skew-symmetric</span>
+<span class="sd">    matrices of the same shape as points on the manifold.</span>
+<span class="sd">    The method :meth:`embedding` can be used to transform a tangent vector from</span>
+<span class="sd">    its Lie algebra representation to the embedding space representation.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        n: The dimension of the space that elements of the group act on.</span>
@@ -121,12 +118,17 @@
 <span class="sd">        retraction: The type of retraction to use.</span>
 <span class="sd">            Possible choices are ``qr`` and ``polar``.</span>
 
-<span class="sd">    Notes:</span>
+<span class="sd">    Note:</span>
+<span class="sd">        The default SVD-based retraction is only a first-order approximation of</span>
+<span class="sd">        the exponential map.</span>
+<span class="sd">        Use of a second-order retraction can be enabled by instantiating the</span>
+<span class="sd">        class with ``SpecialOrthogonalGroup(n, k, retraction=&quot;polar&quot;)``.</span>
+
 <span class="sd">        The procedure to generate random rotation matrices sampled uniformly</span>
 <span class="sd">        from the Haar measure is detailed in [Mez2006]_.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">retraction</span><span class="o">=</span><span class="s2">&quot;qr&quot;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">retraction</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;qr&quot;</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_n</span> <span class="o">=</span> <span class="n">n</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_k</span> <span class="o">=</span> <span class="n">k</span>
 
@@ -282,7 +284,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on May 06, 2022.
+      <span class="lastupdated">Last updated on May 12, 2022.
       </span></p>
   </div>
 
