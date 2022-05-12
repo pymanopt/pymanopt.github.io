@@ -101,11 +101,10 @@
 <span class="sd">        cost: A callable decorated with a decorator from</span>
 <span class="sd">            :mod:`pymanopt.functions` which takes a point on a manifold and</span>
 <span class="sd">            returns a real scalar.</span>
-<span class="sd">            If any decorator other than</span>
-<span class="sd">            :func:`pymanopt.function.numpy` is used the gradient and</span>
-<span class="sd">            Hessian-vector production functions are generated automatically if</span>
-<span class="sd">            needed and no ``{euclidean,riemannian}_gradient`` or</span>
-<span class="sd">            ``{euclidean,riemannian}_hessian`` arguments are provided.</span>
+<span class="sd">            If any decorator other than :func:`pymanopt.function.numpy` is</span>
+<span class="sd">            used, the gradient and Hessian functions are generated</span>
+<span class="sd">            automatically if needed and no ``{euclidean,riemannian}_gradient``</span>
+<span class="sd">            or ``{euclidean,riemannian}_hessian`` arguments are provided.</span>
 <span class="sd">        euclidean_gradient: The Euclidean gradient, i.e., the gradient of the</span>
 <span class="sd">            cost function in the typical sense in the ambient space.</span>
 <span class="sd">            The returned value need not belong to the tangent space of</span>
@@ -117,12 +116,12 @@
 <span class="sd">            is instead computed internally.</span>
 <span class="sd">            If provided, the function needs to return a vector in the tangent</span>
 <span class="sd">            space of ``manifold``.</span>
-<span class="sd">        euclidean_hessian: The Euclidean Hessian-vector product, i.e., the</span>
-<span class="sd">            directional derivative of ``euclidean_gradient`` in the direction</span>
-<span class="sd">            of a tangent vector.</span>
-<span class="sd">        riemannian_hessian: The Riemannian Hessian-vector product, i.e., the</span>
-<span class="sd">            directional derivative of ``riemannian_gradient`` in the direction</span>
-<span class="sd">            of a tangent vector.</span>
+<span class="sd">        euclidean_hessian: The Euclidean Hessian, i.e., the directional</span>
+<span class="sd">            derivative of ``euclidean_gradient`` in the direction of a tangent</span>
+<span class="sd">            vector.</span>
+<span class="sd">        riemannian_hessian: The Riemannian Hessian, i.e., the directional</span>
+<span class="sd">            derivative of ``riemannian_gradient`` in the direction of a tangent</span>
+<span class="sd">            vector.</span>
 <span class="sd">            As with ``riemannian_gradient`` this usually need not be provided</span>
 <span class="sd">            explicitly.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -164,19 +163,21 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_cost</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wrap_function</span><span class="p">(</span><span class="n">cost</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">euclidean_gradient</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">euclidean_gradient</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wrap_gradient</span><span class="p">(</span><span class="n">euclidean_gradient</span><span class="p">)</span>
+            <span class="n">euclidean_gradient</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wrap_gradient_operator</span><span class="p">(</span>
+                <span class="n">euclidean_gradient</span>
+            <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_euclidean_gradient</span> <span class="o">=</span> <span class="n">euclidean_gradient</span>
         <span class="k">if</span> <span class="n">euclidean_hessian</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">euclidean_hessian</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wrap_hessian_vector_product</span><span class="p">(</span>
-                <span class="n">euclidean_hessian</span>
-            <span class="p">)</span>
+            <span class="n">euclidean_hessian</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wrap_hessian_operator</span><span class="p">(</span><span class="n">euclidean_hessian</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_euclidean_hessian</span> <span class="o">=</span> <span class="n">euclidean_hessian</span>
 
         <span class="k">if</span> <span class="n">riemannian_gradient</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">riemannian_gradient</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wrap_gradient</span><span class="p">(</span><span class="n">riemannian_gradient</span><span class="p">)</span>
+            <span class="n">riemannian_gradient</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wrap_gradient_operator</span><span class="p">(</span>
+                <span class="n">riemannian_gradient</span>
+            <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_riemannian_gradient</span> <span class="o">=</span> <span class="n">riemannian_gradient</span>
         <span class="k">if</span> <span class="n">riemannian_hessian</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">riemannian_hessian</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wrap_hessian_vector_product</span><span class="p">(</span>
+            <span class="n">riemannian_hessian</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wrap_hessian_operator</span><span class="p">(</span>
                 <span class="n">riemannian_hessian</span>
             <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_riemannian_hessian</span> <span class="o">=</span> <span class="n">riemannian_hessian</span>
@@ -274,20 +275,20 @@
 
         <span class="k">return</span> <span class="n">wrapper</span>
 
-    <span class="k">def</span> <span class="nf">_wrap_gradient</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gradient</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_wrap_gradient_operator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gradient</span><span class="p">):</span>
         <span class="n">wrapped_gradient</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wrap_function</span><span class="p">(</span><span class="n">gradient</span><span class="p">)</span>
         <span class="n">point_layout</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">manifold</span><span class="o">.</span><span class="n">point_layout</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">point_layout</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_group_return_values</span><span class="p">(</span><span class="n">wrapped_gradient</span><span class="p">,</span> <span class="n">point_layout</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">wrapped_gradient</span>
 
-    <span class="k">def</span> <span class="nf">_wrap_hessian_vector_product</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hessian_vector_product</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_wrap_hessian_operator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hessian_operator</span><span class="p">):</span>
         <span class="n">point_layout</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">manifold</span><span class="o">.</span><span class="n">point_layout</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">point_layout</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
 
-            <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">hessian_vector_product</span><span class="p">)</span>
+            <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">hessian_operator</span><span class="p">)</span>
             <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">vector</span><span class="p">):</span>
-                <span class="k">return</span> <span class="n">hessian_vector_product</span><span class="p">(</span>
+                <span class="k">return</span> <span class="n">hessian_operator</span><span class="p">(</span>
                     <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_flatten_arguments</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">point_layout</span><span class="p">),</span>
                     <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_flatten_arguments</span><span class="p">(</span><span class="n">vector</span><span class="p">,</span> <span class="n">point_layout</span><span class="p">),</span>
                 <span class="p">)</span>
@@ -296,15 +297,15 @@
 
         <span class="k">if</span> <span class="n">point_layout</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
 
-            <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">hessian_vector_product</span><span class="p">)</span>
+            <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">hessian_operator</span><span class="p">)</span>
             <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">vector</span><span class="p">):</span>
-                <span class="k">return</span> <span class="n">hessian_vector_product</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">vector</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">hessian_operator</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">vector</span><span class="p">)</span>
 
         <span class="k">else</span><span class="p">:</span>
 
-            <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">hessian_vector_product</span><span class="p">)</span>
+            <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">hessian_operator</span><span class="p">)</span>
             <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">vector</span><span class="p">):</span>
-                <span class="k">return</span> <span class="n">hessian_vector_product</span><span class="p">(</span><span class="o">*</span><span class="n">point</span><span class="p">,</span> <span class="o">*</span><span class="n">vector</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">hessian_operator</span><span class="p">(</span><span class="o">*</span><span class="n">point</span><span class="p">,</span> <span class="o">*</span><span class="n">vector</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">wrapper</span>
 
@@ -315,8 +316,8 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">euclidean_gradient</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_euclidean_gradient</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_euclidean_gradient</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wrap_gradient</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_original_cost</span><span class="o">.</span><span class="n">compute_gradient</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_euclidean_gradient</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wrap_gradient_operator</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_original_cost</span><span class="o">.</span><span class="n">get_gradient_operator</span><span class="p">()</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_euclidean_gradient</span>
 
@@ -335,8 +336,8 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">euclidean_hessian</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_euclidean_hessian</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_euclidean_hessian</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wrap_hessian_vector_product</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_original_cost</span><span class="o">.</span><span class="n">compute_hessian_vector_product</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_euclidean_hessian</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wrap_hessian_operator</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_original_cost</span><span class="o">.</span><span class="n">get_hessian_operator</span><span class="p">()</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_euclidean_hessian</span>
 

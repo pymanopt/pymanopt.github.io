@@ -131,11 +131,10 @@
 <li><p><strong>cost</strong> (<a class="reference internal" href="autodiff.html#pymanopt.autodiff.Function" title="pymanopt.autodiff.Function"><em>pymanopt.autodiff.Function</em></a>) – A callable decorated with a decorator from
 <code class="xref py py-mod docutils literal notranslate"><span class="pre">pymanopt.functions</span></code> which takes a point on a manifold and
 returns a real scalar.
-If any decorator other than
-<a class="reference internal" href="autodiff.html#pymanopt.function.numpy" title="pymanopt.function.numpy"><code class="xref py py-func docutils literal notranslate"><span class="pre">pymanopt.function.numpy()</span></code></a> is used the gradient and
-Hessian-vector production functions are generated automatically if
-needed and no <code class="docutils literal notranslate"><span class="pre">{euclidean,riemannian}_gradient</span></code> or
-<code class="docutils literal notranslate"><span class="pre">{euclidean,riemannian}_hessian</span></code> arguments are provided.</p></li>
+If any decorator other than <a class="reference internal" href="autodiff.html#pymanopt.function.numpy" title="pymanopt.function.numpy"><code class="xref py py-func docutils literal notranslate"><span class="pre">pymanopt.function.numpy()</span></code></a> is
+used, the gradient and Hessian functions are generated
+automatically if needed and no <code class="docutils literal notranslate"><span class="pre">{euclidean,riemannian}_gradient</span></code>
+or <code class="docutils literal notranslate"><span class="pre">{euclidean,riemannian}_hessian</span></code> arguments are provided.</p></li>
 <li><p><strong>euclidean_gradient</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="autodiff.html#pymanopt.autodiff.Function" title="pymanopt.autodiff.Function"><em>pymanopt.autodiff.Function</em></a><em>]</em>) – The Euclidean gradient, i.e., the gradient of the
 cost function in the typical sense in the ambient space.
 The returned value need not belong to the tangent space of
@@ -147,12 +146,12 @@ In most cases this need not be provided and the Riemannian gradient
 is instead computed internally.
 If provided, the function needs to return a vector in the tangent
 space of <code class="docutils literal notranslate"><span class="pre">manifold</span></code>.</p></li>
-<li><p><strong>euclidean_hessian</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="autodiff.html#pymanopt.autodiff.Function" title="pymanopt.autodiff.Function"><em>pymanopt.autodiff.Function</em></a><em>]</em>) – The Euclidean Hessian-vector product, i.e., the
-directional derivative of <code class="docutils literal notranslate"><span class="pre">euclidean_gradient</span></code> in the direction
-of a tangent vector.</p></li>
-<li><p><strong>riemannian_hessian</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="autodiff.html#pymanopt.autodiff.Function" title="pymanopt.autodiff.Function"><em>pymanopt.autodiff.Function</em></a><em>]</em>) – The Riemannian Hessian-vector product, i.e., the
-directional derivative of <code class="docutils literal notranslate"><span class="pre">riemannian_gradient</span></code> in the direction
-of a tangent vector.
+<li><p><strong>euclidean_hessian</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="autodiff.html#pymanopt.autodiff.Function" title="pymanopt.autodiff.Function"><em>pymanopt.autodiff.Function</em></a><em>]</em>) – The Euclidean Hessian, i.e., the directional
+derivative of <code class="docutils literal notranslate"><span class="pre">euclidean_gradient</span></code> in the direction of a tangent
+vector.</p></li>
+<li><p><strong>riemannian_hessian</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="autodiff.html#pymanopt.autodiff.Function" title="pymanopt.autodiff.Function"><em>pymanopt.autodiff.Function</em></a><em>]</em>) – The Riemannian Hessian, i.e., the directional
+derivative of <code class="docutils literal notranslate"><span class="pre">riemannian_gradient</span></code> in the direction of a tangent
+vector.
 As with <code class="docutils literal notranslate"><span class="pre">riemannian_gradient</span></code> this usually need not be provided
 explicitly.</p></li>
 <li><p><strong>preconditioner</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>]</em>) – </p></li>
