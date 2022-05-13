@@ -325,9 +325,9 @@
     <span class="k">def</span> <span class="nf">riemannian_gradient</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_riemannian_gradient</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 
-            <span class="k">def</span> <span class="nf">riemannian_gradient</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+            <span class="k">def</span> <span class="nf">riemannian_gradient</span><span class="p">(</span><span class="n">point</span><span class="p">):</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">manifold</span><span class="o">.</span><span class="n">euclidean_to_riemannian_gradient</span><span class="p">(</span>
-                    <span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">euclidean_gradient</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+                    <span class="n">point</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">euclidean_gradient</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
                 <span class="p">)</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">_riemannian_gradient</span> <span class="o">=</span> <span class="n">riemannian_gradient</span>
@@ -346,9 +346,12 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_riemannian_hessian</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">euclidean_hessian</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">euclidean_hessian</span>
 
-            <span class="k">def</span> <span class="nf">riemannian_hessian</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
+            <span class="k">def</span> <span class="nf">riemannian_hessian</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">):</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">manifold</span><span class="o">.</span><span class="n">euclidean_to_riemannian_hessian</span><span class="p">(</span>
-                    <span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">euclidean_gradient</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">euclidean_hessian</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="p">),</span> <span class="n">a</span>
+                    <span class="n">point</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">euclidean_gradient</span><span class="p">(</span><span class="n">point</span><span class="p">),</span>
+                    <span class="n">euclidean_hessian</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">),</span>
+                    <span class="n">tangent_vector</span><span class="p">,</span>
                 <span class="p">)</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">_riemannian_hessian</span> <span class="o">=</span> <span class="n">riemannian_hessian</span>
@@ -363,7 +366,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on May 12, 2022.
+      <span class="lastupdated">Last updated on May 13, 2022.
       </span></p>
   </div>
 

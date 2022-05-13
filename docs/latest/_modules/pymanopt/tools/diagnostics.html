@@ -267,14 +267,14 @@
     <span class="n">manifold_class</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">manifold</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">)</span>
-    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+    <span class="k">except</span> <span class="ne">NotImplementedError</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;The manifold &#39;</span><span class="si">{</span><span class="n">manifold_class</span><span class="si">}</span><span class="s2">&#39; provides no exponential map as &quot;</span>
             <span class="s2">&quot;reference to compare the retraction.&quot;</span>
         <span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">manifold</span><span class="o">.</span><span class="n">retraction</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">)</span>
-    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+    <span class="k">except</span> <span class="ne">NotImplementedError</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;The manifold &#39;</span><span class="si">{</span><span class="n">manifold_class</span><span class="si">}</span><span class="s2">&#39; provides no retraction.&quot;</span>
         <span class="p">)</span>
@@ -347,7 +347,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on May 12, 2022.
+      <span class="lastupdated">Last updated on May 13, 2022.
       </span></p>
   </div>
 

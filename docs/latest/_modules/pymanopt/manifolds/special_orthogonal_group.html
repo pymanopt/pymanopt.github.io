@@ -122,7 +122,7 @@
 <span class="sd">        The default SVD-based retraction is only a first-order approximation of</span>
 <span class="sd">        the exponential map.</span>
 <span class="sd">        Use of a second-order retraction can be enabled by instantiating the</span>
-<span class="sd">        class with ``SpecialOrthogonalGroup(n, k, retraction=&quot;polar&quot;)``.</span>
+<span class="sd">        class with ``SpecialOrthogonalGroup(n, k=k, retraction=&quot;polar&quot;)``.</span>
 
 <span class="sd">        The procedure to generate random rotation matrices sampled uniformly</span>
 <span class="sd">        from the Haar measure is detailed in [Mez2006]_.</span>
@@ -141,11 +141,9 @@
         <span class="n">dimension</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">k</span> <span class="o">*</span> <span class="n">comb</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">dimension</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">retraction</span> <span class="o">==</span> <span class="s2">&quot;qr&quot;</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_retraction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_retraction_qr</span>
-        <span class="k">elif</span> <span class="n">retraction</span> <span class="o">==</span> <span class="s2">&quot;polar&quot;</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_retractionretr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_retraction_polar</span>
-        <span class="k">else</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_retraction</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;_retraction_</span><span class="si">{</span><span class="n">retraction</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid retraction type &#39;</span><span class="si">{</span><span class="n">retraction</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="SpecialOrthogonalGroup.inner_product"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.inner_product">[docs]</a>    <span class="k">def</span> <span class="nf">inner_product</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector_a</span><span class="p">,</span> <span class="n">tangent_vector_b</span><span class="p">):</span>
@@ -198,17 +196,9 @@
         <span class="k">return</span> <span class="n">Y</span>
 
     <span class="k">def</span> <span class="nf">_retraction_polar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">):</span>
-        <span class="k">def</span> <span class="nf">retri</span><span class="p">(</span><span class="n">array</span><span class="p">):</span>
-            <span class="n">u</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">vt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">array</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">u</span> <span class="o">@</span> <span class="n">vt</span>
-
         <span class="n">Y</span> <span class="o">=</span> <span class="n">point</span> <span class="o">+</span> <span class="n">multiprod</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_k</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">retri</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
-
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_k</span><span class="p">):</span>
-            <span class="n">Y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">retri</span><span class="p">(</span><span class="n">Y</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-        <span class="k">return</span> <span class="n">Y</span>
+        <span class="n">u</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">vt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">multiprod</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">vt</span><span class="p">)</span>
 
 <div class="viewcode-block" id="SpecialOrthogonalGroup.exp"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.exp">[docs]</a>    <span class="k">def</span> <span class="nf">exp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">):</span>
         <span class="n">tv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">tangent_vector</span><span class="p">)</span>
@@ -284,7 +274,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on May 12, 2022.
+      <span class="lastupdated">Last updated on May 13, 2022.
       </span></p>
   </div>
 
