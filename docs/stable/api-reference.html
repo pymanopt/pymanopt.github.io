@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>API Reference &mdash; Pymanopt stable documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/style.css" type="text/css" />
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" type="text/css" />
+      <link rel="stylesheet" href="_static/katex-math.css" type="text/css" />
+    <link rel="canonical" href="pymanopt.org/api-reference.html" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js"></script>
+        <script src="_static/katex_autorenderer.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Manifolds" href="manifolds.html" />
+    <link rel="prev" title="Quickstart" href="quickstart.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> Pymanopt
+            <img src="_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                stable
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/pymanopt/pymanopt/tree/master/examples">Examples</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="manifolds.html">Manifolds</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autodiff.html">Automatic Differentiation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="problem.html">Problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizers.html">Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tools.html">Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bibliography.html">Bibliography</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING.html">Contributing</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Notebooks</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="examples/notebooks/mixture_of_gaussians.html">Riemannian Optimization for Inference in MoG models</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Pymanopt</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>API Reference</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/api-reference.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="api-reference">
+<h1>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline"></a></h1>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Packages &amp; Modules</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="manifolds.html">Manifolds</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="manifolds.html#module-pymanopt.manifolds.manifold">Manifold</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manifolds.html#id10">Euclidean Space</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manifolds.html#module-pymanopt.manifolds.sphere">Sphere Manifold</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manifolds.html#module-pymanopt.manifolds.stiefel">Stiefel Manifold</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manifolds.html#module-pymanopt.manifolds.grassmann">Grassmann Manifold</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manifolds.html#module-pymanopt.manifolds.complex_circle">Complex Circle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manifolds.html#module-pymanopt.manifolds.special_orthogonal_group">Special Orthogonal Group</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manifolds.html#module-pymanopt.manifolds.oblique">Oblique Manifold</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manifolds.html#module-pymanopt.manifolds.positive_definite">Symmetric Positive Definite Matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manifolds.html#module-pymanopt.manifolds.psd">Positive Semidefinite Matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manifolds.html#module-pymanopt.manifolds.fixed_rank">Fixed-Rank Matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manifolds.html#module-pymanopt.manifolds.positive">Positive Matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manifolds.html#module-pymanopt.manifolds.product">Product Manifold</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="autodiff.html">Automatic Differentiation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="autodiff.html#module-pymanopt.function">Backends</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="problem.html">Problem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="optimizers.html">Optimization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="optimizers.html#optimizers">Optimizers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="optimizers.html#module-pymanopt.optimizers.optimizer">Optimizer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="optimizers.html#module-pymanopt.optimizers.conjugate_gradient">Conjugate Gradients</a></li>
+<li class="toctree-l3"><a class="reference internal" href="optimizers.html#module-pymanopt.optimizers.nelder_mead">Nelder-Mead Algorithm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="optimizers.html#module-pymanopt.optimizers.particle_swarm">Particle Swarms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="optimizers.html#module-pymanopt.optimizers.steepest_descent">Steepest Descent</a></li>
+<li class="toctree-l3"><a class="reference internal" href="optimizers.html#module-pymanopt.optimizers.trust_regions">Riemannian Trust Regions Algorithm</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="optimizers.html#module-pymanopt.optimizers.line_search">Line-Search Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html">Tools</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tools.html#module-pymanopt.tools.multi">Multi Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tools.html#module-pymanopt.tools.diagnostics">Diagnostics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tools.html#module-pymanopt.tools.testing">Testing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="bibliography.html">Bibliography</a></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="quickstart.html" class="btn btn-neutral float-left" title="Quickstart" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="manifolds.html" class="btn btn-neutral float-right" title="Manifolds" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
+      <span class="lastupdated">Last updated on May 16, 2022.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: stable
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl>
+      <dt>Versions</dt>
+      <dd><a href="/docs/latest">latest</a></dd>
+    </dl>
+  </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

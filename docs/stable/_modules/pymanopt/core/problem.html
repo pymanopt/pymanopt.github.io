@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pymanopt.core.problem &mdash; Pymanopt stable documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/style.css" type="text/css" />
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/katex-math.css" type="text/css" />
+    <link rel="canonical" href="pymanopt.org/_modules/pymanopt/core/problem.html" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js"></script>
+        <script src="../../../_static/katex_autorenderer.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> Pymanopt
+            <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                stable
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/pymanopt/pymanopt/tree/master/examples">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api-reference.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributing</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Notebooks</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/notebooks/mixture_of_gaussians.html">Riemannian Optimization for Inference in MoG models</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Pymanopt</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      <li>pymanopt.core.problem</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pymanopt.core.problem</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;The Pymanopt problem class.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">functools</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Optional</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">..autodiff</span> <span class="kn">import</span> <span class="n">Function</span>
+<span class="kn">from</span> <span class="nn">..manifolds.manifold</span> <span class="kn">import</span> <span class="n">Manifold</span>
+
+
+<div class="viewcode-block" id="Problem"><a class="viewcode-back" href="../../../problem.html#pymanopt.core.problem.Problem">[docs]</a><span class="k">class</span> <span class="nc">Problem</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Problem class to define a Riemannian optimization problem.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        manifold: Manifold to optimize over.</span>
+<span class="sd">        cost: A callable decorated with a decorator from</span>
+<span class="sd">            :mod:`pymanopt.functions` which takes a point on a manifold and</span>
+<span class="sd">            returns a real scalar.</span>
+<span class="sd">            If any decorator other than :func:`pymanopt.function.numpy` is</span>
+<span class="sd">            used, the gradient and Hessian functions are generated</span>
+<span class="sd">            automatically if needed and no ``{euclidean,riemannian}_gradient``</span>
+<span class="sd">            or ``{euclidean,riemannian}_hessian`` arguments are provided.</span>
+<span class="sd">        euclidean_gradient: The Euclidean gradient, i.e., the gradient of the</span>
+<span class="sd">            cost function in the typical sense in the ambient space.</span>
+<span class="sd">            The returned value need not belong to the tangent space of</span>
+<span class="sd">            ``manifold``.</span>
+<span class="sd">        riemannian_gradient: The Riemannian gradient.</span>
+<span class="sd">            For embedded submanifolds this is simply the projection of</span>
+<span class="sd">            ``euclidean_gradient`` on the tangent space of ``manifold``.</span>
+<span class="sd">            In most cases this need not be provided and the Riemannian gradient</span>
+<span class="sd">            is instead computed internally.</span>
+<span class="sd">            If provided, the function needs to return a vector in the tangent</span>
+<span class="sd">            space of ``manifold``.</span>
+<span class="sd">        euclidean_hessian: The Euclidean Hessian, i.e., the directional</span>
+<span class="sd">            derivative of ``euclidean_gradient`` in the direction of a tangent</span>
+<span class="sd">            vector.</span>
+<span class="sd">        riemannian_hessian: The Riemannian Hessian, i.e., the directional</span>
+<span class="sd">            derivative of ``riemannian_gradient`` in the direction of a tangent</span>
+<span class="sd">            vector.</span>
+<span class="sd">            As with ``riemannian_gradient`` this usually need not be provided</span>
+<span class="sd">            explicitly.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">manifold</span><span class="p">:</span> <span class="n">Manifold</span><span class="p">,</span>
+        <span class="n">cost</span><span class="p">:</span> <span class="n">Function</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">euclidean_gradient</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Function</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">riemannian_gradient</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Function</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">euclidean_hessian</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Function</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">riemannian_hessian</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Function</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">preconditioner</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manifold</span> <span class="o">=</span> <span class="n">manifold</span>
+
+        <span class="k">for</span> <span class="n">function</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">(</span>
+            <span class="p">(</span><span class="n">cost</span><span class="p">,</span> <span class="s2">&quot;cost&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">euclidean_gradient</span><span class="p">,</span> <span class="s2">&quot;euclidean_gradient&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">euclidean_hessian</span><span class="p">,</span> <span class="s2">&quot;euclidean_hessian&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">riemannian_gradient</span><span class="p">,</span> <span class="s2">&quot;riemannian_gradient&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">riemannian_hessian</span><span class="p">,</span> <span class="s2">&quot;riemannian_hessian&quot;</span><span class="p">),</span>
+        <span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_validate_function</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">euclidean_gradient</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">riemannian_gradient</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Only &#39;euclidean_gradient&#39; or &#39;riemannian_gradient&#39; should be &quot;</span>
+                <span class="s2">&quot;provided, not both&quot;</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">euclidean_hessian</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">riemannian_hessian</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Only &#39;euclidean_hessian&#39; or &#39;riemannian_hessian&#39; should be provided, &quot;</span>
+                <span class="s2">&quot;not both&quot;</span>
+            <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_original_cost</span> <span class="o">=</span> <span class="n">cost</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cost</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wrap_function</span><span class="p">(</span><span class="n">cost</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">euclidean_gradient</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">euclidean_gradient</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wrap_gradient_operator</span><span class="p">(</span>
+                <span class="n">euclidean_gradient</span>
+            <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_euclidean_gradient</span> <span class="o">=</span> <span class="n">euclidean_gradient</span>
+        <span class="k">if</span> <span class="n">euclidean_hessian</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">euclidean_hessian</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wrap_hessian_operator</span><span class="p">(</span><span class="n">euclidean_hessian</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_euclidean_hessian</span> <span class="o">=</span> <span class="n">euclidean_hessian</span>
+
+        <span class="k">if</span> <span class="n">riemannian_gradient</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">riemannian_gradient</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wrap_gradient_operator</span><span class="p">(</span>
+                <span class="n">riemannian_gradient</span>
+            <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_riemannian_gradient</span> <span class="o">=</span> <span class="n">riemannian_gradient</span>
+        <span class="k">if</span> <span class="n">riemannian_hessian</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">riemannian_hessian</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wrap_hessian_operator</span><span class="p">(</span>
+                <span class="n">riemannian_hessian</span>
+            <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_riemannian_hessian</span> <span class="o">=</span> <span class="n">riemannian_hessian</span>
+
+        <span class="k">if</span> <span class="n">preconditioner</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+
+            <span class="k">def</span> <span class="nf">preconditioner</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">tangent_vector</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">preconditioner</span> <span class="o">=</span> <span class="n">preconditioner</span>
+
+    <span class="k">def</span> <span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;manifold&quot;</span><span class="p">,</span> <span class="s2">&quot;preconditioner&quot;</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cannot override &#39;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&#39; attribute&quot;</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_validate_function</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">function</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="n">Function</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Function &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39; must be decorated with a backend decorator&quot;</span>
+            <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_flatten_arguments</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arguments</span><span class="p">,</span> <span class="n">signature</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">arguments</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">signature</span><span class="p">)</span>
+
+        <span class="n">flattened_arguments</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">group_size</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">signature</span><span class="p">):</span>
+            <span class="n">argument</span> <span class="o">=</span> <span class="n">arguments</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">group_size</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">assert</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">argument</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">))</span>
+                <span class="n">flattened_arguments</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">argument</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">argument</span><span class="p">)</span> <span class="o">==</span> <span class="n">group_size</span>
+                <span class="n">flattened_arguments</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">argument</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">flattened_arguments</span>
+
+    <span class="k">def</span> <span class="nf">_group_return_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">function</span><span class="p">,</span> <span class="n">signature</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Decorator to group return values according to a given signature.</span>
+
+<span class="sd">        Wraps a function inside another function which groups the return</span>
+<span class="sd">        values of ``function`` according to the group sizes delineated by</span>
+<span class="sd">        ``signature``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="nb">all</span><span class="p">((</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">group</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">signature</span><span class="p">))</span>
+
+        <span class="n">num_return_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">signature</span><span class="p">)</span>
+
+        <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">function</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="n">return_values</span> <span class="o">=</span> <span class="n">function</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">return_values</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Function returned an unexpected value&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">return_values</span><span class="p">)</span> <span class="o">!=</span> <span class="n">num_return_values</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">&quot;Function returned an unexpected number of arguments&quot;</span>
+                <span class="p">)</span>
+            <span class="n">groups</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">group_size</span> <span class="ow">in</span> <span class="n">signature</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">group_size</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">group</span> <span class="o">=</span> <span class="n">return_values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">group</span> <span class="o">=</span> <span class="n">return_values</span><span class="p">[</span><span class="n">i</span> <span class="p">:</span> <span class="n">i</span> <span class="o">+</span> <span class="n">group_size</span><span class="p">]</span>
+                <span class="n">groups</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">group</span><span class="p">)</span>
+                <span class="n">i</span> <span class="o">+=</span> <span class="n">group_size</span>
+            <span class="k">return</span> <span class="n">groups</span>
+
+        <span class="k">return</span> <span class="n">wrapper</span>
+
+    <span class="k">def</span> <span class="nf">_wrap_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">function</span><span class="p">):</span>
+        <span class="n">point_layout</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">manifold</span><span class="o">.</span><span class="n">point_layout</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">point_layout</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">)):</span>
+
+            <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">function</span><span class="p">)</span>
+            <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">point</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">function</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_flatten_arguments</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">point_layout</span><span class="p">))</span>
+
+            <span class="k">return</span> <span class="n">wrapper</span>
+
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">point_layout</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">point_layout</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+
+            <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">function</span><span class="p">)</span>
+            <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">point</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">function</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">function</span><span class="p">)</span>
+            <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">point</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">function</span><span class="p">(</span><span class="o">*</span><span class="n">point</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">wrapper</span>
+
+    <span class="k">def</span> <span class="nf">_wrap_gradient_operator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gradient</span><span class="p">):</span>
+        <span class="n">wrapped_gradient</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wrap_function</span><span class="p">(</span><span class="n">gradient</span><span class="p">)</span>
+        <span class="n">point_layout</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">manifold</span><span class="o">.</span><span class="n">point_layout</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">point_layout</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_group_return_values</span><span class="p">(</span><span class="n">wrapped_gradient</span><span class="p">,</span> <span class="n">point_layout</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">wrapped_gradient</span>
+
+    <span class="k">def</span> <span class="nf">_wrap_hessian_operator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hessian_operator</span><span class="p">):</span>
+        <span class="n">point_layout</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">manifold</span><span class="o">.</span><span class="n">point_layout</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">point_layout</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+
+            <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">hessian_operator</span><span class="p">)</span>
+            <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">vector</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">hessian_operator</span><span class="p">(</span>
+                    <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_flatten_arguments</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">point_layout</span><span class="p">),</span>
+                    <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_flatten_arguments</span><span class="p">(</span><span class="n">vector</span><span class="p">,</span> <span class="n">point_layout</span><span class="p">),</span>
+                <span class="p">)</span>
+
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_group_return_values</span><span class="p">(</span><span class="n">wrapper</span><span class="p">,</span> <span class="n">point_layout</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">point_layout</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+
+            <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">hessian_operator</span><span class="p">)</span>
+            <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">vector</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">hessian_operator</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">vector</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">hessian_operator</span><span class="p">)</span>
+            <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">vector</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">hessian_operator</span><span class="p">(</span><span class="o">*</span><span class="n">point</span><span class="p">,</span> <span class="o">*</span><span class="n">vector</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">wrapper</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">cost</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cost</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">euclidean_gradient</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_euclidean_gradient</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_euclidean_gradient</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wrap_gradient_operator</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_original_cost</span><span class="o">.</span><span class="n">get_gradient_operator</span><span class="p">()</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_euclidean_gradient</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">riemannian_gradient</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_riemannian_gradient</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+
+            <span class="k">def</span> <span class="nf">riemannian_gradient</span><span class="p">(</span><span class="n">point</span><span class="p">):</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">manifold</span><span class="o">.</span><span class="n">euclidean_to_riemannian_gradient</span><span class="p">(</span>
+                    <span class="n">point</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">euclidean_gradient</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
+                <span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_riemannian_gradient</span> <span class="o">=</span> <span class="n">riemannian_gradient</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_riemannian_gradient</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">euclidean_hessian</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_euclidean_hessian</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_euclidean_hessian</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wrap_hessian_operator</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_original_cost</span><span class="o">.</span><span class="n">get_hessian_operator</span><span class="p">()</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_euclidean_hessian</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">riemannian_hessian</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_riemannian_hessian</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">euclidean_hessian</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">euclidean_hessian</span>
+
+            <span class="k">def</span> <span class="nf">riemannian_hessian</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">):</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">manifold</span><span class="o">.</span><span class="n">euclidean_to_riemannian_hessian</span><span class="p">(</span>
+                    <span class="n">point</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">euclidean_gradient</span><span class="p">(</span><span class="n">point</span><span class="p">),</span>
+                    <span class="n">euclidean_hessian</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">),</span>
+                    <span class="n">tangent_vector</span><span class="p">,</span>
+                <span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_riemannian_hessian</span> <span class="o">=</span> <span class="n">riemannian_hessian</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_riemannian_hessian</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
+      <span class="lastupdated">Last updated on May 16, 2022.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: stable
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl>
+      <dt>Versions</dt>
+      <dd><a href="/docs/latest">latest</a></dd>
+    </dl>
+  </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
