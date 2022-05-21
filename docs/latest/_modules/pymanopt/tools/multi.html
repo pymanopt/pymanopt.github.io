@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pymanopt.tools.multi &mdash; Pymanopt latest (6ac0d94) documentation</title>
+  <title>pymanopt.tools.multi &mdash; Pymanopt latest (a18268b) documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/style.css" type="text/css" />
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" type="text/css" />
@@ -35,7 +35,7 @@
             <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                latest (6ac0d94)
+                latest (a18268b)
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -84,30 +84,6 @@
   <h1>Source code for pymanopt.tools.multi</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">scipy.linalg</span>
-
-
-<div class="viewcode-block" id="multiprod"><a class="viewcode-back" href="../../../tools.html#pymanopt.tools.multi.multiprod">[docs]</a><span class="k">def</span> <span class="nf">multiprod</span><span class="p">(</span><span class="n">A</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">B</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Vectorized matrix-matrix multiplication.</span>
-
-<span class="sd">    The matrices ``A`` and ``B`` are assumed to be arrays containing ``k``</span>
-<span class="sd">    matrices, i.e., ``A`` and ``B`` have shape ``(k, m, n)`` and ``(k, n, p)``,</span>
-<span class="sd">    respectively.</span>
-<span class="sd">    The function multiplies each matrix in ``A`` with the corresponding matrix</span>
-<span class="sd">    in ``B`` along the first dimension.</span>
-<span class="sd">    The resulting array has shape ``(k, m, p)``.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        A: The first matrix.</span>
-<span class="sd">        B: The second matrix.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        The matrix (or more precisely array of matrices) corresponding to</span>
-<span class="sd">        the matrix product vectorized over the first dimension of ``A`` and</span>
-<span class="sd">        ``B`` (if ``A.ndim == 2``).</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">A</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">A</span> <span class="o">@</span> <span class="n">B</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;ijk,ikl-&gt;ijl&quot;</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="multitransp"><a class="viewcode-back" href="../../../tools.html#pymanopt.tools.multi.multitransp">[docs]</a><span class="k">def</span> <span class="nf">multitransp</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>
@@ -161,7 +137,7 @@
 
     <span class="n">w</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
     <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">w</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
-    <span class="n">logmA</span> <span class="o">=</span> <span class="n">multiprod</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">w</span> <span class="o">*</span> <span class="n">multihconj</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
+    <span class="n">logmA</span> <span class="o">=</span> <span class="n">v</span> <span class="o">@</span> <span class="p">(</span><span class="n">w</span> <span class="o">*</span> <span class="n">multihconj</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
     <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isrealobj</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">logmA</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">logmA</span></div>
@@ -174,7 +150,7 @@
 
     <span class="n">w</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
     <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">w</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
-    <span class="n">expmA</span> <span class="o">=</span> <span class="n">multiprod</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">w</span> <span class="o">*</span> <span class="n">multihconj</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
+    <span class="n">expmA</span> <span class="o">=</span> <span class="n">v</span> <span class="o">@</span> <span class="p">(</span><span class="n">w</span> <span class="o">*</span> <span class="n">multihconj</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
     <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isrealobj</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">expmA</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">expmA</span></div>

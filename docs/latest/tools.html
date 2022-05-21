@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tools &mdash; Pymanopt latest (6ac0d94) documentation</title>
+  <title>Tools &mdash; Pymanopt latest (a18268b) documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/style.css" type="text/css" />
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" type="text/css" />
@@ -37,7 +37,7 @@
             <img src="_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                latest (6ac0d94)
+                latest (a18268b)
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -125,34 +125,6 @@
 <h1>Tools<a class="headerlink" href="#tools" title="Permalink to this headline"></a></h1>
 <div class="section" id="module-pymanopt.tools.multi">
 <span id="multi-tools"></span><h2>Multi Tools<a class="headerlink" href="#module-pymanopt.tools.multi" title="Permalink to this headline"></a></h2>
-<dl class="py function">
-<dt class="sig sig-object py" id="pymanopt.tools.multi.multiprod">
-<span class="sig-prename descclassname"><span class="pre">pymanopt.tools.multi.</span></span><span class="sig-name descname"><span class="pre">multiprod</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/tools/multi.html#multiprod"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.tools.multi.multiprod" title="Permalink to this definition"></a></dt>
-<dd><p>Vectorized matrix-matrix multiplication.</p>
-<p>The matrices <code class="docutils literal notranslate"><span class="pre">A</span></code> and <code class="docutils literal notranslate"><span class="pre">B</span></code> are assumed to be arrays containing <code class="docutils literal notranslate"><span class="pre">k</span></code>
-matrices, i.e., <code class="docutils literal notranslate"><span class="pre">A</span></code> and <code class="docutils literal notranslate"><span class="pre">B</span></code> have shape <code class="docutils literal notranslate"><span class="pre">(k,</span> <span class="pre">m,</span> <span class="pre">n)</span></code> and <code class="docutils literal notranslate"><span class="pre">(k,</span> <span class="pre">n,</span> <span class="pre">p)</span></code>,
-respectively.
-The function multiplies each matrix in <code class="docutils literal notranslate"><span class="pre">A</span></code> with the corresponding matrix
-in <code class="docutils literal notranslate"><span class="pre">B</span></code> along the first dimension.
-The resulting array has shape <code class="docutils literal notranslate"><span class="pre">(k,</span> <span class="pre">m,</span> <span class="pre">p)</span></code>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>A</strong> (<em>numpy.ndarray</em>) – The first matrix.</p></li>
-<li><p><strong>B</strong> (<em>numpy.ndarray</em>) – The second matrix.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The matrix (or more precisely array of matrices) corresponding to
-the matrix product vectorized over the first dimension of <code class="docutils literal notranslate"><span class="pre">A</span></code> and
-<code class="docutils literal notranslate"><span class="pre">B</span></code> (if <code class="docutils literal notranslate"><span class="pre">A.ndim</span> <span class="pre">==</span> <span class="pre">2</span></code>).</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>numpy.ndarray</p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py function">
 <dt class="sig sig-object py" id="pymanopt.tools.multi.multitransp">
 <span class="sig-prename descclassname"><span class="pre">pymanopt.tools.multi.</span></span><span class="sig-name descname"><span class="pre">multitransp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/tools/multi.html#multitransp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.tools.multi.multitransp" title="Permalink to this definition"></a></dt>
