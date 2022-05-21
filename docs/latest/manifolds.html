@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Manifolds &mdash; Pymanopt latest (a7b824b) documentation</title>
+  <title>Manifolds &mdash; Pymanopt latest (a198485) documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/style.css" type="text/css" />
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" type="text/css" />
@@ -37,7 +37,7 @@
             <img src="_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                latest (a7b824b)
+                latest (a198485)
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -3125,6 +3125,7 @@ Possible choices are <code class="docutils literal notranslate"><span class="pre
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The formula for the exponential map can be found in <a class="reference internal" href="bibliography.html#zh2021" id="id26"><span>[ZH2021]</span></a>.</p>
+<p>The Weingarten map is taken from <a class="reference internal" href="bibliography.html#amt2013" id="id27"><span>[AMT2013]</span></a>.</p>
 <p>The default retraction used here is a first-order one based on
 the QR decomposition.
 To switch to a second-order polar retraction, use <code class="docutils literal notranslate"><span class="pre">Stiefel(n,</span> <span class="pre">p,</span> <span class="pre">k=k,</span>
@@ -3180,27 +3181,23 @@ in the ambient space.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pymanopt.manifolds.stiefel.Stiefel.euclidean_to_riemannian_hessian">
-<span class="sig-name descname"><span class="pre">euclidean_to_riemannian_hessian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">euclidean_gradient</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">euclidean_hessian</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/stiefel.html#Stiefel.euclidean_to_riemannian_hessian"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.stiefel.Stiefel.euclidean_to_riemannian_hessian" title="Permalink to this definition"></a></dt>
-<dd><p>Converts the Euclidean to the Riemannian Hessian.</p>
-<p>This converts the Euclidean Hessian <code class="docutils literal notranslate"><span class="pre">euclidean_hessian</span></code> of a function
-at a point <code class="docutils literal notranslate"><span class="pre">point</span></code> along a tangent vector <code class="docutils literal notranslate"><span class="pre">tangent_vector</span></code> to the
-Riemannian Hessian of <code class="docutils literal notranslate"><span class="pre">point</span></code> along <code class="docutils literal notranslate"><span class="pre">tangent_vector</span></code> on the
-manifold.</p>
+<dt class="sig sig-object py" id="pymanopt.manifolds.stiefel.Stiefel.weingarten">
+<span class="sig-name descname"><span class="pre">weingarten</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normal_vector</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/stiefel.html#Stiefel.weingarten"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.stiefel.Stiefel.weingarten" title="Permalink to this definition"></a></dt>
+<dd><p>Compute the Weingarten map of the manifold.</p>
+<p>This map takes a vector <code class="docutils literal notranslate"><span class="pre">tangent_vector</span></code> in the tangent space at
+<code class="docutils literal notranslate"><span class="pre">point</span></code> and a vector <code class="docutils literal notranslate"><span class="pre">normal_vector</span></code> in the normal space at
+<code class="docutils literal notranslate"><span class="pre">point</span></code> to produce another tangent vector.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>point</strong> – The point on the manifold at which the Euclidean gradient
-and Hessian was evaluated.</p></li>
-<li><p><strong>euclidean_gradient</strong> – The Euclidean gradient at <code class="docutils literal notranslate"><span class="pre">point</span></code>.</p></li>
-<li><p><strong>euclidean_hessian</strong> – The Euclidean Hessian at <code class="docutils literal notranslate"><span class="pre">point</span></code> along the
-direction <code class="docutils literal notranslate"><span class="pre">tangent_vector</span></code>.</p></li>
-<li><p><strong>tangent_vector</strong> – The tangent vector in the direction of which the
-Riemannian Hessian is to be calculated.</p></li>
+<li><p><strong>point</strong> – A point on the manifold.</p></li>
+<li><p><strong>tangent_vector</strong> – A tangent vector at <code class="docutils literal notranslate"><span class="pre">point</span></code>.</p></li>
+<li><p><strong>normal_vector</strong> – A vector orthogonal to the tangent space at
+<code class="docutils literal notranslate"><span class="pre">point</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The Riemannian Hessian as a tangent vector at <code class="docutils literal notranslate"><span class="pre">point</span></code>.</p>
+<dd class="field-even"><p>A tangent vector.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -3274,8 +3271,8 @@ the direction of <code class="docutils literal notranslate"><span class="pre">ta
 <span class="sig-name descname"><span class="pre">transport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point_a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point_b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector_a</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/stiefel.html#Stiefel.transport"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.stiefel.Stiefel.transport" title="Permalink to this definition"></a></dt>
 <dd><p>Compute transport of tangent vectors between tangent spaces.</p>
 <p>This may either be a vector transport (a generalization of parallel
-transport) as defined in section 8.1 of <a class="reference internal" href="bibliography.html#ams2008" id="id27"><span>[AMS2008]</span></a>, or a transporter
-(see e.g. section 10.5 of <a class="reference internal" href="bibliography.html#bou2020" id="id28"><span>[Bou2020]</span></a>).
+transport) as defined in section 8.1 of <a class="reference internal" href="bibliography.html#ams2008" id="id28"><span>[AMS2008]</span></a>, or a transporter
+(see e.g. section 10.5 of <a class="reference internal" href="bibliography.html#bou2020" id="id29"><span>[Bou2020]</span></a>).
 It transports a vector <code class="docutils literal notranslate"><span class="pre">tangent_vector_a</span></code> in the tangent space at
 <code class="docutils literal notranslate"><span class="pre">point_a</span></code> to the tangent space at <cite>point_b</cite>.</p>
 <dl class="field-list simple">
@@ -3369,6 +3366,32 @@ This must be a tangent vector at <code class="docutils literal notranslate"><spa
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pymanopt.manifolds.stiefel.Stiefel.euclidean_to_riemannian_hessian">
+<span class="sig-name descname"><span class="pre">euclidean_to_riemannian_hessian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">euclidean_gradient</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">euclidean_hessian</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.stiefel.Stiefel.euclidean_to_riemannian_hessian" title="Permalink to this definition"></a></dt>
+<dd><p>Converts the Euclidean to the Riemannian Hessian.</p>
+<p>This converts the Euclidean Hessian <code class="docutils literal notranslate"><span class="pre">euclidean_hessian</span></code> of a function
+at a point <code class="docutils literal notranslate"><span class="pre">point</span></code> along a tangent vector <code class="docutils literal notranslate"><span class="pre">tangent_vector</span></code> to the
+Riemannian Hessian of <code class="docutils literal notranslate"><span class="pre">point</span></code> along <code class="docutils literal notranslate"><span class="pre">tangent_vector</span></code> on the
+manifold.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>point</strong> – The point on the manifold at which the Euclidean gradient
+and Hessian was evaluated.</p></li>
+<li><p><strong>euclidean_gradient</strong> – The Euclidean gradient at <code class="docutils literal notranslate"><span class="pre">point</span></code>.</p></li>
+<li><p><strong>euclidean_hessian</strong> – The Euclidean Hessian at <code class="docutils literal notranslate"><span class="pre">point</span></code> along the
+direction <code class="docutils literal notranslate"><span class="pre">tangent_vector</span></code>.</p></li>
+<li><p><strong>tangent_vector</strong> – The tangent vector in the direction of which the
+Riemannian Hessian is to be calculated.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The Riemannian Hessian as a tangent vector at <code class="docutils literal notranslate"><span class="pre">point</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pymanopt.manifolds.stiefel.Stiefel.log">
 <span class="sig-name descname"><span class="pre">log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point_a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point_b</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.stiefel.Stiefel.log" title="Permalink to this definition"></a></dt>
 <dd><p>Computes the logarithmic map on the manifold.</p>
@@ -3444,28 +3467,6 @@ differ for certain manifolds.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>The tangent vector at <code class="docutils literal notranslate"><span class="pre">point</span></code> closest to <code class="docutils literal notranslate"><span class="pre">vector</span></code>.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pymanopt.manifolds.stiefel.Stiefel.weingarten">
-<span class="sig-name descname"><span class="pre">weingarten</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normal_vector</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.stiefel.Stiefel.weingarten" title="Permalink to this definition"></a></dt>
-<dd><p>Compute the Weingarten map of the manifold.</p>
-<p>This map takes a vector <code class="docutils literal notranslate"><span class="pre">tangent_vector</span></code> in the tangent space at
-<code class="docutils literal notranslate"><span class="pre">point</span></code> and a vector <code class="docutils literal notranslate"><span class="pre">normal_vector</span></code> in the normal space at
-<code class="docutils literal notranslate"><span class="pre">point</span></code> to produce another tangent vector.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>point</strong> – A point on the manifold.</p></li>
-<li><p><strong>tangent_vector</strong> – A tangent vector at <code class="docutils literal notranslate"><span class="pre">point</span></code>.</p></li>
-<li><p><strong>normal_vector</strong> – A vector orthogonal to the tangent space at
-<code class="docutils literal notranslate"><span class="pre">point</span></code>.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A tangent vector.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -3780,8 +3781,8 @@ differ for certain manifolds.</p>
 <span class="sig-name descname"><span class="pre">transport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point_a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point_b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector_a</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.grassmann.Grassmann.transport" title="Permalink to this definition"></a></dt>
 <dd><p>Compute transport of tangent vectors between tangent spaces.</p>
 <p>This may either be a vector transport (a generalization of parallel
-transport) as defined in section 8.1 of <a class="reference internal" href="bibliography.html#ams2008" id="id29"><span>[AMS2008]</span></a>, or a transporter
-(see e.g. section 10.5 of <a class="reference internal" href="bibliography.html#bou2020" id="id30"><span>[Bou2020]</span></a>).
+transport) as defined in section 8.1 of <a class="reference internal" href="bibliography.html#ams2008" id="id30"><span>[AMS2008]</span></a>, or a transporter
+(see e.g. section 10.5 of <a class="reference internal" href="bibliography.html#bou2020" id="id31"><span>[Bou2020]</span></a>).
 It transports a vector <code class="docutils literal notranslate"><span class="pre">tangent_vector_a</span></code> in the tangent space at
 <code class="docutils literal notranslate"><span class="pre">point_a</span></code> to the tangent space at <cite>point_b</cite>.</p>
 <dl class="field-list simple">
@@ -4127,8 +4128,8 @@ differ for certain manifolds.</p>
 <span class="sig-name descname"><span class="pre">transport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point_a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point_b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector_a</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.grassmann.ComplexGrassmann.transport" title="Permalink to this definition"></a></dt>
 <dd><p>Compute transport of tangent vectors between tangent spaces.</p>
 <p>This may either be a vector transport (a generalization of parallel
-transport) as defined in section 8.1 of <a class="reference internal" href="bibliography.html#ams2008" id="id31"><span>[AMS2008]</span></a>, or a transporter
-(see e.g. section 10.5 of <a class="reference internal" href="bibliography.html#bou2020" id="id32"><span>[Bou2020]</span></a>).
+transport) as defined in section 8.1 of <a class="reference internal" href="bibliography.html#ams2008" id="id32"><span>[AMS2008]</span></a>, or a transporter
+(see e.g. section 10.5 of <a class="reference internal" href="bibliography.html#bou2020" id="id33"><span>[Bou2020]</span></a>).
 It transports a vector <code class="docutils literal notranslate"><span class="pre">tangent_vector_a</span></code> in the tangent space at
 <code class="docutils literal notranslate"><span class="pre">point_a</span></code> to the tangent space at <cite>point_b</cite>.</p>
 <dl class="field-list simple">
@@ -4412,8 +4413,8 @@ As such it is the inverse of <a class="reference internal" href="#pymanopt.manif
 <span class="sig-name descname"><span class="pre">transport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point_a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point_b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector_a</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/complex_circle.html#ComplexCircle.transport"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.complex_circle.ComplexCircle.transport" title="Permalink to this definition"></a></dt>
 <dd><p>Compute transport of tangent vectors between tangent spaces.</p>
 <p>This may either be a vector transport (a generalization of parallel
-transport) as defined in section 8.1 of <a class="reference internal" href="bibliography.html#ams2008" id="id33"><span>[AMS2008]</span></a>, or a transporter
-(see e.g. section 10.5 of <a class="reference internal" href="bibliography.html#bou2020" id="id34"><span>[Bou2020]</span></a>).
+transport) as defined in section 8.1 of <a class="reference internal" href="bibliography.html#ams2008" id="id34"><span>[AMS2008]</span></a>, or a transporter
+(see e.g. section 10.5 of <a class="reference internal" href="bibliography.html#bou2020" id="id35"><span>[Bou2020]</span></a>).
 It transports a vector <code class="docutils literal notranslate"><span class="pre">tangent_vector_a</span></code> in the tangent space at
 <code class="docutils literal notranslate"><span class="pre">point_a</span></code> to the tangent space at <cite>point_b</cite>.</p>
 <dl class="field-list simple">
@@ -4594,7 +4595,7 @@ the exponential map.
 Use of a second-order retraction can be enabled by instantiating the
 class with <code class="docutils literal notranslate"><span class="pre">SpecialOrthogonalGroup(n,</span> <span class="pre">k=k,</span> <span class="pre">retraction=&quot;polar&quot;)</span></code>.</p>
 <p>The procedure to generate random rotation matrices sampled uniformly
-from the Haar measure is detailed in <a class="reference internal" href="bibliography.html#mez2006" id="id35"><span>[Mez2006]</span></a>.</p>
+from the Haar measure is detailed in <a class="reference internal" href="bibliography.html#mez2006" id="id36"><span>[Mez2006]</span></a>.</p>
 </div>
 <dl class="py method">
 <dt class="sig sig-object py" id="pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.inner_product">
@@ -4837,8 +4838,8 @@ As such it is the inverse of <a class="reference internal" href="#pymanopt.manif
 <span class="sig-name descname"><span class="pre">transport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point_a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point_b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector_a</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/special_orthogonal_group.html#SpecialOrthogonalGroup.transport"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.transport" title="Permalink to this definition"></a></dt>
 <dd><p>Compute transport of tangent vectors between tangent spaces.</p>
 <p>This may either be a vector transport (a generalization of parallel
-transport) as defined in section 8.1 of <a class="reference internal" href="bibliography.html#ams2008" id="id36"><span>[AMS2008]</span></a>, or a transporter
-(see e.g. section 10.5 of <a class="reference internal" href="bibliography.html#bou2020" id="id37"><span>[Bou2020]</span></a>).
+transport) as defined in section 8.1 of <a class="reference internal" href="bibliography.html#ams2008" id="id37"><span>[AMS2008]</span></a>, or a transporter
+(see e.g. section 10.5 of <a class="reference internal" href="bibliography.html#bou2020" id="id38"><span>[Bou2020]</span></a>).
 It transports a vector <code class="docutils literal notranslate"><span class="pre">tangent_vector_a</span></code> in the tangent space at
 <code class="docutils literal notranslate"><span class="pre">point_a</span></code> to the tangent space at <cite>point_b</cite>.</p>
 <dl class="field-list simple">
@@ -5165,8 +5166,8 @@ As such it is the inverse of <a class="reference internal" href="#pymanopt.manif
 <span class="sig-name descname"><span class="pre">transport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point_a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point_b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector_a</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/oblique.html#Oblique.transport"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.oblique.Oblique.transport" title="Permalink to this definition"></a></dt>
 <dd><p>Compute transport of tangent vectors between tangent spaces.</p>
 <p>This may either be a vector transport (a generalization of parallel
-transport) as defined in section 8.1 of <a class="reference internal" href="bibliography.html#ams2008" id="id38"><span>[AMS2008]</span></a>, or a transporter
-(see e.g. section 10.5 of <a class="reference internal" href="bibliography.html#bou2020" id="id39"><span>[Bou2020]</span></a>).
+transport) as defined in section 8.1 of <a class="reference internal" href="bibliography.html#ams2008" id="id39"><span>[AMS2008]</span></a>, or a transporter
+(see e.g. section 10.5 of <a class="reference internal" href="bibliography.html#bou2020" id="id40"><span>[Bou2020]</span></a>).
 It transports a vector <code class="docutils literal notranslate"><span class="pre">tangent_vector_a</span></code> in the tangent space at
 <code class="docutils literal notranslate"><span class="pre">point_a</span></code> to the tangent space at <cite>point_b</cite>.</p>
 <dl class="field-list simple">
@@ -5327,9 +5328,9 @@ columns of each element.</p></li>
 </dl>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The geometry is based on the discussion in chapter 6 of <a class="reference internal" href="bibliography.html#bha2007" id="id40"><span>[Bha2007]</span></a>.
-Also see <a class="reference internal" href="bibliography.html#sh2015" id="id41"><span>[SH2015]</span></a> for more details.</p>
-<p>The second-order retraction is taken from <a class="reference internal" href="bibliography.html#jvv2012" id="id42"><span>[JVV2012]</span></a>.</p>
+<p>The geometry is based on the discussion in chapter 6 of <a class="reference internal" href="bibliography.html#bha2007" id="id41"><span>[Bha2007]</span></a>.
+Also see <a class="reference internal" href="bibliography.html#sh2015" id="id42"><span>[SH2015]</span></a> for more details.</p>
+<p>The second-order retraction is taken from <a class="reference internal" href="bibliography.html#jvv2012" id="id43"><span>[JVV2012]</span></a>.</p>
 </div>
 <dl class="py property">
 <dt class="sig sig-object py" id="pymanopt.manifolds.positive_definite.SymmetricPositiveDefinite.typical_dist">
@@ -5490,8 +5491,8 @@ Riemannian Hessian is to be calculated.</p></li>
 <span class="sig-name descname"><span class="pre">transport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point_a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point_b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector_a</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/positive_definite.html#SymmetricPositiveDefinite.transport"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.positive_definite.SymmetricPositiveDefinite.transport" title="Permalink to this definition"></a></dt>
 <dd><p>Compute transport of tangent vectors between tangent spaces.</p>
 <p>This may either be a vector transport (a generalization of parallel
-transport) as defined in section 8.1 of <a class="reference internal" href="bibliography.html#ams2008" id="id43"><span>[AMS2008]</span></a>, or a transporter
-(see e.g. section 10.5 of <a class="reference internal" href="bibliography.html#bou2020" id="id44"><span>[Bou2020]</span></a>).
+transport) as defined in section 8.1 of <a class="reference internal" href="bibliography.html#ams2008" id="id44"><span>[AMS2008]</span></a>, or a transporter
+(see e.g. section 10.5 of <a class="reference internal" href="bibliography.html#bou2020" id="id45"><span>[Bou2020]</span></a>).
 It transports a vector <code class="docutils literal notranslate"><span class="pre">tangent_vector_a</span></code> in the tangent space at
 <code class="docutils literal notranslate"><span class="pre">point_a</span></code> to the tangent space at <cite>point_b</cite>.</p>
 <dl class="field-list simple">
@@ -5714,7 +5715,7 @@ Hence, this geometry should only be used if it is expected that the
 points of interest will have rank exactly <code class="docutils literal notranslate"><span class="pre">k</span></code>.
 Reduce <code class="docutils literal notranslate"><span class="pre">k</span></code> if that is not the case.</p>
 <p>The quotient geometry implemented here is the simplest case presented
-in <a class="reference internal" href="bibliography.html#jba-2010" id="id45"><span>[JBA+2010]</span></a>.</p>
+in <a class="reference internal" href="bibliography.html#jba-2010" id="id46"><span>[JBA+2010]</span></a>.</p>
 </div>
 <dl class="py property">
 <dt class="sig sig-object py" id="pymanopt.manifolds.psd.PSDFixedRank.dim">
@@ -5993,8 +5994,8 @@ differ for certain manifolds.</p>
 <span class="sig-name descname"><span class="pre">transport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point_a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point_b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector_a</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.psd.PSDFixedRank.transport" title="Permalink to this definition"></a></dt>
 <dd><p>Compute transport of tangent vectors between tangent spaces.</p>
 <p>This may either be a vector transport (a generalization of parallel
-transport) as defined in section 8.1 of <a class="reference internal" href="bibliography.html#ams2008" id="id46"><span>[AMS2008]</span></a>, or a transporter
-(see e.g. section 10.5 of <a class="reference internal" href="bibliography.html#bou2020" id="id47"><span>[Bou2020]</span></a>).
+transport) as defined in section 8.1 of <a class="reference internal" href="bibliography.html#ams2008" id="id47"><span>[AMS2008]</span></a>, or a transporter
+(see e.g. section 10.5 of <a class="reference internal" href="bibliography.html#bou2020" id="id48"><span>[Bou2020]</span></a>).
 It transports a vector <code class="docutils literal notranslate"><span class="pre">tangent_vector_a</span></code> in the tangent space at
 <code class="docutils literal notranslate"><span class="pre">point_a</span></code> to the tangent space at <cite>point_b</cite>.</p>
 <dl class="field-list simple">
@@ -6072,7 +6073,7 @@ Hence, this geometry should only be used if it is expected that the
 points of interest will have rank exactly <code class="docutils literal notranslate"><span class="pre">k</span></code>.
 Reduce <code class="docutils literal notranslate"><span class="pre">k</span></code> if that is not the case.</p>
 <p>The implementation follows the quotient geometry originally described
-in <a class="reference internal" href="bibliography.html#yat2013" id="id48"><span>[Yat2013]</span></a>.</p>
+in <a class="reference internal" href="bibliography.html#yat2013" id="id49"><span>[Yat2013]</span></a>.</p>
 </div>
 <dl class="py method">
 <dt class="sig sig-object py" id="pymanopt.manifolds.psd.PSDFixedRankComplex.inner_product">
@@ -6351,8 +6352,8 @@ differ for certain manifolds.</p>
 <span class="sig-name descname"><span class="pre">transport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point_a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point_b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector_a</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.psd.PSDFixedRankComplex.transport" title="Permalink to this definition"></a></dt>
 <dd><p>Compute transport of tangent vectors between tangent spaces.</p>
 <p>This may either be a vector transport (a generalization of parallel
-transport) as defined in section 8.1 of <a class="reference internal" href="bibliography.html#ams2008" id="id49"><span>[AMS2008]</span></a>, or a transporter
-(see e.g. section 10.5 of <a class="reference internal" href="bibliography.html#bou2020" id="id50"><span>[Bou2020]</span></a>).
+transport) as defined in section 8.1 of <a class="reference internal" href="bibliography.html#ams2008" id="id50"><span>[AMS2008]</span></a>, or a transporter
+(see e.g. section 10.5 of <a class="reference internal" href="bibliography.html#bou2020" id="id51"><span>[Bou2020]</span></a>).
 It transports a vector <code class="docutils literal notranslate"><span class="pre">tangent_vector_a</span></code> in the tangent space at
 <code class="docutils literal notranslate"><span class="pre">point_a</span></code> to the tangent space at <cite>point_b</cite>.</p>
 <dl class="field-list simple">
@@ -6437,7 +6438,7 @@ algorithms converge to rank-deficient points, but convergence theorems
 no longer hold.
 As an alternative, you may try using the oblique manifold since it does
 not break down at rank drop.</p>
-<p>The geometry is taken from <a class="reference internal" href="bibliography.html#jba-2010" id="id51"><span>[JBA+2010]</span></a>.</p>
+<p>The geometry is taken from <a class="reference internal" href="bibliography.html#jba-2010" id="id52"><span>[JBA+2010]</span></a>.</p>
 </div>
 <dl class="py property">
 <dt class="sig sig-object py" id="pymanopt.manifolds.psd.Elliptope.typical_dist">
@@ -6603,8 +6604,8 @@ Riemannian Hessian is to be calculated.</p></li>
 <span class="sig-name descname"><span class="pre">transport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point_a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point_b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector_a</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/psd.html#Elliptope.transport"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.psd.Elliptope.transport" title="Permalink to this definition"></a></dt>
 <dd><p>Compute transport of tangent vectors between tangent spaces.</p>
 <p>This may either be a vector transport (a generalization of parallel
-transport) as defined in section 8.1 of <a class="reference internal" href="bibliography.html#ams2008" id="id52"><span>[AMS2008]</span></a>, or a transporter
-(see e.g. section 10.5 of <a class="reference internal" href="bibliography.html#bou2020" id="id53"><span>[Bou2020]</span></a>).
+transport) as defined in section 8.1 of <a class="reference internal" href="bibliography.html#ams2008" id="id53"><span>[AMS2008]</span></a>, or a transporter
+(see e.g. section 10.5 of <a class="reference internal" href="bibliography.html#bou2020" id="id54"><span>[Bou2020]</span></a>).
 It transports a vector <code class="docutils literal notranslate"><span class="pre">tangent_vector_a</span></code> in the tangent space at
 <code class="docutils literal notranslate"><span class="pre">point_a</span></code> to the tangent space at <cite>point_b</cite>.</p>
 <dl class="field-list simple">
@@ -6804,13 +6805,13 @@ space <span class="math">\(\R^{m \times n}\)</span> equipped with the usual trac
 <p class="admonition-title">Note</p>
 <ul class="simple">
 <li><p>The implementation follows the embedded geometry described in
-<a class="reference internal" href="bibliography.html#van2013" id="id54"><span>[Van2013]</span></a>.</p></li>
+<a class="reference internal" href="bibliography.html#van2013" id="id55"><span>[Van2013]</span></a>.</p></li>
 <li><p>The class is currently not compatible with the
 <a class="reference internal" href="optimizers.html#pymanopt.optimizers.trust_regions.TrustRegions" title="pymanopt.optimizers.trust_regions.TrustRegions"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.optimizers.trust_regions.TrustRegions</span></code></a> optimizer.</p></li>
 <li><p>Details on the implementation of
 <a class="reference internal" href="#pymanopt.manifolds.fixed_rank.FixedRankEmbedded.euclidean_to_riemannian_gradient" title="pymanopt.manifolds.fixed_rank.FixedRankEmbedded.euclidean_to_riemannian_gradient"><code class="xref py py-meth docutils literal notranslate"><span class="pre">euclidean_to_riemannian_gradient()</span></code></a> can be found at
 <a class="reference external" href="https://j-towns.github.io/papers/svd-derivative.pdf">https://j-towns.github.io/papers/svd-derivative.pdf</a>.</p></li>
-<li><p>The second-order retraction follows results presented in <a class="reference internal" href="bibliography.html#am2012" id="id55"><span>[AM2012]</span></a>.</p></li>
+<li><p>The second-order retraction follows results presented in <a class="reference internal" href="bibliography.html#am2012" id="id56"><span>[AM2012]</span></a>.</p></li>
 </ul>
 </div>
 <dl class="py property">
@@ -6981,8 +6982,8 @@ differ for certain manifolds.</p>
 <span class="sig-name descname"><span class="pre">transport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point_a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point_b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector_a</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/fixed_rank.html#FixedRankEmbedded.transport"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.fixed_rank.FixedRankEmbedded.transport" title="Permalink to this definition"></a></dt>
 <dd><p>Compute transport of tangent vectors between tangent spaces.</p>
 <p>This may either be a vector transport (a generalization of parallel
-transport) as defined in section 8.1 of <a class="reference internal" href="bibliography.html#ams2008" id="id56"><span>[AMS2008]</span></a>, or a transporter
-(see e.g. section 10.5 of <a class="reference internal" href="bibliography.html#bou2020" id="id57"><span>[Bou2020]</span></a>).
+transport) as defined in section 8.1 of <a class="reference internal" href="bibliography.html#ams2008" id="id57"><span>[AMS2008]</span></a>, or a transporter
+(see e.g. section 10.5 of <a class="reference internal" href="bibliography.html#bou2020" id="id58"><span>[Bou2020]</span></a>).
 It transports a vector <code class="docutils literal notranslate"><span class="pre">tangent_vector_a</span></code> in the tangent space at
 <code class="docutils literal notranslate"><span class="pre">point_a</span></code> to the tangent space at <cite>point_b</cite>.</p>
 <dl class="field-list simple">
@@ -7193,12 +7194,12 @@ As such, tangent vectors are represented as arrays of the same shape as
 points on the manifold without any positivity constraints on the
 individual elements.</p>
 <p>The Riemannian metric is the bi-invariant metric for positive definite
-matrices from chapter 6 of <a class="reference internal" href="bibliography.html#bha2007" id="id58"><span>[Bha2007]</span></a> on individual scalar coordinates
+matrices from chapter 6 of <a class="reference internal" href="bibliography.html#bha2007" id="id59"><span>[Bha2007]</span></a> on individual scalar coordinates
 of matrices.
-See also section 11.4 of <a class="reference internal" href="bibliography.html#bou2020" id="id59"><span>[Bou2020]</span></a> for further details.</p>
-<p>The second-order retraction is taken from <a class="reference internal" href="bibliography.html#jvv2012" id="id60"><span>[JVV2012]</span></a>.</p>
+See also section 11.4 of <a class="reference internal" href="bibliography.html#bou2020" id="id60"><span>[Bou2020]</span></a> for further details.</p>
+<p>The second-order retraction is taken from <a class="reference internal" href="bibliography.html#jvv2012" id="id61"><span>[JVV2012]</span></a>.</p>
 <p>The parallel transport that is used when <code class="docutils literal notranslate"><span class="pre">use_parallel_transport</span></code> is
-<code class="docutils literal notranslate"><span class="pre">True</span></code> is taken from <a class="reference internal" href="bibliography.html#sh2015" id="id61"><span>[SH2015]</span></a>.</p>
+<code class="docutils literal notranslate"><span class="pre">True</span></code> is taken from <a class="reference internal" href="bibliography.html#sh2015" id="id62"><span>[SH2015]</span></a>.</p>
 </div>
 <dl class="py property">
 <dt class="sig sig-object py" id="pymanopt.manifolds.positive.Positive.typical_dist">
@@ -7499,8 +7500,8 @@ differ for certain manifolds.</p>
 <span class="sig-name descname"><span class="pre">transport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point_a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point_b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector_a</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/positive.html#Positive.transport"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.positive.Positive.transport" title="Permalink to this definition"></a></dt>
 <dd><p>Compute transport of tangent vectors between tangent spaces.</p>
 <p>This may either be a vector transport (a generalization of parallel
-transport) as defined in section 8.1 of <a class="reference internal" href="bibliography.html#ams2008" id="id62"><span>[AMS2008]</span></a>, or a transporter
-(see e.g. section 10.5 of <a class="reference internal" href="bibliography.html#bou2020" id="id63"><span>[Bou2020]</span></a>).
+transport) as defined in section 8.1 of <a class="reference internal" href="bibliography.html#ams2008" id="id63"><span>[AMS2008]</span></a>, or a transporter
+(see e.g. section 10.5 of <a class="reference internal" href="bibliography.html#bou2020" id="id64"><span>[Bou2020]</span></a>).
 It transports a vector <code class="docutils literal notranslate"><span class="pre">tangent_vector_a</span></code> in the tangent space at
 <code class="docutils literal notranslate"><span class="pre">point_a</span></code> to the tangent space at <cite>point_b</cite>.</p>
 <dl class="field-list simple">
@@ -7758,8 +7759,8 @@ As such it is the inverse of <a class="reference internal" href="#pymanopt.manif
 <span class="sig-name descname"><span class="pre">transport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point_a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point_b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector_a</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/product.html#Product.transport"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.product.Product.transport" title="Permalink to this definition"></a></dt>
 <dd><p>Compute transport of tangent vectors between tangent spaces.</p>
 <p>This may either be a vector transport (a generalization of parallel
-transport) as defined in section 8.1 of <a class="reference internal" href="bibliography.html#ams2008" id="id64"><span>[AMS2008]</span></a>, or a transporter
-(see e.g. section 10.5 of <a class="reference internal" href="bibliography.html#bou2020" id="id65"><span>[Bou2020]</span></a>).
+transport) as defined in section 8.1 of <a class="reference internal" href="bibliography.html#ams2008" id="id65"><span>[AMS2008]</span></a>, or a transporter
+(see e.g. section 10.5 of <a class="reference internal" href="bibliography.html#bou2020" id="id66"><span>[Bou2020]</span></a>).
 It transports a vector <code class="docutils literal notranslate"><span class="pre">tangent_vector_a</span></code> in the tangent space at
 <code class="docutils literal notranslate"><span class="pre">point_a</span></code> to the tangent space at <cite>point_b</cite>.</p>
 <dl class="field-list simple">
@@ -7872,7 +7873,7 @@ differ for certain manifolds.</p>
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on May 20, 2022.
+      <span class="lastupdated">Last updated on May 21, 2022.
       </span></p>
   </div>
 

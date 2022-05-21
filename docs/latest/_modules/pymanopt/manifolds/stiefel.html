@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pymanopt.manifolds.stiefel &mdash; Pymanopt latest (a7b824b) documentation</title>
+  <title>pymanopt.manifolds.stiefel &mdash; Pymanopt latest (a198485) documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/style.css" type="text/css" />
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" type="text/css" />
@@ -35,7 +35,7 @@
             <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                latest (a7b824b)
+                latest (a198485)
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -121,6 +121,8 @@
 <span class="sd">    Note:</span>
 <span class="sd">        The formula for the exponential map can be found in [ZH2021]_.</span>
 
+<span class="sd">        The Weingarten map is taken from [AMT2013]_.</span>
+
 <span class="sd">        The default retraction used here is a first-order one based on</span>
 <span class="sd">        the QR decomposition.</span>
 <span class="sd">        To switch to a second-order polar retraction, use ``Stiefel(n, p, k=k,</span>
@@ -166,13 +168,12 @@
             <span class="n">point</span><span class="p">,</span> <span class="n">multisym</span><span class="p">(</span><span class="n">multiprod</span><span class="p">(</span><span class="n">multitransp</span><span class="p">(</span><span class="n">point</span><span class="p">),</span> <span class="n">vector</span><span class="p">))</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="Stiefel.euclidean_to_riemannian_hessian"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.stiefel.Stiefel.euclidean_to_riemannian_hessian">[docs]</a>    <span class="k">def</span> <span class="nf">euclidean_to_riemannian_hessian</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">euclidean_gradient</span><span class="p">,</span> <span class="n">euclidean_hessian</span><span class="p">,</span> <span class="n">tangent_vector</span>
-    <span class="p">):</span>
-        <span class="n">XtG</span> <span class="o">=</span> <span class="n">multiprod</span><span class="p">(</span><span class="n">multitransp</span><span class="p">(</span><span class="n">point</span><span class="p">),</span> <span class="n">euclidean_gradient</span><span class="p">)</span>
-        <span class="n">symXtG</span> <span class="o">=</span> <span class="n">multisym</span><span class="p">(</span><span class="n">XtG</span><span class="p">)</span>
-        <span class="n">HsymXtG</span> <span class="o">=</span> <span class="n">multiprod</span><span class="p">(</span><span class="n">tangent_vector</span><span class="p">,</span> <span class="n">symXtG</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">projection</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">euclidean_hessian</span> <span class="o">-</span> <span class="n">HsymXtG</span><span class="p">)</span></div>
+<div class="viewcode-block" id="Stiefel.weingarten"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.stiefel.Stiefel.weingarten">[docs]</a>    <span class="k">def</span> <span class="nf">weingarten</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">,</span> <span class="n">normal_vector</span><span class="p">):</span>
+        <span class="k">return</span> <span class="o">-</span><span class="n">tangent_vector</span> <span class="o">@</span> <span class="n">multitransp</span><span class="p">(</span>
+            <span class="n">point</span>
+        <span class="p">)</span> <span class="o">@</span> <span class="n">normal_vector</span> <span class="o">-</span> <span class="n">point</span> <span class="o">@</span> <span class="n">multisym</span><span class="p">(</span>
+            <span class="n">multitransp</span><span class="p">(</span><span class="n">tangent_vector</span><span class="p">)</span> <span class="o">@</span> <span class="n">normal_vector</span>
+        <span class="p">)</span></div>
 
 <div class="viewcode-block" id="Stiefel.retraction"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.stiefel.Stiefel.retraction">[docs]</a>    <span class="k">def</span> <span class="nf">retraction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_retraction</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">)</span></div>
@@ -244,7 +245,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on May 20, 2022.
+      <span class="lastupdated">Last updated on May 21, 2022.
       </span></p>
   </div>
 
