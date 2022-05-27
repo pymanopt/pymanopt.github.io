@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Optimization &mdash; Pymanopt latest (a18268b) documentation</title>
+  <title>Optimization &mdash; Pymanopt latest (a44598d) documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/style.css" type="text/css" />
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" type="text/css" />
@@ -37,7 +37,7 @@
             <img src="_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                latest (a18268b)
+                latest (a44598d)
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -258,33 +258,6 @@ generated.</p></li>
 <div class="section" id="module-pymanopt.optimizers.conjugate_gradient">
 <span id="conjugate-gradients"></span><h3>Conjugate Gradients<a class="headerlink" href="#module-pymanopt.optimizers.conjugate_gradient" title="Permalink to this headline"></a></h3>
 <dl class="py class">
-<dt class="sig sig-object py" id="pymanopt.optimizers.conjugate_gradient.BetaRule">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pymanopt.optimizers.conjugate_gradient.</span></span><span class="sig-name descname"><span class="pre">BetaRule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/optimizers/conjugate_gradient.html#BetaRule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.optimizers.conjugate_gradient.BetaRule" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
-<p>An enumeration.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pymanopt.optimizers.conjugate_gradient.BetaRule.FletcherReeves">
-<span class="sig-name descname"><span class="pre">FletcherReeves</span></span><em class="property"> <span class="pre">=</span> <span class="pre">1</span></em><a class="headerlink" href="#pymanopt.optimizers.conjugate_gradient.BetaRule.FletcherReeves" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pymanopt.optimizers.conjugate_gradient.BetaRule.PolakRibiere">
-<span class="sig-name descname"><span class="pre">PolakRibiere</span></span><em class="property"> <span class="pre">=</span> <span class="pre">2</span></em><a class="headerlink" href="#pymanopt.optimizers.conjugate_gradient.BetaRule.PolakRibiere" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pymanopt.optimizers.conjugate_gradient.BetaRule.HestenesStiefel">
-<span class="sig-name descname"><span class="pre">HestenesStiefel</span></span><em class="property"> <span class="pre">=</span> <span class="pre">3</span></em><a class="headerlink" href="#pymanopt.optimizers.conjugate_gradient.BetaRule.HestenesStiefel" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pymanopt.optimizers.conjugate_gradient.BetaRule.HagerZhang">
-<span class="sig-name descname"><span class="pre">HagerZhang</span></span><em class="property"> <span class="pre">=</span> <span class="pre">4</span></em><a class="headerlink" href="#pymanopt.optimizers.conjugate_gradient.BetaRule.HagerZhang" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
 <dt class="sig sig-object py" id="pymanopt.optimizers.conjugate_gradient.ConjugateGradient">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pymanopt.optimizers.conjugate_gradient.</span></span><span class="sig-name descname"><span class="pre">ConjugateGradient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">beta_rule</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'HestenesStiefel'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orth_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">inf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_searcher</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/optimizers/conjugate_gradient.html#ConjugateGradient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.optimizers.conjugate_gradient.ConjugateGradient" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pymanopt.optimizers.optimizer.Optimizer" title="pymanopt.optimizers.optimizer.Optimizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.optimizers.optimizer.Optimizer</span></code></a></p>
@@ -301,12 +274,13 @@ directions.</p>
 search direction. Valid choices are <code class="docutils literal notranslate"><span class="pre">{&quot;FletcherReeves&quot;,</span>
 <span class="pre">&quot;PolakRibiere&quot;,</span> <span class="pre">&quot;HestenesStiefel&quot;,</span> <span class="pre">&quot;HagerZhang&quot;}</span></code>.</p></li>
 <li><p><strong>orth_value</strong> – Parameter for Powell’s restart strategy.
-An infinite value disables this strategy.
-See in code formula for the specific criterion used.</p></li>
+An infinite value disables this strategy.</p></li>
 <li><p><strong>line_searcher</strong> – The line search method.</p></li>
 </ul>
 </dd>
 </dl>
+<p class="rubric">Notes</p>
+<p>See <a class="reference internal" href="bibliography.html#hz2006" id="id1"><span>[HZ2006]</span></a> for details about Powell’s restart strategy.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pymanopt.optimizers.conjugate_gradient.ConjugateGradient.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">problem</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_point</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reuse_line_searcher</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/optimizers/conjugate_gradient.html#ConjugateGradient.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.optimizers.conjugate_gradient.ConjugateGradient.run" title="Permalink to this definition"></a></dt>
@@ -617,7 +591,7 @@ the vector retracted to reach the suggested iterate <code class="docutils litera
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on May 21, 2022.
+      <span class="lastupdated">Last updated on May 27, 2022.
       </span></p>
   </div>
 

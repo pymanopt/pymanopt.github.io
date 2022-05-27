@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pymanopt.optimizers.conjugate_gradient &mdash; Pymanopt latest (a18268b) documentation</title>
+  <title>pymanopt.optimizers.conjugate_gradient &mdash; Pymanopt latest (a44598d) documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/style.css" type="text/css" />
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" type="text/css" />
@@ -35,7 +35,7 @@
             <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                latest (a18268b)
+                latest (a44598d)
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -82,8 +82,7 @@
            <div itemprop="articleBody">
              
   <h1>Source code for pymanopt.optimizers.conjugate_gradient</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">enum</span>
-<span class="kn">import</span> <span class="nn">time</span>
+<span></span><span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -93,11 +92,132 @@
 <span class="kn">from</span> <span class="nn">pymanopt.tools</span> <span class="kn">import</span> <span class="n">printer</span>
 
 
-<div class="viewcode-block" id="BetaRule"><a class="viewcode-back" href="../../../optimizers.html#pymanopt.optimizers.conjugate_gradient.BetaRule">[docs]</a><span class="k">class</span> <span class="nc">BetaRule</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
-    <span class="n">FletcherReeves</span> <span class="o">=</span> <span class="n">enum</span><span class="o">.</span><span class="n">auto</span><span class="p">()</span>
-    <span class="n">PolakRibiere</span> <span class="o">=</span> <span class="n">enum</span><span class="o">.</span><span class="n">auto</span><span class="p">()</span>
-    <span class="n">HestenesStiefel</span> <span class="o">=</span> <span class="n">enum</span><span class="o">.</span><span class="n">auto</span><span class="p">()</span>
-    <span class="n">HagerZhang</span> <span class="o">=</span> <span class="n">enum</span><span class="o">.</span><span class="n">auto</span><span class="p">()</span></div>
+<span class="k">def</span> <span class="nf">_beta_fletcher_reeves</span><span class="p">(</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">manifold</span><span class="p">,</span>
+    <span class="n">x</span><span class="p">,</span>
+    <span class="n">newx</span><span class="p">,</span>
+    <span class="n">grad</span><span class="p">,</span>
+    <span class="n">newgrad</span><span class="p">,</span>
+    <span class="n">Pnewgrad</span><span class="p">,</span>
+    <span class="n">newgradPnewgrad</span><span class="p">,</span>
+    <span class="n">Pgrad</span><span class="p">,</span>
+    <span class="n">gradPgrad</span><span class="p">,</span>
+    <span class="n">gradient_norm</span><span class="p">,</span>
+    <span class="n">oldgrad</span><span class="p">,</span>
+    <span class="n">descent_direction</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="k">return</span> <span class="n">newgradPnewgrad</span> <span class="o">/</span> <span class="n">gradPgrad</span>
+
+
+<span class="k">def</span> <span class="nf">_beta_polak_ribiere</span><span class="p">(</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">manifold</span><span class="p">,</span>
+    <span class="n">x</span><span class="p">,</span>
+    <span class="n">newx</span><span class="p">,</span>
+    <span class="n">grad</span><span class="p">,</span>
+    <span class="n">newgrad</span><span class="p">,</span>
+    <span class="n">Pnewgrad</span><span class="p">,</span>
+    <span class="n">newgradPnewgrad</span><span class="p">,</span>
+    <span class="n">Pgrad</span><span class="p">,</span>
+    <span class="n">gradPgrad</span><span class="p">,</span>
+    <span class="n">gradient_norm</span><span class="p">,</span>
+    <span class="n">oldgrad</span><span class="p">,</span>
+    <span class="n">descent_direction</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="n">ip_diff</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">inner_product</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">Pnewgrad</span><span class="p">,</span> <span class="n">newgrad</span> <span class="o">-</span> <span class="n">oldgrad</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">ip_diff</span> <span class="o">/</span> <span class="n">gradPgrad</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_beta_hestenes_stiefel</span><span class="p">(</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">manifold</span><span class="p">,</span>
+    <span class="n">x</span><span class="p">,</span>
+    <span class="n">newx</span><span class="p">,</span>
+    <span class="n">grad</span><span class="p">,</span>
+    <span class="n">newgrad</span><span class="p">,</span>
+    <span class="n">Pnewgrad</span><span class="p">,</span>
+    <span class="n">newgradPnewgrad</span><span class="p">,</span>
+    <span class="n">Pgrad</span><span class="p">,</span>
+    <span class="n">gradPgrad</span><span class="p">,</span>
+    <span class="n">gradient_norm</span><span class="p">,</span>
+    <span class="n">oldgrad</span><span class="p">,</span>
+    <span class="n">descent_direction</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="n">diff</span> <span class="o">=</span> <span class="n">newgrad</span> <span class="o">-</span> <span class="n">oldgrad</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">beta</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span>
+            <span class="mi">0</span><span class="p">,</span>
+            <span class="n">manifold</span><span class="o">.</span><span class="n">inner_product</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">Pnewgrad</span><span class="p">,</span> <span class="n">diff</span><span class="p">)</span>
+            <span class="o">/</span> <span class="n">manifold</span><span class="o">.</span><span class="n">inner_product</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">diff</span><span class="p">,</span> <span class="n">descent_direction</span><span class="p">),</span>
+        <span class="p">)</span>
+    <span class="k">except</span> <span class="ne">ZeroDivisionError</span><span class="p">:</span>
+        <span class="n">beta</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">beta</span>
+
+
+<span class="k">def</span> <span class="nf">_beta_hager_zhang</span><span class="p">(</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">manifold</span><span class="p">,</span>
+    <span class="n">x</span><span class="p">,</span>
+    <span class="n">newx</span><span class="p">,</span>
+    <span class="n">grad</span><span class="p">,</span>
+    <span class="n">newgrad</span><span class="p">,</span>
+    <span class="n">Pnewgrad</span><span class="p">,</span>
+    <span class="n">newgradPnewgrad</span><span class="p">,</span>
+    <span class="n">Pgrad</span><span class="p">,</span>
+    <span class="n">gradPgrad</span><span class="p">,</span>
+    <span class="n">gradient_norm</span><span class="p">,</span>
+    <span class="n">oldgrad</span><span class="p">,</span>
+    <span class="n">descent_direction</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="n">diff</span> <span class="o">=</span> <span class="n">newgrad</span> <span class="o">-</span> <span class="n">oldgrad</span>
+    <span class="n">Poldgrad</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">transport</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">newx</span><span class="p">,</span> <span class="n">Pgrad</span><span class="p">)</span>
+    <span class="n">Pdiff</span> <span class="o">=</span> <span class="n">Pnewgrad</span> <span class="o">-</span> <span class="n">Poldgrad</span>
+    <span class="n">denominator</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">inner_product</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">diff</span><span class="p">,</span> <span class="n">descent_direction</span><span class="p">)</span>
+    <span class="n">numerator</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">inner_product</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">diff</span><span class="p">,</span> <span class="n">Pnewgrad</span><span class="p">)</span>
+    <span class="n">numerator</span> <span class="o">-=</span> <span class="p">(</span>
+        <span class="mi">2</span>
+        <span class="o">*</span> <span class="n">manifold</span><span class="o">.</span><span class="n">inner_product</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">diff</span><span class="p">,</span> <span class="n">Pdiff</span><span class="p">)</span>
+        <span class="o">*</span> <span class="n">manifold</span><span class="o">.</span><span class="n">inner_product</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">descent_direction</span><span class="p">,</span> <span class="n">newgrad</span><span class="p">)</span>
+        <span class="o">/</span> <span class="n">denominator</span>
+    <span class="p">)</span>
+    <span class="n">beta</span> <span class="o">=</span> <span class="n">numerator</span> <span class="o">/</span> <span class="n">denominator</span>
+    <span class="n">descent_direction_norm</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">descent_direction</span><span class="p">)</span>
+    <span class="n">eta_HZ</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">descent_direction_norm</span> <span class="o">*</span> <span class="nb">min</span><span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">gradient_norm</span><span class="p">))</span>
+    <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">beta</span><span class="p">,</span> <span class="n">eta_HZ</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_beta_liu_storey</span><span class="p">(</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">manifold</span><span class="p">,</span>
+    <span class="n">x</span><span class="p">,</span>
+    <span class="n">newx</span><span class="p">,</span>
+    <span class="n">grad</span><span class="p">,</span>
+    <span class="n">newgrad</span><span class="p">,</span>
+    <span class="n">Pnewgrad</span><span class="p">,</span>
+    <span class="n">newgradPnewgrad</span><span class="p">,</span>
+    <span class="n">Pgrad</span><span class="p">,</span>
+    <span class="n">gradPgrad</span><span class="p">,</span>
+    <span class="n">gradient_norm</span><span class="p">,</span>
+    <span class="n">oldgrad</span><span class="p">,</span>
+    <span class="n">descent_direction</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="n">diff</span> <span class="o">=</span> <span class="n">newgrad</span> <span class="o">-</span> <span class="n">oldgrad</span>
+    <span class="n">ip_diff</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">inner_product</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">Pnewgrad</span><span class="p">,</span> <span class="n">diff</span><span class="p">)</span>
+    <span class="n">denominator</span> <span class="o">=</span> <span class="o">-</span><span class="n">manifold</span><span class="o">.</span><span class="n">inner_product</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">grad</span><span class="p">,</span> <span class="n">descent_direction</span><span class="p">)</span>
+    <span class="n">beta_ls</span> <span class="o">=</span> <span class="n">ip_diff</span> <span class="o">/</span> <span class="n">denominator</span>
+    <span class="n">beta_cd</span> <span class="o">=</span> <span class="n">newgradPnewgrad</span> <span class="o">/</span> <span class="n">denominator</span>
+    <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">beta_ls</span><span class="p">,</span> <span class="n">beta_cd</span><span class="p">))</span>
+
+
+<span class="n">BETA_RULES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;FletcherReeves&quot;</span><span class="p">:</span> <span class="n">_beta_fletcher_reeves</span><span class="p">,</span>
+    <span class="s2">&quot;HagerZhang&quot;</span><span class="p">:</span> <span class="n">_beta_hager_zhang</span><span class="p">,</span>
+    <span class="s2">&quot;HestenesStiefel&quot;</span><span class="p">:</span> <span class="n">_beta_hestenes_stiefel</span><span class="p">,</span>
+    <span class="s2">&quot;PolakRibiere&quot;</span><span class="p">:</span> <span class="n">_beta_polak_ribiere</span><span class="p">,</span>
+    <span class="s2">&quot;LiuStorey&quot;</span><span class="p">:</span> <span class="n">_beta_liu_storey</span><span class="p">,</span>
+<span class="p">}</span>
 
 
 <div class="viewcode-block" id="ConjugateGradient"><a class="viewcode-back" href="../../../optimizers.html#pymanopt.optimizers.conjugate_gradient.ConjugateGradient">[docs]</a><span class="k">class</span> <span class="nc">ConjugateGradient</span><span class="p">(</span><span class="n">Optimizer</span><span class="p">):</span>
@@ -115,8 +235,10 @@
 <span class="sd">            &quot;PolakRibiere&quot;, &quot;HestenesStiefel&quot;, &quot;HagerZhang&quot;}``.</span>
 <span class="sd">        orth_value: Parameter for Powell&#39;s restart strategy.</span>
 <span class="sd">            An infinite value disables this strategy.</span>
-<span class="sd">            See in code formula for the specific criterion used.</span>
 <span class="sd">        line_searcher: The line search method.</span>
+
+<span class="sd">    Notes:</span>
+<span class="sd">        See [HZ2006]_ for details about Powell&#39;s restart strategy.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
@@ -129,11 +251,12 @@
     <span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-        <span class="n">beta_rules</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">BetaRule</span><span class="o">.</span><span class="n">__members__</span><span class="p">))</span>
-        <span class="k">if</span> <span class="n">beta_rule</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">beta_rules</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_beta_update</span> <span class="o">=</span> <span class="n">BETA_RULES</span><span class="p">[</span><span class="n">beta_rule</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Invalid beta rule </span><span class="si">{</span><span class="n">beta_rule</span><span class="si">}</span><span class="s2">. Should be one of &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">beta_rules</span><span class="si">}</span><span class="s2">.&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Invalid beta rule &#39;</span><span class="si">{</span><span class="n">beta_rule</span><span class="si">}</span><span class="s2">&#39;. Should be one of &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">BETA_RULES</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">.&quot;</span>
             <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_beta_rule</span> <span class="o">=</span> <span class="n">beta_rule</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_orth_value</span> <span class="o">=</span> <span class="n">orth_value</span>
@@ -194,15 +317,15 @@
 
         <span class="n">column_printer</span><span class="o">.</span><span class="n">print_header</span><span class="p">()</span>
 
-        <span class="c1"># Calculate initial cost-related quantities</span>
+        <span class="c1"># Calculate initial cost-related quantities.</span>
         <span class="n">cost</span> <span class="o">=</span> <span class="n">objective</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
         <span class="n">grad</span> <span class="o">=</span> <span class="n">gradient</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
         <span class="n">gradient_norm</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">grad</span><span class="p">)</span>
         <span class="n">Pgrad</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">preconditioner</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">grad</span><span class="p">)</span>
         <span class="n">gradPgrad</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">inner_product</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">grad</span><span class="p">,</span> <span class="n">Pgrad</span><span class="p">)</span>
 
-        <span class="c1"># Initial descent direction is the negative gradient</span>
-        <span class="n">desc_dir</span> <span class="o">=</span> <span class="o">-</span><span class="n">Pgrad</span>
+        <span class="c1"># Initial descent direction is the negative gradient.</span>
+        <span class="n">descent_direction</span> <span class="o">=</span> <span class="o">-</span><span class="n">Pgrad</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_initialize_log</span><span class="p">(</span>
             <span class="n">optimizer_parameters</span><span class="o">=</span><span class="p">{</span>
@@ -212,7 +335,7 @@
             <span class="p">},</span>
         <span class="p">)</span>
 
-        <span class="c1"># Initialize iteration counter and timer</span>
+        <span class="c1"># Initialize iteration counter and timer.</span>
         <span class="n">iteration</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">step_size</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
         <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
@@ -244,7 +367,7 @@
 
             <span class="c1"># The line search algorithms require the directional derivative of</span>
             <span class="c1"># the cost at the current point x along the search direction.</span>
-            <span class="n">df0</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">inner_product</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">grad</span><span class="p">,</span> <span class="n">desc_dir</span><span class="p">)</span>
+            <span class="n">df0</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">inner_product</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">grad</span><span class="p">,</span> <span class="n">descent_direction</span><span class="p">)</span>
 
             <span class="c1"># If we didn&#39;t get a descent direction: restart, i.e., switch to</span>
             <span class="c1"># the negative gradient. Equivalent to resetting the CG direction</span>
@@ -258,12 +381,12 @@
                         <span class="s2">&quot;steepest descent direction.&quot;</span>
                     <span class="p">)</span>
                 <span class="c1"># Reset to negative gradient: this discards the CG memory.</span>
-                <span class="n">desc_dir</span> <span class="o">=</span> <span class="o">-</span><span class="n">Pgrad</span>
+                <span class="n">descent_direction</span> <span class="o">=</span> <span class="o">-</span><span class="n">Pgrad</span>
                 <span class="n">df0</span> <span class="o">=</span> <span class="o">-</span><span class="n">gradPgrad</span>
 
             <span class="c1"># Execute line search</span>
             <span class="n">step_size</span><span class="p">,</span> <span class="n">newx</span> <span class="o">=</span> <span class="n">line_searcher</span><span class="o">.</span><span class="n">search</span><span class="p">(</span>
-                <span class="n">objective</span><span class="p">,</span> <span class="n">manifold</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">desc_dir</span><span class="p">,</span> <span class="n">cost</span><span class="p">,</span> <span class="n">df0</span>
+                <span class="n">objective</span><span class="p">,</span> <span class="n">manifold</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">descent_direction</span><span class="p">,</span> <span class="n">cost</span><span class="p">,</span> <span class="n">df0</span>
             <span class="p">)</span>
 
             <span class="c1"># Compute the new cost-related quantities for newx</span>
@@ -273,60 +396,36 @@
             <span class="n">Pnewgrad</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">preconditioner</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">newgrad</span><span class="p">)</span>
             <span class="n">newgradPnewgrad</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">inner_product</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">newgrad</span><span class="p">,</span> <span class="n">Pnewgrad</span><span class="p">)</span>
 
-            <span class="c1"># Apply the CG scheme to compute the next search direction</span>
+            <span class="c1"># Powell&#39;s restart strategy.</span>
             <span class="n">oldgrad</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">transport</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">newx</span><span class="p">,</span> <span class="n">grad</span><span class="p">)</span>
             <span class="n">orth_grads</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="n">manifold</span><span class="o">.</span><span class="n">inner_product</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">oldgrad</span><span class="p">,</span> <span class="n">Pnewgrad</span><span class="p">)</span>
                 <span class="o">/</span> <span class="n">newgradPnewgrad</span>
             <span class="p">)</span>
-
-            <span class="c1"># Powell&#39;s restart strategy (see page 12 of Hager and Zhang&#39;s</span>
-            <span class="c1"># survey on conjugate gradient methods, for example)</span>
             <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">orth_grads</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_orth_value</span><span class="p">:</span>
                 <span class="n">beta</span> <span class="o">=</span> <span class="mi">0</span>
-                <span class="n">desc_dir</span> <span class="o">=</span> <span class="o">-</span><span class="n">Pnewgrad</span>
+                <span class="n">descent_direction</span> <span class="o">=</span> <span class="o">-</span><span class="n">Pnewgrad</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">desc_dir</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">transport</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">newx</span><span class="p">,</span> <span class="n">desc_dir</span><span class="p">)</span>
-
-                <span class="c1"># TODO(nkoep): Define closures for these in the constructor.</span>
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_beta_rule</span> <span class="o">==</span> <span class="s2">&quot;FletcherReeves&quot;</span><span class="p">:</span>
-                    <span class="n">beta</span> <span class="o">=</span> <span class="n">newgradPnewgrad</span> <span class="o">/</span> <span class="n">gradPgrad</span>
-                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_beta_rule</span> <span class="o">==</span> <span class="s2">&quot;PolakRibiere&quot;</span><span class="p">:</span>
-                    <span class="n">diff</span> <span class="o">=</span> <span class="n">newgrad</span> <span class="o">-</span> <span class="n">oldgrad</span>
-                    <span class="n">ip_diff</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">inner_product</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">Pnewgrad</span><span class="p">,</span> <span class="n">diff</span><span class="p">)</span>
-                    <span class="n">beta</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">ip_diff</span> <span class="o">/</span> <span class="n">gradPgrad</span><span class="p">)</span>
-                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_beta_rule</span> <span class="o">==</span> <span class="s2">&quot;HestenesStiefel&quot;</span><span class="p">:</span>
-                    <span class="n">diff</span> <span class="o">=</span> <span class="n">newgrad</span> <span class="o">-</span> <span class="n">oldgrad</span>
-                    <span class="n">ip_diff</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">inner_product</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">Pnewgrad</span><span class="p">,</span> <span class="n">diff</span><span class="p">)</span>
-                    <span class="k">try</span><span class="p">:</span>
-                        <span class="n">beta</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span>
-                            <span class="mi">0</span><span class="p">,</span>
-                            <span class="n">ip_diff</span>
-                            <span class="o">/</span> <span class="n">manifold</span><span class="o">.</span><span class="n">inner_product</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">diff</span><span class="p">,</span> <span class="n">desc_dir</span><span class="p">),</span>
-                        <span class="p">)</span>
-                    <span class="k">except</span> <span class="ne">ZeroDivisionError</span><span class="p">:</span>
-                        <span class="n">beta</span> <span class="o">=</span> <span class="mi">1</span>
-                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_beta_rule</span> <span class="o">==</span> <span class="s2">&quot;HagerZhang&quot;</span><span class="p">:</span>
-                    <span class="n">diff</span> <span class="o">=</span> <span class="n">newgrad</span> <span class="o">-</span> <span class="n">oldgrad</span>
-                    <span class="n">Poldgrad</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">transport</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">newx</span><span class="p">,</span> <span class="n">Pgrad</span><span class="p">)</span>
-                    <span class="n">Pdiff</span> <span class="o">=</span> <span class="n">Pnewgrad</span> <span class="o">-</span> <span class="n">Poldgrad</span>
-                    <span class="n">deno</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">inner_product</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">diff</span><span class="p">,</span> <span class="n">desc_dir</span><span class="p">)</span>
-                    <span class="n">numo</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">inner_product</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">diff</span><span class="p">,</span> <span class="n">Pnewgrad</span><span class="p">)</span>
-                    <span class="n">numo</span> <span class="o">-=</span> <span class="p">(</span>
-                        <span class="mi">2</span>
-                        <span class="o">*</span> <span class="n">manifold</span><span class="o">.</span><span class="n">inner_product</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">diff</span><span class="p">,</span> <span class="n">Pdiff</span><span class="p">)</span>
-                        <span class="o">*</span> <span class="n">manifold</span><span class="o">.</span><span class="n">inner_product</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">desc_dir</span><span class="p">,</span> <span class="n">newgrad</span><span class="p">)</span>
-                        <span class="o">/</span> <span class="n">deno</span>
-                    <span class="p">)</span>
-                    <span class="n">beta</span> <span class="o">=</span> <span class="n">numo</span> <span class="o">/</span> <span class="n">deno</span>
-                    <span class="c1"># Robustness (see Hager-Zhang paper mentioned above)</span>
-                    <span class="n">desc_dir_norm</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">newx</span><span class="p">,</span> <span class="n">desc_dir</span><span class="p">)</span>
-                    <span class="n">eta_HZ</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">desc_dir_norm</span> <span class="o">*</span> <span class="nb">min</span><span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">gradient_norm</span><span class="p">))</span>
-                    <span class="n">beta</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">beta</span><span class="p">,</span> <span class="n">eta_HZ</span><span class="p">)</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s2">&quot;unreachable&quot;</span><span class="p">)</span>
-
-                <span class="n">desc_dir</span> <span class="o">=</span> <span class="o">-</span><span class="n">Pnewgrad</span> <span class="o">+</span> <span class="n">beta</span> <span class="o">*</span> <span class="n">desc_dir</span>
+                <span class="c1"># Transport latest search direction to tangent space at new</span>
+                <span class="c1"># estimate.</span>
+                <span class="n">descent_direction</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">transport</span><span class="p">(</span>
+                    <span class="n">x</span><span class="p">,</span> <span class="n">newx</span><span class="p">,</span> <span class="n">descent_direction</span>
+                <span class="p">)</span>
+                <span class="n">beta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_beta_update</span><span class="p">(</span>
+                    <span class="n">manifold</span><span class="o">=</span><span class="n">manifold</span><span class="p">,</span>
+                    <span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span>
+                    <span class="n">newx</span><span class="o">=</span><span class="n">newx</span><span class="p">,</span>
+                    <span class="n">grad</span><span class="o">=</span><span class="n">grad</span><span class="p">,</span>
+                    <span class="n">newgrad</span><span class="o">=</span><span class="n">newgrad</span><span class="p">,</span>
+                    <span class="n">Pnewgrad</span><span class="o">=</span><span class="n">Pnewgrad</span><span class="p">,</span>
+                    <span class="n">newgradPnewgrad</span><span class="o">=</span><span class="n">newgradPnewgrad</span><span class="p">,</span>
+                    <span class="n">Pgrad</span><span class="o">=</span><span class="n">Pgrad</span><span class="p">,</span>
+                    <span class="n">gradPgrad</span><span class="o">=</span><span class="n">gradPgrad</span><span class="p">,</span>
+                    <span class="n">gradient_norm</span><span class="o">=</span><span class="n">gradient_norm</span><span class="p">,</span>
+                    <span class="n">oldgrad</span><span class="o">=</span><span class="n">oldgrad</span><span class="p">,</span>
+                    <span class="n">descent_direction</span><span class="o">=</span><span class="n">descent_direction</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="n">descent_direction</span> <span class="o">=</span> <span class="o">-</span><span class="n">Pnewgrad</span> <span class="o">+</span> <span class="n">beta</span> <span class="o">*</span> <span class="n">descent_direction</span>
 
             <span class="c1"># Update the necessary variables for the next iteration.</span>
             <span class="n">x</span> <span class="o">=</span> <span class="n">newx</span>
@@ -356,7 +455,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on May 21, 2022.
+      <span class="lastupdated">Last updated on May 27, 2022.
       </span></p>
   </div>
 
