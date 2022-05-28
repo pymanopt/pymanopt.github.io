@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Manifolds &mdash; Pymanopt latest (a44598d) documentation</title>
+  <title>Manifolds &mdash; Pymanopt latest (61ea241) documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/style.css" type="text/css" />
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" type="text/css" />
@@ -37,7 +37,7 @@
             <img src="_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                latest (a44598d)
+                latest (61ea241)
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -192,7 +192,7 @@ Second-order optimizers such as
 </div>
 <dl class="py property">
 <dt class="sig sig-object py" id="pymanopt.manifolds.manifold.Manifold.dim">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">dim</span></span><a class="headerlink" href="#pymanopt.manifolds.manifold.Manifold.dim" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">dim</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#pymanopt.manifolds.manifold.Manifold.dim" title="Permalink to this definition"></a></dt>
 <dd><p>The dimension of the manifold.</p>
 </dd></dl>
 
@@ -203,13 +203,13 @@ Second-order optimizers such as
 <p>For most manifolds, which represent points as (potentially
 multi-dimensional) arrays, this will be 1, but other manifolds might
 represent points as tuples or lists of arrays.
-In this case, <cite>point_layout</cite> describes how many elements such
+In this case, <a class="reference internal" href="#pymanopt.manifolds.manifold.Manifold.point_layout" title="pymanopt.manifolds.manifold.Manifold.point_layout"><code class="xref py py-attr docutils literal notranslate"><span class="pre">point_layout</span></code></a> describes how many elements such
 tuples/lists contain.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pymanopt.manifolds.manifold.Manifold.num_values">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">num_values</span></span><a class="headerlink" href="#pymanopt.manifolds.manifold.Manifold.num_values" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">num_values</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#pymanopt.manifolds.manifold.Manifold.num_values" title="Permalink to this definition"></a></dt>
 <dd><p>Total number of values representing a point on the manifold.</p>
 </dd></dl>
 
@@ -219,6 +219,11 @@ tuples/lists contain.</p>
 <dd><p>Returns the <cite>scale</cite> of the manifold.</p>
 <p>This is used by the trust-regions optimizer to determine default
 initial and maximal trust-region radii.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>NotImplementedError</strong> – If no <a class="reference internal" href="#pymanopt.manifolds.manifold.Manifold.typical_dist" title="pymanopt.manifolds.manifold.Manifold.typical_dist"><code class="xref py py-attr docutils literal notranslate"><span class="pre">typical_dist</span></code></a> is defined.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -616,7 +621,7 @@ Riemannian Hessian is to be calculated.</p></li>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pymanopt.manifolds.manifold.RiemannianSubmanifold.dim">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">dim</span></span><a class="headerlink" href="#pymanopt.manifolds.manifold.RiemannianSubmanifold.dim" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">dim</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#pymanopt.manifolds.manifold.RiemannianSubmanifold.dim" title="Permalink to this definition"></a></dt>
 <dd><p>The dimension of the manifold.</p>
 </dd></dl>
 
@@ -721,7 +726,7 @@ As such it is the inverse of <a class="reference internal" href="#pymanopt.manif
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pymanopt.manifolds.manifold.RiemannianSubmanifold.num_values">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">num_values</span></span><a class="headerlink" href="#pymanopt.manifolds.manifold.RiemannianSubmanifold.num_values" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">num_values</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#pymanopt.manifolds.manifold.RiemannianSubmanifold.num_values" title="Permalink to this definition"></a></dt>
 <dd><p>Total number of values representing a point on the manifold.</p>
 </dd></dl>
 
@@ -752,7 +757,7 @@ the manifold, i.e., a point that lies mid-way between <code class="docutils lite
 <p>For most manifolds, which represent points as (potentially
 multi-dimensional) arrays, this will be 1, but other manifolds might
 represent points as tuples or lists of arrays.
-In this case, <cite>point_layout</cite> describes how many elements such
+In this case, <a class="reference internal" href="#pymanopt.manifolds.manifold.RiemannianSubmanifold.point_layout" title="pymanopt.manifolds.manifold.RiemannianSubmanifold.point_layout"><code class="xref py py-attr docutils literal notranslate"><span class="pre">point_layout</span></code></a> describes how many elements such
 tuples/lists contain.</p>
 </dd></dl>
 
@@ -873,6 +878,11 @@ the tangent space at <code class="docutils literal notranslate"><span class="pre
 <dd><p>Returns the <cite>scale</cite> of the manifold.</p>
 <p>This is used by the trust-regions optimizer to determine default
 initial and maximal trust-region radii.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>NotImplementedError</strong> – If no <a class="reference internal" href="#pymanopt.manifolds.manifold.RiemannianSubmanifold.typical_dist" title="pymanopt.manifolds.manifold.RiemannianSubmanifold.typical_dist"><code class="xref py py-attr docutils literal notranslate"><span class="pre">typical_dist</span></code></a> is defined.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -941,7 +951,7 @@ corresponding to the usual tensor dot product.</p>
 </div>
 <dl class="py property">
 <dt class="sig sig-object py" id="pymanopt.manifolds.euclidean.Euclidean.dim">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">dim</span></span><a class="headerlink" href="#pymanopt.manifolds.euclidean.Euclidean.dim" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">dim</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#pymanopt.manifolds.euclidean.Euclidean.dim" title="Permalink to this definition"></a></dt>
 <dd><p>The dimension of the manifold.</p>
 </dd></dl>
 
@@ -1089,7 +1099,7 @@ As such it is the inverse of <a class="reference internal" href="#pymanopt.manif
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pymanopt.manifolds.euclidean.Euclidean.num_values">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">num_values</span></span><a class="headerlink" href="#pymanopt.manifolds.euclidean.Euclidean.num_values" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">num_values</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#pymanopt.manifolds.euclidean.Euclidean.num_values" title="Permalink to this definition"></a></dt>
 <dd><p>Total number of values representing a point on the manifold.</p>
 </dd></dl>
 
@@ -1120,7 +1130,7 @@ the manifold, i.e., a point that lies mid-way between <code class="docutils lite
 <p>For most manifolds, which represent points as (potentially
 multi-dimensional) arrays, this will be 1, but other manifolds might
 represent points as tuples or lists of arrays.
-In this case, <cite>point_layout</cite> describes how many elements such
+In this case, <a class="reference internal" href="#pymanopt.manifolds.euclidean.Euclidean.point_layout" title="pymanopt.manifolds.euclidean.Euclidean.point_layout"><code class="xref py py-attr docutils literal notranslate"><span class="pre">point_layout</span></code></a> describes how many elements such
 tuples/lists contain.</p>
 </dd></dl>
 
@@ -1241,6 +1251,11 @@ the tangent space at <code class="docutils literal notranslate"><span class="pre
 <dd><p>Returns the <cite>scale</cite> of the manifold.</p>
 <p>This is used by the trust-regions optimizer to determine default
 initial and maximal trust-region radii.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>NotImplementedError</strong> – If no <a class="reference internal" href="#pymanopt.manifolds.euclidean.Euclidean.typical_dist" title="pymanopt.manifolds.euclidean.Euclidean.typical_dist"><code class="xref py py-attr docutils literal notranslate"><span class="pre">typical_dist</span></code></a> is defined.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -1373,7 +1388,7 @@ Riemannian Hessian is to be calculated.</p></li>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pymanopt.manifolds.euclidean.Symmetric.dim">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">dim</span></span><a class="headerlink" href="#pymanopt.manifolds.euclidean.Symmetric.dim" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">dim</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#pymanopt.manifolds.euclidean.Symmetric.dim" title="Permalink to this definition"></a></dt>
 <dd><p>The dimension of the manifold.</p>
 </dd></dl>
 
@@ -1495,7 +1510,7 @@ As such it is the inverse of <a class="reference internal" href="#pymanopt.manif
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pymanopt.manifolds.euclidean.Symmetric.num_values">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">num_values</span></span><a class="headerlink" href="#pymanopt.manifolds.euclidean.Symmetric.num_values" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">num_values</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#pymanopt.manifolds.euclidean.Symmetric.num_values" title="Permalink to this definition"></a></dt>
 <dd><p>Total number of values representing a point on the manifold.</p>
 </dd></dl>
 
@@ -1526,7 +1541,7 @@ the manifold, i.e., a point that lies mid-way between <code class="docutils lite
 <p>For most manifolds, which represent points as (potentially
 multi-dimensional) arrays, this will be 1, but other manifolds might
 represent points as tuples or lists of arrays.
-In this case, <cite>point_layout</cite> describes how many elements such
+In this case, <a class="reference internal" href="#pymanopt.manifolds.euclidean.Symmetric.point_layout" title="pymanopt.manifolds.euclidean.Symmetric.point_layout"><code class="xref py py-attr docutils literal notranslate"><span class="pre">point_layout</span></code></a> describes how many elements such
 tuples/lists contain.</p>
 </dd></dl>
 
@@ -1603,6 +1618,11 @@ the tangent space at <code class="docutils literal notranslate"><span class="pre
 <dd><p>Returns the <cite>scale</cite> of the manifold.</p>
 <p>This is used by the trust-regions optimizer to determine default
 initial and maximal trust-region radii.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>NotImplementedError</strong> – If no <a class="reference internal" href="#pymanopt.manifolds.euclidean.Symmetric.typical_dist" title="pymanopt.manifolds.euclidean.Symmetric.typical_dist"><code class="xref py py-attr docutils literal notranslate"><span class="pre">typical_dist</span></code></a> is defined.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -1735,7 +1755,7 @@ Riemannian Hessian is to be calculated.</p></li>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pymanopt.manifolds.euclidean.SkewSymmetric.dim">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">dim</span></span><a class="headerlink" href="#pymanopt.manifolds.euclidean.SkewSymmetric.dim" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">dim</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#pymanopt.manifolds.euclidean.SkewSymmetric.dim" title="Permalink to this definition"></a></dt>
 <dd><p>The dimension of the manifold.</p>
 </dd></dl>
 
@@ -1857,7 +1877,7 @@ As such it is the inverse of <a class="reference internal" href="#pymanopt.manif
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pymanopt.manifolds.euclidean.SkewSymmetric.num_values">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">num_values</span></span><a class="headerlink" href="#pymanopt.manifolds.euclidean.SkewSymmetric.num_values" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">num_values</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#pymanopt.manifolds.euclidean.SkewSymmetric.num_values" title="Permalink to this definition"></a></dt>
 <dd><p>Total number of values representing a point on the manifold.</p>
 </dd></dl>
 
@@ -1888,7 +1908,7 @@ the manifold, i.e., a point that lies mid-way between <code class="docutils lite
 <p>For most manifolds, which represent points as (potentially
 multi-dimensional) arrays, this will be 1, but other manifolds might
 represent points as tuples or lists of arrays.
-In this case, <cite>point_layout</cite> describes how many elements such
+In this case, <a class="reference internal" href="#pymanopt.manifolds.euclidean.SkewSymmetric.point_layout" title="pymanopt.manifolds.euclidean.SkewSymmetric.point_layout"><code class="xref py py-attr docutils literal notranslate"><span class="pre">point_layout</span></code></a> describes how many elements such
 tuples/lists contain.</p>
 </dd></dl>
 
@@ -1965,6 +1985,11 @@ the tangent space at <code class="docutils literal notranslate"><span class="pre
 <dd><p>Returns the <cite>scale</cite> of the manifold.</p>
 <p>This is used by the trust-regions optimizer to determine default
 initial and maximal trust-region radii.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>NotImplementedError</strong> – If no <a class="reference internal" href="#pymanopt.manifolds.euclidean.SkewSymmetric.typical_dist" title="pymanopt.manifolds.euclidean.SkewSymmetric.typical_dist"><code class="xref py py-attr docutils literal notranslate"><span class="pre">typical_dist</span></code></a> is defined.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -2032,7 +2057,7 @@ Riemannian submanifold of Euclidean space.</p>
 </div>
 <dl class="py property">
 <dt class="sig sig-object py" id="pymanopt.manifolds.sphere.Sphere.dim">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">dim</span></span><a class="headerlink" href="#pymanopt.manifolds.sphere.Sphere.dim" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">dim</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#pymanopt.manifolds.sphere.Sphere.dim" title="Permalink to this definition"></a></dt>
 <dd><p>The dimension of the manifold.</p>
 </dd></dl>
 
@@ -2180,7 +2205,7 @@ As such it is the inverse of <a class="reference internal" href="#pymanopt.manif
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pymanopt.manifolds.sphere.Sphere.num_values">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">num_values</span></span><a class="headerlink" href="#pymanopt.manifolds.sphere.Sphere.num_values" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">num_values</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#pymanopt.manifolds.sphere.Sphere.num_values" title="Permalink to this definition"></a></dt>
 <dd><p>Total number of values representing a point on the manifold.</p>
 </dd></dl>
 
@@ -2211,7 +2236,7 @@ the manifold, i.e., a point that lies mid-way between <code class="docutils lite
 <p>For most manifolds, which represent points as (potentially
 multi-dimensional) arrays, this will be 1, but other manifolds might
 represent points as tuples or lists of arrays.
-In this case, <cite>point_layout</cite> describes how many elements such
+In this case, <a class="reference internal" href="#pymanopt.manifolds.sphere.Sphere.point_layout" title="pymanopt.manifolds.sphere.Sphere.point_layout"><code class="xref py py-attr docutils literal notranslate"><span class="pre">point_layout</span></code></a> describes how many elements such
 tuples/lists contain.</p>
 </dd></dl>
 
@@ -2332,6 +2357,11 @@ the tangent space at <code class="docutils literal notranslate"><span class="pre
 <dd><p>Returns the <cite>scale</cite> of the manifold.</p>
 <p>This is used by the trust-regions optimizer to determine default
 initial and maximal trust-region radii.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>NotImplementedError</strong> – If no <a class="reference internal" href="#pymanopt.manifolds.sphere.Sphere.typical_dist" title="pymanopt.manifolds.sphere.Sphere.typical_dist"><code class="xref py py-attr docutils literal notranslate"><span class="pre">typical_dist</span></code></a> is defined.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -2392,7 +2422,7 @@ span the subspace.</p>
 </div>
 <dl class="py property">
 <dt class="sig sig-object py" id="pymanopt.manifolds.sphere.SphereSubspaceIntersection.dim">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">dim</span></span><a class="headerlink" href="#pymanopt.manifolds.sphere.SphereSubspaceIntersection.dim" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">dim</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#pymanopt.manifolds.sphere.SphereSubspaceIntersection.dim" title="Permalink to this definition"></a></dt>
 <dd><p>The dimension of the manifold.</p>
 </dd></dl>
 
@@ -2540,7 +2570,7 @@ As such it is the inverse of <a class="reference internal" href="#pymanopt.manif
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pymanopt.manifolds.sphere.SphereSubspaceIntersection.num_values">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">num_values</span></span><a class="headerlink" href="#pymanopt.manifolds.sphere.SphereSubspaceIntersection.num_values" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">num_values</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#pymanopt.manifolds.sphere.SphereSubspaceIntersection.num_values" title="Permalink to this definition"></a></dt>
 <dd><p>Total number of values representing a point on the manifold.</p>
 </dd></dl>
 
@@ -2571,7 +2601,7 @@ the manifold, i.e., a point that lies mid-way between <code class="docutils lite
 <p>For most manifolds, which represent points as (potentially
 multi-dimensional) arrays, this will be 1, but other manifolds might
 represent points as tuples or lists of arrays.
-In this case, <cite>point_layout</cite> describes how many elements such
+In this case, <a class="reference internal" href="#pymanopt.manifolds.sphere.SphereSubspaceIntersection.point_layout" title="pymanopt.manifolds.sphere.SphereSubspaceIntersection.point_layout"><code class="xref py py-attr docutils literal notranslate"><span class="pre">point_layout</span></code></a> describes how many elements such
 tuples/lists contain.</p>
 </dd></dl>
 
@@ -2692,6 +2722,11 @@ the tangent space at <code class="docutils literal notranslate"><span class="pre
 <dd><p>Returns the <cite>scale</cite> of the manifold.</p>
 <p>This is used by the trust-regions optimizer to determine default
 initial and maximal trust-region radii.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>NotImplementedError</strong> – If no <a class="reference internal" href="#pymanopt.manifolds.sphere.SphereSubspaceIntersection.typical_dist" title="pymanopt.manifolds.sphere.SphereSubspaceIntersection.typical_dist"><code class="xref py py-attr docutils literal notranslate"><span class="pre">typical_dist</span></code></a> is defined.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -2752,7 +2787,7 @@ span the subspace.</p>
 </div>
 <dl class="py property">
 <dt class="sig sig-object py" id="pymanopt.manifolds.sphere.SphereSubspaceComplementIntersection.dim">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">dim</span></span><a class="headerlink" href="#pymanopt.manifolds.sphere.SphereSubspaceComplementIntersection.dim" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">dim</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#pymanopt.manifolds.sphere.SphereSubspaceComplementIntersection.dim" title="Permalink to this definition"></a></dt>
 <dd><p>The dimension of the manifold.</p>
 </dd></dl>
 
@@ -2900,7 +2935,7 @@ As such it is the inverse of <a class="reference internal" href="#pymanopt.manif
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pymanopt.manifolds.sphere.SphereSubspaceComplementIntersection.num_values">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">num_values</span></span><a class="headerlink" href="#pymanopt.manifolds.sphere.SphereSubspaceComplementIntersection.num_values" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">num_values</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#pymanopt.manifolds.sphere.SphereSubspaceComplementIntersection.num_values" title="Permalink to this definition"></a></dt>
 <dd><p>Total number of values representing a point on the manifold.</p>
 </dd></dl>
 
@@ -2931,7 +2966,7 @@ the manifold, i.e., a point that lies mid-way between <code class="docutils lite
 <p>For most manifolds, which represent points as (potentially
 multi-dimensional) arrays, this will be 1, but other manifolds might
 represent points as tuples or lists of arrays.
-In this case, <cite>point_layout</cite> describes how many elements such
+In this case, <a class="reference internal" href="#pymanopt.manifolds.sphere.SphereSubspaceComplementIntersection.point_layout" title="pymanopt.manifolds.sphere.SphereSubspaceComplementIntersection.point_layout"><code class="xref py py-attr docutils literal notranslate"><span class="pre">point_layout</span></code></a> describes how many elements such
 tuples/lists contain.</p>
 </dd></dl>
 
@@ -3052,6 +3087,11 @@ the tangent space at <code class="docutils literal notranslate"><span class="pre
 <dd><p>Returns the <cite>scale</cite> of the manifold.</p>
 <p>This is used by the trust-regions optimizer to determine default
 initial and maximal trust-region radii.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>NotImplementedError</strong> – If no <a class="reference internal" href="#pymanopt.manifolds.sphere.SphereSubspaceComplementIntersection.typical_dist" title="pymanopt.manifolds.sphere.SphereSubspaceComplementIntersection.typical_dist"><code class="xref py py-attr docutils literal notranslate"><span class="pre">typical_dist</span></code></a> is defined.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -3137,6 +3177,11 @@ To switch to a second-order polar retraction, use <code class="docutils literal 
 <dd><p>Returns the <cite>scale</cite> of the manifold.</p>
 <p>This is used by the trust-regions optimizer to determine default
 initial and maximal trust-region radii.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>NotImplementedError</strong> – If no <a class="reference internal" href="#pymanopt.manifolds.stiefel.Stiefel.typical_dist" title="pymanopt.manifolds.stiefel.Stiefel.typical_dist"><code class="xref py py-attr docutils literal notranslate"><span class="pre">typical_dist</span></code></a> is defined.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -3324,7 +3369,7 @@ along a geodesic in the direction of <code class="docutils literal notranslate">
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pymanopt.manifolds.stiefel.Stiefel.dim">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">dim</span></span><a class="headerlink" href="#pymanopt.manifolds.stiefel.Stiefel.dim" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">dim</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#pymanopt.manifolds.stiefel.Stiefel.dim" title="Permalink to this definition"></a></dt>
 <dd><p>The dimension of the manifold.</p>
 </dd></dl>
 
@@ -3415,7 +3460,7 @@ As such it is the inverse of <a class="reference internal" href="#pymanopt.manif
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pymanopt.manifolds.stiefel.Stiefel.num_values">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">num_values</span></span><a class="headerlink" href="#pymanopt.manifolds.stiefel.Stiefel.num_values" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">num_values</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#pymanopt.manifolds.stiefel.Stiefel.num_values" title="Permalink to this definition"></a></dt>
 <dd><p>Total number of values representing a point on the manifold.</p>
 </dd></dl>
 
@@ -3446,7 +3491,7 @@ the manifold, i.e., a point that lies mid-way between <code class="docutils lite
 <p>For most manifolds, which represent points as (potentially
 multi-dimensional) arrays, this will be 1, but other manifolds might
 represent points as tuples or lists of arrays.
-In this case, <cite>point_layout</cite> describes how many elements such
+In this case, <a class="reference internal" href="#pymanopt.manifolds.stiefel.Stiefel.point_layout" title="pymanopt.manifolds.stiefel.Stiefel.point_layout"><code class="xref py py-attr docutils literal notranslate"><span class="pre">point_layout</span></code></a> describes how many elements such
 tuples/lists contain.</p>
 </dd></dl>
 
@@ -3677,7 +3722,7 @@ As such it is the inverse of <a class="reference internal" href="#pymanopt.manif
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pymanopt.manifolds.grassmann.Grassmann.dim">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">dim</span></span><a class="headerlink" href="#pymanopt.manifolds.grassmann.Grassmann.dim" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">dim</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#pymanopt.manifolds.grassmann.Grassmann.dim" title="Permalink to this definition"></a></dt>
 <dd><p>The dimension of the manifold.</p>
 </dd></dl>
 
@@ -3720,7 +3765,7 @@ This must be a tangent vector at <code class="docutils literal notranslate"><spa
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pymanopt.manifolds.grassmann.Grassmann.num_values">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">num_values</span></span><a class="headerlink" href="#pymanopt.manifolds.grassmann.Grassmann.num_values" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">num_values</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#pymanopt.manifolds.grassmann.Grassmann.num_values" title="Permalink to this definition"></a></dt>
 <dd><p>Total number of values representing a point on the manifold.</p>
 </dd></dl>
 
@@ -3751,7 +3796,7 @@ the manifold, i.e., a point that lies mid-way between <code class="docutils lite
 <p>For most manifolds, which represent points as (potentially
 multi-dimensional) arrays, this will be 1, but other manifolds might
 represent points as tuples or lists of arrays.
-In this case, <cite>point_layout</cite> describes how many elements such
+In this case, <a class="reference internal" href="#pymanopt.manifolds.grassmann.Grassmann.point_layout" title="pymanopt.manifolds.grassmann.Grassmann.point_layout"><code class="xref py py-attr docutils literal notranslate"><span class="pre">point_layout</span></code></a> describes how many elements such
 tuples/lists contain.</p>
 </dd></dl>
 
@@ -3806,6 +3851,11 @@ the tangent space at <code class="docutils literal notranslate"><span class="pre
 <dd><p>Returns the <cite>scale</cite> of the manifold.</p>
 <p>This is used by the trust-regions optimizer to determine default
 initial and maximal trust-region radii.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>NotImplementedError</strong> – If no <a class="reference internal" href="#pymanopt.manifolds.grassmann.Grassmann.typical_dist" title="pymanopt.manifolds.grassmann.Grassmann.typical_dist"><code class="xref py py-attr docutils literal notranslate"><span class="pre">typical_dist</span></code></a> is defined.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -4024,7 +4074,7 @@ As such it is the inverse of <a class="reference internal" href="#pymanopt.manif
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pymanopt.manifolds.grassmann.ComplexGrassmann.dim">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">dim</span></span><a class="headerlink" href="#pymanopt.manifolds.grassmann.ComplexGrassmann.dim" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">dim</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#pymanopt.manifolds.grassmann.ComplexGrassmann.dim" title="Permalink to this definition"></a></dt>
 <dd><p>The dimension of the manifold.</p>
 </dd></dl>
 
@@ -4067,7 +4117,7 @@ This must be a tangent vector at <code class="docutils literal notranslate"><spa
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pymanopt.manifolds.grassmann.ComplexGrassmann.num_values">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">num_values</span></span><a class="headerlink" href="#pymanopt.manifolds.grassmann.ComplexGrassmann.num_values" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">num_values</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#pymanopt.manifolds.grassmann.ComplexGrassmann.num_values" title="Permalink to this definition"></a></dt>
 <dd><p>Total number of values representing a point on the manifold.</p>
 </dd></dl>
 
@@ -4098,7 +4148,7 @@ the manifold, i.e., a point that lies mid-way between <code class="docutils lite
 <p>For most manifolds, which represent points as (potentially
 multi-dimensional) arrays, this will be 1, but other manifolds might
 represent points as tuples or lists of arrays.
-In this case, <cite>point_layout</cite> describes how many elements such
+In this case, <a class="reference internal" href="#pymanopt.manifolds.grassmann.ComplexGrassmann.point_layout" title="pymanopt.manifolds.grassmann.ComplexGrassmann.point_layout"><code class="xref py py-attr docutils literal notranslate"><span class="pre">point_layout</span></code></a> describes how many elements such
 tuples/lists contain.</p>
 </dd></dl>
 
@@ -4153,6 +4203,11 @@ the tangent space at <code class="docutils literal notranslate"><span class="pre
 <dd><p>Returns the <cite>scale</cite> of the manifold.</p>
 <p>This is used by the trust-regions optimizer to determine default
 initial and maximal trust-region radii.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>NotImplementedError</strong> – If no <a class="reference internal" href="#pymanopt.manifolds.grassmann.ComplexGrassmann.typical_dist" title="pymanopt.manifolds.grassmann.ComplexGrassmann.typical_dist"><code class="xref py py-attr docutils literal notranslate"><span class="pre">typical_dist</span></code></a> is defined.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -4255,6 +4310,11 @@ space at <code class="docutils literal notranslate"><span class="pre">point</spa
 <dd><p>Returns the <cite>scale</cite> of the manifold.</p>
 <p>This is used by the trust-regions optimizer to determine default
 initial and maximal trust-region radii.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>NotImplementedError</strong> – If no <a class="reference internal" href="#pymanopt.manifolds.complex_circle.ComplexCircle.typical_dist" title="pymanopt.manifolds.complex_circle.ComplexCircle.typical_dist"><code class="xref py py-attr docutils literal notranslate"><span class="pre">typical_dist</span></code></a> is defined.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -4468,7 +4528,7 @@ the manifold, i.e., a point that lies mid-way between <code class="docutils lite
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pymanopt.manifolds.complex_circle.ComplexCircle.dim">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">dim</span></span><a class="headerlink" href="#pymanopt.manifolds.complex_circle.ComplexCircle.dim" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">dim</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#pymanopt.manifolds.complex_circle.ComplexCircle.dim" title="Permalink to this definition"></a></dt>
 <dd><p>The dimension of the manifold.</p>
 </dd></dl>
 
@@ -4494,7 +4554,7 @@ This must be a tangent vector at <code class="docutils literal notranslate"><spa
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pymanopt.manifolds.complex_circle.ComplexCircle.num_values">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">num_values</span></span><a class="headerlink" href="#pymanopt.manifolds.complex_circle.ComplexCircle.num_values" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">num_values</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#pymanopt.manifolds.complex_circle.ComplexCircle.num_values" title="Permalink to this definition"></a></dt>
 <dd><p>Total number of values representing a point on the manifold.</p>
 </dd></dl>
 
@@ -4505,7 +4565,7 @@ This must be a tangent vector at <code class="docutils literal notranslate"><spa
 <p>For most manifolds, which represent points as (potentially
 multi-dimensional) arrays, this will be 1, but other manifolds might
 represent points as tuples or lists of arrays.
-In this case, <cite>point_layout</cite> describes how many elements such
+In this case, <a class="reference internal" href="#pymanopt.manifolds.complex_circle.ComplexCircle.point_layout" title="pymanopt.manifolds.complex_circle.ComplexCircle.point_layout"><code class="xref py py-attr docutils literal notranslate"><span class="pre">point_layout</span></code></a> describes how many elements such
 tuples/lists contain.</p>
 </dd></dl>
 
@@ -4642,6 +4702,11 @@ space at <code class="docutils literal notranslate"><span class="pre">point</spa
 <dd><p>Returns the <cite>scale</cite> of the manifold.</p>
 <p>This is used by the trust-regions optimizer to determine default
 initial and maximal trust-region radii.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>NotImplementedError</strong> – If no <a class="reference internal" href="#pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.typical_dist" title="pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.typical_dist"><code class="xref py py-attr docutils literal notranslate"><span class="pre">typical_dist</span></code></a> is defined.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -4879,7 +4944,7 @@ the manifold, i.e., a point that lies mid-way between <code class="docutils lite
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.dim">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">dim</span></span><a class="headerlink" href="#pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.dim" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">dim</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.dim" title="Permalink to this definition"></a></dt>
 <dd><p>The dimension of the manifold.</p>
 </dd></dl>
 
@@ -4905,7 +4970,7 @@ This must be a tangent vector at <code class="docutils literal notranslate"><spa
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.num_values">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">num_values</span></span><a class="headerlink" href="#pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.num_values" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">num_values</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.num_values" title="Permalink to this definition"></a></dt>
 <dd><p>Total number of values representing a point on the manifold.</p>
 </dd></dl>
 
@@ -4916,7 +4981,7 @@ This must be a tangent vector at <code class="docutils literal notranslate"><spa
 <p>For most manifolds, which represent points as (potentially
 multi-dimensional) arrays, this will be 1, but other manifolds might
 represent points as tuples or lists of arrays.
-In this case, <cite>point_layout</cite> describes how many elements such
+In this case, <a class="reference internal" href="#pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.point_layout" title="pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.point_layout"><code class="xref py py-attr docutils literal notranslate"><span class="pre">point_layout</span></code></a> describes how many elements such
 tuples/lists contain.</p>
 </dd></dl>
 
@@ -4971,6 +5036,11 @@ the space of <code class="docutils literal notranslate"><span class="pre">m</spa
 <dd><p>Returns the <cite>scale</cite> of the manifold.</p>
 <p>This is used by the trust-regions optimizer to determine default
 initial and maximal trust-region radii.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>NotImplementedError</strong> – If no <a class="reference internal" href="#pymanopt.manifolds.oblique.Oblique.typical_dist" title="pymanopt.manifolds.oblique.Oblique.typical_dist"><code class="xref py py-attr docutils literal notranslate"><span class="pre">typical_dist</span></code></a> is defined.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -5221,7 +5291,7 @@ the manifold, i.e., a point that lies mid-way between <code class="docutils lite
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pymanopt.manifolds.oblique.Oblique.dim">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">dim</span></span><a class="headerlink" href="#pymanopt.manifolds.oblique.Oblique.dim" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">dim</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#pymanopt.manifolds.oblique.Oblique.dim" title="Permalink to this definition"></a></dt>
 <dd><p>The dimension of the manifold.</p>
 </dd></dl>
 
@@ -5247,7 +5317,7 @@ This must be a tangent vector at <code class="docutils literal notranslate"><spa
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pymanopt.manifolds.oblique.Oblique.num_values">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">num_values</span></span><a class="headerlink" href="#pymanopt.manifolds.oblique.Oblique.num_values" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">num_values</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#pymanopt.manifolds.oblique.Oblique.num_values" title="Permalink to this definition"></a></dt>
 <dd><p>Total number of values representing a point on the manifold.</p>
 </dd></dl>
 
@@ -5258,7 +5328,7 @@ This must be a tangent vector at <code class="docutils literal notranslate"><spa
 <p>For most manifolds, which represent points as (potentially
 multi-dimensional) arrays, this will be 1, but other manifolds might
 represent points as tuples or lists of arrays.
-In this case, <cite>point_layout</cite> describes how many elements such
+In this case, <a class="reference internal" href="#pymanopt.manifolds.oblique.Oblique.point_layout" title="pymanopt.manifolds.oblique.Oblique.point_layout"><code class="xref py py-attr docutils literal notranslate"><span class="pre">point_layout</span></code></a> describes how many elements such
 tuples/lists contain.</p>
 </dd></dl>
 
@@ -5338,6 +5408,11 @@ Also see <a class="reference internal" href="bibliography.html#sh2015" id="id42"
 <dd><p>Returns the <cite>scale</cite> of the manifold.</p>
 <p>This is used by the trust-regions optimizer to determine default
 initial and maximal trust-region radii.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>NotImplementedError</strong> – If no <a class="reference internal" href="#pymanopt.manifolds.positive_definite.SymmetricPositiveDefinite.typical_dist" title="pymanopt.manifolds.positive_definite.SymmetricPositiveDefinite.typical_dist"><code class="xref py py-attr docutils literal notranslate"><span class="pre">typical_dist</span></code></a> is defined.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -5588,13 +5663,13 @@ As such it is the inverse of <a class="reference internal" href="#pymanopt.manif
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pymanopt.manifolds.positive_definite.SymmetricPositiveDefinite.dim">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">dim</span></span><a class="headerlink" href="#pymanopt.manifolds.positive_definite.SymmetricPositiveDefinite.dim" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">dim</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#pymanopt.manifolds.positive_definite.SymmetricPositiveDefinite.dim" title="Permalink to this definition"></a></dt>
 <dd><p>The dimension of the manifold.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pymanopt.manifolds.positive_definite.SymmetricPositiveDefinite.num_values">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">num_values</span></span><a class="headerlink" href="#pymanopt.manifolds.positive_definite.SymmetricPositiveDefinite.num_values" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">num_values</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#pymanopt.manifolds.positive_definite.SymmetricPositiveDefinite.num_values" title="Permalink to this definition"></a></dt>
 <dd><p>Total number of values representing a point on the manifold.</p>
 </dd></dl>
 
@@ -5625,7 +5700,7 @@ the manifold, i.e., a point that lies mid-way between <code class="docutils lite
 <p>For most manifolds, which represent points as (potentially
 multi-dimensional) arrays, this will be 1, but other manifolds might
 represent points as tuples or lists of arrays.
-In this case, <cite>point_layout</cite> describes how many elements such
+In this case, <a class="reference internal" href="#pymanopt.manifolds.positive_definite.SymmetricPositiveDefinite.point_layout" title="pymanopt.manifolds.positive_definite.SymmetricPositiveDefinite.point_layout"><code class="xref py py-attr docutils literal notranslate"><span class="pre">point_layout</span></code></a> describes how many elements such
 tuples/lists contain.</p>
 </dd></dl>
 
@@ -5719,7 +5794,7 @@ in <a class="reference internal" href="bibliography.html#jba-2010" id="id46"><sp
 </div>
 <dl class="py property">
 <dt class="sig sig-object py" id="pymanopt.manifolds.psd.PSDFixedRank.dim">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">dim</span></span><a class="headerlink" href="#pymanopt.manifolds.psd.PSDFixedRank.dim" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">dim</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#pymanopt.manifolds.psd.PSDFixedRank.dim" title="Permalink to this definition"></a></dt>
 <dd><p>The dimension of the manifold.</p>
 </dd></dl>
 
@@ -5867,7 +5942,7 @@ As such it is the inverse of <a class="reference internal" href="#pymanopt.manif
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pymanopt.manifolds.psd.PSDFixedRank.num_values">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">num_values</span></span><a class="headerlink" href="#pymanopt.manifolds.psd.PSDFixedRank.num_values" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">num_values</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#pymanopt.manifolds.psd.PSDFixedRank.num_values" title="Permalink to this definition"></a></dt>
 <dd><p>Total number of values representing a point on the manifold.</p>
 </dd></dl>
 
@@ -5898,7 +5973,7 @@ the manifold, i.e., a point that lies mid-way between <code class="docutils lite
 <p>For most manifolds, which represent points as (potentially
 multi-dimensional) arrays, this will be 1, but other manifolds might
 represent points as tuples or lists of arrays.
-In this case, <cite>point_layout</cite> describes how many elements such
+In this case, <a class="reference internal" href="#pymanopt.manifolds.psd.PSDFixedRank.point_layout" title="pymanopt.manifolds.psd.PSDFixedRank.point_layout"><code class="xref py py-attr docutils literal notranslate"><span class="pre">point_layout</span></code></a> describes how many elements such
 tuples/lists contain.</p>
 </dd></dl>
 
@@ -6019,6 +6094,11 @@ the tangent space at <code class="docutils literal notranslate"><span class="pre
 <dd><p>Returns the <cite>scale</cite> of the manifold.</p>
 <p>This is used by the trust-regions optimizer to determine default
 initial and maximal trust-region radii.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>NotImplementedError</strong> – If no <a class="reference internal" href="#pymanopt.manifolds.psd.PSDFixedRank.typical_dist" title="pymanopt.manifolds.psd.PSDFixedRank.typical_dist"><code class="xref py py-attr docutils literal notranslate"><span class="pre">typical_dist</span></code></a> is defined.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -6144,7 +6224,7 @@ space at <code class="docutils literal notranslate"><span class="pre">point</spa
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pymanopt.manifolds.psd.PSDFixedRankComplex.dim">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">dim</span></span><a class="headerlink" href="#pymanopt.manifolds.psd.PSDFixedRankComplex.dim" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">dim</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#pymanopt.manifolds.psd.PSDFixedRankComplex.dim" title="Permalink to this definition"></a></dt>
 <dd><p>The dimension of the manifold.</p>
 </dd></dl>
 
@@ -6236,7 +6316,7 @@ As such it is the inverse of <a class="reference internal" href="#pymanopt.manif
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pymanopt.manifolds.psd.PSDFixedRankComplex.num_values">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">num_values</span></span><a class="headerlink" href="#pymanopt.manifolds.psd.PSDFixedRankComplex.num_values" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">num_values</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#pymanopt.manifolds.psd.PSDFixedRankComplex.num_values" title="Permalink to this definition"></a></dt>
 <dd><p>Total number of values representing a point on the manifold.</p>
 </dd></dl>
 
@@ -6267,7 +6347,7 @@ the manifold, i.e., a point that lies mid-way between <code class="docutils lite
 <p>For most manifolds, which represent points as (potentially
 multi-dimensional) arrays, this will be 1, but other manifolds might
 represent points as tuples or lists of arrays.
-In this case, <cite>point_layout</cite> describes how many elements such
+In this case, <a class="reference internal" href="#pymanopt.manifolds.psd.PSDFixedRankComplex.point_layout" title="pymanopt.manifolds.psd.PSDFixedRankComplex.point_layout"><code class="xref py py-attr docutils literal notranslate"><span class="pre">point_layout</span></code></a> describes how many elements such
 tuples/lists contain.</p>
 </dd></dl>
 
@@ -6377,6 +6457,11 @@ the tangent space at <code class="docutils literal notranslate"><span class="pre
 <dd><p>Returns the <cite>scale</cite> of the manifold.</p>
 <p>This is used by the trust-regions optimizer to determine default
 initial and maximal trust-region radii.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>NotImplementedError</strong> – If no <a class="reference internal" href="#pymanopt.manifolds.psd.PSDFixedRankComplex.typical_dist" title="pymanopt.manifolds.psd.PSDFixedRankComplex.typical_dist"><code class="xref py py-attr docutils literal notranslate"><span class="pre">typical_dist</span></code></a> is defined.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -6446,6 +6531,11 @@ not break down at rank drop.</p>
 <dd><p>Returns the <cite>scale</cite> of the manifold.</p>
 <p>This is used by the trust-regions optimizer to determine default
 initial and maximal trust-region radii.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>NotImplementedError</strong> – If no <a class="reference internal" href="#pymanopt.manifolds.psd.Elliptope.typical_dist" title="pymanopt.manifolds.psd.Elliptope.typical_dist"><code class="xref py py-attr docutils literal notranslate"><span class="pre">typical_dist</span></code></a> is defined.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -6639,7 +6729,7 @@ the tangent space at <code class="docutils literal notranslate"><span class="pre
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pymanopt.manifolds.psd.Elliptope.dim">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">dim</span></span><a class="headerlink" href="#pymanopt.manifolds.psd.Elliptope.dim" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">dim</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#pymanopt.manifolds.psd.Elliptope.dim" title="Permalink to this definition"></a></dt>
 <dd><p>The dimension of the manifold.</p>
 </dd></dl>
 
@@ -6702,7 +6792,7 @@ As such it is the inverse of <a class="reference internal" href="#pymanopt.manif
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pymanopt.manifolds.psd.Elliptope.num_values">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">num_values</span></span><a class="headerlink" href="#pymanopt.manifolds.psd.Elliptope.num_values" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">num_values</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#pymanopt.manifolds.psd.Elliptope.num_values" title="Permalink to this definition"></a></dt>
 <dd><p>Total number of values representing a point on the manifold.</p>
 </dd></dl>
 
@@ -6733,7 +6823,7 @@ the manifold, i.e., a point that lies mid-way between <code class="docutils lite
 <p>For most manifolds, which represent points as (potentially
 multi-dimensional) arrays, this will be 1, but other manifolds might
 represent points as tuples or lists of arrays.
-In this case, <cite>point_layout</cite> describes how many elements such
+In this case, <a class="reference internal" href="#pymanopt.manifolds.psd.Elliptope.point_layout" title="pymanopt.manifolds.psd.Elliptope.point_layout"><code class="xref py py-attr docutils literal notranslate"><span class="pre">point_layout</span></code></a> describes how many elements such
 tuples/lists contain.</p>
 </dd></dl>
 
@@ -6820,6 +6910,11 @@ space <span class="math">\(\R^{m \times n}\)</span> equipped with the usual trac
 <dd><p>Returns the <cite>scale</cite> of the manifold.</p>
 <p>This is used by the trust-regions optimizer to determine default
 initial and maximal trust-region radii.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>NotImplementedError</strong> – If no <a class="reference internal" href="#pymanopt.manifolds.fixed_rank.FixedRankEmbedded.typical_dist" title="pymanopt.manifolds.fixed_rank.FixedRankEmbedded.typical_dist"><code class="xref py py-attr docutils literal notranslate"><span class="pre">typical_dist</span></code></a> is defined.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -7017,7 +7112,7 @@ the tangent space at <code class="docutils literal notranslate"><span class="pre
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pymanopt.manifolds.fixed_rank.FixedRankEmbedded.dim">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">dim</span></span><a class="headerlink" href="#pymanopt.manifolds.fixed_rank.FixedRankEmbedded.dim" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">dim</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#pymanopt.manifolds.fixed_rank.FixedRankEmbedded.dim" title="Permalink to this definition"></a></dt>
 <dd><p>The dimension of the manifold.</p>
 </dd></dl>
 
@@ -7106,7 +7201,7 @@ As such it is the inverse of <a class="reference internal" href="#pymanopt.manif
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pymanopt.manifolds.fixed_rank.FixedRankEmbedded.num_values">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">num_values</span></span><a class="headerlink" href="#pymanopt.manifolds.fixed_rank.FixedRankEmbedded.num_values" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">num_values</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#pymanopt.manifolds.fixed_rank.FixedRankEmbedded.num_values" title="Permalink to this definition"></a></dt>
 <dd><p>Total number of values representing a point on the manifold.</p>
 </dd></dl>
 
@@ -7137,7 +7232,7 @@ the manifold, i.e., a point that lies mid-way between <code class="docutils lite
 <p>For most manifolds, which represent points as (potentially
 multi-dimensional) arrays, this will be 1, but other manifolds might
 represent points as tuples or lists of arrays.
-In this case, <cite>point_layout</cite> describes how many elements such
+In this case, <a class="reference internal" href="#pymanopt.manifolds.fixed_rank.FixedRankEmbedded.point_layout" title="pymanopt.manifolds.fixed_rank.FixedRankEmbedded.point_layout"><code class="xref py py-attr docutils literal notranslate"><span class="pre">point_layout</span></code></a> describes how many elements such
 tuples/lists contain.</p>
 </dd></dl>
 
@@ -7207,6 +7302,11 @@ See also section 11.4 of <a class="reference internal" href="bibliography.html#b
 <dd><p>Returns the <cite>scale</cite> of the manifold.</p>
 <p>This is used by the trust-regions optimizer to determine default
 initial and maximal trust-region radii.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>NotImplementedError</strong> – If no <a class="reference internal" href="#pymanopt.manifolds.positive.Positive.typical_dist" title="pymanopt.manifolds.positive.Positive.typical_dist"><code class="xref py py-attr docutils literal notranslate"><span class="pre">typical_dist</span></code></a> is defined.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -7433,13 +7533,13 @@ the direction of <code class="docutils literal notranslate"><span class="pre">ta
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pymanopt.manifolds.positive.Positive.dim">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">dim</span></span><a class="headerlink" href="#pymanopt.manifolds.positive.Positive.dim" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">dim</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#pymanopt.manifolds.positive.Positive.dim" title="Permalink to this definition"></a></dt>
 <dd><p>The dimension of the manifold.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pymanopt.manifolds.positive.Positive.num_values">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">num_values</span></span><a class="headerlink" href="#pymanopt.manifolds.positive.Positive.num_values" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">num_values</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#pymanopt.manifolds.positive.Positive.num_values" title="Permalink to this definition"></a></dt>
 <dd><p>Total number of values representing a point on the manifold.</p>
 </dd></dl>
 
@@ -7470,7 +7570,7 @@ the manifold, i.e., a point that lies mid-way between <code class="docutils lite
 <p>For most manifolds, which represent points as (potentially
 multi-dimensional) arrays, this will be 1, but other manifolds might
 represent points as tuples or lists of arrays.
-In this case, <cite>point_layout</cite> describes how many elements such
+In this case, <a class="reference internal" href="#pymanopt.manifolds.positive.Positive.point_layout" title="pymanopt.manifolds.positive.Positive.point_layout"><code class="xref py py-attr docutils literal notranslate"><span class="pre">point_layout</span></code></a> describes how many elements such
 tuples/lists contain.</p>
 </dd></dl>
 
@@ -7544,6 +7644,11 @@ manifolds.</p>
 <dd><p>Returns the <cite>scale</cite> of the manifold.</p>
 <p>This is used by the trust-regions optimizer to determine default
 initial and maximal trust-region radii.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>NotImplementedError</strong> – If no <a class="reference internal" href="#pymanopt.manifolds.product.Product.typical_dist" title="pymanopt.manifolds.product.Product.typical_dist"><code class="xref py py-attr docutils literal notranslate"><span class="pre">typical_dist</span></code></a> is defined.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -7814,13 +7919,13 @@ the manifold, i.e., a point that lies mid-way between <code class="docutils lite
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pymanopt.manifolds.product.Product.dim">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">dim</span></span><a class="headerlink" href="#pymanopt.manifolds.product.Product.dim" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">dim</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#pymanopt.manifolds.product.Product.dim" title="Permalink to this definition"></a></dt>
 <dd><p>The dimension of the manifold.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pymanopt.manifolds.product.Product.num_values">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">num_values</span></span><a class="headerlink" href="#pymanopt.manifolds.product.Product.num_values" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">num_values</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#pymanopt.manifolds.product.Product.num_values" title="Permalink to this definition"></a></dt>
 <dd><p>Total number of values representing a point on the manifold.</p>
 </dd></dl>
 
@@ -7831,7 +7936,7 @@ the manifold, i.e., a point that lies mid-way between <code class="docutils lite
 <p>For most manifolds, which represent points as (potentially
 multi-dimensional) arrays, this will be 1, but other manifolds might
 represent points as tuples or lists of arrays.
-In this case, <cite>point_layout</cite> describes how many elements such
+In this case, <a class="reference internal" href="#pymanopt.manifolds.product.Product.point_layout" title="pymanopt.manifolds.product.Product.point_layout"><code class="xref py py-attr docutils literal notranslate"><span class="pre">point_layout</span></code></a> describes how many elements such
 tuples/lists contain.</p>
 </dd></dl>
 
@@ -7873,7 +7978,7 @@ differ for certain manifolds.</p>
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on May 27, 2022.
+      <span class="lastupdated">Last updated on May 28, 2022.
       </span></p>
   </div>
 
