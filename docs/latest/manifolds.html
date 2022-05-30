@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Manifolds &mdash; Pymanopt latest (61ea241) documentation</title>
+  <title>Manifolds &mdash; Pymanopt latest (128a211) documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/style.css" type="text/css" />
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" type="text/css" />
@@ -37,7 +37,7 @@
             <img src="_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                latest (61ea241)
+                latest (128a211)
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -65,6 +65,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#module-pymanopt.manifolds.psd">Positive Semidefinite Matrices</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-pymanopt.manifolds.fixed_rank">Fixed-Rank Matrices</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-pymanopt.manifolds.positive">Positive Matrices</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-pymanopt.manifolds.hyperbolic">Hyperbolic Space</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-pymanopt.manifolds.product">Product Manifold</a></li>
 </ul>
 </li>
@@ -7622,6 +7623,406 @@ the tangent space at <code class="docutils literal notranslate"><span class="pre
 </dd></dl>
 
 </div>
+<div class="section" id="module-pymanopt.manifolds.hyperbolic">
+<span id="hyperbolic-space"></span><h2>Hyperbolic Space<a class="headerlink" href="#module-pymanopt.manifolds.hyperbolic" title="Permalink to this headline"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pymanopt.manifolds.hyperbolic.PoincareBall">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pymanopt.manifolds.hyperbolic.</span></span><span class="sig-name descname"><span class="pre">PoincareBall</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/hyperbolic.html#PoincareBall"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.hyperbolic.PoincareBall" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pymanopt.manifolds.manifold.Manifold" title="pymanopt.manifolds.manifold.Manifold"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.manifolds.manifold.Manifold</span></code></a></p>
+<p>The Poincare ball.</p>
+<p>The Poincare ball of dimension <code class="docutils literal notranslate"><span class="pre">n</span></code>.
+Elements are represented as arrays of shape <code class="docutils literal notranslate"><span class="pre">(n,)</span></code> if <code class="docutils literal notranslate"><span class="pre">k</span> <span class="pre">=</span> <span class="pre">1</span></code>.
+For <code class="docutils literal notranslate"><span class="pre">k</span> <span class="pre">&gt;</span> <span class="pre">1</span></code>, the class represents the product manifold of <code class="docutils literal notranslate"><span class="pre">k</span></code> Poincare
+balls of dimension <code class="docutils literal notranslate"><span class="pre">n</span></code>, in which case points are represented as arrays of
+shape <code class="docutils literal notranslate"><span class="pre">(k,</span> <span class="pre">n)</span></code>.</p>
+<p>Since the manifold is open, the tangent space at every point is a copy of
+<span class="math">\(\R^n\)</span>.</p>
+<p>The Poincare ball is embedded in <span class="math">\(\R^n\)</span> and is a Riemannian manifold,
+but it is not an embedded Riemannian submanifold since the metric is not
+inherited from the Euclidean inner product of its ambient space.
+Instead, the Riemannian metric is conformal to the Euclidean one (angles are
+preserved), and it is given at every point <span class="math">\(\vmx\)</span> by
+<span class="math">\(\inner{\vmu}{\vmv}_\vmx = \lambda_\vmx^2 \inner{\vmu}{\vmv}\)</span> where
+<span class="math">\(\lambda_\vmx = 2 / (1 - \norm{\vmx}^2)\)</span> is the conformal factor.
+This induces the following distance between two points <span class="math">\(\vmx\)</span> and
+<span class="math">\(\vmy\)</span> on the manifold:</p>
+<blockquote>
+<div><p><span class="math">\(\dist_\manM(\vmx, \vmy) = \arccosh\parens{1 + 2 \frac{\norm{\vmx
+- \vmy}^2}{(1 - \norm{\vmx}^2) (1 - \norm{\vmy}^2)}}.\)</span></p>
+</div></blockquote>
+<p>The norm here is understood as the Euclidean norm in the ambient space.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> (<em>int</em>) – The dimension of the Poincare ball.</p></li>
+<li><p><strong>k</strong> (<em>int</em>) – The number of elements in the product of Poincare balls.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="pymanopt.manifolds.hyperbolic.PoincareBall.typical_dist">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">typical_dist</span></span><a class="headerlink" href="#pymanopt.manifolds.hyperbolic.PoincareBall.typical_dist" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the <cite>scale</cite> of the manifold.</p>
+<p>This is used by the trust-regions optimizer to determine default
+initial and maximal trust-region radii.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>NotImplementedError</strong> – If no <a class="reference internal" href="#pymanopt.manifolds.hyperbolic.PoincareBall.typical_dist" title="pymanopt.manifolds.hyperbolic.PoincareBall.typical_dist"><code class="xref py py-attr docutils literal notranslate"><span class="pre">typical_dist</span></code></a> is defined.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pymanopt.manifolds.hyperbolic.PoincareBall.inner_product">
+<span class="sig-name descname"><span class="pre">inner_product</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector_a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector_b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/hyperbolic.html#PoincareBall.inner_product"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.hyperbolic.PoincareBall.inner_product" title="Permalink to this definition"></a></dt>
+<dd><p>Inner product between tangent vectors at a point on the manifold.</p>
+<p>This method implements a Riemannian inner product between two tangent
+vectors <code class="docutils literal notranslate"><span class="pre">tangent_vector_a</span></code> and <code class="docutils literal notranslate"><span class="pre">tangent_vector_b</span></code> in the tangent
+space at <code class="docutils literal notranslate"><span class="pre">point</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>point</strong> – The base point.</p></li>
+<li><p><strong>tangent_vector_a</strong> – The first tangent vector.</p></li>
+<li><p><strong>tangent_vector_b</strong> – The second tangent vector.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The inner product between <code class="docutils literal notranslate"><span class="pre">tangent_vector_a</span></code> and
+<code class="docutils literal notranslate"><span class="pre">tangent_vector_b</span></code> in the tangent space at <code class="docutils literal notranslate"><span class="pre">point</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pymanopt.manifolds.hyperbolic.PoincareBall.projection">
+<span class="sig-name descname"><span class="pre">projection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vector</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/hyperbolic.html#PoincareBall.projection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.hyperbolic.PoincareBall.projection" title="Permalink to this definition"></a></dt>
+<dd><p>Projects vector in the ambient space on the tangent space.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>point</strong> – A point on the manifold.</p></li>
+<li><p><strong>vector</strong> – A vector in the ambient space of the tangent space at
+<code class="docutils literal notranslate"><span class="pre">point</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>An element of the tangent space at <code class="docutils literal notranslate"><span class="pre">point</span></code> closest to <code class="docutils literal notranslate"><span class="pre">vector</span></code>
+in the ambient space.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pymanopt.manifolds.hyperbolic.PoincareBall.norm">
+<span class="sig-name descname"><span class="pre">norm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/hyperbolic.html#PoincareBall.norm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.hyperbolic.PoincareBall.norm" title="Permalink to this definition"></a></dt>
+<dd><p>Computes the norm of a tangent vector at a point on the manifold.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>point</strong> – A point on the manifold.</p></li>
+<li><p><strong>tangent_vector</strong> – A tangent vector in the tangent space at <code class="docutils literal notranslate"><span class="pre">point</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The norm of <code class="docutils literal notranslate"><span class="pre">tangent_vector</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pymanopt.manifolds.hyperbolic.PoincareBall.random_point">
+<span class="sig-name descname"><span class="pre">random_point</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/hyperbolic.html#PoincareBall.random_point"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.hyperbolic.PoincareBall.random_point" title="Permalink to this definition"></a></dt>
+<dd><p>Returns a random point on the manifold.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A randomly chosen point on the manifold.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pymanopt.manifolds.hyperbolic.PoincareBall.random_tangent_vector">
+<span class="sig-name descname"><span class="pre">random_tangent_vector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/hyperbolic.html#PoincareBall.random_tangent_vector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.hyperbolic.PoincareBall.random_tangent_vector" title="Permalink to this definition"></a></dt>
+<dd><p>Returns a random vector in the tangent space at <code class="docutils literal notranslate"><span class="pre">point</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>point</strong> – A point on the manifold.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A randomly chosen tangent vector in the tangent space at <code class="docutils literal notranslate"><span class="pre">point</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pymanopt.manifolds.hyperbolic.PoincareBall.zero_vector">
+<span class="sig-name descname"><span class="pre">zero_vector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/hyperbolic.html#PoincareBall.zero_vector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.hyperbolic.PoincareBall.zero_vector" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the zero vector in the tangent space at <code class="docutils literal notranslate"><span class="pre">point</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>point</strong> – A point on the manifold.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The origin of the tangent space at <code class="docutils literal notranslate"><span class="pre">point</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pymanopt.manifolds.hyperbolic.PoincareBall.dist">
+<span class="sig-name descname"><span class="pre">dist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point_a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point_b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/hyperbolic.html#PoincareBall.dist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.hyperbolic.PoincareBall.dist" title="Permalink to this definition"></a></dt>
+<dd><p>The geodesic distance between two points on the manifold.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>point_a</strong> – The first point on the manifold.</p></li>
+<li><p><strong>point_b</strong> – The second point on the manifold.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The distance between <code class="docutils literal notranslate"><span class="pre">point_a</span></code> and <code class="docutils literal notranslate"><span class="pre">point_b</span></code> on the manifold.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pymanopt.manifolds.hyperbolic.PoincareBall.euclidean_to_riemannian_gradient">
+<span class="sig-name descname"><span class="pre">euclidean_to_riemannian_gradient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">euclidean_gradient</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/hyperbolic.html#PoincareBall.euclidean_to_riemannian_gradient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.hyperbolic.PoincareBall.euclidean_to_riemannian_gradient" title="Permalink to this definition"></a></dt>
+<dd><p>Converts the Euclidean to the Riemannian gradient.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>point</strong> – The point on the manifold at which the Euclidean gradient
+was evaluated.</p></li>
+<li><p><strong>euclidean_gradient</strong> – The Euclidean gradient as a vector in the
+ambient space of the tangent space at <code class="docutils literal notranslate"><span class="pre">point</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The Riemannian gradient at <code class="docutils literal notranslate"><span class="pre">point</span></code>.
+This must be a tangent vector at <code class="docutils literal notranslate"><span class="pre">point</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pymanopt.manifolds.hyperbolic.PoincareBall.euclidean_to_riemannian_hessian">
+<span class="sig-name descname"><span class="pre">euclidean_to_riemannian_hessian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">euclidean_gradient</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">euclidean_hessian</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/hyperbolic.html#PoincareBall.euclidean_to_riemannian_hessian"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.hyperbolic.PoincareBall.euclidean_to_riemannian_hessian" title="Permalink to this definition"></a></dt>
+<dd><p>Converts the Euclidean to the Riemannian Hessian.</p>
+<p>This converts the Euclidean Hessian <code class="docutils literal notranslate"><span class="pre">euclidean_hessian</span></code> of a function
+at a point <code class="docutils literal notranslate"><span class="pre">point</span></code> along a tangent vector <code class="docutils literal notranslate"><span class="pre">tangent_vector</span></code> to the
+Riemannian Hessian of <code class="docutils literal notranslate"><span class="pre">point</span></code> along <code class="docutils literal notranslate"><span class="pre">tangent_vector</span></code> on the
+manifold.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>point</strong> – The point on the manifold at which the Euclidean gradient
+and Hessian was evaluated.</p></li>
+<li><p><strong>euclidean_gradient</strong> – The Euclidean gradient at <code class="docutils literal notranslate"><span class="pre">point</span></code>.</p></li>
+<li><p><strong>euclidean_hessian</strong> – The Euclidean Hessian at <code class="docutils literal notranslate"><span class="pre">point</span></code> along the
+direction <code class="docutils literal notranslate"><span class="pre">tangent_vector</span></code>.</p></li>
+<li><p><strong>tangent_vector</strong> – The tangent vector in the direction of which the
+Riemannian Hessian is to be calculated.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The Riemannian Hessian as a tangent vector at <code class="docutils literal notranslate"><span class="pre">point</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pymanopt.manifolds.hyperbolic.PoincareBall.exp">
+<span class="sig-name descname"><span class="pre">exp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/hyperbolic.html#PoincareBall.exp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.hyperbolic.PoincareBall.exp" title="Permalink to this definition"></a></dt>
+<dd><p>Computes the exponential map on the manifold.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>point</strong> – A point on the manifold.</p></li>
+<li><p><strong>tangent_vector</strong> – A tangent vector at <code class="docutils literal notranslate"><span class="pre">point</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The point on the manifold reached by moving away from <code class="docutils literal notranslate"><span class="pre">point</span></code>
+along a geodesic in the direction of <code class="docutils literal notranslate"><span class="pre">tangent_vector</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pymanopt.manifolds.hyperbolic.PoincareBall.retraction">
+<span class="sig-name descname"><span class="pre">retraction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.hyperbolic.PoincareBall.retraction" title="Permalink to this definition"></a></dt>
+<dd><p>Retracts a tangent vector back to the manifold.</p>
+<p>This generalizes the exponential map, and is often more efficient to
+compute numerically.
+It maps a vector <code class="docutils literal notranslate"><span class="pre">tangent_vector</span></code> in the tangent space at <code class="docutils literal notranslate"><span class="pre">point</span></code>
+back to the manifold.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>point</strong> – A point on the manifold.</p></li>
+<li><p><strong>tangent_vector</strong> – A tangent vector at <code class="docutils literal notranslate"><span class="pre">point</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A point on the manifold reached by moving away from <code class="docutils literal notranslate"><span class="pre">point</span></code> in
+the direction of <code class="docutils literal notranslate"><span class="pre">tangent_vector</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pymanopt.manifolds.hyperbolic.PoincareBall.log">
+<span class="sig-name descname"><span class="pre">log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point_a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point_b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/hyperbolic.html#PoincareBall.log"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.hyperbolic.PoincareBall.log" title="Permalink to this definition"></a></dt>
+<dd><p>Computes the logarithmic map on the manifold.</p>
+<p>The logarithmic map <code class="docutils literal notranslate"><span class="pre">log(point_a,</span> <span class="pre">point_b)</span></code> produces a tangent vector
+in the tangent space at <code class="docutils literal notranslate"><span class="pre">point_a</span></code> that points in the direction of
+<code class="docutils literal notranslate"><span class="pre">point_b</span></code>.
+In other words, <code class="docutils literal notranslate"><span class="pre">exp(point_a,</span> <span class="pre">log(point_a,</span> <span class="pre">point_b))</span> <span class="pre">==</span> <span class="pre">point_b</span></code>.
+As such it is the inverse of <a class="reference internal" href="#pymanopt.manifolds.hyperbolic.PoincareBall.exp" title="pymanopt.manifolds.hyperbolic.PoincareBall.exp"><code class="xref py py-meth docutils literal notranslate"><span class="pre">exp()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>point_a</strong> – First point on the manifold.</p></li>
+<li><p><strong>point_b</strong> – Second point on the manifold.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A tangent vector in the tangent space at <code class="docutils literal notranslate"><span class="pre">point_a</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pymanopt.manifolds.hyperbolic.PoincareBall.pair_mean">
+<span class="sig-name descname"><span class="pre">pair_mean</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point_a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point_b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/hyperbolic.html#PoincareBall.pair_mean"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.hyperbolic.PoincareBall.pair_mean" title="Permalink to this definition"></a></dt>
+<dd><p>Computes the intrinsic mean of two points on the manifold.</p>
+<p>Returns the intrinsic mean of two points <code class="docutils literal notranslate"><span class="pre">point_a</span></code> and <code class="docutils literal notranslate"><span class="pre">point_b</span></code> on
+the manifold, i.e., a point that lies mid-way between <code class="docutils literal notranslate"><span class="pre">point_a</span></code> and
+<code class="docutils literal notranslate"><span class="pre">point_b</span></code> on the geodesic arc joining them.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>point_a</strong> – The first point on the manifold.</p></li>
+<li><p><strong>point_b</strong> – The second point on the manifold.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The mid-way point between <code class="docutils literal notranslate"><span class="pre">point_a</span></code> and <code class="docutils literal notranslate"><span class="pre">point_b</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pymanopt.manifolds.hyperbolic.PoincareBall.mobius_addition">
+<span class="sig-name descname"><span class="pre">mobius_addition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point_a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point_b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/hyperbolic.html#PoincareBall.mobius_addition"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.hyperbolic.PoincareBall.mobius_addition" title="Permalink to this definition"></a></dt>
+<dd><p>Möbius addition.</p>
+<p>Special non-associative and non-commutative operation which is closed
+in the Poincare ball.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>point_a</strong> – The first point.</p></li>
+<li><p><strong>point_b</strong> – The second point.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The Möbius sum of <code class="docutils literal notranslate"><span class="pre">point_a</span></code> and <code class="docutils literal notranslate"><span class="pre">point_b</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pymanopt.manifolds.hyperbolic.PoincareBall.conformal_factor">
+<span class="sig-name descname"><span class="pre">conformal_factor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/hyperbolic.html#PoincareBall.conformal_factor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.hyperbolic.PoincareBall.conformal_factor" title="Permalink to this definition"></a></dt>
+<dd><p>The conformal factor for a point.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>point</strong> – The point for which to compute the conformal factor.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The conformal factor.
+If <code class="docutils literal notranslate"><span class="pre">point</span></code> is a point on the product manifold of <code class="docutils literal notranslate"><span class="pre">k</span></code> Poincare
+balls, the return value will be an array of shape <code class="docutils literal notranslate"><span class="pre">(k,1)</span></code>.
+The singleton dimension is explicitly kept to simplify
+multiplication of <code class="docutils literal notranslate"><span class="pre">point</span></code> by the conformal factor on product
+manifolds.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pymanopt.manifolds.hyperbolic.PoincareBall.to_tangent_space">
+<span class="sig-name descname"><span class="pre">to_tangent_space</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vector</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.hyperbolic.PoincareBall.to_tangent_space" title="Permalink to this definition"></a></dt>
+<dd><p>Re-tangentialize a vector.</p>
+<p>This method guarantees that <code class="docutils literal notranslate"><span class="pre">vector</span></code> is indeed a tangent vector
+at <code class="docutils literal notranslate"><span class="pre">point</span></code> on the manifold.
+Typically this simply corresponds to <code class="docutils literal notranslate"><span class="pre">proj(point,</span> <span class="pre">vector)</span></code> but may
+differ for certain manifolds.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>point</strong> – A point on the manifold.</p></li>
+<li><p><strong>vector</strong> – A vector close to the tangent space at <code class="docutils literal notranslate"><span class="pre">point</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The tangent vector at <code class="docutils literal notranslate"><span class="pre">point</span></code> closest to <code class="docutils literal notranslate"><span class="pre">vector</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pymanopt.manifolds.hyperbolic.PoincareBall.dim">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">dim</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#pymanopt.manifolds.hyperbolic.PoincareBall.dim" title="Permalink to this definition"></a></dt>
+<dd><p>The dimension of the manifold.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pymanopt.manifolds.hyperbolic.PoincareBall.num_values">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">num_values</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#pymanopt.manifolds.hyperbolic.PoincareBall.num_values" title="Permalink to this definition"></a></dt>
+<dd><p>Total number of values representing a point on the manifold.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pymanopt.manifolds.hyperbolic.PoincareBall.point_layout">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">point_layout</span></span><a class="headerlink" href="#pymanopt.manifolds.hyperbolic.PoincareBall.point_layout" title="Permalink to this definition"></a></dt>
+<dd><p>The number of elements a point on a manifold consists of.</p>
+<p>For most manifolds, which represent points as (potentially
+multi-dimensional) arrays, this will be 1, but other manifolds might
+represent points as tuples or lists of arrays.
+In this case, <a class="reference internal" href="#pymanopt.manifolds.hyperbolic.PoincareBall.point_layout" title="pymanopt.manifolds.hyperbolic.PoincareBall.point_layout"><code class="xref py py-attr docutils literal notranslate"><span class="pre">point_layout</span></code></a> describes how many elements such
+tuples/lists contain.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pymanopt.manifolds.hyperbolic.PoincareBall.transport">
+<span class="sig-name descname"><span class="pre">transport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point_a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point_b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector_a</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.hyperbolic.PoincareBall.transport" title="Permalink to this definition"></a></dt>
+<dd><p>Compute transport of tangent vectors between tangent spaces.</p>
+<p>This may either be a vector transport (a generalization of parallel
+transport) as defined in section 8.1 of <a class="reference internal" href="bibliography.html#ams2008" id="id65"><span>[AMS2008]</span></a>, or a transporter
+(see e.g. section 10.5 of <a class="reference internal" href="bibliography.html#bou2020" id="id66"><span>[Bou2020]</span></a>).
+It transports a vector <code class="docutils literal notranslate"><span class="pre">tangent_vector_a</span></code> in the tangent space at
+<code class="docutils literal notranslate"><span class="pre">point_a</span></code> to the tangent space at <cite>point_b</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>point_a</strong> – The first point on the manifold.</p></li>
+<li><p><strong>point_b</strong> – The second point on the manifold.</p></li>
+<li><p><strong>tangent_vector_a</strong> – The tangent vector at <code class="docutils literal notranslate"><span class="pre">point_a</span></code> to transport to
+the tangent space at <code class="docutils literal notranslate"><span class="pre">point_b</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A tangent vector at <code class="docutils literal notranslate"><span class="pre">point_b</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
 <div class="section" id="module-pymanopt.manifolds.product">
 <span id="product-manifold"></span><h2>Product Manifold<a class="headerlink" href="#module-pymanopt.manifolds.product" title="Permalink to this headline"></a></h2>
 <dl class="py class">
@@ -7864,8 +8265,8 @@ As such it is the inverse of <a class="reference internal" href="#pymanopt.manif
 <span class="sig-name descname"><span class="pre">transport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point_a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point_b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector_a</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/product.html#Product.transport"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.product.Product.transport" title="Permalink to this definition"></a></dt>
 <dd><p>Compute transport of tangent vectors between tangent spaces.</p>
 <p>This may either be a vector transport (a generalization of parallel
-transport) as defined in section 8.1 of <a class="reference internal" href="bibliography.html#ams2008" id="id65"><span>[AMS2008]</span></a>, or a transporter
-(see e.g. section 10.5 of <a class="reference internal" href="bibliography.html#bou2020" id="id66"><span>[Bou2020]</span></a>).
+transport) as defined in section 8.1 of <a class="reference internal" href="bibliography.html#ams2008" id="id67"><span>[AMS2008]</span></a>, or a transporter
+(see e.g. section 10.5 of <a class="reference internal" href="bibliography.html#bou2020" id="id68"><span>[Bou2020]</span></a>).
 It transports a vector <code class="docutils literal notranslate"><span class="pre">tangent_vector_a</span></code> in the tangent space at
 <code class="docutils literal notranslate"><span class="pre">point_a</span></code> to the tangent space at <cite>point_b</cite>.</p>
 <dl class="field-list simple">
@@ -7978,7 +8379,7 @@ differ for certain manifolds.</p>
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on May 28, 2022.
+      <span class="lastupdated">Last updated on May 30, 2022.
       </span></p>
   </div>
 
