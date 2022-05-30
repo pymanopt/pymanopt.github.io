@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pymanopt.manifolds.psd &mdash; Pymanopt latest (128a211) documentation</title>
+  <title>pymanopt.manifolds.psd &mdash; Pymanopt latest (b66f209) documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/style.css" type="text/css" />
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" type="text/css" />
@@ -35,7 +35,7 @@
             <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                latest (128a211)
+                latest (b66f209)
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -111,6 +111,8 @@
         <span class="n">AS</span> <span class="o">=</span> <span class="n">point</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">vector</span> <span class="o">-</span> <span class="n">vector</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">point</span>
         <span class="n">Omega</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve_continuous_lyapunov</span><span class="p">(</span><span class="n">YtY</span><span class="p">,</span> <span class="n">AS</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">vector</span> <span class="o">-</span> <span class="n">point</span> <span class="o">@</span> <span class="n">Omega</span>
+
+    <span class="n">to_tangent_space</span> <span class="o">=</span> <span class="n">projection</span>
 
     <span class="k">def</span> <span class="nf">euclidean_to_riemannian_gradient</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">euclidean_gradient</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">euclidean_gradient</span>
@@ -323,6 +325,8 @@
         <span class="n">AS</span> <span class="o">=</span> <span class="n">point</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">eta</span> <span class="o">-</span> <span class="n">vector</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">point</span>
         <span class="n">Omega</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve_continuous_lyapunov</span><span class="p">(</span><span class="n">YtY</span><span class="p">,</span> <span class="o">-</span><span class="n">AS</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">eta</span> <span class="o">-</span> <span class="n">point</span> <span class="o">@</span> <span class="p">(</span><span class="n">Omega</span> <span class="o">-</span> <span class="n">Omega</span><span class="o">.</span><span class="n">T</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span></div>
+
+    <span class="n">to_tangent_space</span> <span class="o">=</span> <span class="n">projection</span>
 
 <div class="viewcode-block" id="Elliptope.retraction"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.psd.Elliptope.retraction">[docs]</a>    <span class="k">def</span> <span class="nf">retraction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_normalize_rows</span><span class="p">(</span><span class="n">point</span> <span class="o">+</span> <span class="n">tangent_vector</span><span class="p">)</span></div>

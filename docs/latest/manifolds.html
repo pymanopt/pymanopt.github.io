@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Manifolds &mdash; Pymanopt latest (128a211) documentation</title>
+  <title>Manifolds &mdash; Pymanopt latest (b66f209) documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/style.css" type="text/css" />
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" type="text/css" />
@@ -37,7 +37,7 @@
             <img src="_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                latest (128a211)
+                latest (b66f209)
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -3227,6 +3227,27 @@ in the ambient space.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pymanopt.manifolds.stiefel.Stiefel.to_tangent_space">
+<span class="sig-name descname"><span class="pre">to_tangent_space</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vector</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.stiefel.Stiefel.to_tangent_space" title="Permalink to this definition"></a></dt>
+<dd><p>Re-tangentialize a vector.</p>
+<p>This method guarantees that <code class="docutils literal notranslate"><span class="pre">vector</span></code> is indeed a tangent vector
+at <code class="docutils literal notranslate"><span class="pre">point</span></code> on the manifold.
+Typically this simply corresponds to <code class="docutils literal notranslate"><span class="pre">proj(point,</span> <span class="pre">vector)</span></code> but may
+differ for certain manifolds.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>point</strong> – A point on the manifold.</p></li>
+<li><p><strong>vector</strong> – A vector close to the tangent space at <code class="docutils literal notranslate"><span class="pre">point</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The tangent vector at <code class="docutils literal notranslate"><span class="pre">point</span></code> closest to <code class="docutils literal notranslate"><span class="pre">vector</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pymanopt.manifolds.stiefel.Stiefel.weingarten">
 <span class="sig-name descname"><span class="pre">weingarten</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normal_vector</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/stiefel.html#Stiefel.weingarten"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.stiefel.Stiefel.weingarten" title="Permalink to this definition"></a></dt>
 <dd><p>Compute the Weingarten map of the manifold.</p>
@@ -3494,27 +3515,6 @@ multi-dimensional) arrays, this will be 1, but other manifolds might
 represent points as tuples or lists of arrays.
 In this case, <a class="reference internal" href="#pymanopt.manifolds.stiefel.Stiefel.point_layout" title="pymanopt.manifolds.stiefel.Stiefel.point_layout"><code class="xref py py-attr docutils literal notranslate"><span class="pre">point_layout</span></code></a> describes how many elements such
 tuples/lists contain.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pymanopt.manifolds.stiefel.Stiefel.to_tangent_space">
-<span class="sig-name descname"><span class="pre">to_tangent_space</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vector</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.stiefel.Stiefel.to_tangent_space" title="Permalink to this definition"></a></dt>
-<dd><p>Re-tangentialize a vector.</p>
-<p>This method guarantees that <code class="docutils literal notranslate"><span class="pre">vector</span></code> is indeed a tangent vector
-at <code class="docutils literal notranslate"><span class="pre">point</span></code> on the manifold.
-Typically this simply corresponds to <code class="docutils literal notranslate"><span class="pre">proj(point,</span> <span class="pre">vector)</span></code> but may
-differ for certain manifolds.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>point</strong> – A point on the manifold.</p></li>
-<li><p><strong>vector</strong> – A vector close to the tangent space at <code class="docutils literal notranslate"><span class="pre">point</span></code>.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The tangent vector at <code class="docutils literal notranslate"><span class="pre">point</span></code> closest to <code class="docutils literal notranslate"><span class="pre">vector</span></code>.</p>
-</dd>
-</dl>
 </dd></dl>
 
 </dd></dl>
@@ -4338,20 +4338,22 @@ in the ambient space.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pymanopt.manifolds.complex_circle.ComplexCircle.tangent">
-<span class="sig-name descname"><span class="pre">tangent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vector</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.complex_circle.ComplexCircle.tangent" title="Permalink to this definition"></a></dt>
-<dd><p>Projects vector in the ambient space on the tangent space.</p>
+<dt class="sig sig-object py" id="pymanopt.manifolds.complex_circle.ComplexCircle.to_tangent_space">
+<span class="sig-name descname"><span class="pre">to_tangent_space</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vector</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.complex_circle.ComplexCircle.to_tangent_space" title="Permalink to this definition"></a></dt>
+<dd><p>Re-tangentialize a vector.</p>
+<p>This method guarantees that <code class="docutils literal notranslate"><span class="pre">vector</span></code> is indeed a tangent vector
+at <code class="docutils literal notranslate"><span class="pre">point</span></code> on the manifold.
+Typically this simply corresponds to <code class="docutils literal notranslate"><span class="pre">proj(point,</span> <span class="pre">vector)</span></code> but may
+differ for certain manifolds.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>point</strong> – A point on the manifold.</p></li>
-<li><p><strong>vector</strong> – A vector in the ambient space of the tangent space at
-<code class="docutils literal notranslate"><span class="pre">point</span></code>.</p></li>
+<li><p><strong>vector</strong> – A vector close to the tangent space at <code class="docutils literal notranslate"><span class="pre">point</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>An element of the tangent space at <code class="docutils literal notranslate"><span class="pre">point</span></code> closest to <code class="docutils literal notranslate"><span class="pre">vector</span></code>
-in the ambient space.</p>
+<dd class="field-even"><p>The tangent vector at <code class="docutils literal notranslate"><span class="pre">point</span></code> closest to <code class="docutils literal notranslate"><span class="pre">vector</span></code>.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -4568,27 +4570,6 @@ multi-dimensional) arrays, this will be 1, but other manifolds might
 represent points as tuples or lists of arrays.
 In this case, <a class="reference internal" href="#pymanopt.manifolds.complex_circle.ComplexCircle.point_layout" title="pymanopt.manifolds.complex_circle.ComplexCircle.point_layout"><code class="xref py py-attr docutils literal notranslate"><span class="pre">point_layout</span></code></a> describes how many elements such
 tuples/lists contain.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pymanopt.manifolds.complex_circle.ComplexCircle.to_tangent_space">
-<span class="sig-name descname"><span class="pre">to_tangent_space</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vector</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.complex_circle.ComplexCircle.to_tangent_space" title="Permalink to this definition"></a></dt>
-<dd><p>Re-tangentialize a vector.</p>
-<p>This method guarantees that <code class="docutils literal notranslate"><span class="pre">vector</span></code> is indeed a tangent vector
-at <code class="docutils literal notranslate"><span class="pre">point</span></code> on the manifold.
-Typically this simply corresponds to <code class="docutils literal notranslate"><span class="pre">proj(point,</span> <span class="pre">vector)</span></code> but may
-differ for certain manifolds.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>point</strong> – A point on the manifold.</p></li>
-<li><p><strong>vector</strong> – A vector close to the tangent space at <code class="docutils literal notranslate"><span class="pre">point</span></code>.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The tangent vector at <code class="docutils literal notranslate"><span class="pre">point</span></code> closest to <code class="docutils literal notranslate"><span class="pre">vector</span></code>.</p>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -5120,6 +5101,27 @@ in the ambient space.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pymanopt.manifolds.oblique.Oblique.to_tangent_space">
+<span class="sig-name descname"><span class="pre">to_tangent_space</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vector</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.oblique.Oblique.to_tangent_space" title="Permalink to this definition"></a></dt>
+<dd><p>Re-tangentialize a vector.</p>
+<p>This method guarantees that <code class="docutils literal notranslate"><span class="pre">vector</span></code> is indeed a tangent vector
+at <code class="docutils literal notranslate"><span class="pre">point</span></code> on the manifold.
+Typically this simply corresponds to <code class="docutils literal notranslate"><span class="pre">proj(point,</span> <span class="pre">vector)</span></code> but may
+differ for certain manifolds.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>point</strong> – A point on the manifold.</p></li>
+<li><p><strong>vector</strong> – A vector close to the tangent space at <code class="docutils literal notranslate"><span class="pre">point</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The tangent vector at <code class="docutils literal notranslate"><span class="pre">point</span></code> closest to <code class="docutils literal notranslate"><span class="pre">vector</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pymanopt.manifolds.oblique.Oblique.euclidean_to_riemannian_hessian">
 <span class="sig-name descname"><span class="pre">euclidean_to_riemannian_hessian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">euclidean_gradient</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">euclidean_hessian</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/oblique.html#Oblique.euclidean_to_riemannian_hessian"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.oblique.Oblique.euclidean_to_riemannian_hessian" title="Permalink to this definition"></a></dt>
 <dd><p>Converts the Euclidean to the Riemannian Hessian.</p>
@@ -5334,27 +5336,6 @@ tuples/lists contain.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pymanopt.manifolds.oblique.Oblique.to_tangent_space">
-<span class="sig-name descname"><span class="pre">to_tangent_space</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vector</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.oblique.Oblique.to_tangent_space" title="Permalink to this definition"></a></dt>
-<dd><p>Re-tangentialize a vector.</p>
-<p>This method guarantees that <code class="docutils literal notranslate"><span class="pre">vector</span></code> is indeed a tangent vector
-at <code class="docutils literal notranslate"><span class="pre">point</span></code> on the manifold.
-Typically this simply corresponds to <code class="docutils literal notranslate"><span class="pre">proj(point,</span> <span class="pre">vector)</span></code> but may
-differ for certain manifolds.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>point</strong> – A point on the manifold.</p></li>
-<li><p><strong>vector</strong> – A vector close to the tangent space at <code class="docutils literal notranslate"><span class="pre">point</span></code>.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The tangent vector at <code class="docutils literal notranslate"><span class="pre">point</span></code> closest to <code class="docutils literal notranslate"><span class="pre">vector</span></code>.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="pymanopt.manifolds.oblique.Oblique.weingarten">
 <span class="sig-name descname"><span class="pre">weingarten</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normal_vector</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.oblique.Oblique.weingarten" title="Permalink to this definition"></a></dt>
 <dd><p>Compute the Weingarten map of the manifold.</p>
@@ -5470,6 +5451,27 @@ space at <code class="docutils literal notranslate"><span class="pre">point</spa
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>An element of the tangent space at <code class="docutils literal notranslate"><span class="pre">point</span></code> closest to <code class="docutils literal notranslate"><span class="pre">vector</span></code>
 in the ambient space.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pymanopt.manifolds.positive_definite.SymmetricPositiveDefinite.to_tangent_space">
+<span class="sig-name descname"><span class="pre">to_tangent_space</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vector</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.positive_definite.SymmetricPositiveDefinite.to_tangent_space" title="Permalink to this definition"></a></dt>
+<dd><p>Re-tangentialize a vector.</p>
+<p>This method guarantees that <code class="docutils literal notranslate"><span class="pre">vector</span></code> is indeed a tangent vector
+at <code class="docutils literal notranslate"><span class="pre">point</span></code> on the manifold.
+Typically this simply corresponds to <code class="docutils literal notranslate"><span class="pre">proj(point,</span> <span class="pre">vector)</span></code> but may
+differ for certain manifolds.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>point</strong> – A point on the manifold.</p></li>
+<li><p><strong>vector</strong> – A vector close to the tangent space at <code class="docutils literal notranslate"><span class="pre">point</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The tangent vector at <code class="docutils literal notranslate"><span class="pre">point</span></code> closest to <code class="docutils literal notranslate"><span class="pre">vector</span></code>.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -5703,27 +5705,6 @@ multi-dimensional) arrays, this will be 1, but other manifolds might
 represent points as tuples or lists of arrays.
 In this case, <a class="reference internal" href="#pymanopt.manifolds.positive_definite.SymmetricPositiveDefinite.point_layout" title="pymanopt.manifolds.positive_definite.SymmetricPositiveDefinite.point_layout"><code class="xref py py-attr docutils literal notranslate"><span class="pre">point_layout</span></code></a> describes how many elements such
 tuples/lists contain.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pymanopt.manifolds.positive_definite.SymmetricPositiveDefinite.to_tangent_space">
-<span class="sig-name descname"><span class="pre">to_tangent_space</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vector</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.positive_definite.SymmetricPositiveDefinite.to_tangent_space" title="Permalink to this definition"></a></dt>
-<dd><p>Re-tangentialize a vector.</p>
-<p>This method guarantees that <code class="docutils literal notranslate"><span class="pre">vector</span></code> is indeed a tangent vector
-at <code class="docutils literal notranslate"><span class="pre">point</span></code> on the manifold.
-Typically this simply corresponds to <code class="docutils literal notranslate"><span class="pre">proj(point,</span> <span class="pre">vector)</span></code> but may
-differ for certain manifolds.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>point</strong> – A point on the manifold.</p></li>
-<li><p><strong>vector</strong> – A vector close to the tangent space at <code class="docutils literal notranslate"><span class="pre">point</span></code>.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The tangent vector at <code class="docutils literal notranslate"><span class="pre">point</span></code> closest to <code class="docutils literal notranslate"><span class="pre">vector</span></code>.</p>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -6598,6 +6579,27 @@ in the ambient space.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pymanopt.manifolds.psd.Elliptope.to_tangent_space">
+<span class="sig-name descname"><span class="pre">to_tangent_space</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vector</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.psd.Elliptope.to_tangent_space" title="Permalink to this definition"></a></dt>
+<dd><p>Re-tangentialize a vector.</p>
+<p>This method guarantees that <code class="docutils literal notranslate"><span class="pre">vector</span></code> is indeed a tangent vector
+at <code class="docutils literal notranslate"><span class="pre">point</span></code> on the manifold.
+Typically this simply corresponds to <code class="docutils literal notranslate"><span class="pre">proj(point,</span> <span class="pre">vector)</span></code> but may
+differ for certain manifolds.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>point</strong> – A point on the manifold.</p></li>
+<li><p><strong>vector</strong> – A vector close to the tangent space at <code class="docutils literal notranslate"><span class="pre">point</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The tangent vector at <code class="docutils literal notranslate"><span class="pre">point</span></code> closest to <code class="docutils literal notranslate"><span class="pre">vector</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pymanopt.manifolds.psd.Elliptope.retraction">
 <span class="sig-name descname"><span class="pre">retraction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/psd.html#Elliptope.retraction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.psd.Elliptope.retraction" title="Permalink to this definition"></a></dt>
 <dd><p>Retracts a tangent vector back to the manifold.</p>
@@ -6826,27 +6828,6 @@ multi-dimensional) arrays, this will be 1, but other manifolds might
 represent points as tuples or lists of arrays.
 In this case, <a class="reference internal" href="#pymanopt.manifolds.psd.Elliptope.point_layout" title="pymanopt.manifolds.psd.Elliptope.point_layout"><code class="xref py py-attr docutils literal notranslate"><span class="pre">point_layout</span></code></a> describes how many elements such
 tuples/lists contain.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pymanopt.manifolds.psd.Elliptope.to_tangent_space">
-<span class="sig-name descname"><span class="pre">to_tangent_space</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vector</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.psd.Elliptope.to_tangent_space" title="Permalink to this definition"></a></dt>
-<dd><p>Re-tangentialize a vector.</p>
-<p>This method guarantees that <code class="docutils literal notranslate"><span class="pre">vector</span></code> is indeed a tangent vector
-at <code class="docutils literal notranslate"><span class="pre">point</span></code> on the manifold.
-Typically this simply corresponds to <code class="docutils literal notranslate"><span class="pre">proj(point,</span> <span class="pre">vector)</span></code> but may
-differ for certain manifolds.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>point</strong> – A point on the manifold.</p></li>
-<li><p><strong>vector</strong> – A vector close to the tangent space at <code class="docutils literal notranslate"><span class="pre">point</span></code>.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The tangent vector at <code class="docutils literal notranslate"><span class="pre">point</span></code> closest to <code class="docutils literal notranslate"><span class="pre">vector</span></code>.</p>
-</dd>
-</dl>
 </dd></dl>
 
 </dd></dl>
@@ -7352,6 +7333,27 @@ in the ambient space.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pymanopt.manifolds.positive.Positive.to_tangent_space">
+<span class="sig-name descname"><span class="pre">to_tangent_space</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vector</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.positive.Positive.to_tangent_space" title="Permalink to this definition"></a></dt>
+<dd><p>Re-tangentialize a vector.</p>
+<p>This method guarantees that <code class="docutils literal notranslate"><span class="pre">vector</span></code> is indeed a tangent vector
+at <code class="docutils literal notranslate"><span class="pre">point</span></code> on the manifold.
+Typically this simply corresponds to <code class="docutils literal notranslate"><span class="pre">proj(point,</span> <span class="pre">vector)</span></code> but may
+differ for certain manifolds.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>point</strong> – A point on the manifold.</p></li>
+<li><p><strong>vector</strong> – A vector close to the tangent space at <code class="docutils literal notranslate"><span class="pre">point</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The tangent vector at <code class="docutils literal notranslate"><span class="pre">point</span></code> closest to <code class="docutils literal notranslate"><span class="pre">vector</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pymanopt.manifolds.positive.Positive.norm">
 <span class="sig-name descname"><span class="pre">norm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/positive.html#Positive.norm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.positive.Positive.norm" title="Permalink to this definition"></a></dt>
 <dd><p>Computes the norm of a tangent vector at a point on the manifold.</p>
@@ -7576,27 +7578,6 @@ tuples/lists contain.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pymanopt.manifolds.positive.Positive.to_tangent_space">
-<span class="sig-name descname"><span class="pre">to_tangent_space</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vector</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.positive.Positive.to_tangent_space" title="Permalink to this definition"></a></dt>
-<dd><p>Re-tangentialize a vector.</p>
-<p>This method guarantees that <code class="docutils literal notranslate"><span class="pre">vector</span></code> is indeed a tangent vector
-at <code class="docutils literal notranslate"><span class="pre">point</span></code> on the manifold.
-Typically this simply corresponds to <code class="docutils literal notranslate"><span class="pre">proj(point,</span> <span class="pre">vector)</span></code> but may
-differ for certain manifolds.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>point</strong> – A point on the manifold.</p></li>
-<li><p><strong>vector</strong> – A vector close to the tangent space at <code class="docutils literal notranslate"><span class="pre">point</span></code>.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The tangent vector at <code class="docutils literal notranslate"><span class="pre">point</span></code> closest to <code class="docutils literal notranslate"><span class="pre">vector</span></code>.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="pymanopt.manifolds.positive.Positive.transport">
 <span class="sig-name descname"><span class="pre">transport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point_a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point_b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector_a</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/positive.html#Positive.transport"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.positive.Positive.transport" title="Permalink to this definition"></a></dt>
 <dd><p>Compute transport of tangent vectors between tangent spaces.</p>
@@ -7709,6 +7690,27 @@ space at <code class="docutils literal notranslate"><span class="pre">point</spa
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>An element of the tangent space at <code class="docutils literal notranslate"><span class="pre">point</span></code> closest to <code class="docutils literal notranslate"><span class="pre">vector</span></code>
 in the ambient space.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pymanopt.manifolds.hyperbolic.PoincareBall.to_tangent_space">
+<span class="sig-name descname"><span class="pre">to_tangent_space</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vector</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.hyperbolic.PoincareBall.to_tangent_space" title="Permalink to this definition"></a></dt>
+<dd><p>Re-tangentialize a vector.</p>
+<p>This method guarantees that <code class="docutils literal notranslate"><span class="pre">vector</span></code> is indeed a tangent vector
+at <code class="docutils literal notranslate"><span class="pre">point</span></code> on the manifold.
+Typically this simply corresponds to <code class="docutils literal notranslate"><span class="pre">proj(point,</span> <span class="pre">vector)</span></code> but may
+differ for certain manifolds.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>point</strong> – A point on the manifold.</p></li>
+<li><p><strong>vector</strong> – A vector close to the tangent space at <code class="docutils literal notranslate"><span class="pre">point</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The tangent vector at <code class="docutils literal notranslate"><span class="pre">point</span></code> closest to <code class="docutils literal notranslate"><span class="pre">vector</span></code>.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -7952,27 +7954,6 @@ manifolds.</p>
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="pymanopt.manifolds.hyperbolic.PoincareBall.to_tangent_space">
-<span class="sig-name descname"><span class="pre">to_tangent_space</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vector</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.hyperbolic.PoincareBall.to_tangent_space" title="Permalink to this definition"></a></dt>
-<dd><p>Re-tangentialize a vector.</p>
-<p>This method guarantees that <code class="docutils literal notranslate"><span class="pre">vector</span></code> is indeed a tangent vector
-at <code class="docutils literal notranslate"><span class="pre">point</span></code> on the manifold.
-Typically this simply corresponds to <code class="docutils literal notranslate"><span class="pre">proj(point,</span> <span class="pre">vector)</span></code> but may
-differ for certain manifolds.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>point</strong> – A point on the manifold.</p></li>
-<li><p><strong>vector</strong> – A vector close to the tangent space at <code class="docutils literal notranslate"><span class="pre">point</span></code>.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The tangent vector at <code class="docutils literal notranslate"><span class="pre">point</span></code> closest to <code class="docutils literal notranslate"><span class="pre">vector</span></code>.</p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py property">
 <dt class="sig sig-object py" id="pymanopt.manifolds.hyperbolic.PoincareBall.dim">
 <em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">dim</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#pymanopt.manifolds.hyperbolic.PoincareBall.dim" title="Permalink to this definition"></a></dt>
@@ -8123,6 +8104,27 @@ space at <code class="docutils literal notranslate"><span class="pre">point</spa
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>An element of the tangent space at <code class="docutils literal notranslate"><span class="pre">point</span></code> closest to <code class="docutils literal notranslate"><span class="pre">vector</span></code>
 in the ambient space.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pymanopt.manifolds.product.Product.to_tangent_space">
+<span class="sig-name descname"><span class="pre">to_tangent_space</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vector</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/product.html#Product.to_tangent_space"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.product.Product.to_tangent_space" title="Permalink to this definition"></a></dt>
+<dd><p>Re-tangentialize a vector.</p>
+<p>This method guarantees that <code class="docutils literal notranslate"><span class="pre">vector</span></code> is indeed a tangent vector
+at <code class="docutils literal notranslate"><span class="pre">point</span></code> on the manifold.
+Typically this simply corresponds to <code class="docutils literal notranslate"><span class="pre">proj(point,</span> <span class="pre">vector)</span></code> but may
+differ for certain manifolds.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>point</strong> – A point on the manifold.</p></li>
+<li><p><strong>vector</strong> – A vector close to the tangent space at <code class="docutils literal notranslate"><span class="pre">point</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The tangent vector at <code class="docutils literal notranslate"><span class="pre">point</span></code> closest to <code class="docutils literal notranslate"><span class="pre">vector</span></code>.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -8339,27 +8341,6 @@ multi-dimensional) arrays, this will be 1, but other manifolds might
 represent points as tuples or lists of arrays.
 In this case, <a class="reference internal" href="#pymanopt.manifolds.product.Product.point_layout" title="pymanopt.manifolds.product.Product.point_layout"><code class="xref py py-attr docutils literal notranslate"><span class="pre">point_layout</span></code></a> describes how many elements such
 tuples/lists contain.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pymanopt.manifolds.product.Product.to_tangent_space">
-<span class="sig-name descname"><span class="pre">to_tangent_space</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vector</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.product.Product.to_tangent_space" title="Permalink to this definition"></a></dt>
-<dd><p>Re-tangentialize a vector.</p>
-<p>This method guarantees that <code class="docutils literal notranslate"><span class="pre">vector</span></code> is indeed a tangent vector
-at <code class="docutils literal notranslate"><span class="pre">point</span></code> on the manifold.
-Typically this simply corresponds to <code class="docutils literal notranslate"><span class="pre">proj(point,</span> <span class="pre">vector)</span></code> but may
-differ for certain manifolds.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>point</strong> – A point on the manifold.</p></li>
-<li><p><strong>vector</strong> – A vector close to the tangent space at <code class="docutils literal notranslate"><span class="pre">point</span></code>.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The tangent vector at <code class="docutils literal notranslate"><span class="pre">point</span></code> closest to <code class="docutils literal notranslate"><span class="pre">vector</span></code>.</p>
-</dd>
-</dl>
 </dd></dl>
 
 </dd></dl>
