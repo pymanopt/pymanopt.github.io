@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tools &mdash; Pymanopt latest (b66f209) documentation</title>
+  <title>Tools &mdash; Pymanopt latest (05116a8) documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/style.css" type="text/css" />
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" type="text/css" />
@@ -37,7 +37,7 @@
             <img src="_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                latest (b66f209)
+                latest (05116a8)
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -207,8 +207,7 @@ that segment (highest degree coefficients first).</p>
 <p>check_directional_derivative performs a numerical test to check that the
 directional derivatives defined in the problem structure agree up to first
 order with the cost function at some point x, along some direction d. The
-test is based on a truncated Taylor series (see online pymanopt
-documentation).
+test is based on a truncated Taylor series.
 Both x and d are optional and will be sampled at random if omitted.</p>
 </dd></dl>
 
@@ -217,9 +216,9 @@ Both x and d are optional and will be sampled at random if omitted.</p>
 <span class="sig-prename descclassname"><span class="pre">pymanopt.tools.diagnostics.</span></span><span class="sig-name descname"><span class="pre">check_gradient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">problem</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/tools/diagnostics.html#check_gradient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.tools.diagnostics.check_gradient" title="Permalink to this definition"></a></dt>
 <dd><p>Checks the consistency of the cost function and the gradient.</p>
 <p>check_gradient performs a numerical test to check that the gradient
-defined in the problem structure agrees up to first order with the cost
-function at some point x, along some direction d. The test is based on a
-truncated Taylor series.</p>
+defined in the problem agrees up to first order with the cost function at
+some point x, along some direction d. The test is based on a truncated
+Taylor series.</p>
 <p>It is also tested that the gradient is indeed a tangent vector.</p>
 <p>Both x and d are optional and will be sampled at random if omitted.</p>
 </dd></dl>
@@ -281,7 +280,7 @@ Jacobian explicitly.</p>
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on May 30, 2022.
+      <span class="lastupdated">Last updated on May 31, 2022.
       </span></p>
   </div>
 
