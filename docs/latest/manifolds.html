@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Manifolds &mdash; Pymanopt latest (851e37f) documentation</title>
+  <title>Manifolds &mdash; Pymanopt latest (7e575a8) documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/style.css" type="text/css" />
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" type="text/css" />
@@ -37,7 +37,7 @@
             <img src="_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                latest (851e37f)
+                latest (7e575a8)
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -6138,62 +6138,6 @@ Reduce <code class="docutils literal notranslate"><span class="pre">k</span></co
 in <a class="reference internal" href="bibliography.html#yat2013" id="id49"><span>[Yat2013]</span></a>.</p>
 </div>
 <dl class="py method">
-<dt class="sig sig-object py" id="pymanopt.manifolds.psd.PSDFixedRankComplex.inner_product">
-<span class="sig-name descname"><span class="pre">inner_product</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector_a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector_b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/psd.html#PSDFixedRankComplex.inner_product"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.psd.PSDFixedRankComplex.inner_product" title="Permalink to this definition"></a></dt>
-<dd><p>Inner product between tangent vectors at a point on the manifold.</p>
-<p>This method implements a Riemannian inner product between two tangent
-vectors <code class="docutils literal notranslate"><span class="pre">tangent_vector_a</span></code> and <code class="docutils literal notranslate"><span class="pre">tangent_vector_b</span></code> in the tangent
-space at <code class="docutils literal notranslate"><span class="pre">point</span></code>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>point</strong> – The base point.</p></li>
-<li><p><strong>tangent_vector_a</strong> – The first tangent vector.</p></li>
-<li><p><strong>tangent_vector_b</strong> – The second tangent vector.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The inner product between <code class="docutils literal notranslate"><span class="pre">tangent_vector_a</span></code> and
-<code class="docutils literal notranslate"><span class="pre">tangent_vector_b</span></code> in the tangent space at <code class="docutils literal notranslate"><span class="pre">point</span></code>.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pymanopt.manifolds.psd.PSDFixedRankComplex.norm">
-<span class="sig-name descname"><span class="pre">norm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/psd.html#PSDFixedRankComplex.norm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.psd.PSDFixedRankComplex.norm" title="Permalink to this definition"></a></dt>
-<dd><p>Computes the norm of a tangent vector at a point on the manifold.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>point</strong> – A point on the manifold.</p></li>
-<li><p><strong>tangent_vector</strong> – A tangent vector in the tangent space at <code class="docutils literal notranslate"><span class="pre">point</span></code>.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The norm of <code class="docutils literal notranslate"><span class="pre">tangent_vector</span></code>.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pymanopt.manifolds.psd.PSDFixedRankComplex.dist">
-<span class="sig-name descname"><span class="pre">dist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point_a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point_b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/psd.html#PSDFixedRankComplex.dist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.psd.PSDFixedRankComplex.dist" title="Permalink to this definition"></a></dt>
-<dd><p>The geodesic distance between two points on the manifold.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>point_a</strong> – The first point on the manifold.</p></li>
-<li><p><strong>point_b</strong> – The second point on the manifold.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The distance between <code class="docutils literal notranslate"><span class="pre">point_a</span></code> and <code class="docutils literal notranslate"><span class="pre">point_b</span></code> on the manifold.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="pymanopt.manifolds.psd.PSDFixedRankComplex.random_point">
 <span class="sig-name descname"><span class="pre">random_point</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/psd.html#PSDFixedRankComplex.random_point"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.psd.PSDFixedRankComplex.random_point" title="Permalink to this definition"></a></dt>
 <dd><p>Returns a random point on the manifold.</p>
@@ -6208,6 +6152,23 @@ space at <code class="docutils literal notranslate"><span class="pre">point</spa
 <dt class="sig sig-object py" id="pymanopt.manifolds.psd.PSDFixedRankComplex.dim">
 <em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">dim</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#pymanopt.manifolds.psd.PSDFixedRankComplex.dim" title="Permalink to this definition"></a></dt>
 <dd><p>The dimension of the manifold.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pymanopt.manifolds.psd.PSDFixedRankComplex.dist">
+<span class="sig-name descname"><span class="pre">dist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point_a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point_b</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.psd.PSDFixedRankComplex.dist" title="Permalink to this definition"></a></dt>
+<dd><p>The geodesic distance between two points on the manifold.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>point_a</strong> – The first point on the manifold.</p></li>
+<li><p><strong>point_b</strong> – The second point on the manifold.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The distance between <code class="docutils literal notranslate"><span class="pre">point_a</span></code> and <code class="docutils literal notranslate"><span class="pre">point_b</span></code> on the manifold.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -6275,6 +6236,28 @@ along a geodesic in the direction of <code class="docutils literal notranslate">
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pymanopt.manifolds.psd.PSDFixedRankComplex.inner_product">
+<span class="sig-name descname"><span class="pre">inner_product</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector_a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector_b</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.psd.PSDFixedRankComplex.inner_product" title="Permalink to this definition"></a></dt>
+<dd><p>Inner product between tangent vectors at a point on the manifold.</p>
+<p>This method implements a Riemannian inner product between two tangent
+vectors <code class="docutils literal notranslate"><span class="pre">tangent_vector_a</span></code> and <code class="docutils literal notranslate"><span class="pre">tangent_vector_b</span></code> in the tangent
+space at <code class="docutils literal notranslate"><span class="pre">point</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>point</strong> – The base point.</p></li>
+<li><p><strong>tangent_vector_a</strong> – The first tangent vector.</p></li>
+<li><p><strong>tangent_vector_b</strong> – The second tangent vector.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The inner product between <code class="docutils literal notranslate"><span class="pre">tangent_vector_a</span></code> and
+<code class="docutils literal notranslate"><span class="pre">tangent_vector_b</span></code> in the tangent space at <code class="docutils literal notranslate"><span class="pre">point</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pymanopt.manifolds.psd.PSDFixedRankComplex.log">
 <span class="sig-name descname"><span class="pre">log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point_a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point_b</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.psd.PSDFixedRankComplex.log" title="Permalink to this definition"></a></dt>
 <dd><p>Computes the logarithmic map on the manifold.</p>
@@ -6292,6 +6275,23 @@ As such it is the inverse of <a class="reference internal" href="#pymanopt.manif
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>A tangent vector in the tangent space at <code class="docutils literal notranslate"><span class="pre">point_a</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pymanopt.manifolds.psd.PSDFixedRankComplex.norm">
+<span class="sig-name descname"><span class="pre">norm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.psd.PSDFixedRankComplex.norm" title="Permalink to this definition"></a></dt>
+<dd><p>Computes the norm of a tangent vector at a point on the manifold.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>point</strong> – A point on the manifold.</p></li>
+<li><p><strong>tangent_vector</strong> – A tangent vector in the tangent space at <code class="docutils literal notranslate"><span class="pre">point</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The norm of <code class="docutils literal notranslate"><span class="pre">tangent_vector</span></code>.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -8360,7 +8360,7 @@ tuples/lists contain.</p>
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Jun 01, 2022.
+      <span class="lastupdated">Last updated on Jun 05, 2022.
       </span></p>
   </div>
 
