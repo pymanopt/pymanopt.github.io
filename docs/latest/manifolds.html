@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Manifolds &mdash; Pymanopt latest (b9f53fa) documentation</title>
+  <title>Manifolds &mdash; Pymanopt latest (0ac897b) documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/style.css" type="text/css" />
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" type="text/css" />
@@ -37,7 +37,7 @@
             <img src="_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                latest (b9f53fa)
+                latest (0ac897b)
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -502,8 +502,8 @@ the manifold, i.e., a point that lies mid-way between <code class="docutils lite
 <dd><p>Re-tangentialize a vector.</p>
 <p>This method guarantees that <code class="docutils literal notranslate"><span class="pre">vector</span></code> is indeed a tangent vector
 at <code class="docutils literal notranslate"><span class="pre">point</span></code> on the manifold.
-Typically this simply corresponds to <code class="docutils literal notranslate"><span class="pre">proj(point,</span> <span class="pre">vector)</span></code> but may
-differ for certain manifolds.</p>
+Typically this simply corresponds to a call to meth:<cite>projection</cite> but
+may differ for certain manifolds.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -515,6 +515,38 @@ differ for certain manifolds.</p>
 <dd class="field-even"><p>The tangent vector at <code class="docutils literal notranslate"><span class="pre">point</span></code> closest to <code class="docutils literal notranslate"><span class="pre">vector</span></code>.</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pymanopt.manifolds.manifold.Manifold.embedding">
+<span class="sig-name descname"><span class="pre">embedding</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/manifold.html#Manifold.embedding"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.manifold.Manifold.embedding" title="Permalink to this definition"></a></dt>
+<dd><p>Convert tangent vector to ambient space representation.</p>
+<p>Certain manifolds represent tangent vectors in a format that is more
+convenient for numerical calculations than their representation in the
+ambient space.
+Euclidean Hessian operators generally expect tangent vectors in their
+ambient space representation though.
+This method allows switching between the two possible representations,
+For most manifolds, <code class="docutils literal notranslate"><span class="pre">embedding</span></code> is simply the identity map.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>point</strong> – A point on the manifold.</p></li>
+<li><p><strong>tangent_vector</strong> – A tangent vector in the internal representation of
+the manifold.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The same tangent vector in the ambient space representation.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This method is mainly needed internally by the
+<a class="reference internal" href="problem.html#pymanopt.core.problem.Problem" title="pymanopt.core.problem.Problem"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.core.problem.Problem</span></code></a> class in order to convert
+tangent vectors to the representation expected by user-given or
+autodiff-generated Euclidean Hessian operators.</p>
+</div>
 </dd></dl>
 
 </dd></dl>
@@ -641,6 +673,38 @@ Riemannian Hessian is to be calculated.</p></li>
 <dd class="field-even"><p>The distance between <code class="docutils literal notranslate"><span class="pre">point_a</span></code> and <code class="docutils literal notranslate"><span class="pre">point_b</span></code> on the manifold.</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pymanopt.manifolds.manifold.RiemannianSubmanifold.embedding">
+<span class="sig-name descname"><span class="pre">embedding</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.manifold.RiemannianSubmanifold.embedding" title="Permalink to this definition"></a></dt>
+<dd><p>Convert tangent vector to ambient space representation.</p>
+<p>Certain manifolds represent tangent vectors in a format that is more
+convenient for numerical calculations than their representation in the
+ambient space.
+Euclidean Hessian operators generally expect tangent vectors in their
+ambient space representation though.
+This method allows switching between the two possible representations,
+For most manifolds, <code class="docutils literal notranslate"><span class="pre">embedding</span></code> is simply the identity map.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>point</strong> – A point on the manifold.</p></li>
+<li><p><strong>tangent_vector</strong> – A tangent vector in the internal representation of
+the manifold.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The same tangent vector in the ambient space representation.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This method is mainly needed internally by the
+<a class="reference internal" href="problem.html#pymanopt.core.problem.Problem" title="pymanopt.core.problem.Problem"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.core.problem.Problem</span></code></a> class in order to convert
+tangent vectors to the representation expected by user-given or
+autodiff-generated Euclidean Hessian operators.</p>
+</div>
 </dd></dl>
 
 <dl class="py method">
@@ -834,8 +898,8 @@ the direction of <code class="docutils literal notranslate"><span class="pre">ta
 <dd><p>Re-tangentialize a vector.</p>
 <p>This method guarantees that <code class="docutils literal notranslate"><span class="pre">vector</span></code> is indeed a tangent vector
 at <code class="docutils literal notranslate"><span class="pre">point</span></code> on the manifold.
-Typically this simply corresponds to <code class="docutils literal notranslate"><span class="pre">proj(point,</span> <span class="pre">vector)</span></code> but may
-differ for certain manifolds.</p>
+Typically this simply corresponds to a call to meth:<cite>projection</cite> but
+may differ for certain manifolds.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -971,6 +1035,38 @@ corresponding to the usual tensor dot product.</p>
 <dd class="field-even"><p>The distance between <code class="docutils literal notranslate"><span class="pre">point_a</span></code> and <code class="docutils literal notranslate"><span class="pre">point_b</span></code> on the manifold.</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pymanopt.manifolds.euclidean.Euclidean.embedding">
+<span class="sig-name descname"><span class="pre">embedding</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.euclidean.Euclidean.embedding" title="Permalink to this definition"></a></dt>
+<dd><p>Convert tangent vector to ambient space representation.</p>
+<p>Certain manifolds represent tangent vectors in a format that is more
+convenient for numerical calculations than their representation in the
+ambient space.
+Euclidean Hessian operators generally expect tangent vectors in their
+ambient space representation though.
+This method allows switching between the two possible representations,
+For most manifolds, <code class="docutils literal notranslate"><span class="pre">embedding</span></code> is simply the identity map.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>point</strong> – A point on the manifold.</p></li>
+<li><p><strong>tangent_vector</strong> – A tangent vector in the internal representation of
+the manifold.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The same tangent vector in the ambient space representation.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This method is mainly needed internally by the
+<a class="reference internal" href="problem.html#pymanopt.core.problem.Problem" title="pymanopt.core.problem.Problem"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.core.problem.Problem</span></code></a> class in order to convert
+tangent vectors to the representation expected by user-given or
+autodiff-generated Euclidean Hessian operators.</p>
+</div>
 </dd></dl>
 
 <dl class="py method">
@@ -1207,8 +1303,8 @@ the direction of <code class="docutils literal notranslate"><span class="pre">ta
 <dd><p>Re-tangentialize a vector.</p>
 <p>This method guarantees that <code class="docutils literal notranslate"><span class="pre">vector</span></code> is indeed a tangent vector
 at <code class="docutils literal notranslate"><span class="pre">point</span></code> on the manifold.
-Typically this simply corresponds to <code class="docutils literal notranslate"><span class="pre">proj(point,</span> <span class="pre">vector)</span></code> but may
-differ for certain manifolds.</p>
+Typically this simply corresponds to a call to meth:<cite>projection</cite> but
+may differ for certain manifolds.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1411,6 +1507,38 @@ Riemannian Hessian is to be calculated.</p></li>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pymanopt.manifolds.euclidean.Symmetric.embedding">
+<span class="sig-name descname"><span class="pre">embedding</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.euclidean.Symmetric.embedding" title="Permalink to this definition"></a></dt>
+<dd><p>Convert tangent vector to ambient space representation.</p>
+<p>Certain manifolds represent tangent vectors in a format that is more
+convenient for numerical calculations than their representation in the
+ambient space.
+Euclidean Hessian operators generally expect tangent vectors in their
+ambient space representation though.
+This method allows switching between the two possible representations,
+For most manifolds, <code class="docutils literal notranslate"><span class="pre">embedding</span></code> is simply the identity map.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>point</strong> – A point on the manifold.</p></li>
+<li><p><strong>tangent_vector</strong> – A tangent vector in the internal representation of
+the manifold.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The same tangent vector in the ambient space representation.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This method is mainly needed internally by the
+<a class="reference internal" href="problem.html#pymanopt.core.problem.Problem" title="pymanopt.core.problem.Problem"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.core.problem.Problem</span></code></a> class in order to convert
+tangent vectors to the representation expected by user-given or
+autodiff-generated Euclidean Hessian operators.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pymanopt.manifolds.euclidean.Symmetric.euclidean_to_riemannian_gradient">
 <span class="sig-name descname"><span class="pre">euclidean_to_riemannian_gradient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">euclidean_gradient</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.euclidean.Symmetric.euclidean_to_riemannian_gradient" title="Permalink to this definition"></a></dt>
 <dd><p>Converts the Euclidean to the Riemannian gradient.</p>
@@ -1574,8 +1702,8 @@ the direction of <code class="docutils literal notranslate"><span class="pre">ta
 <dd><p>Re-tangentialize a vector.</p>
 <p>This method guarantees that <code class="docutils literal notranslate"><span class="pre">vector</span></code> is indeed a tangent vector
 at <code class="docutils literal notranslate"><span class="pre">point</span></code> on the manifold.
-Typically this simply corresponds to <code class="docutils literal notranslate"><span class="pre">proj(point,</span> <span class="pre">vector)</span></code> but may
-differ for certain manifolds.</p>
+Typically this simply corresponds to a call to meth:<cite>projection</cite> but
+may differ for certain manifolds.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1778,6 +1906,38 @@ Riemannian Hessian is to be calculated.</p></li>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pymanopt.manifolds.euclidean.SkewSymmetric.embedding">
+<span class="sig-name descname"><span class="pre">embedding</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.euclidean.SkewSymmetric.embedding" title="Permalink to this definition"></a></dt>
+<dd><p>Convert tangent vector to ambient space representation.</p>
+<p>Certain manifolds represent tangent vectors in a format that is more
+convenient for numerical calculations than their representation in the
+ambient space.
+Euclidean Hessian operators generally expect tangent vectors in their
+ambient space representation though.
+This method allows switching between the two possible representations,
+For most manifolds, <code class="docutils literal notranslate"><span class="pre">embedding</span></code> is simply the identity map.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>point</strong> – A point on the manifold.</p></li>
+<li><p><strong>tangent_vector</strong> – A tangent vector in the internal representation of
+the manifold.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The same tangent vector in the ambient space representation.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This method is mainly needed internally by the
+<a class="reference internal" href="problem.html#pymanopt.core.problem.Problem" title="pymanopt.core.problem.Problem"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.core.problem.Problem</span></code></a> class in order to convert
+tangent vectors to the representation expected by user-given or
+autodiff-generated Euclidean Hessian operators.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pymanopt.manifolds.euclidean.SkewSymmetric.euclidean_to_riemannian_gradient">
 <span class="sig-name descname"><span class="pre">euclidean_to_riemannian_gradient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">euclidean_gradient</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.euclidean.SkewSymmetric.euclidean_to_riemannian_gradient" title="Permalink to this definition"></a></dt>
 <dd><p>Converts the Euclidean to the Riemannian gradient.</p>
@@ -1941,8 +2101,8 @@ the direction of <code class="docutils literal notranslate"><span class="pre">ta
 <dd><p>Re-tangentialize a vector.</p>
 <p>This method guarantees that <code class="docutils literal notranslate"><span class="pre">vector</span></code> is indeed a tangent vector
 at <code class="docutils literal notranslate"><span class="pre">point</span></code> on the manifold.
-Typically this simply corresponds to <code class="docutils literal notranslate"><span class="pre">proj(point,</span> <span class="pre">vector)</span></code> but may
-differ for certain manifolds.</p>
+Typically this simply corresponds to a call to meth:<cite>projection</cite> but
+may differ for certain manifolds.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -2077,6 +2237,38 @@ Riemannian submanifold of Euclidean space.</p>
 <dd class="field-even"><p>The distance between <code class="docutils literal notranslate"><span class="pre">point_a</span></code> and <code class="docutils literal notranslate"><span class="pre">point_b</span></code> on the manifold.</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pymanopt.manifolds.sphere.Sphere.embedding">
+<span class="sig-name descname"><span class="pre">embedding</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.sphere.Sphere.embedding" title="Permalink to this definition"></a></dt>
+<dd><p>Convert tangent vector to ambient space representation.</p>
+<p>Certain manifolds represent tangent vectors in a format that is more
+convenient for numerical calculations than their representation in the
+ambient space.
+Euclidean Hessian operators generally expect tangent vectors in their
+ambient space representation though.
+This method allows switching between the two possible representations,
+For most manifolds, <code class="docutils literal notranslate"><span class="pre">embedding</span></code> is simply the identity map.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>point</strong> – A point on the manifold.</p></li>
+<li><p><strong>tangent_vector</strong> – A tangent vector in the internal representation of
+the manifold.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The same tangent vector in the ambient space representation.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This method is mainly needed internally by the
+<a class="reference internal" href="problem.html#pymanopt.core.problem.Problem" title="pymanopt.core.problem.Problem"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.core.problem.Problem</span></code></a> class in order to convert
+tangent vectors to the representation expected by user-given or
+autodiff-generated Euclidean Hessian operators.</p>
+</div>
 </dd></dl>
 
 <dl class="py method">
@@ -2313,8 +2505,8 @@ the direction of <code class="docutils literal notranslate"><span class="pre">ta
 <dd><p>Re-tangentialize a vector.</p>
 <p>This method guarantees that <code class="docutils literal notranslate"><span class="pre">vector</span></code> is indeed a tangent vector
 at <code class="docutils literal notranslate"><span class="pre">point</span></code> on the manifold.
-Typically this simply corresponds to <code class="docutils literal notranslate"><span class="pre">proj(point,</span> <span class="pre">vector)</span></code> but may
-differ for certain manifolds.</p>
+Typically this simply corresponds to a call to meth:<cite>projection</cite> but
+may differ for certain manifolds.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -2442,6 +2634,38 @@ span the subspace.</p>
 <dd class="field-even"><p>The distance between <code class="docutils literal notranslate"><span class="pre">point_a</span></code> and <code class="docutils literal notranslate"><span class="pre">point_b</span></code> on the manifold.</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pymanopt.manifolds.sphere.SphereSubspaceIntersection.embedding">
+<span class="sig-name descname"><span class="pre">embedding</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.sphere.SphereSubspaceIntersection.embedding" title="Permalink to this definition"></a></dt>
+<dd><p>Convert tangent vector to ambient space representation.</p>
+<p>Certain manifolds represent tangent vectors in a format that is more
+convenient for numerical calculations than their representation in the
+ambient space.
+Euclidean Hessian operators generally expect tangent vectors in their
+ambient space representation though.
+This method allows switching between the two possible representations,
+For most manifolds, <code class="docutils literal notranslate"><span class="pre">embedding</span></code> is simply the identity map.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>point</strong> – A point on the manifold.</p></li>
+<li><p><strong>tangent_vector</strong> – A tangent vector in the internal representation of
+the manifold.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The same tangent vector in the ambient space representation.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This method is mainly needed internally by the
+<a class="reference internal" href="problem.html#pymanopt.core.problem.Problem" title="pymanopt.core.problem.Problem"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.core.problem.Problem</span></code></a> class in order to convert
+tangent vectors to the representation expected by user-given or
+autodiff-generated Euclidean Hessian operators.</p>
+</div>
 </dd></dl>
 
 <dl class="py method">
@@ -2678,8 +2902,8 @@ the direction of <code class="docutils literal notranslate"><span class="pre">ta
 <dd><p>Re-tangentialize a vector.</p>
 <p>This method guarantees that <code class="docutils literal notranslate"><span class="pre">vector</span></code> is indeed a tangent vector
 at <code class="docutils literal notranslate"><span class="pre">point</span></code> on the manifold.
-Typically this simply corresponds to <code class="docutils literal notranslate"><span class="pre">proj(point,</span> <span class="pre">vector)</span></code> but may
-differ for certain manifolds.</p>
+Typically this simply corresponds to a call to meth:<cite>projection</cite> but
+may differ for certain manifolds.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -2807,6 +3031,38 @@ span the subspace.</p>
 <dd class="field-even"><p>The distance between <code class="docutils literal notranslate"><span class="pre">point_a</span></code> and <code class="docutils literal notranslate"><span class="pre">point_b</span></code> on the manifold.</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pymanopt.manifolds.sphere.SphereSubspaceComplementIntersection.embedding">
+<span class="sig-name descname"><span class="pre">embedding</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.sphere.SphereSubspaceComplementIntersection.embedding" title="Permalink to this definition"></a></dt>
+<dd><p>Convert tangent vector to ambient space representation.</p>
+<p>Certain manifolds represent tangent vectors in a format that is more
+convenient for numerical calculations than their representation in the
+ambient space.
+Euclidean Hessian operators generally expect tangent vectors in their
+ambient space representation though.
+This method allows switching between the two possible representations,
+For most manifolds, <code class="docutils literal notranslate"><span class="pre">embedding</span></code> is simply the identity map.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>point</strong> – A point on the manifold.</p></li>
+<li><p><strong>tangent_vector</strong> – A tangent vector in the internal representation of
+the manifold.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The same tangent vector in the ambient space representation.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This method is mainly needed internally by the
+<a class="reference internal" href="problem.html#pymanopt.core.problem.Problem" title="pymanopt.core.problem.Problem"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.core.problem.Problem</span></code></a> class in order to convert
+tangent vectors to the representation expected by user-given or
+autodiff-generated Euclidean Hessian operators.</p>
+</div>
 </dd></dl>
 
 <dl class="py method">
@@ -3043,8 +3299,8 @@ the direction of <code class="docutils literal notranslate"><span class="pre">ta
 <dd><p>Re-tangentialize a vector.</p>
 <p>This method guarantees that <code class="docutils literal notranslate"><span class="pre">vector</span></code> is indeed a tangent vector
 at <code class="docutils literal notranslate"><span class="pre">point</span></code> on the manifold.
-Typically this simply corresponds to <code class="docutils literal notranslate"><span class="pre">proj(point,</span> <span class="pre">vector)</span></code> but may
-differ for certain manifolds.</p>
+Typically this simply corresponds to a call to meth:<cite>projection</cite> but
+may differ for certain manifolds.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -3232,8 +3488,8 @@ in the ambient space.</p>
 <dd><p>Re-tangentialize a vector.</p>
 <p>This method guarantees that <code class="docutils literal notranslate"><span class="pre">vector</span></code> is indeed a tangent vector
 at <code class="docutils literal notranslate"><span class="pre">point</span></code> on the manifold.
-Typically this simply corresponds to <code class="docutils literal notranslate"><span class="pre">proj(point,</span> <span class="pre">vector)</span></code> but may
-differ for certain manifolds.</p>
+Typically this simply corresponds to a call to meth:<cite>projection</cite> but
+may differ for certain manifolds.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -3410,6 +3666,38 @@ along a geodesic in the direction of <code class="docutils literal notranslate">
 <dd class="field-even"><p>The distance between <code class="docutils literal notranslate"><span class="pre">point_a</span></code> and <code class="docutils literal notranslate"><span class="pre">point_b</span></code> on the manifold.</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pymanopt.manifolds.stiefel.Stiefel.embedding">
+<span class="sig-name descname"><span class="pre">embedding</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.stiefel.Stiefel.embedding" title="Permalink to this definition"></a></dt>
+<dd><p>Convert tangent vector to ambient space representation.</p>
+<p>Certain manifolds represent tangent vectors in a format that is more
+convenient for numerical calculations than their representation in the
+ambient space.
+Euclidean Hessian operators generally expect tangent vectors in their
+ambient space representation though.
+This method allows switching between the two possible representations,
+For most manifolds, <code class="docutils literal notranslate"><span class="pre">embedding</span></code> is simply the identity map.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>point</strong> – A point on the manifold.</p></li>
+<li><p><strong>tangent_vector</strong> – A tangent vector in the internal representation of
+the manifold.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The same tangent vector in the ambient space representation.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This method is mainly needed internally by the
+<a class="reference internal" href="problem.html#pymanopt.core.problem.Problem" title="pymanopt.core.problem.Problem"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.core.problem.Problem</span></code></a> class in order to convert
+tangent vectors to the representation expected by user-given or
+autodiff-generated Euclidean Hessian operators.</p>
+</div>
 </dd></dl>
 
 <dl class="py method">
@@ -3728,6 +4016,38 @@ As such it is the inverse of <a class="reference internal" href="#pymanopt.manif
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pymanopt.manifolds.grassmann.Grassmann.embedding">
+<span class="sig-name descname"><span class="pre">embedding</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.grassmann.Grassmann.embedding" title="Permalink to this definition"></a></dt>
+<dd><p>Convert tangent vector to ambient space representation.</p>
+<p>Certain manifolds represent tangent vectors in a format that is more
+convenient for numerical calculations than their representation in the
+ambient space.
+Euclidean Hessian operators generally expect tangent vectors in their
+ambient space representation though.
+This method allows switching between the two possible representations,
+For most manifolds, <code class="docutils literal notranslate"><span class="pre">embedding</span></code> is simply the identity map.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>point</strong> – A point on the manifold.</p></li>
+<li><p><strong>tangent_vector</strong> – A tangent vector in the internal representation of
+the manifold.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The same tangent vector in the ambient space representation.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This method is mainly needed internally by the
+<a class="reference internal" href="problem.html#pymanopt.core.problem.Problem" title="pymanopt.core.problem.Problem"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.core.problem.Problem</span></code></a> class in order to convert
+tangent vectors to the representation expected by user-given or
+autodiff-generated Euclidean Hessian operators.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pymanopt.manifolds.grassmann.Grassmann.euclidean_to_riemannian_gradient">
 <span class="sig-name descname"><span class="pre">euclidean_to_riemannian_gradient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">euclidean_gradient</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.grassmann.Grassmann.euclidean_to_riemannian_gradient" title="Permalink to this definition"></a></dt>
 <dd><p>Converts the Euclidean to the Riemannian gradient.</p>
@@ -3807,8 +4127,8 @@ tuples/lists contain.</p>
 <dd><p>Re-tangentialize a vector.</p>
 <p>This method guarantees that <code class="docutils literal notranslate"><span class="pre">vector</span></code> is indeed a tangent vector
 at <code class="docutils literal notranslate"><span class="pre">point</span></code> on the manifold.
-Typically this simply corresponds to <code class="docutils literal notranslate"><span class="pre">proj(point,</span> <span class="pre">vector)</span></code> but may
-differ for certain manifolds.</p>
+Typically this simply corresponds to a call to meth:<cite>projection</cite> but
+may differ for certain manifolds.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -4080,6 +4400,38 @@ As such it is the inverse of <a class="reference internal" href="#pymanopt.manif
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pymanopt.manifolds.grassmann.ComplexGrassmann.embedding">
+<span class="sig-name descname"><span class="pre">embedding</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.grassmann.ComplexGrassmann.embedding" title="Permalink to this definition"></a></dt>
+<dd><p>Convert tangent vector to ambient space representation.</p>
+<p>Certain manifolds represent tangent vectors in a format that is more
+convenient for numerical calculations than their representation in the
+ambient space.
+Euclidean Hessian operators generally expect tangent vectors in their
+ambient space representation though.
+This method allows switching between the two possible representations,
+For most manifolds, <code class="docutils literal notranslate"><span class="pre">embedding</span></code> is simply the identity map.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>point</strong> – A point on the manifold.</p></li>
+<li><p><strong>tangent_vector</strong> – A tangent vector in the internal representation of
+the manifold.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The same tangent vector in the ambient space representation.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This method is mainly needed internally by the
+<a class="reference internal" href="problem.html#pymanopt.core.problem.Problem" title="pymanopt.core.problem.Problem"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.core.problem.Problem</span></code></a> class in order to convert
+tangent vectors to the representation expected by user-given or
+autodiff-generated Euclidean Hessian operators.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pymanopt.manifolds.grassmann.ComplexGrassmann.euclidean_to_riemannian_gradient">
 <span class="sig-name descname"><span class="pre">euclidean_to_riemannian_gradient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">euclidean_gradient</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.grassmann.ComplexGrassmann.euclidean_to_riemannian_gradient" title="Permalink to this definition"></a></dt>
 <dd><p>Converts the Euclidean to the Riemannian gradient.</p>
@@ -4159,8 +4511,8 @@ tuples/lists contain.</p>
 <dd><p>Re-tangentialize a vector.</p>
 <p>This method guarantees that <code class="docutils literal notranslate"><span class="pre">vector</span></code> is indeed a tangent vector
 at <code class="docutils literal notranslate"><span class="pre">point</span></code> on the manifold.
-Typically this simply corresponds to <code class="docutils literal notranslate"><span class="pre">proj(point,</span> <span class="pre">vector)</span></code> but may
-differ for certain manifolds.</p>
+Typically this simply corresponds to a call to meth:<cite>projection</cite> but
+may differ for certain manifolds.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -4343,8 +4695,8 @@ in the ambient space.</p>
 <dd><p>Re-tangentialize a vector.</p>
 <p>This method guarantees that <code class="docutils literal notranslate"><span class="pre">vector</span></code> is indeed a tangent vector
 at <code class="docutils literal notranslate"><span class="pre">point</span></code> on the manifold.
-Typically this simply corresponds to <code class="docutils literal notranslate"><span class="pre">proj(point,</span> <span class="pre">vector)</span></code> but may
-differ for certain manifolds.</p>
+Typically this simply corresponds to a call to meth:<cite>projection</cite> but
+may differ for certain manifolds.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -4536,6 +4888,38 @@ the manifold, i.e., a point that lies mid-way between <code class="docutils lite
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pymanopt.manifolds.complex_circle.ComplexCircle.embedding">
+<span class="sig-name descname"><span class="pre">embedding</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.complex_circle.ComplexCircle.embedding" title="Permalink to this definition"></a></dt>
+<dd><p>Convert tangent vector to ambient space representation.</p>
+<p>Certain manifolds represent tangent vectors in a format that is more
+convenient for numerical calculations than their representation in the
+ambient space.
+Euclidean Hessian operators generally expect tangent vectors in their
+ambient space representation though.
+This method allows switching between the two possible representations,
+For most manifolds, <code class="docutils literal notranslate"><span class="pre">embedding</span></code> is simply the identity map.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>point</strong> – A point on the manifold.</p></li>
+<li><p><strong>tangent_vector</strong> – A tangent vector in the internal representation of
+the manifold.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The same tangent vector in the ambient space representation.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This method is mainly needed internally by the
+<a class="reference internal" href="problem.html#pymanopt.core.problem.Problem" title="pymanopt.core.problem.Problem"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.core.problem.Problem</span></code></a> class in order to convert
+tangent vectors to the representation expected by user-given or
+autodiff-generated Euclidean Hessian operators.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pymanopt.manifolds.complex_circle.ComplexCircle.euclidean_to_riemannian_gradient">
 <span class="sig-name descname"><span class="pre">euclidean_to_riemannian_gradient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">euclidean_gradient</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.complex_circle.ComplexCircle.euclidean_to_riemannian_gradient" title="Permalink to this definition"></a></dt>
 <dd><p>Converts the Euclidean to the Riemannian gradient.</p>
@@ -4616,8 +5000,13 @@ In that case points on the manifold are represented as arrays of shape
 <p>The metric is the usual Euclidean one inherited from the embedding space
 <span class="math">\((\R^{n \times n})^k\)</span>.
 As such <span class="math">\(\SO(n)^k\)</span> forms a Riemannian submanifold.</p>
-<p>Tangent vectors are represented in the Lie algebra of skew-symmetric
-matrices of the same shape as points on the manifold.
+<p>The tangent space <span class="math">\(\tangent{\vmQ}\SO(n)\)</span> at a point <span class="math">\(\vmQ\)</span> is
+given by <span class="math">\(\tangent{\vmQ}\SO(n) = \set{\vmQ \vmOmega \in \R^{n \times
+n} \mid \vmOmega = -\transp{\vmOmega}} = \vmQ \Skew(n)\)</span>, where
+<span class="math">\(\Skew(n)\)</span> denotes the set of skew-symmetric matrices.
+This corresponds to the Lie algebra of <span class="math">\(\SO(n)\)</span>, a fact which is used
+here to conveniently represent tangent vectors numerically by their
+skew-symmetric factor.
 The method <a class="reference internal" href="#pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.embedding" title="pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.embedding"><code class="xref py py-meth docutils literal notranslate"><span class="pre">embedding()</span></code></a> can be used to transform a tangent vector from
 its Lie algebra representation to the embedding space representation.</p>
 <dl class="field-list simple">
@@ -4733,8 +5122,8 @@ in the ambient space.</p>
 <dd><p>Re-tangentialize a vector.</p>
 <p>This method guarantees that <code class="docutils literal notranslate"><span class="pre">vector</span></code> is indeed a tangent vector
 at <code class="docutils literal notranslate"><span class="pre">point</span></code> on the manifold.
-Typically this simply corresponds to <code class="docutils literal notranslate"><span class="pre">proj(point,</span> <span class="pre">vector)</span></code> but may
-differ for certain manifolds.</p>
+Typically this simply corresponds to a call to meth:<cite>projection</cite> but
+may differ for certain manifolds.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -4751,7 +5140,34 @@ differ for certain manifolds.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.embedding">
 <span class="sig-name descname"><span class="pre">embedding</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/special_orthogonal_group.html#SpecialOrthogonalGroup.embedding"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.embedding" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Convert tangent vector to ambient space representation.</p>
+<p>Certain manifolds represent tangent vectors in a format that is more
+convenient for numerical calculations than their representation in the
+ambient space.
+Euclidean Hessian operators generally expect tangent vectors in their
+ambient space representation though.
+This method allows switching between the two possible representations,
+For most manifolds, <code class="docutils literal notranslate"><span class="pre">embedding</span></code> is simply the identity map.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>point</strong> – A point on the manifold.</p></li>
+<li><p><strong>tangent_vector</strong> – A tangent vector in the internal representation of
+the manifold.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The same tangent vector in the ambient space representation.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This method is mainly needed internally by the
+<a class="reference internal" href="problem.html#pymanopt.core.problem.Problem" title="pymanopt.core.problem.Problem"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.core.problem.Problem</span></code></a> class in order to convert
+tangent vectors to the representation expected by user-given or
+autodiff-generated Euclidean Hessian operators.</p>
+</div>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.euclidean_to_riemannian_hessian">
@@ -5106,8 +5522,8 @@ in the ambient space.</p>
 <dd><p>Re-tangentialize a vector.</p>
 <p>This method guarantees that <code class="docutils literal notranslate"><span class="pre">vector</span></code> is indeed a tangent vector
 at <code class="docutils literal notranslate"><span class="pre">point</span></code> on the manifold.
-Typically this simply corresponds to <code class="docutils literal notranslate"><span class="pre">proj(point,</span> <span class="pre">vector)</span></code> but may
-differ for certain manifolds.</p>
+Typically this simply corresponds to a call to meth:<cite>projection</cite> but
+may differ for certain manifolds.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -5299,6 +5715,38 @@ the manifold, i.e., a point that lies mid-way between <code class="docutils lite
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pymanopt.manifolds.oblique.Oblique.embedding">
+<span class="sig-name descname"><span class="pre">embedding</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.oblique.Oblique.embedding" title="Permalink to this definition"></a></dt>
+<dd><p>Convert tangent vector to ambient space representation.</p>
+<p>Certain manifolds represent tangent vectors in a format that is more
+convenient for numerical calculations than their representation in the
+ambient space.
+Euclidean Hessian operators generally expect tangent vectors in their
+ambient space representation though.
+This method allows switching between the two possible representations,
+For most manifolds, <code class="docutils literal notranslate"><span class="pre">embedding</span></code> is simply the identity map.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>point</strong> – A point on the manifold.</p></li>
+<li><p><strong>tangent_vector</strong> – A tangent vector in the internal representation of
+the manifold.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The same tangent vector in the ambient space representation.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This method is mainly needed internally by the
+<a class="reference internal" href="problem.html#pymanopt.core.problem.Problem" title="pymanopt.core.problem.Problem"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.core.problem.Problem</span></code></a> class in order to convert
+tangent vectors to the representation expected by user-given or
+autodiff-generated Euclidean Hessian operators.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pymanopt.manifolds.oblique.Oblique.euclidean_to_riemannian_gradient">
 <span class="sig-name descname"><span class="pre">euclidean_to_riemannian_gradient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">euclidean_gradient</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.oblique.Oblique.euclidean_to_riemannian_gradient" title="Permalink to this definition"></a></dt>
 <dd><p>Converts the Euclidean to the Riemannian gradient.</p>
@@ -5461,8 +5909,8 @@ in the ambient space.</p>
 <dd><p>Re-tangentialize a vector.</p>
 <p>This method guarantees that <code class="docutils literal notranslate"><span class="pre">vector</span></code> is indeed a tangent vector
 at <code class="docutils literal notranslate"><span class="pre">point</span></code> on the manifold.
-Typically this simply corresponds to <code class="docutils literal notranslate"><span class="pre">proj(point,</span> <span class="pre">vector)</span></code> but may
-differ for certain manifolds.</p>
+Typically this simply corresponds to a call to meth:<cite>projection</cite> but
+may differ for certain manifolds.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -5670,6 +6118,38 @@ As such it is the inverse of <a class="reference internal" href="#pymanopt.manif
 <dd><p>The dimension of the manifold.</p>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="pymanopt.manifolds.positive_definite.SymmetricPositiveDefinite.embedding">
+<span class="sig-name descname"><span class="pre">embedding</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.positive_definite.SymmetricPositiveDefinite.embedding" title="Permalink to this definition"></a></dt>
+<dd><p>Convert tangent vector to ambient space representation.</p>
+<p>Certain manifolds represent tangent vectors in a format that is more
+convenient for numerical calculations than their representation in the
+ambient space.
+Euclidean Hessian operators generally expect tangent vectors in their
+ambient space representation though.
+This method allows switching between the two possible representations,
+For most manifolds, <code class="docutils literal notranslate"><span class="pre">embedding</span></code> is simply the identity map.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>point</strong> – A point on the manifold.</p></li>
+<li><p><strong>tangent_vector</strong> – A tangent vector in the internal representation of
+the manifold.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The same tangent vector in the ambient space representation.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This method is mainly needed internally by the
+<a class="reference internal" href="problem.html#pymanopt.core.problem.Problem" title="pymanopt.core.problem.Problem"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.core.problem.Problem</span></code></a> class in order to convert
+tangent vectors to the representation expected by user-given or
+autodiff-generated Euclidean Hessian operators.</p>
+</div>
+</dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="pymanopt.manifolds.positive_definite.SymmetricPositiveDefinite.num_values">
 <em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">num_values</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#pymanopt.manifolds.positive_definite.SymmetricPositiveDefinite.num_values" title="Permalink to this definition"></a></dt>
@@ -5795,6 +6275,38 @@ in <a class="reference internal" href="bibliography.html#jba-2010" id="id46"><sp
 <dd class="field-even"><p>The distance between <code class="docutils literal notranslate"><span class="pre">point_a</span></code> and <code class="docutils literal notranslate"><span class="pre">point_b</span></code> on the manifold.</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pymanopt.manifolds.psd.PSDFixedRank.embedding">
+<span class="sig-name descname"><span class="pre">embedding</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.psd.PSDFixedRank.embedding" title="Permalink to this definition"></a></dt>
+<dd><p>Convert tangent vector to ambient space representation.</p>
+<p>Certain manifolds represent tangent vectors in a format that is more
+convenient for numerical calculations than their representation in the
+ambient space.
+Euclidean Hessian operators generally expect tangent vectors in their
+ambient space representation though.
+This method allows switching between the two possible representations,
+For most manifolds, <code class="docutils literal notranslate"><span class="pre">embedding</span></code> is simply the identity map.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>point</strong> – A point on the manifold.</p></li>
+<li><p><strong>tangent_vector</strong> – A tangent vector in the internal representation of
+the manifold.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The same tangent vector in the ambient space representation.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This method is mainly needed internally by the
+<a class="reference internal" href="problem.html#pymanopt.core.problem.Problem" title="pymanopt.core.problem.Problem"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.core.problem.Problem</span></code></a> class in order to convert
+tangent vectors to the representation expected by user-given or
+autodiff-generated Euclidean Hessian operators.</p>
+</div>
 </dd></dl>
 
 <dl class="py method">
@@ -6031,8 +6543,8 @@ the direction of <code class="docutils literal notranslate"><span class="pre">ta
 <dd><p>Re-tangentialize a vector.</p>
 <p>This method guarantees that <code class="docutils literal notranslate"><span class="pre">vector</span></code> is indeed a tangent vector
 at <code class="docutils literal notranslate"><span class="pre">point</span></code> on the manifold.
-Typically this simply corresponds to <code class="docutils literal notranslate"><span class="pre">proj(point,</span> <span class="pre">vector)</span></code> but may
-differ for certain manifolds.</p>
+Typically this simply corresponds to a call to meth:<cite>projection</cite> but
+may differ for certain manifolds.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -6169,6 +6681,38 @@ in <a class="reference internal" href="bibliography.html#yat2013" id="id49"><spa
 <dd class="field-even"><p>The distance between <code class="docutils literal notranslate"><span class="pre">point_a</span></code> and <code class="docutils literal notranslate"><span class="pre">point_b</span></code> on the manifold.</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pymanopt.manifolds.psd.PSDFixedRankComplex.embedding">
+<span class="sig-name descname"><span class="pre">embedding</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.psd.PSDFixedRankComplex.embedding" title="Permalink to this definition"></a></dt>
+<dd><p>Convert tangent vector to ambient space representation.</p>
+<p>Certain manifolds represent tangent vectors in a format that is more
+convenient for numerical calculations than their representation in the
+ambient space.
+Euclidean Hessian operators generally expect tangent vectors in their
+ambient space representation though.
+This method allows switching between the two possible representations,
+For most manifolds, <code class="docutils literal notranslate"><span class="pre">embedding</span></code> is simply the identity map.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>point</strong> – A point on the manifold.</p></li>
+<li><p><strong>tangent_vector</strong> – A tangent vector in the internal representation of
+the manifold.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The same tangent vector in the ambient space representation.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This method is mainly needed internally by the
+<a class="reference internal" href="problem.html#pymanopt.core.problem.Problem" title="pymanopt.core.problem.Problem"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.core.problem.Problem</span></code></a> class in order to convert
+tangent vectors to the representation expected by user-given or
+autodiff-generated Euclidean Hessian operators.</p>
+</div>
 </dd></dl>
 
 <dl class="py method">
@@ -6394,8 +6938,8 @@ the direction of <code class="docutils literal notranslate"><span class="pre">ta
 <dd><p>Re-tangentialize a vector.</p>
 <p>This method guarantees that <code class="docutils literal notranslate"><span class="pre">vector</span></code> is indeed a tangent vector
 at <code class="docutils literal notranslate"><span class="pre">point</span></code> on the manifold.
-Typically this simply corresponds to <code class="docutils literal notranslate"><span class="pre">proj(point,</span> <span class="pre">vector)</span></code> but may
-differ for certain manifolds.</p>
+Typically this simply corresponds to a call to meth:<cite>projection</cite> but
+may differ for certain manifolds.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -6584,8 +7128,8 @@ in the ambient space.</p>
 <dd><p>Re-tangentialize a vector.</p>
 <p>This method guarantees that <code class="docutils literal notranslate"><span class="pre">vector</span></code> is indeed a tangent vector
 at <code class="docutils literal notranslate"><span class="pre">point</span></code> on the manifold.
-Typically this simply corresponds to <code class="docutils literal notranslate"><span class="pre">proj(point,</span> <span class="pre">vector)</span></code> but may
-differ for certain manifolds.</p>
+Typically this simply corresponds to a call to meth:<cite>projection</cite> but
+may differ for certain manifolds.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -6754,6 +7298,38 @@ the tangent space at <code class="docutils literal notranslate"><span class="pre
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pymanopt.manifolds.psd.Elliptope.embedding">
+<span class="sig-name descname"><span class="pre">embedding</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.psd.Elliptope.embedding" title="Permalink to this definition"></a></dt>
+<dd><p>Convert tangent vector to ambient space representation.</p>
+<p>Certain manifolds represent tangent vectors in a format that is more
+convenient for numerical calculations than their representation in the
+ambient space.
+Euclidean Hessian operators generally expect tangent vectors in their
+ambient space representation though.
+This method allows switching between the two possible representations,
+For most manifolds, <code class="docutils literal notranslate"><span class="pre">embedding</span></code> is simply the identity map.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>point</strong> – A point on the manifold.</p></li>
+<li><p><strong>tangent_vector</strong> – A tangent vector in the internal representation of
+the manifold.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The same tangent vector in the ambient space representation.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This method is mainly needed internally by the
+<a class="reference internal" href="problem.html#pymanopt.core.problem.Problem" title="pymanopt.core.problem.Problem"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.core.problem.Problem</span></code></a> class in order to convert
+tangent vectors to the representation expected by user-given or
+autodiff-generated Euclidean Hessian operators.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pymanopt.manifolds.psd.Elliptope.exp">
 <span class="sig-name descname"><span class="pre">exp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.psd.Elliptope.exp" title="Permalink to this definition"></a></dt>
 <dd><p>Computes the exponential map on the manifold.</p>
@@ -6867,7 +7443,8 @@ their product as indicated yields a real <code class="docutils literal notransla
 <p>Tangent vectors are represented as tuples of the form <code class="docutils literal notranslate"><span class="pre">(Up,</span> <span class="pre">M,</span> <span class="pre">Vp)</span></code>.
 The matrices <code class="docutils literal notranslate"><span class="pre">Up</span></code> (of size <code class="docutils literal notranslate"><span class="pre">m</span> <span class="pre">x</span> <span class="pre">k</span></code>) and <code class="docutils literal notranslate"><span class="pre">Vp</span></code> (of size <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">x</span> <span class="pre">k</span></code>) obey
 the conditions <code class="docutils literal notranslate"><span class="pre">np.allclose(Up.T</span> <span class="pre">&#64;</span> <span class="pre">U,</span> <span class="pre">0)</span></code> and <code class="docutils literal notranslate"><span class="pre">np.allclose(Vp.T</span> <span class="pre">&#64;</span> <span class="pre">V,</span>
-<span class="pre">0)</span></code>. The matrix <code class="docutils literal notranslate"><span class="pre">M</span></code> (of size <code class="docutils literal notranslate"><span class="pre">k</span> <span class="pre">x</span> <span class="pre">k</span></code>) is arbitrary.
+<span class="pre">0)</span></code>.
+The matrix <code class="docutils literal notranslate"><span class="pre">M</span></code> (of size <code class="docutils literal notranslate"><span class="pre">k</span> <span class="pre">x</span> <span class="pre">k</span></code>) is arbitrary.
 Such a structure corresponds to the tangent vector <code class="docutils literal notranslate"><span class="pre">Z</span> <span class="pre">=</span> <span class="pre">u</span> <span class="pre">&#64;</span> <span class="pre">M</span> <span class="pre">&#64;</span> <span class="pre">vt</span> <span class="pre">+</span> <span class="pre">Up</span> <span class="pre">&#64;</span>
 <span class="pre">vt</span> <span class="pre">+</span> <span class="pre">u</span> <span class="pre">*</span> <span class="pre">Vp.T</span></code> in the ambient space of <code class="docutils literal notranslate"><span class="pre">m</span> <span class="pre">x</span> <span class="pre">n</span></code> matrices at a point <code class="docutils literal notranslate"><span class="pre">(u,</span>
 <span class="pre">s,</span> <span class="pre">vt)</span></code>.</p>
@@ -7020,8 +7597,8 @@ the direction of <code class="docutils literal notranslate"><span class="pre">ta
 <dd><p>Re-tangentialize a vector.</p>
 <p>This method guarantees that <code class="docutils literal notranslate"><span class="pre">vector</span></code> is indeed a tangent vector
 at <code class="docutils literal notranslate"><span class="pre">point</span></code> on the manifold.
-Typically this simply corresponds to <code class="docutils literal notranslate"><span class="pre">proj(point,</span> <span class="pre">vector)</span></code> but may
-differ for certain manifolds.</p>
+Typically this simply corresponds to a call to meth:<cite>projection</cite> but
+may differ for certain manifolds.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -7052,7 +7629,34 @@ differ for certain manifolds.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pymanopt.manifolds.fixed_rank.FixedRankEmbedded.embedding">
 <span class="sig-name descname"><span class="pre">embedding</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/manifolds/fixed_rank.html#FixedRankEmbedded.embedding"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.manifolds.fixed_rank.FixedRankEmbedded.embedding" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Convert tangent vector to ambient space representation.</p>
+<p>Certain manifolds represent tangent vectors in a format that is more
+convenient for numerical calculations than their representation in the
+ambient space.
+Euclidean Hessian operators generally expect tangent vectors in their
+ambient space representation though.
+This method allows switching between the two possible representations,
+For most manifolds, <code class="docutils literal notranslate"><span class="pre">embedding</span></code> is simply the identity map.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>point</strong> – A point on the manifold.</p></li>
+<li><p><strong>tangent_vector</strong> – A tangent vector in the internal representation of
+the manifold.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The same tangent vector in the ambient space representation.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This method is mainly needed internally by the
+<a class="reference internal" href="problem.html#pymanopt.core.problem.Problem" title="pymanopt.core.problem.Problem"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.core.problem.Problem</span></code></a> class in order to convert
+tangent vectors to the representation expected by user-given or
+autodiff-generated Euclidean Hessian operators.</p>
+</div>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pymanopt.manifolds.fixed_rank.FixedRankEmbedded.transport">
@@ -7338,8 +7942,8 @@ in the ambient space.</p>
 <dd><p>Re-tangentialize a vector.</p>
 <p>This method guarantees that <code class="docutils literal notranslate"><span class="pre">vector</span></code> is indeed a tangent vector
 at <code class="docutils literal notranslate"><span class="pre">point</span></code> on the manifold.
-Typically this simply corresponds to <code class="docutils literal notranslate"><span class="pre">proj(point,</span> <span class="pre">vector)</span></code> but may
-differ for certain manifolds.</p>
+Typically this simply corresponds to a call to meth:<cite>projection</cite> but
+may differ for certain manifolds.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -7540,6 +8144,38 @@ the direction of <code class="docutils literal notranslate"><span class="pre">ta
 <dd><p>The dimension of the manifold.</p>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="pymanopt.manifolds.positive.Positive.embedding">
+<span class="sig-name descname"><span class="pre">embedding</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.positive.Positive.embedding" title="Permalink to this definition"></a></dt>
+<dd><p>Convert tangent vector to ambient space representation.</p>
+<p>Certain manifolds represent tangent vectors in a format that is more
+convenient for numerical calculations than their representation in the
+ambient space.
+Euclidean Hessian operators generally expect tangent vectors in their
+ambient space representation though.
+This method allows switching between the two possible representations,
+For most manifolds, <code class="docutils literal notranslate"><span class="pre">embedding</span></code> is simply the identity map.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>point</strong> – A point on the manifold.</p></li>
+<li><p><strong>tangent_vector</strong> – A tangent vector in the internal representation of
+the manifold.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The same tangent vector in the ambient space representation.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This method is mainly needed internally by the
+<a class="reference internal" href="problem.html#pymanopt.core.problem.Problem" title="pymanopt.core.problem.Problem"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.core.problem.Problem</span></code></a> class in order to convert
+tangent vectors to the representation expected by user-given or
+autodiff-generated Euclidean Hessian operators.</p>
+</div>
+</dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="pymanopt.manifolds.positive.Positive.num_values">
 <em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">num_values</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#pymanopt.manifolds.positive.Positive.num_values" title="Permalink to this definition"></a></dt>
@@ -7700,8 +8336,8 @@ in the ambient space.</p>
 <dd><p>Re-tangentialize a vector.</p>
 <p>This method guarantees that <code class="docutils literal notranslate"><span class="pre">vector</span></code> is indeed a tangent vector
 at <code class="docutils literal notranslate"><span class="pre">point</span></code> on the manifold.
-Typically this simply corresponds to <code class="docutils literal notranslate"><span class="pre">proj(point,</span> <span class="pre">vector)</span></code> but may
-differ for certain manifolds.</p>
+Typically this simply corresponds to a call to meth:<cite>projection</cite> but
+may differ for certain manifolds.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -7960,6 +8596,38 @@ manifolds.</p>
 <dd><p>The dimension of the manifold.</p>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="pymanopt.manifolds.hyperbolic.PoincareBall.embedding">
+<span class="sig-name descname"><span class="pre">embedding</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.hyperbolic.PoincareBall.embedding" title="Permalink to this definition"></a></dt>
+<dd><p>Convert tangent vector to ambient space representation.</p>
+<p>Certain manifolds represent tangent vectors in a format that is more
+convenient for numerical calculations than their representation in the
+ambient space.
+Euclidean Hessian operators generally expect tangent vectors in their
+ambient space representation though.
+This method allows switching between the two possible representations,
+For most manifolds, <code class="docutils literal notranslate"><span class="pre">embedding</span></code> is simply the identity map.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>point</strong> – A point on the manifold.</p></li>
+<li><p><strong>tangent_vector</strong> – A tangent vector in the internal representation of
+the manifold.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The same tangent vector in the ambient space representation.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This method is mainly needed internally by the
+<a class="reference internal" href="problem.html#pymanopt.core.problem.Problem" title="pymanopt.core.problem.Problem"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.core.problem.Problem</span></code></a> class in order to convert
+tangent vectors to the representation expected by user-given or
+autodiff-generated Euclidean Hessian operators.</p>
+</div>
+</dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="pymanopt.manifolds.hyperbolic.PoincareBall.num_values">
 <em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">num_values</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#pymanopt.manifolds.hyperbolic.PoincareBall.num_values" title="Permalink to this definition"></a></dt>
@@ -8114,8 +8782,8 @@ in the ambient space.</p>
 <dd><p>Re-tangentialize a vector.</p>
 <p>This method guarantees that <code class="docutils literal notranslate"><span class="pre">vector</span></code> is indeed a tangent vector
 at <code class="docutils literal notranslate"><span class="pre">point</span></code> on the manifold.
-Typically this simply corresponds to <code class="docutils literal notranslate"><span class="pre">proj(point,</span> <span class="pre">vector)</span></code> but may
-differ for certain manifolds.</p>
+Typically this simply corresponds to a call to meth:<cite>projection</cite> but
+may differ for certain manifolds.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -8326,6 +8994,38 @@ the manifold, i.e., a point that lies mid-way between <code class="docutils lite
 <dd><p>The dimension of the manifold.</p>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="pymanopt.manifolds.product.Product.embedding">
+<span class="sig-name descname"><span class="pre">embedding</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.manifolds.product.Product.embedding" title="Permalink to this definition"></a></dt>
+<dd><p>Convert tangent vector to ambient space representation.</p>
+<p>Certain manifolds represent tangent vectors in a format that is more
+convenient for numerical calculations than their representation in the
+ambient space.
+Euclidean Hessian operators generally expect tangent vectors in their
+ambient space representation though.
+This method allows switching between the two possible representations,
+For most manifolds, <code class="docutils literal notranslate"><span class="pre">embedding</span></code> is simply the identity map.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>point</strong> – A point on the manifold.</p></li>
+<li><p><strong>tangent_vector</strong> – A tangent vector in the internal representation of
+the manifold.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The same tangent vector in the ambient space representation.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This method is mainly needed internally by the
+<a class="reference internal" href="problem.html#pymanopt.core.problem.Problem" title="pymanopt.core.problem.Problem"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.core.problem.Problem</span></code></a> class in order to convert
+tangent vectors to the representation expected by user-given or
+autodiff-generated Euclidean Hessian operators.</p>
+</div>
+</dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="pymanopt.manifolds.product.Product.num_values">
 <em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">num_values</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#pymanopt.manifolds.product.Product.num_values" title="Permalink to this definition"></a></dt>
@@ -8360,7 +9060,7 @@ tuples/lists contain.</p>
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Jun 09, 2022.
+      <span class="lastupdated">Last updated on Jun 18, 2022.
       </span></p>
   </div>
 

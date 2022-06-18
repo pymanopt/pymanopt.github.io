@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pymanopt.manifolds.special_orthogonal_group &mdash; Pymanopt latest (b9f53fa) documentation</title>
+  <title>pymanopt.manifolds.special_orthogonal_group &mdash; Pymanopt latest (0ac897b) documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/style.css" type="text/css" />
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" type="text/css" />
@@ -35,7 +35,7 @@
             <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                latest (b9f53fa)
+                latest (0ac897b)
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -113,8 +113,13 @@
 <span class="sd">    :math:`(\R^{n \times n})^k`.</span>
 <span class="sd">    As such :math:`\SO(n)^k` forms a Riemannian submanifold.</span>
 
-<span class="sd">    Tangent vectors are represented in the Lie algebra of skew-symmetric</span>
-<span class="sd">    matrices of the same shape as points on the manifold.</span>
+<span class="sd">    The tangent space :math:`\tangent{\vmQ}\SO(n)` at a point :math:`\vmQ` is</span>
+<span class="sd">    given by :math:`\tangent{\vmQ}\SO(n) = \set{\vmQ \vmOmega \in \R^{n \times</span>
+<span class="sd">    n} \mid \vmOmega = -\transp{\vmOmega}} = \vmQ \Skew(n)`, where</span>
+<span class="sd">    :math:`\Skew(n)` denotes the set of skew-symmetric matrices.</span>
+<span class="sd">    This corresponds to the Lie algebra of :math:`\SO(n)`, a fact which is used</span>
+<span class="sd">    here to conveniently represent tangent vectors numerically by their</span>
+<span class="sd">    skew-symmetric factor.</span>
 <span class="sd">    The method :meth:`embedding` can be used to transform a tangent vector from</span>
 <span class="sd">    its Lie algebra representation to the embedding space representation.</span>
 
@@ -255,7 +260,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Jun 09, 2022.
+      <span class="lastupdated">Last updated on Jun 18, 2022.
       </span></p>
   </div>
 
