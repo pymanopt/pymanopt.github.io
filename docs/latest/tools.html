@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tools &mdash; Pymanopt latest (0ac897b) documentation</title>
+  <title>Tools &mdash; Pymanopt latest (5866413) documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/style.css" type="text/css" />
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" type="text/css" />
@@ -37,7 +37,7 @@
             <img src="_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                latest (0ac897b)
+                latest (5866413)
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -202,10 +202,10 @@ that segment (highest degree coefficients first).</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pymanopt.tools.diagnostics.check_directional_derivative">
-<span class="sig-prename descclassname"><span class="pre">pymanopt.tools.diagnostics.</span></span><span class="sig-name descname"><span class="pre">check_directional_derivative</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">problem</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/tools/diagnostics.html#check_directional_derivative"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.tools.diagnostics.check_directional_derivative" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pymanopt.tools.diagnostics.</span></span><span class="sig-name descname"><span class="pre">check_directional_derivative</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">problem</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_quadratic_model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/tools/diagnostics.html#check_directional_derivative"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.tools.diagnostics.check_directional_derivative" title="Permalink to this definition"></a></dt>
 <dd><p>Checks the consistency of the cost function and directional derivatives.</p>
 <p>check_directional_derivative performs a numerical test to check that the
-directional derivatives defined in the problem structure agree up to first
+directional derivatives defined in the problem agree up to first or second
 order with the cost function at some point x, along some direction d. The
 test is based on a truncated Taylor series.
 Both x and d are optional and will be sampled at random if omitted.</p>

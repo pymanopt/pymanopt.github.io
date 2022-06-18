@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pymanopt.tools.diagnostics &mdash; Pymanopt latest (0ac897b) documentation</title>
+  <title>pymanopt.tools.diagnostics &mdash; Pymanopt latest (5866413) documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/style.css" type="text/css" />
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" type="text/css" />
@@ -35,7 +35,7 @@
             <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                latest (0ac897b)
+                latest (5866413)
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -117,11 +117,13 @@
     <span class="k">return</span> <span class="n">segment</span><span class="p">,</span> <span class="n">poly</span></div>
 
 
-<div class="viewcode-block" id="check_directional_derivative"><a class="viewcode-back" href="../../../tools.html#pymanopt.tools.diagnostics.check_directional_derivative">[docs]</a><span class="k">def</span> <span class="nf">check_directional_derivative</span><span class="p">(</span><span class="n">problem</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="check_directional_derivative"><a class="viewcode-back" href="../../../tools.html#pymanopt.tools.diagnostics.check_directional_derivative">[docs]</a><span class="k">def</span> <span class="nf">check_directional_derivative</span><span class="p">(</span>
+    <span class="n">problem</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">use_quadratic_model</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Checks the consistency of the cost function and directional derivatives.</span>
 
 <span class="sd">    check_directional_derivative performs a numerical test to check that the</span>
-<span class="sd">    directional derivatives defined in the problem structure agree up to first</span>
+<span class="sd">    directional derivatives defined in the problem agree up to first or second</span>
 <span class="sd">    order with the cost function at some point x, along some direction d. The</span>
 <span class="sd">    test is based on a truncated Taylor series.</span>
 <span class="sd">    Both x and d are optional and will be sampled at random if omitted.</span>
@@ -136,63 +138,76 @@
     <span class="k">if</span> <span class="n">d</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">manifold</span><span class="o">.</span><span class="n">random_tangent_vector</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 
-    <span class="c1"># Compute the value f0 of f at x and directional derivative at x along d.</span>
-    <span class="n">f0</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">cost</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-    <span class="n">grad</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">riemannian_gradient</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-    <span class="n">df0</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">manifold</span><span class="o">.</span><span class="n">inner_product</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">grad</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
-
     <span class="c1"># Compute the value of f at points on the geodesic (or approximation</span>
     <span class="c1"># of it) originating from x, along direction d, for step_sizes in a</span>
     <span class="c1"># large range given by h.</span>
     <span class="n">h</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logspace</span><span class="p">(</span><span class="o">-</span><span class="mi">8</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">51</span><span class="p">)</span>
     <span class="n">value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">h_k</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">h</span><span class="p">):</span>
-        <span class="c1"># TODO(nkoep): Remove this once we use the RetrAsExpMixin for every</span>
-        <span class="c1">#              manifold.</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">y</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">manifold</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">h_k</span> <span class="o">*</span> <span class="n">d</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">NotImplementedError</span><span class="p">:</span>
             <span class="n">y</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">manifold</span><span class="o">.</span><span class="n">retraction</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">h_k</span> <span class="o">*</span> <span class="n">d</span><span class="p">)</span>
         <span class="n">value</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">cost</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
 
-    <span class="c1"># Compute the linear approximation of the cost function using f0 and</span>
-    <span class="c1"># df0 at the same points.</span>
-    <span class="n">model</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polyval</span><span class="p">([</span><span class="n">df0</span><span class="p">,</span> <span class="n">f0</span><span class="p">],</span> <span class="n">h</span><span class="p">)</span>
+    <span class="c1"># Compute the value f0 of f at x and directional derivative at x along d.</span>
+    <span class="n">f0</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">cost</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">grad</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">riemannian_gradient</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">df0</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">manifold</span><span class="o">.</span><span class="n">inner_product</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">grad</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">use_quadratic_model</span><span class="p">:</span>
+        <span class="n">hessd</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">riemannian_hessian</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+        <span class="n">d2f0</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">manifold</span><span class="o">.</span><span class="n">inner_product</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">hessd</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polyval</span><span class="p">([</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">d2f0</span><span class="p">,</span> <span class="n">df0</span><span class="p">,</span> <span class="n">f0</span><span class="p">],</span> <span class="n">h</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polyval</span><span class="p">([</span><span class="n">df0</span><span class="p">,</span> <span class="n">f0</span><span class="p">],</span> <span class="n">h</span><span class="p">)</span>
 
     <span class="c1"># Compute the approximation error</span>
-    <span class="n">err</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">model</span> <span class="o">-</span> <span class="n">value</span><span class="p">)</span>
-    <span class="n">model_is_exact</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">err</span> <span class="o">&lt;</span> <span class="mf">1e-12</span><span class="p">)</span>
+    <span class="n">error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">model</span> <span class="o">-</span> <span class="n">value</span><span class="p">)</span>
+    <span class="n">model_is_exact</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">error</span> <span class="o">&lt;</span> <span class="mf">1e-12</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">model_is_exact</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span>
-            <span class="s2">&quot;Directional derivative check. &quot;</span>
-            <span class="s2">&quot;It seems the linear model is exact: &quot;</span>
-            <span class="s2">&quot;model error is numerically zero for all h.&quot;</span>
-        <span class="p">)</span>
-        <span class="c1"># The 1st order model is exact: all errors are (numerically) zero.</span>
+        <span class="k">if</span> <span class="n">use_quadratic_model</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="s2">&quot;Hessian check. &quot;</span>
+                <span class="s2">&quot;It seems the quadratic model is exact: &quot;</span>
+                <span class="s2">&quot;model error is numerically zero for all h.&quot;</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="s2">&quot;Directional derivative check. &quot;</span>
+                <span class="s2">&quot;It seems the linear model is exact: &quot;</span>
+                <span class="s2">&quot;model error is numerically zero for all h.&quot;</span>
+            <span class="p">)</span>
+        <span class="c1"># The model is exact: all errors are (numerically) zero.</span>
         <span class="c1"># Fit line from all points, use log scale only in h.</span>
         <span class="n">segment</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">h</span><span class="p">))</span>
-        <span class="n">poly</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polyfit</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">h</span><span class="p">),</span> <span class="n">err</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">poly</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polyfit</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">h</span><span class="p">),</span> <span class="n">error</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
         <span class="c1"># Set mean error in log scale for plot.</span>
         <span class="n">poly</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">poly</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span>
-            <span class="s2">&quot;Directional derivative check. The slope of the &quot;</span>
-            <span class="s2">&quot;continuous line should match that of the dashed &quot;</span>
-            <span class="s2">&quot;(reference) line over at least a few orders of &quot;</span>
-            <span class="s2">&quot;magnitude for h.&quot;</span>
-        <span class="p">)</span>
-        <span class="c1"># In a numerically reasonable neighborhood, the error should</span>
-        <span class="c1"># decrease as the square of the step_size, i.e., in loglog scale,</span>
-        <span class="c1"># the error should have a slope of 2.</span>
+        <span class="k">if</span> <span class="n">use_quadratic_model</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="s2">&quot;Hessian check. The slope of the &quot;</span>
+                <span class="s2">&quot;continuous line should match that of the dashed &quot;</span>
+                <span class="s2">&quot;(reference) line over at least a few orders of &quot;</span>
+                <span class="s2">&quot;magnitude for h.&quot;</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="s2">&quot;Directional derivative check. The slope of the &quot;</span>
+                <span class="s2">&quot;continuous line should match that of the dashed &quot;</span>
+                <span class="s2">&quot;(reference) line over at least a few orders of &quot;</span>
+                <span class="s2">&quot;magnitude for h.&quot;</span>
+            <span class="p">)</span>
         <span class="n">window_len</span> <span class="o">=</span> <span class="mi">10</span>
         <span class="c1"># Despite not all coordinates of the model being close to the true</span>
-        <span class="c1"># value, some entries of &#39;err&#39; can be zero. To avoid numerical issues</span>
+        <span class="c1"># value, some entries of &#39;error&#39; can be zero. To avoid numerical issues</span>
         <span class="c1"># we add an epsilon here.</span>
-        <span class="n">eps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="n">err</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span><span class="o">.</span><span class="n">eps</span>
+        <span class="n">eps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="n">error</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span><span class="o">.</span><span class="n">eps</span>
         <span class="n">segment</span><span class="p">,</span> <span class="n">poly</span> <span class="o">=</span> <span class="n">identify_linear_piece</span><span class="p">(</span>
-            <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">h</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">err</span> <span class="o">+</span> <span class="n">eps</span><span class="p">),</span> <span class="n">window_len</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">h</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">error</span> <span class="o">+</span> <span class="n">eps</span><span class="p">),</span> <span class="n">window_len</span>
         <span class="p">)</span>
-    <span class="k">return</span> <span class="n">h</span><span class="p">,</span> <span class="n">err</span><span class="p">,</span> <span class="n">segment</span><span class="p">,</span> <span class="n">poly</span></div>
+    <span class="k">return</span> <span class="n">h</span><span class="p">,</span> <span class="n">error</span><span class="p">,</span> <span class="n">segment</span><span class="p">,</span> <span class="n">poly</span></div>
 
 
 <div class="viewcode-block" id="check_gradient"><a class="viewcode-back" href="../../../tools.html#pymanopt.tools.diagnostics.check_gradient">[docs]</a><span class="k">def</span> <span class="nf">check_gradient</span><span class="p">(</span><span class="n">problem</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
