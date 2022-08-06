@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pymanopt.manifolds.stiefel &mdash; Pymanopt stable (1.0.0) documentation</title>
+  <title>pymanopt.manifolds.stiefel &mdash; Pymanopt stable (2.0.0) documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/style.css" type="text/css" />
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" type="text/css" />
@@ -35,7 +35,7 @@
             <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                stable (1.0.0)
+                stable (2.0.0)
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -83,10 +83,15 @@
              
   <h1>Source code for pymanopt.manifolds.stiefel</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">scipy.linalg</span> <span class="kn">import</span> <span class="n">expm</span>
 
 <span class="kn">from</span> <span class="nn">pymanopt.manifolds.manifold</span> <span class="kn">import</span> <span class="n">RiemannianSubmanifold</span>
-<span class="kn">from</span> <span class="nn">pymanopt.tools.multi</span> <span class="kn">import</span> <span class="n">multiprod</span><span class="p">,</span> <span class="n">multisym</span><span class="p">,</span> <span class="n">multitransp</span>
+<span class="kn">from</span> <span class="nn">pymanopt.tools.multi</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">multiexpm</span><span class="p">,</span>
+    <span class="n">multieye</span><span class="p">,</span>
+    <span class="n">multiqr</span><span class="p">,</span>
+    <span class="n">multisym</span><span class="p">,</span>
+    <span class="n">multitransp</span><span class="p">,</span>
+<span class="p">)</span>
 
 
 <div class="viewcode-block" id="Stiefel"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.stiefel.Stiefel">[docs]</a><span class="k">class</span> <span class="nc">Stiefel</span><span class="p">(</span><span class="n">RiemannianSubmanifold</span><span class="p">):</span>
@@ -113,6 +118,10 @@
 <span class="sd">            Possible choices are ``qr`` and ``polar``.</span>
 
 <span class="sd">    Note:</span>
+<span class="sd">        The formula for the exponential map can be found in [ZH2021]_.</span>
+
+<span class="sd">        The Weingarten map is taken from [AMT2013]_.</span>
+
 <span class="sd">        The default retraction used here is a first-order one based on</span>
 <span class="sd">        the QR decomposition.</span>
 <span class="sd">        To switch to a second-order polar retraction, use ``Stiefel(n, p, k=k,</span>
@@ -154,51 +163,37 @@
         <span class="p">)</span></div>
 
 <div class="viewcode-block" id="Stiefel.projection"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.stiefel.Stiefel.projection">[docs]</a>    <span class="k">def</span> <span class="nf">projection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">vector</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">vector</span> <span class="o">-</span> <span class="n">multiprod</span><span class="p">(</span>
-            <span class="n">point</span><span class="p">,</span> <span class="n">multisym</span><span class="p">(</span><span class="n">multiprod</span><span class="p">(</span><span class="n">multitransp</span><span class="p">(</span><span class="n">point</span><span class="p">),</span> <span class="n">vector</span><span class="p">))</span>
-        <span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">vector</span> <span class="o">-</span> <span class="n">point</span> <span class="o">@</span> <span class="n">multisym</span><span class="p">(</span><span class="n">multitransp</span><span class="p">(</span><span class="n">point</span><span class="p">)</span> <span class="o">@</span> <span class="n">vector</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Stiefel.euclidean_to_riemannian_hessian"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.stiefel.Stiefel.euclidean_to_riemannian_hessian">[docs]</a>    <span class="k">def</span> <span class="nf">euclidean_to_riemannian_hessian</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">euclidean_gradient</span><span class="p">,</span> <span class="n">euclidean_hessian</span><span class="p">,</span> <span class="n">tangent_vector</span>
-    <span class="p">):</span>
-        <span class="n">XtG</span> <span class="o">=</span> <span class="n">multiprod</span><span class="p">(</span><span class="n">multitransp</span><span class="p">(</span><span class="n">point</span><span class="p">),</span> <span class="n">euclidean_gradient</span><span class="p">)</span>
-        <span class="n">symXtG</span> <span class="o">=</span> <span class="n">multisym</span><span class="p">(</span><span class="n">XtG</span><span class="p">)</span>
-        <span class="n">HsymXtG</span> <span class="o">=</span> <span class="n">multiprod</span><span class="p">(</span><span class="n">tangent_vector</span><span class="p">,</span> <span class="n">symXtG</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">projection</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">euclidean_hessian</span> <span class="o">-</span> <span class="n">HsymXtG</span><span class="p">)</span></div>
+    <span class="n">to_tangent_space</span> <span class="o">=</span> <span class="n">projection</span>
+
+<div class="viewcode-block" id="Stiefel.weingarten"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.stiefel.Stiefel.weingarten">[docs]</a>    <span class="k">def</span> <span class="nf">weingarten</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">,</span> <span class="n">normal_vector</span><span class="p">):</span>
+        <span class="k">return</span> <span class="o">-</span><span class="n">tangent_vector</span> <span class="o">@</span> <span class="n">multitransp</span><span class="p">(</span>
+            <span class="n">point</span>
+        <span class="p">)</span> <span class="o">@</span> <span class="n">normal_vector</span> <span class="o">-</span> <span class="n">point</span> <span class="o">@</span> <span class="n">multisym</span><span class="p">(</span>
+            <span class="n">multitransp</span><span class="p">(</span><span class="n">tangent_vector</span><span class="p">)</span> <span class="o">@</span> <span class="n">normal_vector</span>
+        <span class="p">)</span></div>
 
 <div class="viewcode-block" id="Stiefel.retraction"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.stiefel.Stiefel.retraction">[docs]</a>    <span class="k">def</span> <span class="nf">retraction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_retraction</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">_retraction_qr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_k</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">q</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">qr</span><span class="p">(</span><span class="n">point</span> <span class="o">+</span> <span class="n">tangent_vector</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">q</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">r</span><span class="p">))</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">))</span>
-
-        <span class="n">target_point</span> <span class="o">=</span> <span class="n">point</span> <span class="o">+</span> <span class="n">tangent_vector</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_k</span><span class="p">):</span>
-            <span class="n">q</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">qr</span><span class="p">(</span><span class="n">target_point</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-            <span class="n">target_point</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">q</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">r</span><span class="p">))</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">target_point</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">point</span> <span class="o">+</span> <span class="n">tangent_vector</span>
+        <span class="n">point</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">multiqr</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">point</span>
 
     <span class="k">def</span> <span class="nf">_retraction_polar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">):</span>
         <span class="n">Y</span> <span class="o">=</span> <span class="n">point</span> <span class="o">+</span> <span class="n">tangent_vector</span>
         <span class="n">u</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">vt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">full_matrices</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">multiprod</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">vt</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">u</span> <span class="o">@</span> <span class="n">vt</span>
 
 <div class="viewcode-block" id="Stiefel.norm"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.stiefel.Stiefel.norm">[docs]</a>    <span class="k">def</span> <span class="nf">norm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">tangent_vector</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Stiefel.random_point"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.stiefel.Stiefel.random_point">[docs]</a>    <span class="k">def</span> <span class="nf">random_point</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">point</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">multiqr</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_k</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">)))</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_k</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">))</span>
-            <span class="n">q</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">qr</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">q</span>
-
-        <span class="n">point</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_k</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">))</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_k</span><span class="p">):</span>
-            <span class="n">point</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">qr</span><span class="p">(</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">))</span>
-            <span class="p">)</span>
+            <span class="k">return</span> <span class="n">point</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">point</span></div>
 
 <div class="viewcode-block" id="Stiefel.random_tangent_vector"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.stiefel.Stiefel.random_tangent_vector">[docs]</a>    <span class="k">def</span> <span class="nf">random_tangent_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
@@ -210,47 +205,26 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">projection</span><span class="p">(</span><span class="n">point_b</span><span class="p">,</span> <span class="n">tangent_vector_a</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Stiefel.exp"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.stiefel.Stiefel.exp">[docs]</a>    <span class="k">def</span> <span class="nf">exp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">):</span>
+        <span class="n">pt_tv</span> <span class="o">=</span> <span class="n">multitransp</span><span class="p">(</span><span class="n">point</span><span class="p">)</span> <span class="o">@</span> <span class="n">tangent_vector</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_k</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">W</span> <span class="o">=</span> <span class="n">expm</span><span class="p">(</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">bmat</span><span class="p">(</span>
-                    <span class="p">[</span>
-                        <span class="p">[</span>
-                            <span class="n">point</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">tangent_vector</span><span class="p">,</span>
-                            <span class="o">-</span><span class="n">tangent_vector</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">tangent_vector</span><span class="p">,</span>
-                        <span class="p">],</span>
-                        <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">),</span> <span class="n">point</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">tangent_vector</span><span class="p">],</span>
-                    <span class="p">]</span>
-                <span class="p">)</span>
-            <span class="p">)</span>
-            <span class="n">Z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">bmat</span><span class="p">(</span>
-                <span class="p">[</span>
-                    <span class="p">[</span><span class="n">expm</span><span class="p">(</span><span class="o">-</span><span class="n">point</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">tangent_vector</span><span class="p">)],</span>
-                    <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">))],</span>
-                <span class="p">]</span>
-            <span class="p">)</span>
-            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">bmat</span><span class="p">([</span><span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">])</span> <span class="o">@</span> <span class="n">W</span> <span class="o">@</span> <span class="n">Z</span>
+            <span class="n">identity</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">identity</span> <span class="o">=</span> <span class="n">multieye</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_k</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">)</span>
 
-        <span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_k</span><span class="p">):</span>
-            <span class="n">W</span> <span class="o">=</span> <span class="n">expm</span><span class="p">(</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">bmat</span><span class="p">(</span>
-                    <span class="p">[</span>
-                        <span class="p">[</span>
-                            <span class="n">point</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">tangent_vector</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
-                            <span class="o">-</span><span class="n">tangent_vector</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">tangent_vector</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
-                        <span class="p">],</span>
-                        <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">),</span> <span class="n">point</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">tangent_vector</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span>
-                    <span class="p">]</span>
-                <span class="p">)</span>
-            <span class="p">)</span>
-            <span class="n">Z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">bmat</span><span class="p">(</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">block</span><span class="p">([</span><span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">])</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">multiexpm</span><span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">block</span><span class="p">(</span>
                 <span class="p">[</span>
-                    <span class="p">[</span><span class="n">expm</span><span class="p">(</span><span class="o">-</span><span class="n">point</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">tangent_vector</span><span class="p">[</span><span class="n">i</span><span class="p">])],</span>
-                    <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">))],</span>
+                    <span class="p">[</span>
+                        <span class="n">pt_tv</span><span class="p">,</span>
+                        <span class="o">-</span><span class="n">multitransp</span><span class="p">(</span><span class="n">tangent_vector</span><span class="p">)</span> <span class="o">@</span> <span class="n">tangent_vector</span><span class="p">,</span>
+                    <span class="p">],</span>
+                    <span class="p">[</span><span class="n">identity</span><span class="p">,</span> <span class="n">pt_tv</span><span class="p">],</span>
                 <span class="p">]</span>
             <span class="p">)</span>
-            <span class="n">Y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">bmat</span><span class="p">([</span><span class="n">point</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">tangent_vector</span><span class="p">[</span><span class="n">i</span><span class="p">]])</span> <span class="o">@</span> <span class="n">W</span> <span class="o">@</span> <span class="n">Z</span>
-        <span class="k">return</span> <span class="n">Y</span></div>
+        <span class="p">)[</span><span class="o">...</span><span class="p">,</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">]</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">multiexpm</span><span class="p">(</span><span class="o">-</span><span class="n">pt_tv</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">a</span> <span class="o">@</span> <span class="p">(</span><span class="n">b</span> <span class="o">@</span> <span class="n">c</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Stiefel.zero_vector"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.stiefel.Stiefel.zero_vector">[docs]</a>    <span class="k">def</span> <span class="nf">zero_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_k</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
@@ -266,7 +240,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Jun 19, 2022.
+      <span class="lastupdated">Last updated on Aug 06, 2022.
       </span></p>
   </div>
 
@@ -280,12 +254,13 @@
   <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
   <span class="rst-current-version" data-toggle="rst-current-version">
     <span class="fa fa-book"> Other Versions</span>
-    v: stable (1.0.0)
+    v: stable
     <span class="fa fa-caret-down"></span>
   </span>
   <div class="rst-other-versions">
     <dl>
       <dt>Versions</dt>
+      <dd><a href="/docs/stable">stable</a></dd>
       <dd><a href="/docs/latest">latest</a></dd>
     </dl>
   </div>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pymanopt.manifolds.manifold &mdash; Pymanopt stable (1.0.0) documentation</title>
+  <title>pymanopt.manifolds.manifold &mdash; Pymanopt stable (2.0.0) documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/style.css" type="text/css" />
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" type="text/css" />
@@ -35,7 +35,7 @@
             <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                stable (1.0.0)
+                stable (2.0.0)
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -156,7 +156,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">dim</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">dim</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;The dimension of the manifold.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dimension</span>
 
@@ -167,19 +167,19 @@
 <span class="sd">        For most manifolds, which represent points as (potentially</span>
 <span class="sd">        multi-dimensional) arrays, this will be 1, but other manifolds might</span>
 <span class="sd">        represent points as tuples or lists of arrays.</span>
-<span class="sd">        In this case, `point_layout` describes how many elements such</span>
+<span class="sd">        In this case, :attr:`point_layout` describes how many elements such</span>
 <span class="sd">        tuples/lists contain.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_point_layout</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">num_values</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">num_values</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Total number of values representing a point on the manifold.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">point_layout</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">)):</span>
             <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">point_layout</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">point_layout</span>
 
-    <span class="c1"># Manifold properties that subclasses can define</span>
+    <span class="c1"># Manifold properties that subclasses can define.</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">typical_dist</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -187,6 +187,9 @@
 
 <span class="sd">        This is used by the trust-regions optimizer to determine default</span>
 <span class="sd">        initial and maximal trust-region radii.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            NotImplementedError: If no :attr:`typical_dist` is defined.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;Manifold &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&#39; does not provide a &quot;</span>
@@ -394,7 +397,7 @@
 <span class="sd">        transport) as defined in section 8.1 of [AMS2008]_, or a transporter</span>
 <span class="sd">        (see e.g. section 10.5 of [Bou2020]_).</span>
 <span class="sd">        It transports a vector ``tangent_vector_a`` in the tangent space at</span>
-<span class="sd">        ``point_a`` to the tangent space at `point_b`.</span>
+<span class="sd">        ``point_a`` to the tangent space at ``point_b``.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            point_a: The first point on the manifold.</span>
@@ -428,8 +431,8 @@
 
 <span class="sd">        This method guarantees that ``vector`` is indeed a tangent vector</span>
 <span class="sd">        at ``point`` on the manifold.</span>
-<span class="sd">        Typically this simply corresponds to ``proj(point, vector)`` but may</span>
-<span class="sd">        differ for certain manifolds.</span>
+<span class="sd">        Typically this simply corresponds to a call to meth:`projection` but</span>
+<span class="sd">        may differ for certain manifolds.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            point: A point on the manifold.</span>
@@ -437,7 +440,34 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            The tangent vector at ``point`` closest to ``vector``.</span>
-<span class="sd">        &quot;&quot;&quot;</span></div></div>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+
+<div class="viewcode-block" id="Manifold.embedding"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.manifold.Manifold.embedding">[docs]</a>    <span class="k">def</span> <span class="nf">embedding</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert tangent vector to ambient space representation.</span>
+
+<span class="sd">        Certain manifolds represent tangent vectors in a format that is more</span>
+<span class="sd">        convenient for numerical calculations than their representation in the</span>
+<span class="sd">        ambient space.</span>
+<span class="sd">        Euclidean Hessian operators generally expect tangent vectors in their</span>
+<span class="sd">        ambient space representation though.</span>
+<span class="sd">        This method allows switching between the two possible representations,</span>
+<span class="sd">        For most manifolds, ``embedding`` is simply the identity map.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            point: A point on the manifold.</span>
+<span class="sd">            tangent_vector: A tangent vector in the internal representation of</span>
+<span class="sd">                the manifold.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The same tangent vector in the ambient space representation.</span>
+
+<span class="sd">        Note:</span>
+<span class="sd">            This method is mainly needed internally by the</span>
+<span class="sd">            :class:`pymanopt.core.problem.Problem` class in order to convert</span>
+<span class="sd">            tangent vectors to the representation expected by user-given or</span>
+<span class="sd">            autodiff-generated Euclidean Hessian operators.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">tangent_vector</span></div></div>
 
 
 <div class="viewcode-block" id="RiemannianSubmanifold"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.manifold.RiemannianSubmanifold">[docs]</a><span class="k">class</span> <span class="nc">RiemannianSubmanifold</span><span class="p">(</span><span class="n">Manifold</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">abc</span><span class="o">.</span><span class="n">ABCMeta</span><span class="p">):</span>
@@ -519,7 +549,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Jun 19, 2022.
+      <span class="lastupdated">Last updated on Aug 06, 2022.
       </span></p>
   </div>
 
@@ -533,12 +563,13 @@
   <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
   <span class="rst-current-version" data-toggle="rst-current-version">
     <span class="fa fa-book"> Other Versions</span>
-    v: stable (1.0.0)
+    v: stable
     <span class="fa fa-caret-down"></span>
   </span>
   <div class="rst-other-versions">
     <dl>
       <dt>Versions</dt>
+      <dd><a href="/docs/stable">stable</a></dd>
       <dd><a href="/docs/latest">latest</a></dd>
     </dl>
   </div>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pymanopt.tools.multi &mdash; Pymanopt stable (1.0.0) documentation</title>
+  <title>pymanopt.tools.multi &mdash; Pymanopt stable (2.0.0) documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/style.css" type="text/css" />
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" type="text/css" />
@@ -35,7 +35,7 @@
             <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                stable (1.0.0)
+                stable (2.0.0)
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -86,38 +86,14 @@
 <span class="kn">import</span> <span class="nn">scipy.linalg</span>
 
 
-<div class="viewcode-block" id="multiprod"><a class="viewcode-back" href="../../../tools.html#pymanopt.tools.multi.multiprod">[docs]</a><span class="k">def</span> <span class="nf">multiprod</span><span class="p">(</span><span class="n">A</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">B</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Vectorized matrix-matrix multiplication.</span>
-
-<span class="sd">    The matrices ``A`` and ``B`` are assumed to be arrays containing ``k``</span>
-<span class="sd">    matrices, i.e., ``A`` and ``B`` have shape ``(k, m, n)`` and ``(k, n, p)``,</span>
-<span class="sd">    respectively.</span>
-<span class="sd">    The function multiplies each matrix in ``A`` with the corresponding matrix</span>
-<span class="sd">    in ``B`` along the first dimension.</span>
-<span class="sd">    The resulting array has shape ``(k, m, p)``.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        A: The first matrix.</span>
-<span class="sd">        B: The second matrix.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        The matrix (or more precisely array of matrices) corresponding to</span>
-<span class="sd">        the matrix product vectorized over the first dimension of ``A`` and</span>
-<span class="sd">        ``B`` (if ``A.ndim == 2``).</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">A</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">A</span> <span class="o">@</span> <span class="n">B</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;ijk,ikl-&gt;ijl&quot;</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span></div>
-
-
 <div class="viewcode-block" id="multitransp"><a class="viewcode-back" href="../../../tools.html#pymanopt.tools.multi.multitransp">[docs]</a><span class="k">def</span> <span class="nf">multitransp</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Vectorized matrix transpose.</span>
 
-<span class="sd">    A is assumed to be an array containing M matrices, each of which has</span>
-<span class="sd">    dimension N x P.</span>
-<span class="sd">    That is, A is an M x N x P array. Multitransp then returns an array</span>
-<span class="sd">    containing the M matrix transposes of the matrices in A, each of which will</span>
-<span class="sd">    be P x N.</span>
+<span class="sd">    ``A`` is assumed to be an array containing ``M`` matrices, each of which</span>
+<span class="sd">    has dimension ``N x P``.</span>
+<span class="sd">    That is, ``A`` is an ``M x N x P`` array. Multitransp then returns an array</span>
+<span class="sd">    containing the ``M`` matrix transposes of the matrices in ``A``, each of</span>
+<span class="sd">    which will be ``P x N``.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">A</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">A</span><span class="o">.</span><span class="n">T</span>
@@ -161,7 +137,7 @@
 
     <span class="n">w</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
     <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">w</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
-    <span class="n">logmA</span> <span class="o">=</span> <span class="n">multiprod</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">w</span> <span class="o">*</span> <span class="n">multihconj</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
+    <span class="n">logmA</span> <span class="o">=</span> <span class="n">v</span> <span class="o">@</span> <span class="p">(</span><span class="n">w</span> <span class="o">*</span> <span class="n">multihconj</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
     <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isrealobj</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">logmA</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">logmA</span></div>
@@ -174,10 +150,26 @@
 
     <span class="n">w</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
     <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">w</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
-    <span class="n">expmA</span> <span class="o">=</span> <span class="n">multiprod</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">w</span> <span class="o">*</span> <span class="n">multihconj</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
+    <span class="n">expmA</span> <span class="o">=</span> <span class="n">v</span> <span class="o">@</span> <span class="p">(</span><span class="n">w</span> <span class="o">*</span> <span class="n">multihconj</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
     <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isrealobj</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">expmA</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">expmA</span></div>
+
+
+<div class="viewcode-block" id="multiqr"><a class="viewcode-back" href="../../../tools.html#pymanopt.tools.multi.multiqr">[docs]</a><span class="k">def</span> <span class="nf">multiqr</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Vectorized QR decomposition.&quot;&quot;&quot;</span>
+    <span class="n">q</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vectorize</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">qr</span><span class="p">,</span> <span class="n">signature</span><span class="o">=</span><span class="s2">&quot;(m,n)-&gt;(m,k),(k,n)&quot;</span><span class="p">)(</span><span class="n">A</span><span class="p">)</span>
+
+    <span class="c1"># Compute signs or unit-modulus phase of entries of diagonal of r.</span>
+    <span class="n">diagonal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diagonal</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">axis1</span><span class="o">=-</span><span class="mi">2</span><span class="p">,</span> <span class="n">axis2</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">diagonal</span><span class="p">[</span><span class="n">diagonal</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">diagonal</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">diagonal</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">A</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="n">q</span> <span class="o">*</span> <span class="n">s</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">multitransp</span><span class="p">(</span><span class="n">multitransp</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">conjugate</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">q</span><span class="p">,</span> <span class="n">r</span></div>
 </pre></div>
 
            </div>
@@ -188,7 +180,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Jun 19, 2022.
+      <span class="lastupdated">Last updated on Aug 06, 2022.
       </span></p>
   </div>
 
@@ -202,12 +194,13 @@
   <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
   <span class="rst-current-version" data-toggle="rst-current-version">
     <span class="fa fa-book"> Other Versions</span>
-    v: stable (1.0.0)
+    v: stable
     <span class="fa fa-caret-down"></span>
   </span>
   <div class="rst-other-versions">
     <dl>
       <dt>Versions</dt>
+      <dd><a href="/docs/stable">stable</a></dd>
       <dd><a href="/docs/latest">latest</a></dd>
     </dl>
   </div>

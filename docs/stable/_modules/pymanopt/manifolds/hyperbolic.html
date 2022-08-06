@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pymanopt.manifolds.hyperbolic &mdash; Pymanopt stable (2.0.0) documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/style.css" type="text/css" />
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/katex-math.css" type="text/css" />
+    <link rel="canonical" href="pymanopt.org/_modules/pymanopt/manifolds/hyperbolic.html" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js"></script>
+        <script src="../../../_static/katex_autorenderer.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> Pymanopt
+            <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                stable (2.0.0)
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/pymanopt/pymanopt/tree/master/examples">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api-reference.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributing</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Notebooks</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/notebooks/mixture_of_gaussians.html">Riemannian Optimization for Inference in MoG models</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Pymanopt</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      <li>pymanopt.manifolds.hyperbolic</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pymanopt.manifolds.hyperbolic</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">pymanopt.manifolds.manifold</span> <span class="kn">import</span> <span class="n">Manifold</span>
+
+
+<div class="viewcode-block" id="PoincareBall"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.hyperbolic.PoincareBall">[docs]</a><span class="k">class</span> <span class="nc">PoincareBall</span><span class="p">(</span><span class="n">Manifold</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;The Poincare ball.</span>
+
+<span class="sd">    The Poincare ball of dimension ``n``.</span>
+<span class="sd">    Elements are represented as arrays of shape ``(n,)`` if ``k = 1``.</span>
+<span class="sd">    For ``k &gt; 1``, the class represents the product manifold of ``k`` Poincare</span>
+<span class="sd">    balls of dimension ``n``, in which case points are represented as arrays of</span>
+<span class="sd">    shape ``(k, n)``.</span>
+
+<span class="sd">    Since the manifold is open, the tangent space at every point is a copy of</span>
+<span class="sd">    :math:`\R^n`.</span>
+
+<span class="sd">    The Poincare ball is embedded in :math:`\R^n` and is a Riemannian manifold,</span>
+<span class="sd">    but it is not an embedded Riemannian submanifold since the metric is not</span>
+<span class="sd">    inherited from the Euclidean inner product of its ambient space.</span>
+<span class="sd">    Instead, the Riemannian metric is conformal to the Euclidean one (angles are</span>
+<span class="sd">    preserved), and it is given at every point :math:`\vmx` by</span>
+<span class="sd">    :math:`\inner{\vmu}{\vmv}_\vmx = \lambda_\vmx^2 \inner{\vmu}{\vmv}` where</span>
+<span class="sd">    :math:`\lambda_\vmx = 2 / (1 - \norm{\vmx}^2)` is the conformal factor.</span>
+<span class="sd">    This induces the following distance between two points :math:`\vmx` and</span>
+<span class="sd">    :math:`\vmy` on the manifold:</span>
+
+<span class="sd">        :math:`\dist_\manM(\vmx, \vmy) = \arccosh\parens{1 + 2 \frac{\norm{\vmx</span>
+<span class="sd">        - \vmy}^2}{(1 - \norm{\vmx}^2) (1 - \norm{\vmy}^2)}}.`</span>
+
+<span class="sd">    The norm here is understood as the Euclidean norm in the ambient space.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        n: The dimension of the Poincare ball.</span>
+<span class="sd">        k: The number of elements in the product of Poincare balls.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_n</span> <span class="o">=</span> <span class="n">n</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_k</span> <span class="o">=</span> <span class="n">k</span>
+
+        <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Need n &gt;= 1. Value given was n = </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Need k &gt;= 1. Value given was k = </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Poincare ball B(</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">)&quot;</span>
+        <span class="k">elif</span> <span class="n">k</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Poincare ball B(</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">)^</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">&quot;</span>
+
+        <span class="n">dimension</span> <span class="o">=</span> <span class="n">k</span> <span class="o">*</span> <span class="n">n</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">dimension</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">typical_dist</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">/</span> <span class="mi">8</span>
+
+<div class="viewcode-block" id="PoincareBall.inner_product"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.hyperbolic.PoincareBall.inner_product">[docs]</a>    <span class="k">def</span> <span class="nf">inner_product</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector_a</span><span class="p">,</span> <span class="n">tangent_vector_b</span><span class="p">):</span>
+        <span class="n">factor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conformal_factor</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">tensordot</span><span class="p">(</span>
+            <span class="n">tangent_vector_a</span><span class="p">,</span>
+            <span class="n">tangent_vector_b</span> <span class="o">*</span> <span class="n">factor</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">axes</span><span class="o">=</span><span class="n">tangent_vector_a</span><span class="o">.</span><span class="n">ndim</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="PoincareBall.projection"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.hyperbolic.PoincareBall.projection">[docs]</a>    <span class="k">def</span> <span class="nf">projection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">vector</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">vector</span></div>
+
+    <span class="n">to_tangent_space</span> <span class="o">=</span> <span class="n">projection</span>
+
+<div class="viewcode-block" id="PoincareBall.norm"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.hyperbolic.PoincareBall.norm">[docs]</a>    <span class="k">def</span> <span class="nf">norm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">inner_product</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">)</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="PoincareBall.random_point"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.hyperbolic.PoincareBall.random_point">[docs]</a>    <span class="k">def</span> <span class="nf">random_point</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_k</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n</span><span class="p">))</span>
+        <span class="n">norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">radius</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_k</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">**</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n</span><span class="p">)</span>
+        <span class="n">point</span> <span class="o">=</span> <span class="n">array</span> <span class="o">/</span> <span class="n">norm</span> <span class="o">*</span> <span class="n">radius</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_k</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">point</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">point</span></div>
+
+<div class="viewcode-block" id="PoincareBall.random_tangent_vector"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.hyperbolic.PoincareBall.random_tangent_vector">[docs]</a>    <span class="k">def</span> <span class="nf">random_tangent_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
+        <span class="n">vector</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">point</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">vector</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">vector</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PoincareBall.zero_vector"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.hyperbolic.PoincareBall.zero_vector">[docs]</a>    <span class="k">def</span> <span class="nf">zero_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">point</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PoincareBall.dist"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.hyperbolic.PoincareBall.dist">[docs]</a>    <span class="k">def</span> <span class="nf">dist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point_a</span><span class="p">,</span> <span class="n">point_b</span><span class="p">):</span>
+        <span class="n">norm_point_a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">point_a</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+        <span class="n">norm_point_b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">point_b</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+        <span class="n">norm_difference</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">point_a</span> <span class="o">-</span> <span class="n">point_b</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">arccosh</span><span class="p">(</span>
+                <span class="mi">1</span>
+                <span class="o">+</span> <span class="mi">2</span>
+                <span class="o">*</span> <span class="n">norm_difference</span>
+                <span class="o">/</span> <span class="p">((</span><span class="mi">1</span> <span class="o">-</span> <span class="n">norm_point_a</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">norm_point_b</span><span class="p">))</span>
+            <span class="p">)</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="PoincareBall.euclidean_to_riemannian_gradient"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.hyperbolic.PoincareBall.euclidean_to_riemannian_gradient">[docs]</a>    <span class="k">def</span> <span class="nf">euclidean_to_riemannian_gradient</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">euclidean_gradient</span><span class="p">):</span>
+        <span class="c1"># The hyperbolic metric tensor is conformal to the Euclidean one, so</span>
+        <span class="c1"># the Euclidean gradient is simply rescaled.</span>
+        <span class="n">factor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conformal_factor</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">euclidean_gradient</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">factor</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PoincareBall.euclidean_to_riemannian_hessian"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.hyperbolic.PoincareBall.euclidean_to_riemannian_hessian">[docs]</a>    <span class="k">def</span> <span class="nf">euclidean_to_riemannian_hessian</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">euclidean_gradient</span><span class="p">,</span> <span class="n">euclidean_hessian</span><span class="p">,</span> <span class="n">tangent_vector</span>
+    <span class="p">):</span>
+        <span class="c1"># This expression is derived from the Koszul formula.</span>
+        <span class="n">factor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conformal_factor</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">euclidean_gradient</span> <span class="o">*</span> <span class="n">point</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="o">*</span> <span class="n">tangent_vector</span>
+            <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">point</span> <span class="o">*</span> <span class="n">tangent_vector</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="o">*</span> <span class="n">euclidean_gradient</span>
+            <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span>
+                <span class="n">euclidean_gradient</span> <span class="o">*</span> <span class="n">tangent_vector</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span>
+            <span class="p">)</span>
+            <span class="o">*</span> <span class="n">point</span>
+            <span class="o">+</span> <span class="n">euclidean_hessian</span> <span class="o">/</span> <span class="n">factor</span>
+        <span class="p">)</span> <span class="o">/</span> <span class="n">factor</span></div>
+
+<div class="viewcode-block" id="PoincareBall.exp"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.hyperbolic.PoincareBall.exp">[docs]</a>    <span class="k">def</span> <span class="nf">exp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">):</span>
+        <span class="n">norm_point</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">tangent_vector</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">factor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conformal_factor</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mobius_addition</span><span class="p">(</span>
+            <span class="n">point</span><span class="p">,</span>
+            <span class="n">tangent_vector</span>
+            <span class="o">*</span> <span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="n">norm_point</span> <span class="o">*</span> <span class="n">factor</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+                <span class="o">/</span> <span class="p">(</span><span class="n">norm_point</span> <span class="o">+</span> <span class="p">(</span><span class="n">norm_point</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))</span>
+            <span class="p">),</span>
+        <span class="p">)</span></div>
+
+    <span class="n">retraction</span> <span class="o">=</span> <span class="n">exp</span>
+
+<div class="viewcode-block" id="PoincareBall.log"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.hyperbolic.PoincareBall.log">[docs]</a>    <span class="k">def</span> <span class="nf">log</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point_a</span><span class="p">,</span> <span class="n">point_b</span><span class="p">):</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mobius_addition</span><span class="p">(</span><span class="o">-</span><span class="n">point_a</span><span class="p">,</span> <span class="n">point_b</span><span class="p">)</span>
+        <span class="n">norm_w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">factor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conformal_factor</span><span class="p">(</span><span class="n">point_a</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">arctanh</span><span class="p">(</span><span class="n">norm_w</span><span class="p">)</span> <span class="o">*</span> <span class="n">w</span> <span class="o">/</span> <span class="n">norm_w</span> <span class="o">/</span> <span class="p">(</span><span class="n">factor</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PoincareBall.pair_mean"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.hyperbolic.PoincareBall.pair_mean">[docs]</a>    <span class="k">def</span> <span class="nf">pair_mean</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point_a</span><span class="p">,</span> <span class="n">point_b</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">point_a</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">point_a</span><span class="p">,</span> <span class="n">point_b</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PoincareBall.mobius_addition"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.hyperbolic.PoincareBall.mobius_addition">[docs]</a>    <span class="k">def</span> <span class="nf">mobius_addition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point_a</span><span class="p">,</span> <span class="n">point_b</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Möbius addition.</span>
+
+<span class="sd">        Special non-associative and non-commutative operation which is closed</span>
+<span class="sd">        in the Poincare ball.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            point_a: The first point.</span>
+<span class="sd">            point_b: The second point.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The Möbius sum of ``point_a`` and ``point_b``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">scalar_product</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">point_a</span> <span class="o">*</span> <span class="n">point_b</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">norm_point_a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">point_a</span> <span class="o">*</span> <span class="n">point_a</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">norm_point_b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">point_b</span> <span class="o">*</span> <span class="n">point_b</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">point_a</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">scalar_product</span> <span class="o">+</span> <span class="n">norm_point_b</span><span class="p">)</span>
+            <span class="o">+</span> <span class="n">point_b</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">norm_point_a</span><span class="p">)</span>
+        <span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">scalar_product</span> <span class="o">+</span> <span class="n">norm_point_a</span> <span class="o">*</span> <span class="n">norm_point_b</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PoincareBall.conformal_factor"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.hyperbolic.PoincareBall.conformal_factor">[docs]</a>    <span class="k">def</span> <span class="nf">conformal_factor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The conformal factor for a point.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            point: The point for which to compute the conformal factor.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The conformal factor.</span>
+<span class="sd">            If ``point`` is a point on the product manifold of ``k`` Poincare</span>
+<span class="sd">            balls, the return value will be an array of shape ``(k,1)``.</span>
+<span class="sd">            The singleton dimension is explicitly kept to simplify</span>
+<span class="sd">            multiplication of ``point`` by the conformal factor on product</span>
+<span class="sd">            manifolds.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">point</span> <span class="o">*</span> <span class="n">point</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
+      <span class="lastupdated">Last updated on Aug 06, 2022.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: stable
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl>
+      <dt>Versions</dt>
+      <dd><a href="/docs/stable">stable</a></dd>
+      <dd><a href="/docs/latest">latest</a></dd>
+    </dl>
+  </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

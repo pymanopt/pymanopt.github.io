@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Index &mdash; Pymanopt stable (1.0.0) documentation</title>
+  <title>Index &mdash; Pymanopt stable (2.0.0) documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/style.css" type="text/css" />
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" type="text/css" />
@@ -35,7 +35,7 @@
             <img src="_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                stable (1.0.0)
+                stable (2.0.0)
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -91,7 +91,6 @@
  | <a href="#E"><strong>E</strong></a>
  | <a href="#F"><strong>F</strong></a>
  | <a href="#G"><strong>G</strong></a>
- | <a href="#H"><strong>H</strong></a>
  | <a href="#I"><strong>I</strong></a>
  | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
@@ -126,8 +125,6 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="optimizers.html#pymanopt.optimizers.line_search.BackTrackingLineSearcher">BackTrackingLineSearcher (class in pymanopt.optimizers.line_search)</a>
 </li>
-      <li><a href="optimizers.html#pymanopt.optimizers.conjugate_gradient.BetaRule">BetaRule (class in pymanopt.optimizers.conjugate_gradient)</a>
-</li>
   </ul></td>
 </tr></table>
 
@@ -147,6 +144,8 @@
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="optimizers.html#pymanopt.optimizers.nelder_mead.compute_centroid">compute_centroid() (in module pymanopt.optimizers.nelder_mead)</a>
+</li>
+      <li><a href="manifolds.html#pymanopt.manifolds.hyperbolic.PoincareBall.conformal_factor">conformal_factor() (pymanopt.manifolds.hyperbolic.PoincareBall method)</a>
 </li>
       <li><a href="optimizers.html#pymanopt.optimizers.conjugate_gradient.ConjugateGradient">ConjugateGradient (class in pymanopt.optimizers.conjugate_gradient)</a>
 </li>
@@ -178,6 +177,8 @@
         <li><a href="manifolds.html#pymanopt.manifolds.grassmann.ComplexGrassmann.dim">(pymanopt.manifolds.grassmann.ComplexGrassmann property)</a>
 </li>
         <li><a href="manifolds.html#pymanopt.manifolds.grassmann.Grassmann.dim">(pymanopt.manifolds.grassmann.Grassmann property)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.hyperbolic.PoincareBall.dim">(pymanopt.manifolds.hyperbolic.PoincareBall property)</a>
 </li>
         <li><a href="manifolds.html#pymanopt.manifolds.manifold.Manifold.dim">(pymanopt.manifolds.manifold.Manifold property)</a>
 </li>
@@ -225,6 +226,8 @@
 </li>
         <li><a href="manifolds.html#pymanopt.manifolds.grassmann.Grassmann.dist">(pymanopt.manifolds.grassmann.Grassmann method)</a>
 </li>
+        <li><a href="manifolds.html#pymanopt.manifolds.hyperbolic.PoincareBall.dist">(pymanopt.manifolds.hyperbolic.PoincareBall method)</a>
+</li>
         <li><a href="manifolds.html#pymanopt.manifolds.manifold.Manifold.dist">(pymanopt.manifolds.manifold.Manifold method)</a>
 </li>
         <li><a href="manifolds.html#pymanopt.manifolds.manifold.RiemannianSubmanifold.dist">(pymanopt.manifolds.manifold.RiemannianSubmanifold method)</a>
@@ -262,10 +265,50 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="manifolds.html#pymanopt.manifolds.psd.Elliptope">Elliptope (class in pymanopt.manifolds.psd)</a>
 </li>
-      <li><a href="manifolds.html#pymanopt.manifolds.fixed_rank.FixedRankEmbedded.embedding">embedding() (pymanopt.manifolds.fixed_rank.FixedRankEmbedded method)</a>
+      <li><a href="manifolds.html#pymanopt.manifolds.complex_circle.ComplexCircle.embedding">embedding() (pymanopt.manifolds.complex_circle.ComplexCircle method)</a>
 
       <ul>
+        <li><a href="manifolds.html#pymanopt.manifolds.euclidean.Euclidean.embedding">(pymanopt.manifolds.euclidean.Euclidean method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.euclidean.SkewSymmetric.embedding">(pymanopt.manifolds.euclidean.SkewSymmetric method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.euclidean.Symmetric.embedding">(pymanopt.manifolds.euclidean.Symmetric method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.fixed_rank.FixedRankEmbedded.embedding">(pymanopt.manifolds.fixed_rank.FixedRankEmbedded method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.grassmann.ComplexGrassmann.embedding">(pymanopt.manifolds.grassmann.ComplexGrassmann method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.grassmann.Grassmann.embedding">(pymanopt.manifolds.grassmann.Grassmann method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.hyperbolic.PoincareBall.embedding">(pymanopt.manifolds.hyperbolic.PoincareBall method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.manifold.Manifold.embedding">(pymanopt.manifolds.manifold.Manifold method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.manifold.RiemannianSubmanifold.embedding">(pymanopt.manifolds.manifold.RiemannianSubmanifold method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.oblique.Oblique.embedding">(pymanopt.manifolds.oblique.Oblique method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.positive.Positive.embedding">(pymanopt.manifolds.positive.Positive method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.positive_definite.SymmetricPositiveDefinite.embedding">(pymanopt.manifolds.positive_definite.SymmetricPositiveDefinite method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.product.Product.embedding">(pymanopt.manifolds.product.Product method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.psd.Elliptope.embedding">(pymanopt.manifolds.psd.Elliptope method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.psd.PSDFixedRank.embedding">(pymanopt.manifolds.psd.PSDFixedRank method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.psd.PSDFixedRankComplex.embedding">(pymanopt.manifolds.psd.PSDFixedRankComplex method)</a>
+</li>
         <li><a href="manifolds.html#pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.embedding">(pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.sphere.Sphere.embedding">(pymanopt.manifolds.sphere.Sphere method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.sphere.SphereSubspaceComplementIntersection.embedding">(pymanopt.manifolds.sphere.SphereSubspaceComplementIntersection method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.sphere.SphereSubspaceIntersection.embedding">(pymanopt.manifolds.sphere.SphereSubspaceIntersection method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.stiefel.Stiefel.embedding">(pymanopt.manifolds.stiefel.Stiefel method)</a>
 </li>
       </ul></li>
       <li><a href="manifolds.html#pymanopt.manifolds.euclidean.Euclidean">Euclidean (class in pymanopt.manifolds.euclidean)</a>
@@ -290,6 +333,8 @@
         <li><a href="manifolds.html#pymanopt.manifolds.grassmann.ComplexGrassmann.euclidean_to_riemannian_gradient">(pymanopt.manifolds.grassmann.ComplexGrassmann method)</a>
 </li>
         <li><a href="manifolds.html#pymanopt.manifolds.grassmann.Grassmann.euclidean_to_riemannian_gradient">(pymanopt.manifolds.grassmann.Grassmann method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.hyperbolic.PoincareBall.euclidean_to_riemannian_gradient">(pymanopt.manifolds.hyperbolic.PoincareBall method)</a>
 </li>
         <li><a href="manifolds.html#pymanopt.manifolds.manifold.Manifold.euclidean_to_riemannian_gradient">(pymanopt.manifolds.manifold.Manifold method)</a>
 </li>
@@ -320,6 +365,8 @@
         <li><a href="manifolds.html#pymanopt.manifolds.stiefel.Stiefel.euclidean_to_riemannian_gradient">(pymanopt.manifolds.stiefel.Stiefel method)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="tools.html#pymanopt.tools.testing.euclidean_to_riemannian_hessian">euclidean_to_riemannian_hessian() (in module pymanopt.tools.testing)</a>
 
       <ul>
@@ -336,6 +383,8 @@
         <li><a href="manifolds.html#pymanopt.manifolds.grassmann.ComplexGrassmann.euclidean_to_riemannian_hessian">(pymanopt.manifolds.grassmann.ComplexGrassmann method)</a>
 </li>
         <li><a href="manifolds.html#pymanopt.manifolds.grassmann.Grassmann.euclidean_to_riemannian_hessian">(pymanopt.manifolds.grassmann.Grassmann method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.hyperbolic.PoincareBall.euclidean_to_riemannian_hessian">(pymanopt.manifolds.hyperbolic.PoincareBall method)</a>
 </li>
         <li><a href="manifolds.html#pymanopt.manifolds.manifold.Manifold.euclidean_to_riemannian_hessian">(pymanopt.manifolds.manifold.Manifold method)</a>
 </li>
@@ -366,8 +415,6 @@
         <li><a href="manifolds.html#pymanopt.manifolds.stiefel.Stiefel.euclidean_to_riemannian_hessian">(pymanopt.manifolds.stiefel.Stiefel method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="optimizers.html#pymanopt.optimizers.trust_regions.TrustRegions.EXCEEDED_TR">EXCEEDED_TR (pymanopt.optimizers.trust_regions.TrustRegions attribute)</a>
 </li>
       <li><a href="manifolds.html#pymanopt.manifolds.complex_circle.ComplexCircle.exp">exp() (pymanopt.manifolds.complex_circle.ComplexCircle method)</a>
@@ -384,6 +431,8 @@
         <li><a href="manifolds.html#pymanopt.manifolds.grassmann.ComplexGrassmann.exp">(pymanopt.manifolds.grassmann.ComplexGrassmann method)</a>
 </li>
         <li><a href="manifolds.html#pymanopt.manifolds.grassmann.Grassmann.exp">(pymanopt.manifolds.grassmann.Grassmann method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.hyperbolic.PoincareBall.exp">(pymanopt.manifolds.hyperbolic.PoincareBall method)</a>
 </li>
         <li><a href="manifolds.html#pymanopt.manifolds.manifold.Manifold.exp">(pymanopt.manifolds.manifold.Manifold method)</a>
 </li>
@@ -426,8 +475,6 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="optimizers.html#pymanopt.optimizers.conjugate_gradient.BetaRule.FletcherReeves">FletcherReeves (pymanopt.optimizers.conjugate_gradient.BetaRule attribute)</a>
-</li>
       <li><a href="autodiff.html#pymanopt.autodiff.Function">Function (class in pymanopt.autodiff)</a>
 </li>
   </ul></td>
@@ -445,18 +492,6 @@
       <li><a href="optimizers.html#pymanopt.optimizers.optimizer.OptimizerResult.gradient_norm">gradient_norm (pymanopt.optimizers.optimizer.OptimizerResult attribute)</a>
 </li>
       <li><a href="manifolds.html#pymanopt.manifolds.grassmann.Grassmann">Grassmann (class in pymanopt.manifolds.grassmann)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="H">H</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="optimizers.html#pymanopt.optimizers.conjugate_gradient.BetaRule.HagerZhang">HagerZhang (pymanopt.optimizers.conjugate_gradient.BetaRule attribute)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="optimizers.html#pymanopt.optimizers.conjugate_gradient.BetaRule.HestenesStiefel">HestenesStiefel (pymanopt.optimizers.conjugate_gradient.BetaRule attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -480,6 +515,8 @@
         <li><a href="manifolds.html#pymanopt.manifolds.grassmann.ComplexGrassmann.inner_product">(pymanopt.manifolds.grassmann.ComplexGrassmann method)</a>
 </li>
         <li><a href="manifolds.html#pymanopt.manifolds.grassmann.Grassmann.inner_product">(pymanopt.manifolds.grassmann.Grassmann method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.hyperbolic.PoincareBall.inner_product">(pymanopt.manifolds.hyperbolic.PoincareBall method)</a>
 </li>
         <li><a href="manifolds.html#pymanopt.manifolds.manifold.Manifold.inner_product">(pymanopt.manifolds.manifold.Manifold method)</a>
 </li>
@@ -537,6 +574,8 @@
 </li>
         <li><a href="manifolds.html#pymanopt.manifolds.grassmann.Grassmann.log">(pymanopt.manifolds.grassmann.Grassmann method)</a>
 </li>
+        <li><a href="manifolds.html#pymanopt.manifolds.hyperbolic.PoincareBall.log">(pymanopt.manifolds.hyperbolic.PoincareBall method)</a>
+</li>
         <li><a href="manifolds.html#pymanopt.manifolds.manifold.Manifold.log">(pymanopt.manifolds.manifold.Manifold method)</a>
 </li>
         <li><a href="manifolds.html#pymanopt.manifolds.manifold.RiemannianSubmanifold.log">(pymanopt.manifolds.manifold.RiemannianSubmanifold method)</a>
@@ -576,6 +615,8 @@
 </li>
       <li><a href="optimizers.html#pymanopt.optimizers.trust_regions.TrustRegions.MAX_INNER_ITER">MAX_INNER_ITER (pymanopt.optimizers.trust_regions.TrustRegions attribute)</a>
 </li>
+      <li><a href="manifolds.html#pymanopt.manifolds.hyperbolic.PoincareBall.mobius_addition">mobius_addition() (pymanopt.manifolds.hyperbolic.PoincareBall method)</a>
+</li>
       <li><a href="optimizers.html#pymanopt.optimizers.trust_regions.TrustRegions.MODEL_INCREASED">MODEL_INCREASED (pymanopt.optimizers.trust_regions.TrustRegions attribute)</a>
 </li>
       <li>
@@ -595,6 +636,8 @@
         <li><a href="manifolds.html#module-pymanopt.manifolds.fixed_rank">pymanopt.manifolds.fixed_rank</a>
 </li>
         <li><a href="manifolds.html#module-pymanopt.manifolds.grassmann">pymanopt.manifolds.grassmann</a>
+</li>
+        <li><a href="manifolds.html#module-pymanopt.manifolds.hyperbolic">pymanopt.manifolds.hyperbolic</a>
 </li>
         <li><a href="manifolds.html#module-pymanopt.manifolds.manifold">pymanopt.manifolds.manifold</a>
 </li>
@@ -645,7 +688,7 @@
 </li>
       <li><a href="tools.html#pymanopt.tools.multi.multilogm">multilogm() (in module pymanopt.tools.multi)</a>
 </li>
-      <li><a href="tools.html#pymanopt.tools.multi.multiprod">multiprod() (in module pymanopt.tools.multi)</a>
+      <li><a href="tools.html#pymanopt.tools.multi.multiqr">multiqr() (in module pymanopt.tools.multi)</a>
 </li>
       <li><a href="tools.html#pymanopt.tools.multi.multiskew">multiskew() (in module pymanopt.tools.multi)</a>
 </li>
@@ -677,6 +720,8 @@
         <li><a href="manifolds.html#pymanopt.manifolds.grassmann.ComplexGrassmann.norm">(pymanopt.manifolds.grassmann.ComplexGrassmann method)</a>
 </li>
         <li><a href="manifolds.html#pymanopt.manifolds.grassmann.Grassmann.norm">(pymanopt.manifolds.grassmann.Grassmann method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.hyperbolic.PoincareBall.norm">(pymanopt.manifolds.hyperbolic.PoincareBall method)</a>
 </li>
         <li><a href="manifolds.html#pymanopt.manifolds.manifold.Manifold.norm">(pymanopt.manifolds.manifold.Manifold method)</a>
 </li>
@@ -723,6 +768,8 @@
         <li><a href="manifolds.html#pymanopt.manifolds.grassmann.ComplexGrassmann.num_values">(pymanopt.manifolds.grassmann.ComplexGrassmann property)</a>
 </li>
         <li><a href="manifolds.html#pymanopt.manifolds.grassmann.Grassmann.num_values">(pymanopt.manifolds.grassmann.Grassmann property)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.hyperbolic.PoincareBall.num_values">(pymanopt.manifolds.hyperbolic.PoincareBall property)</a>
 </li>
         <li><a href="manifolds.html#pymanopt.manifolds.manifold.Manifold.num_values">(pymanopt.manifolds.manifold.Manifold property)</a>
 </li>
@@ -790,6 +837,8 @@
 </li>
         <li><a href="manifolds.html#pymanopt.manifolds.grassmann.Grassmann.pair_mean">(pymanopt.manifolds.grassmann.Grassmann method)</a>
 </li>
+        <li><a href="manifolds.html#pymanopt.manifolds.hyperbolic.PoincareBall.pair_mean">(pymanopt.manifolds.hyperbolic.PoincareBall method)</a>
+</li>
         <li><a href="manifolds.html#pymanopt.manifolds.manifold.Manifold.pair_mean">(pymanopt.manifolds.manifold.Manifold method)</a>
 </li>
         <li><a href="manifolds.html#pymanopt.manifolds.manifold.RiemannianSubmanifold.pair_mean">(pymanopt.manifolds.manifold.RiemannianSubmanifold method)</a>
@@ -821,6 +870,8 @@
       </ul></li>
       <li><a href="optimizers.html#pymanopt.optimizers.particle_swarm.ParticleSwarm">ParticleSwarm (class in pymanopt.optimizers.particle_swarm)</a>
 </li>
+      <li><a href="manifolds.html#pymanopt.manifolds.hyperbolic.PoincareBall">PoincareBall (class in pymanopt.manifolds.hyperbolic)</a>
+</li>
       <li><a href="optimizers.html#pymanopt.optimizers.optimizer.OptimizerResult.point">point (pymanopt.optimizers.optimizer.OptimizerResult attribute)</a>
 </li>
       <li><a href="manifolds.html#pymanopt.manifolds.complex_circle.ComplexCircle.point_layout">point_layout (pymanopt.manifolds.complex_circle.ComplexCircle property)</a>
@@ -837,6 +888,8 @@
         <li><a href="manifolds.html#pymanopt.manifolds.grassmann.ComplexGrassmann.point_layout">(pymanopt.manifolds.grassmann.ComplexGrassmann property)</a>
 </li>
         <li><a href="manifolds.html#pymanopt.manifolds.grassmann.Grassmann.point_layout">(pymanopt.manifolds.grassmann.Grassmann property)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.hyperbolic.PoincareBall.point_layout">(pymanopt.manifolds.hyperbolic.PoincareBall property)</a>
 </li>
         <li><a href="manifolds.html#pymanopt.manifolds.manifold.Manifold.point_layout">(pymanopt.manifolds.manifold.Manifold property)</a>
 </li>
@@ -867,8 +920,6 @@
         <li><a href="manifolds.html#pymanopt.manifolds.stiefel.Stiefel.point_layout">(pymanopt.manifolds.stiefel.Stiefel property)</a>
 </li>
       </ul></li>
-      <li><a href="optimizers.html#pymanopt.optimizers.conjugate_gradient.BetaRule.PolakRibiere">PolakRibiere (pymanopt.optimizers.conjugate_gradient.BetaRule attribute)</a>
-</li>
       <li><a href="manifolds.html#pymanopt.manifolds.positive.Positive">Positive (class in pymanopt.manifolds.positive)</a>
 </li>
       <li><a href="problem.html#pymanopt.core.problem.Problem">Problem (class in pymanopt.core.problem)</a>
@@ -889,6 +940,8 @@
         <li><a href="manifolds.html#pymanopt.manifolds.grassmann.ComplexGrassmann.projection">(pymanopt.manifolds.grassmann.ComplexGrassmann method)</a>
 </li>
         <li><a href="manifolds.html#pymanopt.manifolds.grassmann.Grassmann.projection">(pymanopt.manifolds.grassmann.Grassmann method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.hyperbolic.PoincareBall.projection">(pymanopt.manifolds.hyperbolic.PoincareBall method)</a>
 </li>
         <li><a href="manifolds.html#pymanopt.manifolds.manifold.Manifold.projection">(pymanopt.manifolds.manifold.Manifold method)</a>
 </li>
@@ -972,6 +1025,13 @@
 
       <ul>
         <li><a href="manifolds.html#module-pymanopt.manifolds.grassmann">module</a>
+</li>
+      </ul></li>
+      <li>
+    pymanopt.manifolds.hyperbolic
+
+      <ul>
+        <li><a href="manifolds.html#module-pymanopt.manifolds.hyperbolic">module</a>
 </li>
       </ul></li>
       <li>
@@ -1130,6 +1190,8 @@
 </li>
         <li><a href="manifolds.html#pymanopt.manifolds.grassmann.Grassmann.random_point">(pymanopt.manifolds.grassmann.Grassmann method)</a>
 </li>
+        <li><a href="manifolds.html#pymanopt.manifolds.hyperbolic.PoincareBall.random_point">(pymanopt.manifolds.hyperbolic.PoincareBall method)</a>
+</li>
         <li><a href="manifolds.html#pymanopt.manifolds.manifold.Manifold.random_point">(pymanopt.manifolds.manifold.Manifold method)</a>
 </li>
         <li><a href="manifolds.html#pymanopt.manifolds.manifold.RiemannianSubmanifold.random_point">(pymanopt.manifolds.manifold.RiemannianSubmanifold method)</a>
@@ -1173,6 +1235,8 @@
         <li><a href="manifolds.html#pymanopt.manifolds.grassmann.ComplexGrassmann.random_tangent_vector">(pymanopt.manifolds.grassmann.ComplexGrassmann method)</a>
 </li>
         <li><a href="manifolds.html#pymanopt.manifolds.grassmann.Grassmann.random_tangent_vector">(pymanopt.manifolds.grassmann.Grassmann method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.hyperbolic.PoincareBall.random_tangent_vector">(pymanopt.manifolds.hyperbolic.PoincareBall method)</a>
 </li>
         <li><a href="manifolds.html#pymanopt.manifolds.manifold.Manifold.random_tangent_vector">(pymanopt.manifolds.manifold.Manifold method)</a>
 </li>
@@ -1223,6 +1287,8 @@
         <li><a href="manifolds.html#pymanopt.manifolds.grassmann.ComplexGrassmann.retraction">(pymanopt.manifolds.grassmann.ComplexGrassmann method)</a>
 </li>
         <li><a href="manifolds.html#pymanopt.manifolds.grassmann.Grassmann.retraction">(pymanopt.manifolds.grassmann.Grassmann method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.hyperbolic.PoincareBall.retraction">(pymanopt.manifolds.hyperbolic.PoincareBall method)</a>
 </li>
         <li><a href="manifolds.html#pymanopt.manifolds.manifold.Manifold.retraction">(pymanopt.manifolds.manifold.Manifold method)</a>
 </li>
@@ -1319,8 +1385,6 @@
 <h2 id="T">T</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="manifolds.html#pymanopt.manifolds.complex_circle.ComplexCircle.tangent">tangent() (pymanopt.manifolds.complex_circle.ComplexCircle method)</a>
-</li>
       <li><a href="optimizers.html#pymanopt.optimizers.trust_regions.TrustRegions.TCG_STOP_REASONS">TCG_STOP_REASONS (pymanopt.optimizers.trust_regions.TrustRegions attribute)</a>
 </li>
       <li><a href="autodiff.html#pymanopt.function.tensorflow">tensorflow() (in module pymanopt.function)</a>
@@ -1341,6 +1405,8 @@
         <li><a href="manifolds.html#pymanopt.manifolds.grassmann.ComplexGrassmann.to_tangent_space">(pymanopt.manifolds.grassmann.ComplexGrassmann method)</a>
 </li>
         <li><a href="manifolds.html#pymanopt.manifolds.grassmann.Grassmann.to_tangent_space">(pymanopt.manifolds.grassmann.Grassmann method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.hyperbolic.PoincareBall.to_tangent_space">(pymanopt.manifolds.hyperbolic.PoincareBall method)</a>
 </li>
         <li><a href="manifolds.html#pymanopt.manifolds.manifold.Manifold.to_tangent_space">(pymanopt.manifolds.manifold.Manifold method)</a>
 </li>
@@ -1385,6 +1451,8 @@
         <li><a href="manifolds.html#pymanopt.manifolds.grassmann.ComplexGrassmann.transport">(pymanopt.manifolds.grassmann.ComplexGrassmann method)</a>
 </li>
         <li><a href="manifolds.html#pymanopt.manifolds.grassmann.Grassmann.transport">(pymanopt.manifolds.grassmann.Grassmann method)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.hyperbolic.PoincareBall.transport">(pymanopt.manifolds.hyperbolic.PoincareBall method)</a>
 </li>
         <li><a href="manifolds.html#pymanopt.manifolds.manifold.Manifold.transport">(pymanopt.manifolds.manifold.Manifold method)</a>
 </li>
@@ -1433,6 +1501,8 @@
         <li><a href="manifolds.html#pymanopt.manifolds.grassmann.ComplexGrassmann.typical_dist">(pymanopt.manifolds.grassmann.ComplexGrassmann property)</a>
 </li>
         <li><a href="manifolds.html#pymanopt.manifolds.grassmann.Grassmann.typical_dist">(pymanopt.manifolds.grassmann.Grassmann property)</a>
+</li>
+        <li><a href="manifolds.html#pymanopt.manifolds.hyperbolic.PoincareBall.typical_dist">(pymanopt.manifolds.hyperbolic.PoincareBall property)</a>
 </li>
         <li><a href="manifolds.html#pymanopt.manifolds.manifold.Manifold.typical_dist">(pymanopt.manifolds.manifold.Manifold property)</a>
 </li>
@@ -1518,6 +1588,8 @@
 </li>
         <li><a href="manifolds.html#pymanopt.manifolds.grassmann.Grassmann.zero_vector">(pymanopt.manifolds.grassmann.Grassmann method)</a>
 </li>
+        <li><a href="manifolds.html#pymanopt.manifolds.hyperbolic.PoincareBall.zero_vector">(pymanopt.manifolds.hyperbolic.PoincareBall method)</a>
+</li>
         <li><a href="manifolds.html#pymanopt.manifolds.manifold.Manifold.zero_vector">(pymanopt.manifolds.manifold.Manifold method)</a>
 </li>
         <li><a href="manifolds.html#pymanopt.manifolds.manifold.RiemannianSubmanifold.zero_vector">(pymanopt.manifolds.manifold.RiemannianSubmanifold method)</a>
@@ -1560,7 +1632,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Jun 19, 2022.
+      <span class="lastupdated">Last updated on Aug 06, 2022.
       </span></p>
   </div>
 
@@ -1574,12 +1646,13 @@
   <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
   <span class="rst-current-version" data-toggle="rst-current-version">
     <span class="fa fa-book"> Other Versions</span>
-    v: stable (1.0.0)
+    v: stable
     <span class="fa fa-caret-down"></span>
   </span>
   <div class="rst-other-versions">
     <dl>
       <dt>Versions</dt>
+      <dd><a href="/docs/stable">stable</a></dd>
       <dd><a href="/docs/latest">latest</a></dd>
     </dl>
   </div>

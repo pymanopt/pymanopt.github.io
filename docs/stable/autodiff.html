@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Automatic Differentiation &mdash; Pymanopt stable (1.0.0) documentation</title>
+  <title>Automatic Differentiation &mdash; Pymanopt stable (2.0.0) documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/style.css" type="text/css" />
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" type="text/css" />
@@ -37,7 +37,7 @@
             <img src="_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                stable (1.0.0)
+                stable (2.0.0)
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -122,8 +122,8 @@
 <div class="section" id="automatic-differentiation">
 <h1>Automatic Differentiation<a class="headerlink" href="#automatic-differentiation" title="Permalink to this headline"></a></h1>
 <p>Cost functions, gradients and Hessian-vector products (hvps) in Pymanopt must
-be defined as Python callables annotated with one of the <span class="xref std std-ref">backend
-decorators</span> below.
+be defined as Python callables annotated with one of the <a class="reference internal" href="#module-pymanopt.function"><span class="std std-ref">backend
+decorators</span></a> below.
 Decorating a callable with a backend decorator will wrap it in an instance of
 the <a class="reference internal" href="#pymanopt.autodiff.Function" title="pymanopt.autodiff.Function"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.autodiff.Function</span></code></a> class that provides a backend-agnostic
 API to the <a class="reference internal" href="problem.html#pymanopt.core.problem.Problem" title="pymanopt.core.problem.Problem"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.core.problem.Problem</span></code></a> class to compute derivatives.</p>
@@ -131,7 +131,7 @@ API to the <a class="reference internal" href="problem.html#pymanopt.core.proble
 signature of the decorated callable must match the point layout of the manifold
 it is defined on.
 For instance, for memory efficiency points on the
-<code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.manifolds.fixed_rink.FixedRankEmbedded</span></code> manifold are not
+<a class="reference internal" href="manifolds.html#pymanopt.manifolds.fixed_rank.FixedRankEmbedded" title="pymanopt.manifolds.fixed_rank.FixedRankEmbedded"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.manifolds.fixed_rank.FixedRankEmbedded</span></code></a> manifold are not
 represented as <code class="docutils literal notranslate"><span class="pre">m</span> <span class="pre">x</span> <span class="pre">n</span></code> matrices in the ambient space but as a singular value
 decomposition.
 As such a cost function defined on the manifold must accept three arguments
@@ -220,7 +220,7 @@ callable:</p>
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Jun 19, 2022.
+      <span class="lastupdated">Last updated on Aug 06, 2022.
       </span></p>
   </div>
 
@@ -234,12 +234,13 @@ callable:</p>
   <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
   <span class="rst-current-version" data-toggle="rst-current-version">
     <span class="fa fa-book"> Other Versions</span>
-    v: stable (1.0.0)
+    v: stable
     <span class="fa fa-caret-down"></span>
   </span>
   <div class="rst-other-versions">
     <dl>
       <dt>Versions</dt>
+      <dd><a href="/docs/stable">stable</a></dd>
       <dd><a href="/docs/latest">latest</a></dd>
     </dl>
   </div>

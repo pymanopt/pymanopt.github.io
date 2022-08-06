@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pymanopt.manifolds.grassmann &mdash; Pymanopt stable (1.0.0) documentation</title>
+  <title>pymanopt.manifolds.grassmann &mdash; Pymanopt stable (2.0.0) documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/style.css" type="text/css" />
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" type="text/css" />
@@ -35,7 +35,7 @@
             <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                stable (1.0.0)
+                stable (2.0.0)
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -83,10 +83,9 @@
              
   <h1>Source code for pymanopt.manifolds.grassmann</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">numpy.linalg</span> <span class="kn">import</span> <span class="n">svd</span>
 
 <span class="kn">from</span> <span class="nn">pymanopt.manifolds.manifold</span> <span class="kn">import</span> <span class="n">Manifold</span>
-<span class="kn">from</span> <span class="nn">pymanopt.tools.multi</span> <span class="kn">import</span> <span class="n">multihconj</span><span class="p">,</span> <span class="n">multiprod</span><span class="p">,</span> <span class="n">multitransp</span>
+<span class="kn">from</span> <span class="nn">pymanopt.tools.multi</span> <span class="kn">import</span> <span class="n">multihconj</span><span class="p">,</span> <span class="n">multiqr</span><span class="p">,</span> <span class="n">multitransp</span>
 
 
 <span class="k">class</span> <span class="nc">_GrassmannBase</span><span class="p">(</span><span class="n">Manifold</span><span class="p">):</span>
@@ -101,12 +100,16 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">projection</span><span class="p">(</span><span class="n">point_b</span><span class="p">,</span> <span class="n">tangent_vector_a</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">zero_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
+        <span class="n">zero</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_k</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">))</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_k</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_k</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">zero</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">zero</span>
 
     <span class="k">def</span> <span class="nf">euclidean_to_riemannian_gradient</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">euclidean_gradient</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">projection</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">euclidean_gradient</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">to_tangent_space</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">vector</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">projection</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">vector</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="Grassmann"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.grassmann.Grassmann">[docs]</a><span class="k">class</span> <span class="nc">Grassmann</span><span class="p">(</span><span class="n">_GrassmannBase</span><span class="p">):</span>
@@ -152,7 +155,7 @@
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">dimension</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Grassmann.dist"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.grassmann.Grassmann.dist">[docs]</a>    <span class="k">def</span> <span class="nf">dist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point_a</span><span class="p">,</span> <span class="n">point_b</span><span class="p">):</span>
-        <span class="n">s</span> <span class="o">=</span> <span class="n">svd</span><span class="p">(</span><span class="n">multiprod</span><span class="p">(</span><span class="n">multitransp</span><span class="p">(</span><span class="n">point_a</span><span class="p">),</span> <span class="n">point_b</span><span class="p">),</span> <span class="n">compute_uv</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">multitransp</span><span class="p">(</span><span class="n">point_a</span><span class="p">)</span> <span class="o">@</span> <span class="n">point_b</span><span class="p">,</span> <span class="n">compute_uv</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="n">s</span><span class="p">[</span><span class="n">s</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">s</span><span class="p">)</span></div>
@@ -163,14 +166,14 @@
         <span class="p">)</span></div>
 
 <div class="viewcode-block" id="Grassmann.projection"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.grassmann.Grassmann.projection">[docs]</a>    <span class="k">def</span> <span class="nf">projection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">vector</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">vector</span> <span class="o">-</span> <span class="n">multiprod</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">multiprod</span><span class="p">(</span><span class="n">multitransp</span><span class="p">(</span><span class="n">point</span><span class="p">),</span> <span class="n">vector</span><span class="p">))</span></div>
+        <span class="k">return</span> <span class="n">vector</span> <span class="o">-</span> <span class="n">point</span> <span class="o">@</span> <span class="p">(</span><span class="n">multitransp</span><span class="p">(</span><span class="n">point</span><span class="p">)</span> <span class="o">@</span> <span class="n">vector</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Grassmann.euclidean_to_riemannian_hessian"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.grassmann.Grassmann.euclidean_to_riemannian_hessian">[docs]</a>    <span class="k">def</span> <span class="nf">euclidean_to_riemannian_hessian</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">euclidean_gradient</span><span class="p">,</span> <span class="n">euclidean_hessian</span><span class="p">,</span> <span class="n">tangent_vector</span>
     <span class="p">):</span>
         <span class="n">PXehess</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">projection</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">euclidean_hessian</span><span class="p">)</span>
-        <span class="n">XtG</span> <span class="o">=</span> <span class="n">multiprod</span><span class="p">(</span><span class="n">multitransp</span><span class="p">(</span><span class="n">point</span><span class="p">),</span> <span class="n">euclidean_gradient</span><span class="p">)</span>
-        <span class="n">HXtG</span> <span class="o">=</span> <span class="n">multiprod</span><span class="p">(</span><span class="n">tangent_vector</span><span class="p">,</span> <span class="n">XtG</span><span class="p">)</span>
+        <span class="n">XtG</span> <span class="o">=</span> <span class="n">multitransp</span><span class="p">(</span><span class="n">point</span><span class="p">)</span> <span class="o">@</span> <span class="n">euclidean_gradient</span>
+        <span class="n">HXtG</span> <span class="o">=</span> <span class="n">tangent_vector</span> <span class="o">@</span> <span class="n">XtG</span>
         <span class="k">return</span> <span class="n">PXehess</span> <span class="o">-</span> <span class="n">HXtG</span></div>
 
 <div class="viewcode-block" id="Grassmann.retraction"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.grassmann.Grassmann.retraction">[docs]</a>    <span class="k">def</span> <span class="nf">retraction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">):</span>
@@ -179,19 +182,14 @@
         <span class="c1"># columns. Compare this with the Stiefel manifold.</span>
 
         <span class="c1"># Compute the polar factorization of Y = X+G</span>
-        <span class="n">u</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">vt</span> <span class="o">=</span> <span class="n">svd</span><span class="p">(</span><span class="n">point</span> <span class="o">+</span> <span class="n">tangent_vector</span><span class="p">,</span> <span class="n">full_matrices</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">multiprod</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">vt</span><span class="p">)</span></div>
+        <span class="n">u</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">vt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">point</span> <span class="o">+</span> <span class="n">tangent_vector</span><span class="p">,</span> <span class="n">full_matrices</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">u</span> <span class="o">@</span> <span class="n">vt</span></div>
 
 <div class="viewcode-block" id="Grassmann.random_point"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.grassmann.Grassmann.random_point">[docs]</a>    <span class="k">def</span> <span class="nf">random_point</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">q</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">multiqr</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_k</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">)))</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_k</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">))</span>
-            <span class="n">q</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">qr</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">q</span>
-
-        <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_k</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">))</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_k</span><span class="p">):</span>
-            <span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">qr</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">)))</span>
-        <span class="k">return</span> <span class="n">X</span></div>
+            <span class="k">return</span> <span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">q</span></div>
 
 <div class="viewcode-block" id="Grassmann.random_tangent_vector"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.grassmann.Grassmann.random_tangent_vector">[docs]</a>    <span class="k">def</span> <span class="nf">random_tangent_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
         <span class="n">tangent_vector</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">point</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
@@ -199,31 +197,24 @@
         <span class="k">return</span> <span class="n">tangent_vector</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">tangent_vector</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Grassmann.exp"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.grassmann.Grassmann.exp">[docs]</a>    <span class="k">def</span> <span class="nf">exp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">):</span>
-        <span class="n">u</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">vt</span> <span class="o">=</span> <span class="n">svd</span><span class="p">(</span><span class="n">tangent_vector</span><span class="p">,</span> <span class="n">full_matrices</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">u</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">vt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">tangent_vector</span><span class="p">,</span> <span class="n">full_matrices</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="n">cos_s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">s</span><span class="p">),</span> <span class="o">-</span><span class="mi">2</span><span class="p">)</span>
         <span class="n">sin_s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">s</span><span class="p">),</span> <span class="o">-</span><span class="mi">2</span><span class="p">)</span>
 
-        <span class="n">Y</span> <span class="o">=</span> <span class="n">multiprod</span><span class="p">(</span>
-            <span class="n">multiprod</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">multitransp</span><span class="p">(</span><span class="n">vt</span><span class="p">)</span> <span class="o">*</span> <span class="n">cos_s</span><span class="p">),</span> <span class="n">vt</span>
-        <span class="p">)</span> <span class="o">+</span> <span class="n">multiprod</span><span class="p">(</span><span class="n">u</span> <span class="o">*</span> <span class="n">sin_s</span><span class="p">,</span> <span class="n">vt</span><span class="p">)</span>
+        <span class="n">Y</span> <span class="o">=</span> <span class="n">point</span> <span class="o">@</span> <span class="p">(</span><span class="n">multitransp</span><span class="p">(</span><span class="n">vt</span><span class="p">)</span> <span class="o">*</span> <span class="n">cos_s</span><span class="p">)</span> <span class="o">@</span> <span class="n">vt</span> <span class="o">+</span> <span class="p">(</span><span class="n">u</span> <span class="o">*</span> <span class="n">sin_s</span><span class="p">)</span> <span class="o">@</span> <span class="n">vt</span>
 
         <span class="c1"># From numerical experiments, it seems necessary to re-orthonormalize.</span>
         <span class="c1"># This is quite expensive.</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_k</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">Y</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">qr</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">Y</span>
-
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_k</span><span class="p">):</span>
-            <span class="n">Y</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">qr</span><span class="p">(</span><span class="n">Y</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-        <span class="k">return</span> <span class="n">Y</span></div>
+        <span class="n">q</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">multiqr</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">q</span></div>
 
 <div class="viewcode-block" id="Grassmann.log"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.grassmann.Grassmann.log">[docs]</a>    <span class="k">def</span> <span class="nf">log</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point_a</span><span class="p">,</span> <span class="n">point_b</span><span class="p">):</span>
-        <span class="n">ytx</span> <span class="o">=</span> <span class="n">multiprod</span><span class="p">(</span><span class="n">multitransp</span><span class="p">(</span><span class="n">point_b</span><span class="p">),</span> <span class="n">point_a</span><span class="p">)</span>
-        <span class="n">At</span> <span class="o">=</span> <span class="n">multitransp</span><span class="p">(</span><span class="n">point_b</span><span class="p">)</span> <span class="o">-</span> <span class="n">multiprod</span><span class="p">(</span><span class="n">ytx</span><span class="p">,</span> <span class="n">multitransp</span><span class="p">(</span><span class="n">point_a</span><span class="p">))</span>
+        <span class="n">ytx</span> <span class="o">=</span> <span class="n">multitransp</span><span class="p">(</span><span class="n">point_b</span><span class="p">)</span> <span class="o">@</span> <span class="n">point_a</span>
+        <span class="n">At</span> <span class="o">=</span> <span class="n">multitransp</span><span class="p">(</span><span class="n">point_b</span><span class="p">)</span> <span class="o">-</span> <span class="n">ytx</span> <span class="o">@</span> <span class="n">multitransp</span><span class="p">(</span><span class="n">point_a</span><span class="p">)</span>
         <span class="n">Bt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">ytx</span><span class="p">,</span> <span class="n">At</span><span class="p">)</span>
-        <span class="n">u</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">vt</span> <span class="o">=</span> <span class="n">svd</span><span class="p">(</span><span class="n">multitransp</span><span class="p">(</span><span class="n">Bt</span><span class="p">),</span> <span class="n">full_matrices</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">u</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">vt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">multitransp</span><span class="p">(</span><span class="n">Bt</span><span class="p">),</span> <span class="n">full_matrices</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="n">arctan_s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span><span class="n">s</span><span class="p">),</span> <span class="o">-</span><span class="mi">2</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">multiprod</span><span class="p">(</span><span class="n">u</span> <span class="o">*</span> <span class="n">arctan_s</span><span class="p">,</span> <span class="n">vt</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="p">(</span><span class="n">u</span> <span class="o">*</span> <span class="n">arctan_s</span><span class="p">)</span> <span class="o">@</span> <span class="n">vt</span></div></div>
 
 
 <div class="viewcode-block" id="ComplexGrassmann"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.grassmann.ComplexGrassmann">[docs]</a><span class="k">class</span> <span class="nc">ComplexGrassmann</span><span class="p">(</span><span class="n">_GrassmannBase</span><span class="p">):</span>
@@ -268,9 +259,7 @@
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">dimension</span><span class="p">)</span>
 
 <div class="viewcode-block" id="ComplexGrassmann.dist"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.grassmann.ComplexGrassmann.dist">[docs]</a>    <span class="k">def</span> <span class="nf">dist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point_a</span><span class="p">,</span> <span class="n">point_b</span><span class="p">):</span>
-        <span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span>
-            <span class="n">multiprod</span><span class="p">(</span><span class="n">multihconj</span><span class="p">(</span><span class="n">point_a</span><span class="p">),</span> <span class="n">point_b</span><span class="p">),</span> <span class="n">compute_uv</span><span class="o">=</span><span class="kc">False</span>
-        <span class="p">)</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">multihconj</span><span class="p">(</span><span class="n">point_a</span><span class="p">)</span> <span class="o">@</span> <span class="n">point_b</span><span class="p">,</span> <span class="n">compute_uv</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="n">s</span><span class="p">[</span><span class="n">s</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">s</span><span class="p">))</span></div>
@@ -285,14 +274,14 @@
         <span class="p">)</span></div>
 
 <div class="viewcode-block" id="ComplexGrassmann.projection"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.grassmann.ComplexGrassmann.projection">[docs]</a>    <span class="k">def</span> <span class="nf">projection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">vector</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">vector</span> <span class="o">-</span> <span class="n">multiprod</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">multiprod</span><span class="p">(</span><span class="n">multihconj</span><span class="p">(</span><span class="n">point</span><span class="p">),</span> <span class="n">vector</span><span class="p">))</span></div>
+        <span class="k">return</span> <span class="n">vector</span> <span class="o">-</span> <span class="n">point</span> <span class="o">@</span> <span class="n">multihconj</span><span class="p">(</span><span class="n">point</span><span class="p">)</span> <span class="o">@</span> <span class="n">vector</span></div>
 
 <div class="viewcode-block" id="ComplexGrassmann.euclidean_to_riemannian_hessian"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.grassmann.ComplexGrassmann.euclidean_to_riemannian_hessian">[docs]</a>    <span class="k">def</span> <span class="nf">euclidean_to_riemannian_hessian</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">euclidean_gradient</span><span class="p">,</span> <span class="n">euclidean_hessian</span><span class="p">,</span> <span class="n">tangent_vector</span>
     <span class="p">):</span>
         <span class="n">PXehess</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">projection</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">euclidean_hessian</span><span class="p">)</span>
-        <span class="n">XHG</span> <span class="o">=</span> <span class="n">multiprod</span><span class="p">(</span><span class="n">multihconj</span><span class="p">(</span><span class="n">point</span><span class="p">),</span> <span class="n">euclidean_gradient</span><span class="p">)</span>
-        <span class="n">HXHG</span> <span class="o">=</span> <span class="n">multiprod</span><span class="p">(</span><span class="n">tangent_vector</span><span class="p">,</span> <span class="n">XHG</span><span class="p">)</span>
+        <span class="n">XHG</span> <span class="o">=</span> <span class="n">multihconj</span><span class="p">(</span><span class="n">point</span><span class="p">)</span> <span class="o">@</span> <span class="n">euclidean_gradient</span>
+        <span class="n">HXHG</span> <span class="o">=</span> <span class="n">tangent_vector</span> <span class="o">@</span> <span class="n">XHG</span>
         <span class="k">return</span> <span class="n">PXehess</span> <span class="o">-</span> <span class="n">HXHG</span></div>
 
 <div class="viewcode-block" id="ComplexGrassmann.retraction"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.grassmann.ComplexGrassmann.retraction">[docs]</a>    <span class="k">def</span> <span class="nf">retraction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">):</span>
@@ -302,27 +291,16 @@
 
         <span class="c1"># Compute the polar factorization of Y = X+G</span>
         <span class="n">u</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">vh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">point</span> <span class="o">+</span> <span class="n">tangent_vector</span><span class="p">,</span> <span class="n">full_matrices</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">multiprod</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">vh</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">u</span> <span class="o">@</span> <span class="n">vh</span></div>
 
 <div class="viewcode-block" id="ComplexGrassmann.random_point"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.grassmann.ComplexGrassmann.random_point">[docs]</a>    <span class="k">def</span> <span class="nf">random_point</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">q</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">multiqr</span><span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_k</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">))</span>
+            <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_k</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">))</span>
+        <span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_k</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">point</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">qr</span><span class="p">(</span>
-                <span class="p">(</span>
-                    <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">))</span>
-                    <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">))</span>
-                <span class="p">)</span>
-            <span class="p">)</span>
-            <span class="k">return</span> <span class="n">point</span>
-
-        <span class="n">point</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_k</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">complex_</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_k</span><span class="p">):</span>
-            <span class="n">point</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">qr</span><span class="p">(</span>
-                <span class="p">(</span>
-                    <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">))</span>
-                    <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_p</span><span class="p">))</span>
-                <span class="p">)</span>
-            <span class="p">)</span>
-        <span class="k">return</span> <span class="n">point</span></div>
+            <span class="k">return</span> <span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">q</span></div>
 
 <div class="viewcode-block" id="ComplexGrassmann.random_tangent_vector"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.grassmann.ComplexGrassmann.random_tangent_vector">[docs]</a>    <span class="k">def</span> <span class="nf">random_tangent_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
         <span class="n">tangent_vector</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span>
@@ -335,27 +313,20 @@
         <span class="n">U</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">VH</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">tangent_vector</span><span class="p">,</span> <span class="n">full_matrices</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="n">cos_S</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">S</span><span class="p">),</span> <span class="o">-</span><span class="mi">2</span><span class="p">)</span>
         <span class="n">sin_S</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">S</span><span class="p">),</span> <span class="o">-</span><span class="mi">2</span><span class="p">)</span>
-        <span class="n">Y</span> <span class="o">=</span> <span class="n">multiprod</span><span class="p">(</span>
-            <span class="n">multiprod</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">multihconj</span><span class="p">(</span><span class="n">VH</span><span class="p">)</span> <span class="o">*</span> <span class="n">cos_S</span><span class="p">),</span> <span class="n">VH</span>
-        <span class="p">)</span> <span class="o">+</span> <span class="n">multiprod</span><span class="p">(</span><span class="n">U</span> <span class="o">*</span> <span class="n">sin_S</span><span class="p">,</span> <span class="n">VH</span><span class="p">)</span>
+        <span class="n">Y</span> <span class="o">=</span> <span class="n">point</span> <span class="o">@</span> <span class="p">(</span><span class="n">multihconj</span><span class="p">(</span><span class="n">VH</span><span class="p">)</span> <span class="o">*</span> <span class="n">cos_S</span><span class="p">)</span> <span class="o">@</span> <span class="n">VH</span> <span class="o">+</span> <span class="p">(</span><span class="n">U</span> <span class="o">*</span> <span class="n">sin_S</span><span class="p">)</span> <span class="o">@</span> <span class="n">VH</span>
 
         <span class="c1"># From numerical experiments, it seems necessary to</span>
         <span class="c1"># re-orthonormalize. This is overall quite expensive.</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_k</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">Y</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">qr</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">Y</span>
-
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_k</span><span class="p">):</span>
-            <span class="n">Y</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">qr</span><span class="p">(</span><span class="n">Y</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-        <span class="k">return</span> <span class="n">Y</span></div>
+        <span class="n">q</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">multiqr</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">q</span></div>
 
 <div class="viewcode-block" id="ComplexGrassmann.log"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.grassmann.ComplexGrassmann.log">[docs]</a>    <span class="k">def</span> <span class="nf">log</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point_a</span><span class="p">,</span> <span class="n">point_b</span><span class="p">):</span>
-        <span class="n">YHX</span> <span class="o">=</span> <span class="n">multiprod</span><span class="p">(</span><span class="n">multihconj</span><span class="p">(</span><span class="n">point_b</span><span class="p">),</span> <span class="n">point_a</span><span class="p">)</span>
-        <span class="n">AH</span> <span class="o">=</span> <span class="n">multihconj</span><span class="p">(</span><span class="n">point_b</span><span class="p">)</span> <span class="o">-</span> <span class="n">multiprod</span><span class="p">(</span><span class="n">YHX</span><span class="p">,</span> <span class="n">multihconj</span><span class="p">(</span><span class="n">point_a</span><span class="p">))</span>
+        <span class="n">YHX</span> <span class="o">=</span> <span class="n">multihconj</span><span class="p">(</span><span class="n">point_b</span><span class="p">)</span> <span class="o">@</span> <span class="n">point_a</span>
+        <span class="n">AH</span> <span class="o">=</span> <span class="n">multihconj</span><span class="p">(</span><span class="n">point_b</span><span class="p">)</span> <span class="o">-</span> <span class="n">YHX</span> <span class="o">@</span> <span class="n">multihconj</span><span class="p">(</span><span class="n">point_a</span><span class="p">)</span>
         <span class="n">BH</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">YHX</span><span class="p">,</span> <span class="n">AH</span><span class="p">)</span>
         <span class="n">U</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">VH</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">multihconj</span><span class="p">(</span><span class="n">BH</span><span class="p">),</span> <span class="n">full_matrices</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="n">arctan_S</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span><span class="n">S</span><span class="p">),</span> <span class="o">-</span><span class="mi">2</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">multiprod</span><span class="p">(</span><span class="n">U</span> <span class="o">*</span> <span class="n">arctan_S</span><span class="p">,</span> <span class="n">VH</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="p">(</span><span class="n">U</span> <span class="o">*</span> <span class="n">arctan_S</span><span class="p">)</span> <span class="o">@</span> <span class="n">VH</span></div></div>
 </pre></div>
 
            </div>
@@ -366,7 +337,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Jun 19, 2022.
+      <span class="lastupdated">Last updated on Aug 06, 2022.
       </span></p>
   </div>
 
@@ -380,12 +351,13 @@
   <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
   <span class="rst-current-version" data-toggle="rst-current-version">
     <span class="fa fa-book"> Other Versions</span>
-    v: stable (1.0.0)
+    v: stable
     <span class="fa fa-caret-down"></span>
   </span>
   <div class="rst-other-versions">
     <dl>
       <dt>Versions</dt>
+      <dd><a href="/docs/stable">stable</a></dd>
       <dd><a href="/docs/latest">latest</a></dd>
     </dl>
   </div>

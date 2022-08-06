@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pymanopt.manifolds.fixed_rank &mdash; Pymanopt stable (1.0.0) documentation</title>
+  <title>pymanopt.manifolds.fixed_rank &mdash; Pymanopt stable (2.0.0) documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/style.css" type="text/css" />
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" type="text/css" />
@@ -35,7 +35,7 @@
             <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                stable (1.0.0)
+                stable (2.0.0)
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -119,7 +119,8 @@
 <span class="sd">    Tangent vectors are represented as tuples of the form ``(Up, M, Vp)``.</span>
 <span class="sd">    The matrices ``Up`` (of size ``m x k``) and ``Vp`` (of size ``n x k``) obey</span>
 <span class="sd">    the conditions ``np.allclose(Up.T @ U, 0)`` and ``np.allclose(Vp.T @ V,</span>
-<span class="sd">    0)``. The matrix ``M`` (of size ``k x k``) is arbitrary.</span>
+<span class="sd">    0)``.</span>
+<span class="sd">    The matrix ``M`` (of size ``k x k``) is arbitrary.</span>
 <span class="sd">    Such a structure corresponds to the tangent vector ``Z = u @ M @ vt + Up @</span>
 <span class="sd">    vt + u * Vp.T`` in the ambient space of ``m x n`` matrices at a point ``(u,</span>
 <span class="sd">    s, vt)``.</span>
@@ -332,7 +333,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Jun 19, 2022.
+      <span class="lastupdated">Last updated on Aug 06, 2022.
       </span></p>
   </div>
 
@@ -346,12 +347,13 @@
   <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
   <span class="rst-current-version" data-toggle="rst-current-version">
     <span class="fa fa-book"> Other Versions</span>
-    v: stable (1.0.0)
+    v: stable
     <span class="fa fa-caret-down"></span>
   </span>
   <div class="rst-other-versions">
     <dl>
       <dt>Versions</dt>
+      <dd><a href="/docs/stable">stable</a></dd>
       <dd><a href="/docs/latest">latest</a></dd>
     </dl>
   </div>
