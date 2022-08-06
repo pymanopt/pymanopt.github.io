@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pymanopt.tools.multi &mdash; Pymanopt latest (dcba406) documentation</title>
+  <title>pymanopt.tools.multi &mdash; Pymanopt latest (d76c63b) documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/style.css" type="text/css" />
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" type="text/css" />
@@ -35,7 +35,7 @@
             <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                latest (dcba406)
+                latest (d76c63b)
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -84,6 +84,14 @@
   <h1>Source code for pymanopt.tools.multi</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">scipy.linalg</span>
+<span class="kn">import</span> <span class="nn">scipy.version</span>
+
+
+<span class="c1"># Scipy 1.9.0 added support for calling scipy.linalg.expm on stacked matrices.</span>
+<span class="k">if</span> <span class="n">scipy</span><span class="o">.</span><span class="n">version</span><span class="o">.</span><span class="n">version</span> <span class="o">&gt;=</span> <span class="s2">&quot;1.9.0&quot;</span><span class="p">:</span>
+    <span class="n">scipy_expm</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">expm</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">scipy_expm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vectorize</span><span class="p">(</span><span class="n">scipy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">expm</span><span class="p">,</span> <span class="n">signature</span><span class="o">=</span><span class="s2">&quot;(m,m)-&gt;(m,m)&quot;</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="multitransp"><a class="viewcode-back" href="../../../tools.html#pymanopt.tools.multi.multitransp">[docs]</a><span class="k">def</span> <span class="nf">multitransp</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>
@@ -146,7 +154,7 @@
 <div class="viewcode-block" id="multiexpm"><a class="viewcode-back" href="../../../tools.html#pymanopt.tools.multi.multiexpm">[docs]</a><span class="k">def</span> <span class="nf">multiexpm</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">symmetric</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Vectorized matrix exponential.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">symmetric</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">vectorize</span><span class="p">(</span><span class="n">scipy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">expm</span><span class="p">,</span> <span class="n">signature</span><span class="o">=</span><span class="s2">&quot;(m,m)-&gt;(m,m)&quot;</span><span class="p">)(</span><span class="n">A</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">scipy_expm</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
 
     <span class="n">w</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
     <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">w</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
@@ -180,7 +188,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Jun 19, 2022.
+      <span class="lastupdated">Last updated on Aug 06, 2022.
       </span></p>
   </div>
 
