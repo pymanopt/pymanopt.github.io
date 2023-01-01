@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Riemannian Optimization for Inference in MoG models &mdash; Pymanopt latest (d76c63b) documentation</title>
+  <title>Riemannian Optimization for Inference in MoG models &mdash; Pymanopt latest (19deac6) documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/style.css" type="text/css" />
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" type="text/css" />
@@ -36,7 +36,7 @@
             <img src="../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                latest (d76c63b)
+                latest (19deac6)
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -430,7 +430,7 @@ and mixture probability vector <span class="math">\(\boldsymbol{\pi}=\left[0.1, 
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-/opt/hostedtoolcache/Python/3.9.13/x64/lib/python3.9/site-packages/traitlets/traitlets.py:3258: FutureWarning: --rc={&#39;figure.dpi&#39;: 96} for dict-traits is deprecated in traitlets 5.0. You can pass --rc &lt;key=value&gt; ... multiple times to add items to a dict.
+/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/traitlets/traitlets.py:3436: FutureWarning: --rc={&#39;figure.dpi&#39;: 96} for dict-traits is deprecated in traitlets 5.0. You can pass --rc &lt;key=value&gt; ... multiple times to add items to a dict.
   warn(
 </pre></div></div>
 </div>
@@ -519,7 +519,7 @@ q_\mathcal{N}(\mathbf{y}_n;\mathbf{S}_m)
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Optimizing...
-Terminated - min step_size reached after 245 iterations, 0.62 seconds.
+Terminated - min step_size reached after 188 iterations, 0.51 seconds.
 
 </pre></div></div>
 </div>
@@ -601,21 +601,21 @@ Terminated - min step_size reached after 245 iterations, 0.62 seconds.
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[[0.1 ]
- [0.11]]
-[[1.01 0.94]
- [0.94 2.95]]
-[[-3.93]
- [ 0.92]]
-[[ 4.25 -0.21]
- [-0.21  1.04]]
-[[ 1.97]
- [-1.05]]
-[[0.51 0.01]
- [0.01 0.42]]
-0.5950183156802649
-0.10478413591983207
-0.3001975483999029
+[[-3.46]
+ [ 1.14]]
+[[ 4.45 -0.21]
+ [-0.21  0.81]]
+[[ 2.01]
+ [-0.97]]
+[[ 0.49 -0.02]
+ [-0.02  0.46]]
+[[ 0.02]
+ [-0.03]]
+[[1.   1.14]
+ [1.14 3.29]]
+0.1094415592961139
+0.28559366114911466
+0.6049647795547713
 </pre></div></div>
 </div>
 <p>Et voilà – this was a brief demonstration of how to do inference for MoG models by performing Manifold optimisation using Pymanopt.</p>
@@ -629,7 +629,7 @@ Terminated - min step_size reached after 245 iterations, 0.62 seconds.
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="k">class</span> <span class="nc">LineSearchMoG</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Back-tracking line-search that checks for close to singular matrices.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -650,7 +650,7 @@ Terminated - min step_size reached after 245 iterations, 0.62 seconds.
         <span class="bp">self</span><span class="o">.</span><span class="n">_oldf0</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">objective</span><span class="p">,</span> <span class="n">manifold</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">f0</span><span class="p">,</span> <span class="n">df0</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to perform backtracking line-search.</span>
 <span class="sd">        Arguments:</span>
 <span class="sd">            - objective</span>
@@ -744,8 +744,8 @@ Terminated - min step_size reached after 245 iterations, 0.62 seconds.
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Aug 06, 2022.
+    <p>&#169; Copyright 2016-2023, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
+      <span class="lastupdated">Last updated on Jan 01, 2023.
       </span></p>
   </div>
 

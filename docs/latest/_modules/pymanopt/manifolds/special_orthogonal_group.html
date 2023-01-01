@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pymanopt.manifolds.special_orthogonal_group &mdash; Pymanopt latest (d76c63b) documentation</title>
+  <title>pymanopt.manifolds.special_orthogonal_group &mdash; Pymanopt latest (19deac6) documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/style.css" type="text/css" />
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" type="text/css" />
@@ -35,7 +35,7 @@
             <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                latest (d76c63b)
+                latest (19deac6)
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -97,7 +97,7 @@
 
 
 <div class="viewcode-block" id="SpecialOrthogonalGroup"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup">[docs]</a><span class="k">class</span> <span class="nc">SpecialOrthogonalGroup</span><span class="p">(</span><span class="n">RiemannianSubmanifold</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;The (product) manifold of rotation matrices.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;The (product) manifold of rotation matrices.</span>
 
 <span class="sd">    The special orthgonal group :math:`\SO(n)`.</span>
 <span class="sd">    Points on the manifold are matrices :math:`\vmQ \in \R^{n</span>
@@ -218,16 +218,16 @@
             <span class="c1"># Swap the first two columns of matrices where det(point) &lt; 0 to</span>
             <span class="c1"># flip the sign of their determinants.</span>
             <span class="n">negative_det</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">det</span><span class="p">(</span><span class="n">point</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
-            <span class="n">slice_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">point</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-            <span class="n">point</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ix_</span><span class="p">(</span><span class="n">negative_det</span><span class="p">,</span> <span class="n">slice_</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])]</span> <span class="o">=</span> <span class="n">point</span><span class="p">[</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">ix_</span><span class="p">(</span><span class="n">negative_det</span><span class="p">,</span> <span class="n">slice_</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
-            <span class="p">]</span>
+            <span class="n">negative_det</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">negative_det</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+            <span class="n">point</span><span class="p">[</span><span class="n">negative_det</span><span class="p">,</span> <span class="p">:,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="n">point</span><span class="p">[</span><span class="n">negative_det</span><span class="p">,</span> <span class="p">:,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]</span>
         <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">point</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">point</span></div>
 
 <div class="viewcode-block" id="SpecialOrthogonalGroup.random_tangent_vector"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.random_tangent_vector">[docs]</a>    <span class="k">def</span> <span class="nf">random_tangent_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
         <span class="n">n</span><span class="p">,</span> <span class="n">k</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_k</span>
+        <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">k</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
         <span class="n">inds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">triu_indices</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
         <span class="n">vector</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">k</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
@@ -247,8 +247,7 @@
         <span class="k">return</span> <span class="n">tangent_vector_a</span></div>
 
 <div class="viewcode-block" id="SpecialOrthogonalGroup.pair_mean"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.special_orthogonal_group.SpecialOrthogonalGroup.pair_mean">[docs]</a>    <span class="k">def</span> <span class="nf">pair_mean</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point_a</span><span class="p">,</span> <span class="n">point_b</span><span class="p">):</span>
-        <span class="n">V</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">point_a</span><span class="p">,</span> <span class="n">point_b</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">point_a</span><span class="p">,</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">V</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">point_a</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">point_a</span><span class="p">,</span> <span class="n">point_b</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>
@@ -258,8 +257,8 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Aug 06, 2022.
+    <p>&#169; Copyright 2016-2023, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
+      <span class="lastupdated">Last updated on Jan 01, 2023.
       </span></p>
   </div>
 

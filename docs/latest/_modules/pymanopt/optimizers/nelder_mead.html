@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pymanopt.optimizers.nelder_mead &mdash; Pymanopt latest (d76c63b) documentation</title>
+  <title>pymanopt.optimizers.nelder_mead &mdash; Pymanopt latest (19deac6) documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/style.css" type="text/css" />
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" type="text/css" />
@@ -35,7 +35,7 @@
             <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                latest (d76c63b)
+                latest (19deac6)
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -93,7 +93,7 @@
 
 
 <div class="viewcode-block" id="compute_centroid"><a class="viewcode-back" href="../../../optimizers.html#pymanopt.optimizers.nelder_mead.compute_centroid">[docs]</a><span class="k">def</span> <span class="nf">compute_centroid</span><span class="p">(</span><span class="n">manifold</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Compute the centroid of `points` on the `manifold` as Karcher mean.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the centroid of `points` on the `manifold` as Karcher mean.&quot;&quot;&quot;</span>
 
     <span class="nd">@pymanopt</span><span class="o">.</span><span class="n">function</span><span class="o">.</span><span class="n">numpy</span><span class="p">(</span><span class="n">manifold</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">objective</span><span class="p">(</span><span class="o">*</span><span class="n">y</span><span class="p">):</span>
@@ -118,7 +118,7 @@
 
 
 <div class="viewcode-block" id="NelderMead"><a class="viewcode-back" href="../../../optimizers.html#pymanopt.optimizers.nelder_mead.NelderMead">[docs]</a><span class="k">class</span> <span class="nc">NelderMead</span><span class="p">(</span><span class="n">Optimizer</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Nelder-Mead alglorithm.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Nelder-Mead alglorithm.</span>
 
 <span class="sd">    Perform optimization using the derivative-free Nelder-Mead minimization</span>
 <span class="sd">    algorithm.</span>
@@ -153,7 +153,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_contraction</span> <span class="o">=</span> <span class="n">contraction</span>
 
 <div class="viewcode-block" id="NelderMead.run"><a class="viewcode-back" href="../../../optimizers.html#pymanopt.optimizers.nelder_mead.NelderMead.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">problem</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">initial_point</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OptimizerResult</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Run Nelder-Mead algorithm.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Run Nelder-Mead algorithm.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            problem: Pymanopt problem class instance exposing the cost function</span>
@@ -328,8 +328,8 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Aug 06, 2022.
+    <p>&#169; Copyright 2016-2023, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
+      <span class="lastupdated">Last updated on Jan 01, 2023.
       </span></p>
   </div>
 

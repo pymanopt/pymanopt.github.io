@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Automatic Differentiation &mdash; Pymanopt latest (d76c63b) documentation</title>
+  <title>Automatic Differentiation &mdash; Pymanopt latest (19deac6) documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/style.css" type="text/css" />
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" type="text/css" />
@@ -37,7 +37,7 @@
             <img src="_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                latest (d76c63b)
+                latest (19deac6)
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -158,11 +158,11 @@ backend decorator using <a class="reference internal" href="#pymanopt.autodiff.b
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pymanopt.autodiff.backend_decorator_factory">
-<span class="sig-prename descclassname"><span class="pre">pymanopt.autodiff.</span></span><span class="sig-name descname"><span class="pre">backend_decorator_factory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Backend</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/autodiff.html#backend_decorator_factory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.autodiff.backend_decorator_factory" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pymanopt.autodiff.</span></span><span class="sig-name descname"><span class="pre">backend_decorator_factory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">backend_cls</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/autodiff.html#backend_decorator_factory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.autodiff.backend_decorator_factory" title="Permalink to this definition"></a></dt>
 <dd><p>Create function decorator for a backend.</p>
 <p>Function to create a backend decorator that is used to annotate a
 callable:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">decorator</span> <span class="o">=</span> <span class="n">backend_decorator_factory</span><span class="p">(</span><span class="n">Backend</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">decorator</span> <span class="o">=</span> <span class="n">backend_decorator_factory</span><span class="p">(</span><span class="n">backend_cls</span><span class="p">)</span>
 
 <span class="nd">@decorator</span><span class="p">(</span><span class="n">manifold</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
@@ -171,14 +171,14 @@ callable:</p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>Backend</strong> – a class implementing the backend interface defined by
+<dd class="field-odd"><p><strong>backend_cls</strong> – a class implementing the backend interface defined by
 <code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.autodiff.backend._backend._Backend</span></code>.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>A new backend decorator.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Callable</p>
+<dd class="field-odd"><p>Callable[[<a class="reference internal" href="manifolds.html#pymanopt.manifolds.manifold.Manifold" title="pymanopt.manifolds.manifold.Manifold">pymanopt.manifolds.manifold.Manifold</a>], Callable[[Callable], <a class="reference internal" href="#pymanopt.autodiff.Function" title="pymanopt.autodiff.Function">pymanopt.autodiff.Function</a>]]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -188,22 +188,54 @@ callable:</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="pymanopt.function.autograd">
 <span class="sig-prename descclassname"><span class="pre">pymanopt.function.</span></span><span class="sig-name descname"><span class="pre">autograd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">manifold</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.function.autograd" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>manifold</strong> (<a class="reference internal" href="manifolds.html#pymanopt.manifolds.manifold.Manifold" title="pymanopt.manifolds.manifold.Manifold"><em>pymanopt.manifolds.manifold.Manifold</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Callable</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pymanopt.function.numpy">
 <span class="sig-prename descclassname"><span class="pre">pymanopt.function.</span></span><span class="sig-name descname"><span class="pre">numpy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">manifold</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.function.numpy" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>manifold</strong> (<a class="reference internal" href="manifolds.html#pymanopt.manifolds.manifold.Manifold" title="pymanopt.manifolds.manifold.Manifold"><em>pymanopt.manifolds.manifold.Manifold</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Callable</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pymanopt.function.pytorch">
 <span class="sig-prename descclassname"><span class="pre">pymanopt.function.</span></span><span class="sig-name descname"><span class="pre">pytorch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">manifold</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.function.pytorch" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>manifold</strong> (<a class="reference internal" href="manifolds.html#pymanopt.manifolds.manifold.Manifold" title="pymanopt.manifolds.manifold.Manifold"><em>pymanopt.manifolds.manifold.Manifold</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Callable</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pymanopt.function.tensorflow">
 <span class="sig-prename descclassname"><span class="pre">pymanopt.function.</span></span><span class="sig-name descname"><span class="pre">tensorflow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">manifold</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pymanopt.function.tensorflow" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>manifold</strong> (<a class="reference internal" href="manifolds.html#pymanopt.manifolds.manifold.Manifold" title="pymanopt.manifolds.manifold.Manifold"><em>pymanopt.manifolds.manifold.Manifold</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Callable</p>
+</dd>
+</dl>
+</dd></dl>
 
 </div>
 </div>
@@ -219,8 +251,8 @@ callable:</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Aug 06, 2022.
+    <p>&#169; Copyright 2016-2023, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
+      <span class="lastupdated">Last updated on Jan 01, 2023.
       </span></p>
   </div>
 
