@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pymanopt.tools.testing &mdash; Pymanopt stable (2.0.0) documentation</title>
+  <title>pymanopt.tools.testing &mdash; Pymanopt stable (2.0.1) documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/style.css" type="text/css" />
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" type="text/css" />
@@ -35,7 +35,7 @@
             <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                stable (2.0.0)
+                stable (2.0.1)
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -96,7 +96,7 @@
 
 
 <div class="viewcode-block" id="riemannian_gradient"><a class="viewcode-back" href="../../../tools.html#pymanopt.tools.testing.riemannian_gradient">[docs]</a><span class="k">def</span> <span class="nf">riemannian_gradient</span><span class="p">(</span><span class="n">cost</span><span class="p">,</span> <span class="n">projector</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Generates the Riemannian gradient of a cost function.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generates the Riemannian gradient of a cost function.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">gradient_function</span><span class="p">(</span><span class="n">point</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">projector</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">grad</span><span class="p">(</span><span class="n">cost</span><span class="p">)(</span><span class="n">point</span><span class="p">))</span>
@@ -105,7 +105,7 @@
 
 
 <div class="viewcode-block" id="euclidean_to_riemannian_gradient"><a class="viewcode-back" href="../../../tools.html#pymanopt.tools.testing.euclidean_to_riemannian_gradient">[docs]</a><span class="k">def</span> <span class="nf">euclidean_to_riemannian_gradient</span><span class="p">(</span><span class="n">projector</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Generates an euclidean_to_riemannian_gradient function.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generates an euclidean_to_riemannian_gradient function.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">converter</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">euclidean_gradient</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">projector</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">euclidean_gradient</span><span class="p">)</span>
@@ -114,7 +114,7 @@
 
 
 <div class="viewcode-block" id="euclidean_to_riemannian_hessian"><a class="viewcode-back" href="../../../tools.html#pymanopt.tools.testing.euclidean_to_riemannian_hessian">[docs]</a><span class="k">def</span> <span class="nf">euclidean_to_riemannian_hessian</span><span class="p">(</span><span class="n">projector</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Generates an euclidean_to_riemannian_hessian function.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generates an euclidean_to_riemannian_hessian function.</span>
 
 <span class="sd">    Specifically, ``euclidean_to_riemannian_hessian(proj)(point,</span>
 <span class="sd">    euclidean_gradient, euclidean_hessian, tangent_vector)`` converts the Euclidean</span>
@@ -149,8 +149,8 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2016-2022, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Aug 06, 2022.
+    <p>&#169; Copyright 2016-2023, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
+      <span class="lastupdated">Last updated on Jan 01, 2023.
       </span></p>
   </div>
 
