@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Contributing &mdash; Pymanopt latest (5f92119) documentation</title>
+  <title>Contributing &mdash; Pymanopt latest (2.0.1+67.gb7d4fa1) documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/style.css" type="text/css" />
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" type="text/css" />
@@ -37,7 +37,7 @@
             <img src="_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                latest (5f92119)
+                latest (2.0.1+67.gb7d4fa1)
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -112,34 +112,40 @@
 </style>
 <div class="tex2jax_ignore mathjax_ignore section" id="contributing">
 <h1>Contributing<a class="headerlink" href="#contributing" title="Permalink to this headline"></a></h1>
-<p><a class="reference external" href="https://help.github.com/articles/cloning-a-repository/">Fork and clone the repository</a>:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ git clone git@github.com:your-username/pymanopt.git
+<p><a class="reference external" href="https://help.github.com/articles/cloning-a-repository/">Fork and clone the repository</a> by going to
+https://github.com/pymanopt/pymanopt/fork, and cloning the repository with</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ git clone git@github.com:&lt;your-username&gt;/pymanopt.git
 </pre></div>
 </div>
 <p>Set up a local development environment, installing both the runtime and
-development dependencies listed in the <code class="docutils literal notranslate"><span class="pre">requirements/dev.txt</span></code> and
-<code class="docutils literal notranslate"><span class="pre">requirements/base.txt</span></code> files. We provide a simple bootstrapping script in
-<code class="docutils literal notranslate"><span class="pre">tools/bootstrap-pyenv-virtualenv.sh</span></code> to set up a local development
-environment. The script requires <code class="docutils literal notranslate"><span class="pre">pyenv</span></code> and <code class="docutils literal notranslate"><span class="pre">pyenv-virtualenv</span></code> to be installed
-and configured.</p>
-<p>Verify that all existing tests pass by either running</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ python setup.py test
+development dependencies by running</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ pip install -e &quot;.[all]&quot;
 </pre></div>
 </div>
-<p>or executing the test suite via <a class="reference external" href="https://docs.nose2.io/en/latest/">nose2</a>:</p>
+<p>We provide a simple bootstrapping script in
+<code class="docutils literal notranslate"><span class="pre">tools/bootstrap-pyenv-virtualenv.sh</span></code> to set up a local development
+environment.
+The script requires <code class="docutils literal notranslate"><span class="pre">pyenv</span></code> and <code class="docutils literal notranslate"><span class="pre">pyenv-virtualenv</span></code> to be installed and
+configured.</p>
+<p>Verify that all existing tests pass by executing the test suite via
+<a class="reference external" href="https://docs.nose2.io/en/latest/">nose2</a>:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ nose2 tests
 </pre></div>
 </div>
 <p>Note that we run the <a class="reference external" href="http://flake8.pycqa.org/en/latest/">flake8</a> utility on every python file in the
-package to verify coding style consistency during our integration tests. As
-such, failure to comply to the <a class="reference external" href="https://www.python.org/dev/peps/pep-0008/">style guide</a> will result in a failing
-ci build. To prevent adding commits which fail to adhere to the PEP8
+package to verify coding style consistency during our integration tests.
+As such, failure to comply to the <a class="reference external" href="https://www.python.org/dev/peps/pep-0008/">style guide</a> will result in a failing
+ci build.
+To prevent adding commits which fail to adhere to the PEP8
 guidelines, we include a <a class="reference external" href="https://pre-commit.com/">pre-commit</a> config, which immediately
-invokes flake8 on all files staged for commit when running <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">commit</span></code>. To
-enable the hook, simply run <code class="docutils literal notranslate"><span class="pre">pre-commit</span> <span class="pre">install</span></code> after installing <code class="docutils literal notranslate"><span class="pre">pre-commit</span></code>
-either manually via <code class="docutils literal notranslate"><span class="pre">pip</span></code> or as part of <code class="docutils literal notranslate"><span class="pre">requirements/dev.txt</span></code>.</p>
-<p>Push a feature branch to your fork and <a class="reference external" href="https://github.com/pymanopt/pymanopt/compare">submit a pull request</a>. Refer to
-<a class="reference external" href="http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html">this guide</a> on how to write good commit messages.</p>
+invokes flake8 on all files staged for commit when running <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">commit</span></code>.
+To enable the hook, simply run <code class="docutils literal notranslate"><span class="pre">pre-commit</span> <span class="pre">install</span></code> after installing
+<code class="docutils literal notranslate"><span class="pre">pre-commit</span></code> either manually via <code class="docutils literal notranslate"><span class="pre">pip</span></code> or as part of <code class="docutils literal notranslate"><span class="pre">dev</span></code> variant, e.g.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ pip install -e &quot;.[dev]&quot;
+</pre></div>
+</div>
+<p>Push a feature branch to your fork and <a class="reference external" href="https://github.com/pymanopt/pymanopt/compare">submit a pull request</a>.
+Refer to <a class="reference external" href="http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html">this guide</a> on how to write good commit messages.</p>
 <div class="section" id="sign-off">
 <h2>Sign-off<a class="headerlink" href="#sign-off" title="Permalink to this headline"></a></h2>
 <p>By making a contribution (pull requesting or committing) to the Pymanopt
@@ -162,8 +168,8 @@ a line saying</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Signed-off-by: Name Surname &lt;name.surname@example.org&gt;
 </pre></div>
 </div>
-<p>using your real name and email address. Running the git-commit command
-with the -s option automatically adds this line.</p>
+<p>using your real name and email address.
+Running the git-commit command with the -s option automatically adds this line.</p>
 </div>
 </div>
 
@@ -199,7 +205,6 @@ with the -s option automatically adds this line.</p>
   <div class="rst-other-versions">
     <dl>
       <dt>Versions</dt>
-      <dd><a href="/docs/stable">stable</a></dd>
       <dd><a href="/docs/latest">latest</a></dd>
     </dl>
   </div>
