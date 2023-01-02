@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Riemannian Optimization for Inference in MoG models &mdash; Pymanopt latest (2.1.1+4.g923c271) documentation</title>
+  <title>Riemannian Optimization for Inference in MoG models &mdash; Pymanopt latest (2.1.1+29.g88615c6) documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/style.css" type="text/css" />
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" type="text/css" />
@@ -36,7 +36,7 @@
             <img src="../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                latest (2.1.1+4.g923c271)
+                latest (2.1.1+29.g88615c6)
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -513,13 +513,23 @@ q_\mathcal{N}(\mathbf{y}_n;\mathbf{S}_m)
 </pre></div>
 </div>
 </div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+2023-01-02 22:33:04.263715: W tensorflow/compiler/xla/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library &#39;libnvinfer.so.7&#39;; dlerror: libnvinfer.so.7: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.7.15/x64/lib
+2023-01-02 22:33:04.263852: W tensorflow/compiler/xla/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library &#39;libnvinfer_plugin.so.7&#39;; dlerror: libnvinfer_plugin.so.7: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.7.15/x64/lib
+2023-01-02 22:33:04.263865: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Cannot dlopen some TensorRT libraries. If you would like to use Nvidia GPU with TensorRT, please make sure the missing libraries mentioned above are installed properly.
+</pre></div></div>
+</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Optimizing...
-Terminated - min step_size reached after 161 iterations, 0.46 seconds.
+Terminated - min step_size reached after 168 iterations, 0.66 seconds.
 
 </pre></div></div>
 </div>
@@ -601,21 +611,21 @@ Terminated - min step_size reached after 161 iterations, 0.46 seconds.
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[[-0.07]
- [-0.12]]
-[[0.99 1.  ]
- [1.   2.96]]
-[[ 2.09]
- [-1.02]]
-[[ 0.58 -0.02]
- [-0.02  0.53]]
-[[-4.22]
- [ 0.95]]
-[[2.17 0.26]
- [0.26 0.97]]
-0.5960323783498733
-0.3097670337867129
-0.09420058786341379
+[[ 1.88]
+ [-0.9 ]]
+[[ 0.59 -0.1 ]
+ [-0.1   0.59]]
+[[-3.52]
+ [ 0.96]]
+[[ 4.06 -0.31]
+ [-0.31  0.88]]
+[[-0.02]
+ [-0.03]]
+[[1.06 1.26]
+ [1.26 3.31]]
+0.3679336955876389
+0.12259971562533685
+0.5094665887870242
 </pre></div></div>
 </div>
 <p>Et voilà – this was a brief demonstration of how to do inference for MoG models by performing Manifold optimisation using Pymanopt.</p>
