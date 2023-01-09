@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pymanopt.tools.multi &mdash; Pymanopt latest (2.1.2.dev50+g94ee46c) documentation</title>
+  <title>pymanopt.tools.multi &mdash; Pymanopt latest (2.1.2.dev72+ga35737d) documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/style.css" type="text/css" />
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" type="text/css" />
@@ -35,7 +35,7 @@
             <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                latest (2.1.2.dev50+g94ee46c)
+                latest (2.1.2.dev72+ga35737d)
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -123,6 +123,10 @@
     <span class="k">return</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">A</span> <span class="o">+</span> <span class="n">multitransp</span><span class="p">(</span><span class="n">A</span><span class="p">))</span></div>
 
 
+<div class="viewcode-block" id="multiherm"><a class="viewcode-back" href="../../../tools.html#pymanopt.tools.multi.multiherm">[docs]</a><span class="k">def</span> <span class="nf">multiherm</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>
+    <span class="k">return</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">A</span> <span class="o">+</span> <span class="n">multihconj</span><span class="p">(</span><span class="n">A</span><span class="p">))</span></div>
+
+
 <div class="viewcode-block" id="multiskew"><a class="viewcode-back" href="../../../tools.html#pymanopt.tools.multi.multiskew">[docs]</a><span class="k">def</span> <span class="nf">multiskew</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Vectorized matrix skew-symmetrization.</span>
 
@@ -131,6 +135,10 @@
 <span class="sd">    -A[i].T``.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">A</span> <span class="o">-</span> <span class="n">multitransp</span><span class="p">(</span><span class="n">A</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="multiskewh"><a class="viewcode-back" href="../../../tools.html#pymanopt.tools.multi.multiskewh">[docs]</a><span class="k">def</span> <span class="nf">multiskewh</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>
+    <span class="k">return</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">A</span> <span class="o">-</span> <span class="n">multihconj</span><span class="p">(</span><span class="n">A</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="multieye"><a class="viewcode-back" href="../../../tools.html#pymanopt.tools.multi.multieye">[docs]</a><span class="k">def</span> <span class="nf">multieye</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
@@ -190,7 +198,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2023, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Jan 06, 2023.
+      <span class="lastupdated">Last updated on Jan 09, 2023.
       </span></p>
   </div>
 
