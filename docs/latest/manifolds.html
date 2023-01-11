@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Manifolds &mdash; Pymanopt latest (2.1.2.dev72+ga35737d) documentation</title>
+  <title>Manifolds &mdash; Pymanopt latest (2.1.2.dev75+gcf2b850) documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/style.css" type="text/css" />
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" type="text/css" />
@@ -37,7 +37,7 @@
             <img src="_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                latest (2.1.2.dev72+ga35737d)
+                latest (2.1.2.dev75+gcf2b850)
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -5413,20 +5413,20 @@ initial and maximal trust-region radii.</p>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pymanopt.manifolds.group._UnitaryBase</span></code></p>
 <p>The (product) manifold of unitary matrices (i.e., the unitary group).</p>
 <p>The unitary group <span class="math">\(\U(n)\)</span>.
-Points on the manifold are matrices <span class="math">\(\vmU \in \C^{n
+Points on the manifold are matrices <span class="math">\(\vmX \in \C^{n
 \times n}\)</span> such that each matrix is unitary, i.e.,
-<span class="math">\(\transp{\conj{\vmU}}\vmU = \adj{\vmU}\vmU = \Id_n\)</span>.
+<span class="math">\(\transp{\conj{\vmX}}\vmX = \adj{\vmX}\vmX = \Id_n\)</span>.
 For <code class="docutils literal notranslate"><span class="pre">k</span> <span class="pre">&gt;</span> <span class="pre">1</span></code>, the class represents the product manifold
 of unitary matrices <span class="math">\(\U(n)^k\)</span>.
 In that case points on the manifold are represented as arrays of shape
 <code class="docutils literal notranslate"><span class="pre">(k,</span> <span class="pre">n,</span> <span class="pre">n)</span></code>.</p>
 <p>The metric is the usual Euclidean one inherited from the embedding space
 <span class="math">\((\C^{n \times n})^k\)</span>, i.e., <span class="math">\(\inner{\vmA}{\vmB} =
-\Re\tr(\adj{A}B)\)</span>.
+\Re\tr(\adj{\vmA}\vmB)\)</span>.
 As such <span class="math">\(\U(n)^k\)</span> forms a Riemannian submanifold.</p>
-<p>The tangent space <span class="math">\(\tangent{\vmU}\U(n)\)</span> at a point <span class="math">\(\vmU\)</span> is
-given by <span class="math">\(\tangent{\vmU}\U(n) = \set{\vmU \vmOmega \in \C^{n \times
-n} \mid \vmOmega = -\adj{\vmOmega} = \vmU \adj{\Skew}(n)\)</span>, where
+<p>The tangent space <span class="math">\(\tangent{\vmX}\U(n)\)</span> at a point <span class="math">\(\vmX\)</span> is
+given by <span class="math">\(\tangent{\vmX}\U(n) = \set{\vmX \vmOmega \in \C^{n \times
+n} \mid \vmOmega = -\adj{\vmOmega}} = \vmX \adj{\Skew}(n)\)</span>, where
 <span class="math">\(\adj{\Skew}(n)\)</span> denotes the set of skew-Hermitian matrices.
 This corresponds to the Lie algebra of <span class="math">\(\U(n)\)</span>, a fact which is used
 here to conveniently represent tangent vectors numerically by their
@@ -9484,7 +9484,7 @@ tuples/lists contain.</p>
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2023, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Jan 09, 2023.
+      <span class="lastupdated">Last updated on Jan 11, 2023.
       </span></p>
   </div>
 
