@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pymanopt.tools.diagnostics &mdash; Pymanopt latest (2.1.2.dev93+gacb52b2) documentation</title>
+  <title>pymanopt.tools.diagnostics &mdash; Pymanopt latest (2.1.2.dev154+g5314bab) documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/style.css" type="text/css" />
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" type="text/css" />
@@ -35,7 +35,7 @@
             <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                latest (2.1.2.dev93+gacb52b2)
+                latest (2.1.2.dev154+g5314bab)
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -395,14 +395,14 @@
     <span class="k">except</span> <span class="ne">NotImplementedError</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;The manifold &#39;</span><span class="si">{</span><span class="n">manifold_class</span><span class="si">}</span><span class="s2">&#39; provides no retraction&quot;</span>
-        <span class="p">)</span> <span class="kn">from</span> <span class="bp">None</span>
+        <span class="p">)</span> <span class="kn">from</span> <span class="kc">None</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">manifold</span><span class="o">.</span><span class="n">retraction</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">NotImplementedError</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;This manifold &#39;</span><span class="si">{</span><span class="n">manifold_class</span><span class="si">}</span><span class="s2">&#39;provides no distance map which &quot;</span>
             <span class="s2">&quot;is required to run this check&quot;</span>
-        <span class="p">)</span> <span class="kn">from</span> <span class="bp">None</span>
+        <span class="p">)</span> <span class="kn">from</span> <span class="kc">None</span>
 
     <span class="c1"># Compare the retraction and the exponential over steps of varying</span>
     <span class="c1"># length, on a wide log-scale.</span>
@@ -465,7 +465,7 @@
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2023, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Apr 04, 2023.
+      <span class="lastupdated">Last updated on Sep 12, 2023.
       </span></p>
   </div>
 
