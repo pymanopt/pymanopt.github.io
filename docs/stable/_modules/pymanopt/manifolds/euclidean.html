@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pymanopt.manifolds.euclidean &mdash; Pymanopt stable (2.1.1) documentation</title>
+  <title>pymanopt.manifolds.euclidean &mdash; Pymanopt stable (2.2.0) documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/style.css" type="text/css" />
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" type="text/css" />
@@ -35,7 +35,7 @@
             <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                stable (2.1.1)
+                stable (2.2.0)
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -99,8 +99,12 @@
 
     <span class="k">def</span> <span class="nf">inner_product</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector_a</span><span class="p">,</span> <span class="n">tangent_vector_b</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">float</span><span class="p">(</span>
-            <span class="n">np</span><span class="o">.</span><span class="n">tensordot</span><span class="p">(</span>
-                <span class="n">tangent_vector_a</span><span class="p">,</span> <span class="n">tangent_vector_b</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">tangent_vector_a</span><span class="o">.</span><span class="n">ndim</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">tensordot</span><span class="p">(</span>
+                    <span class="n">tangent_vector_a</span><span class="o">.</span><span class="n">conj</span><span class="p">(),</span>
+                    <span class="n">tangent_vector_b</span><span class="p">,</span>
+                    <span class="n">axes</span><span class="o">=</span><span class="n">tangent_vector_a</span><span class="o">.</span><span class="n">ndim</span><span class="p">,</span>
+                <span class="p">)</span>
             <span class="p">)</span>
         <span class="p">)</span>
 
@@ -174,6 +178,45 @@
             <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Euclidean manifold of shape </span><span class="si">{</span><span class="n">shape</span><span class="si">}</span><span class="s2"> tensors&quot;</span>
         <span class="n">dimension</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">dimension</span><span class="p">,</span> <span class="o">*</span><span class="n">shape</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ComplexEuclidean"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.euclidean.ComplexEuclidean">[docs]</a><span class="k">class</span> <span class="nc">ComplexEuclidean</span><span class="p">(</span><span class="n">_Euclidean</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Complex Euclidean manifold.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        shape: Shape of points on the manifold.</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        If ``shape == (n,)``, this is the manifold of vectors with the</span>
+<span class="sd">        standard Euclidean inner product, i.e., :math:`\C^n`.</span>
+<span class="sd">        For ``shape == (m, n)``, it corresponds to the manifold of ``m x n``</span>
+<span class="sd">        matrices equipped with the standard trace inner product.</span>
+<span class="sd">        For ``shape == (n1, n2, ..., nk)``, the class represents the manifold</span>
+<span class="sd">        of tensors of shape ``n1 x n2 x ... x nk`` with the inner product</span>
+<span class="sd">        corresponding to the usual tensor dot product.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">shape</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Need shape parameters&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="p">(</span><span class="n">n1</span><span class="p">,)</span> <span class="o">=</span> <span class="n">shape</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Complex Euclidean manifold of </span><span class="si">{</span><span class="n">n1</span><span class="si">}</span><span class="s2">-vectors&quot;</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">n1</span><span class="p">,</span> <span class="n">n2</span> <span class="o">=</span> <span class="n">shape</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Complex Euclidean manifold of </span><span class="si">{</span><span class="n">n1</span><span class="si">}</span><span class="s2">x</span><span class="si">{</span><span class="n">n2</span><span class="si">}</span><span class="s2"> matrices&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Complex Euclidean manifold of shape </span><span class="si">{</span><span class="n">shape</span><span class="si">}</span><span class="s2"> tensors&quot;</span>
+        <span class="n">dimension</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">dimension</span><span class="p">,</span> <span class="o">*</span><span class="n">shape</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ComplexEuclidean.random_point"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.euclidean.ComplexEuclidean.random_point">[docs]</a>    <span class="k">def</span> <span class="nf">random_point</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span>
+            <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ComplexEuclidean.zero_vector"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.euclidean.ComplexEuclidean.zero_vector">[docs]</a>    <span class="k">def</span> <span class="nf">zero_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="Symmetric"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.euclidean.Symmetric">[docs]</a><span class="k">class</span> <span class="nc">Symmetric</span><span class="p">(</span><span class="n">_Euclidean</span><span class="p">):</span>
@@ -267,8 +310,8 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2016-2023, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Sep 12, 2023.
+    <p>&#169; Copyright 2016-2024, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
+      <span class="lastupdated">Last updated on Mar 21, 2024.
       </span></p>
   </div>
 

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tools &mdash; Pymanopt stable (2.1.1) documentation</title>
+  <title>Tools &mdash; Pymanopt stable (2.2.0) documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/style.css" type="text/css" />
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" type="text/css" />
@@ -37,7 +37,7 @@
             <img src="_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                stable (2.1.1)
+                stable (2.2.0)
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -152,6 +152,11 @@ every matrix <code class="docutils literal notranslate"><span class="pre">A[i]</
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="pymanopt.tools.multi.multiherm">
+<span class="sig-prename descclassname"><span class="pre">pymanopt.tools.multi.</span></span><span class="sig-name descname"><span class="pre">multiherm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/tools/multi.html#multiherm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.tools.multi.multiherm" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="pymanopt.tools.multi.multiskew">
 <span class="sig-prename descclassname"><span class="pre">pymanopt.tools.multi.</span></span><span class="sig-name descname"><span class="pre">multiskew</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/tools/multi.html#multiskew"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.tools.multi.multiskew" title="Permalink to this definition"></a></dt>
 <dd><p>Vectorized matrix skew-symmetrization.</p>
@@ -159,6 +164,11 @@ every matrix <code class="docutils literal notranslate"><span class="pre">A[i]</
 <code class="docutils literal notranslate"><span class="pre">A[i]</span></code> is skew-symmetric, i.e., the components of <code class="docutils literal notranslate"><span class="pre">A</span></code> satisfy <code class="docutils literal notranslate"><span class="pre">A[i]</span> <span class="pre">==</span>
 <span class="pre">-A[i].T</span></code>.</p>
 </dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pymanopt.tools.multi.multiskewh">
+<span class="sig-prename descclassname"><span class="pre">pymanopt.tools.multi.</span></span><span class="sig-name descname"><span class="pre">multiskewh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/tools/multi.html#multiskewh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.tools.multi.multiskewh" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pymanopt.tools.multi.multieye">
@@ -224,6 +234,20 @@ Taylor series.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="pymanopt.tools.diagnostics.check_hessian">
+<span class="sig-prename descclassname"><span class="pre">pymanopt.tools.diagnostics.</span></span><span class="sig-name descname"><span class="pre">check_hessian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">problem</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/tools/diagnostics.html#check_hessian"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.tools.diagnostics.check_hessian" title="Permalink to this definition"></a></dt>
+<dd><p>Checks the consistency of the cost function and the Hessian.</p>
+<p>The function performs a numerical test to check that the Hessian
+defined in the problem agrees up to second order with the cost function at
+some point x, along some direction d. The test is based on a truncated
+Taylor series.</p>
+<p>It is also tested that the result of applying the Hessian along that
+direction is indeed a tangent vector, and that the Hessian operator is
+linear and symmetric w.r.t. the Riemannian metric.</p>
+<p>Both x and d are optional and will be sampled at random if omitted.</p>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="pymanopt.tools.diagnostics.check_retraction">
 <span class="sig-prename descclassname"><span class="pre">pymanopt.tools.diagnostics.</span></span><span class="sig-name descname"><span class="pre">check_retraction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">manifold</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tangent_vector</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymanopt/tools/diagnostics.html#check_retraction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymanopt.tools.diagnostics.check_retraction" title="Permalink to this definition"></a></dt>
 <dd><p>Check order of agreement between a retraction and the exponential.</p>
@@ -279,8 +303,8 @@ Jacobian explicitly.</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2016-2023, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Sep 12, 2023.
+    <p>&#169; Copyright 2016-2024, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
+      <span class="lastupdated">Last updated on Mar 21, 2024.
       </span></p>
   </div>
 

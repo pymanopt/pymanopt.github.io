@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pymanopt.tools.diagnostics &mdash; Pymanopt stable (2.1.1) documentation</title>
+  <title>pymanopt.tools.diagnostics &mdash; Pymanopt stable (2.2.0) documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/style.css" type="text/css" />
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" type="text/css" />
@@ -35,7 +35,7 @@
             <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                stable (2.1.1)
+                stable (2.2.0)
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -131,7 +131,7 @@
     <span class="c1">#  If x and / or d are not specified, pick them at random.</span>
     <span class="k">if</span> <span class="n">d</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">x</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s2">&quot;If d is provided, x must be too, &quot;</span> <span class="s2">&quot;since d is tangent at x.&quot;</span>
+            <span class="s2">&quot;If d is provided, x must be too, &quot;</span> <span class="s2">&quot;since d is tangent at x&quot;</span>
         <span class="p">)</span>
     <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">x</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">manifold</span><span class="o">.</span><span class="n">random_point</span><span class="p">()</span>
@@ -222,22 +222,21 @@
 
 <span class="sd">    Both x and d are optional and will be sampled at random if omitted.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1">#  If x and / or d are not specified, pick them at random.</span>
     <span class="k">if</span> <span class="n">plt</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;The &#39;check_gradient&#39; function requires matplotlib&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">d</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">x</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s2">&quot;If d is provided, x must be too, since d is tangent at x.&quot;</span>
+            <span class="s2">&quot;If d is provided, x must be too, since d must be tangent at x&quot;</span>
         <span class="p">)</span>
     <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">x</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">manifold</span><span class="o">.</span><span class="n">random_point</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">d</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">manifold</span><span class="o">.</span><span class="n">random_tangent_vector</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 
-    <span class="n">h</span><span class="p">,</span> <span class="n">err</span><span class="p">,</span> <span class="n">segment</span><span class="p">,</span> <span class="n">poly</span> <span class="o">=</span> <span class="n">check_directional_derivative</span><span class="p">(</span><span class="n">problem</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+    <span class="n">h</span><span class="p">,</span> <span class="n">error</span><span class="p">,</span> <span class="n">segment</span><span class="p">,</span> <span class="n">poly</span> <span class="o">=</span> <span class="n">check_directional_derivative</span><span class="p">(</span><span class="n">problem</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
 
     <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;h&quot;</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Approximation error&quot;</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span>
@@ -245,9 +244,9 @@
     <span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mf">1e-8</span><span class="p">,</span> <span class="mf">1e0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1e-8</span><span class="p">,</span> <span class="mf">1e8</span><span class="p">],</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span>
-        <span class="s2">&quot;Gradient check</span><span class="se">\n</span><span class="s2">The slope of the continuous line &quot;</span>
-        <span class="s2">&quot;should match that of the dashed</span><span class="se">\n</span><span class="s2">(reference) line &quot;</span>
-        <span class="s2">&quot;over at least a few orders of magnitude for h.&quot;</span>
+        <span class="s2">&quot;Gradient check</span><span class="se">\n</span><span class="s2">The slope of the continuous line should match that &quot;</span>
+        <span class="s2">&quot;of the dashed</span><span class="se">\n</span><span class="s2">(reference) line over at least a few orders of &quot;</span>
+        <span class="s2">&quot;magnitude for h.&quot;</span>
     <span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
@@ -262,16 +261,121 @@
         <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">residual</span> <span class="o">=</span> <span class="n">grad</span> <span class="o">-</span> <span class="n">projected_grad</span>
-        <span class="n">err</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">manifold</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">residual</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The residual should be 0, or very close. Residual: </span><span class="si">{</span><span class="n">err</span><span class="si">:</span><span class="s2">g</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="n">error</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">manifold</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">residual</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The residual should be close to 0: </span><span class="si">{</span><span class="n">error</span><span class="si">:</span><span class="s2">g</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span>
-            <span class="s2">&quot;If it is far from 0, then the gradient &quot;</span>
-            <span class="s2">&quot;is not in the tangent space.&quot;</span>
+            <span class="s2">&quot;If it is far from 0, then the gradient is not in the tangent &quot;</span>
+            <span class="s2">&quot;space.&quot;</span>
         <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="check_hessian"><a class="viewcode-back" href="../../../tools.html#pymanopt.tools.diagnostics.check_hessian">[docs]</a><span class="k">def</span> <span class="nf">check_hessian</span><span class="p">(</span><span class="n">problem</span><span class="p">,</span> <span class="n">point</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Checks the consistency of the cost function and the Hessian.</span>
+
+<span class="sd">    The function performs a numerical test to check that the Hessian</span>
+<span class="sd">    defined in the problem agrees up to second order with the cost function at</span>
+<span class="sd">    some point x, along some direction d. The test is based on a truncated</span>
+<span class="sd">    Taylor series.</span>
+
+<span class="sd">    It is also tested that the result of applying the Hessian along that</span>
+<span class="sd">    direction is indeed a tangent vector, and that the Hessian operator is</span>
+<span class="sd">    linear and symmetric w.r.t. the Riemannian metric.</span>
+
+<span class="sd">    Both x and d are optional and will be sampled at random if omitted.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">plt</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;The &#39;check_hessian&#39; function requires matplotlib&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">tangent_vector</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">point</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;If d is provided, x must be too, since d must be tangent at x&quot;</span>
+        <span class="p">)</span>
+    <span class="k">if</span> <span class="n">point</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">point</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">manifold</span><span class="o">.</span><span class="n">random_point</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">tangent_vector</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">tangent_vector</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">manifold</span><span class="o">.</span><span class="n">random_tangent_vector</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
+
+    <span class="n">h</span><span class="p">,</span> <span class="n">error</span><span class="p">,</span> <span class="n">segment</span><span class="p">,</span> <span class="n">poly</span> <span class="o">=</span> <span class="n">check_directional_derivative</span><span class="p">(</span>
+        <span class="n">problem</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">,</span> <span class="n">use_quadratic_model</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;h&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Approximation error&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span>
+        <span class="n">h</span><span class="p">[</span><span class="n">segment</span><span class="p">],</span> <span class="mi">10</span> <span class="o">**</span> <span class="n">np</span><span class="o">.</span><span class="n">polyval</span><span class="p">(</span><span class="n">poly</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">h</span><span class="p">[</span><span class="n">segment</span><span class="p">])),</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span>
+    <span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mf">1e-8</span><span class="p">,</span> <span class="mf">1e0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1e-16</span><span class="p">,</span> <span class="mf">1e8</span><span class="p">],</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span>
+        <span class="s2">&quot;Hessian check</span><span class="se">\n</span><span class="s2">The slope of the continuous line should match that of &quot;</span>
+        <span class="s2">&quot;the dashed</span><span class="se">\n</span><span class="s2">(reference) line over at least a few orders of magnitude &quot;</span>
+        <span class="s2">&quot;for h.&quot;</span>
+    <span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+    <span class="n">hessian</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">riemannian_hessian</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">projected_hessian</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">manifold</span><span class="o">.</span><span class="n">to_tangent_space</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">hessian</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">NotImplementedError</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="s2">&quot;Pymanopt was unable to verify that the Hessian operator indeed &quot;</span>
+            <span class="s2">&quot;yields a tangent vector since &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">problem</span><span class="o">.</span><span class="n">manifold</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> does not provide a &quot;</span>
+            <span class="s2">&quot;&#39;to_tangent_space&#39; implementation.&quot;</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">residual</span> <span class="o">=</span> <span class="n">hessian</span> <span class="o">-</span> <span class="n">projected_hessian</span>
+        <span class="n">error</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">manifold</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">residual</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The residual should be 0, or very close. Residual: </span><span class="si">{</span><span class="n">error</span><span class="si">:</span><span class="s2">g</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="s2">&quot;If it is far from 0, then the Hessian is not in the tangent &quot;</span>
+            <span class="s2">&quot;space.&quot;</span>
+        <span class="p">)</span>
+    <span class="nb">print</span><span class="p">()</span>
+
+    <span class="c1"># Check linearity of Hessian operator.</span>
+    <span class="n">tangent_vector_a</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">manifold</span><span class="o">.</span><span class="n">random_tangent_vector</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
+    <span class="n">tangent_vector_b</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">manifold</span><span class="o">.</span><span class="n">random_tangent_vector</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
+    <span class="n">hessian_a</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">riemannian_hessian</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector_a</span><span class="p">)</span>
+    <span class="n">hessian_b</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">riemannian_hessian</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector_b</span><span class="p">)</span>
+    <span class="n">weight_a</span><span class="p">,</span> <span class="n">weight_b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">hessian_of_linear_combination</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">riemannian_hessian</span><span class="p">(</span>
+        <span class="n">point</span><span class="p">,</span> <span class="n">weight_a</span> <span class="o">*</span> <span class="n">tangent_vector_a</span> <span class="o">+</span> <span class="n">weight_b</span> <span class="o">*</span> <span class="n">tangent_vector_b</span>
+    <span class="p">)</span>
+    <span class="n">linear_combination_of_hessians</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">weight_a</span> <span class="o">*</span> <span class="n">hessian_a</span> <span class="o">+</span> <span class="n">weight_b</span> <span class="o">*</span> <span class="n">hessian_b</span>
+    <span class="p">)</span>
+    <span class="n">error_norm</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">manifold</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span>
+        <span class="n">point</span><span class="p">,</span> <span class="n">hessian_of_linear_combination</span> <span class="o">-</span> <span class="n">linear_combination_of_hessians</span>
+    <span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="s2">&quot;The norm of the residual between H[a*d1 + b*d2] and a*H[d1] + &quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;b*H[d2] should be very close to 0: </span><span class="si">{</span><span class="n">error_norm</span><span class="si">:</span><span class="s2">g</span><span class="si">}</span><span class="s2">.&quot;</span>
+    <span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;If it is far from 0, then the Hessian is not a linear operator.&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">()</span>
+
+    <span class="c1"># Check symmetry of Hessian operator.</span>
+    <span class="n">inner_product_a</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">manifold</span><span class="o">.</span><span class="n">inner_product</span><span class="p">(</span>
+        <span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector_a</span><span class="p">,</span> <span class="n">hessian_b</span>
+    <span class="p">)</span>
+    <span class="n">inner_product_b</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">manifold</span><span class="o">.</span><span class="n">inner_product</span><span class="p">(</span>
+        <span class="n">point</span><span class="p">,</span> <span class="n">hessian_a</span><span class="p">,</span> <span class="n">tangent_vector_b</span>
+    <span class="p">)</span>
+    <span class="n">error</span> <span class="o">=</span> <span class="n">inner_product_a</span> <span class="o">-</span> <span class="n">inner_product_b</span>
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="s2">&quot;The difference &lt;d1, H[d2]&gt; - &lt;H[d1], d2&gt; should be close to zero: &quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">inner_product_a</span><span class="si">:</span><span class="s2">g</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="n">inner_product_b</span><span class="si">:</span><span class="s2">g</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">error</span><span class="si">:</span><span class="s2">g</span><span class="si">}</span><span class="s2">.&quot;</span>
+    <span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;If it is far from 0 then the Hessian is not a symmetric operator.&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="check_retraction"><a class="viewcode-back" href="../../../tools.html#pymanopt.tools.diagnostics.check_retraction">[docs]</a><span class="k">def</span> <span class="nf">check_retraction</span><span class="p">(</span><span class="n">manifold</span><span class="p">,</span> <span class="n">point</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Check order of agreement between a retraction and the exponential.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">plt</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+            <span class="s2">&quot;The &#39;check_retraction&#39; function requires matplotlib&quot;</span>
+        <span class="p">)</span>
     <span class="k">if</span> <span class="n">point</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">point</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">random_point</span><span class="p">()</span>
         <span class="n">tangent_vector</span> <span class="o">=</span> <span class="n">manifold</span><span class="o">.</span><span class="n">random_tangent_vector</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
@@ -290,15 +394,15 @@
         <span class="n">manifold</span><span class="o">.</span><span class="n">retraction</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">NotImplementedError</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;The manifold &#39;</span><span class="si">{</span><span class="n">manifold_class</span><span class="si">}</span><span class="s2">&#39; provides no retraction.&quot;</span>
-        <span class="p">)</span>
+            <span class="sa">f</span><span class="s2">&quot;The manifold &#39;</span><span class="si">{</span><span class="n">manifold_class</span><span class="si">}</span><span class="s2">&#39; provides no retraction&quot;</span>
+        <span class="p">)</span> <span class="kn">from</span> <span class="kc">None</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">manifold</span><span class="o">.</span><span class="n">retraction</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">tangent_vector</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">NotImplementedError</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;This manifold &#39;</span><span class="si">{</span><span class="n">manifold_class</span><span class="si">}</span><span class="s2">&#39;provides no distance map which &quot;</span>
-            <span class="s2">&quot;is required to run this check.&quot;</span>
-        <span class="p">)</span>
+            <span class="s2">&quot;is required to run this check&quot;</span>
+        <span class="p">)</span> <span class="kn">from</span> <span class="kc">None</span>
 
     <span class="c1"># Compare the retraction and the exponential over steps of varying</span>
     <span class="c1"># length, on a wide log-scale.</span>
@@ -360,8 +464,8 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2016-2023, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Sep 12, 2023.
+    <p>&#169; Copyright 2016-2024, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
+      <span class="lastupdated">Last updated on Mar 21, 2024.
       </span></p>
   </div>
 

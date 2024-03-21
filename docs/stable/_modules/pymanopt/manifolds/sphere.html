@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pymanopt.manifolds.sphere &mdash; Pymanopt stable (2.1.1) documentation</title>
+  <title>pymanopt.manifolds.sphere &mdash; Pymanopt stable (2.2.0) documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/style.css" type="text/css" />
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" type="text/css" />
@@ -35,7 +35,7 @@
             <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                stable (2.1.1)
+                stable (2.2.0)
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -87,6 +87,7 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="kn">from</span> <span class="nn">pymanopt.manifolds.manifold</span> <span class="kn">import</span> <span class="n">RiemannianSubmanifold</span>
+<span class="kn">from</span> <span class="nn">pymanopt.tools</span> <span class="kn">import</span> <span class="n">extend_docstring</span>
 
 
 <span class="k">class</span> <span class="nc">_SphereBase</span><span class="p">(</span><span class="n">RiemannianSubmanifold</span><span class="p">):</span>
@@ -157,7 +158,14 @@
         <span class="k">return</span> <span class="n">array</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">array</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="Sphere"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.sphere.Sphere">[docs]</a><span class="k">class</span> <span class="nc">Sphere</span><span class="p">(</span><span class="n">_SphereBase</span><span class="p">):</span>
+<span class="n">DOCSTRING_NOTE</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    Note:</span>
+<span class="s2">        The Weingarten map is taken from [AMT2013]_.</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="Sphere"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.sphere.Sphere">[docs]</a><span class="nd">@extend_docstring</span><span class="p">(</span><span class="n">DOCSTRING_NOTE</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">Sphere</span><span class="p">(</span><span class="n">_SphereBase</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;The sphere manifold.</span>
 
 <span class="sd">    Manifold of shape :math:`n_1 \times \ldots \times n_k` tensors with unit</span>
@@ -186,13 +194,6 @@
             <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Sphere manifold of shape </span><span class="si">{</span><span class="n">shape</span><span class="si">}</span><span class="s2"> tensors&quot;</span>
         <span class="n">dimension</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">shape</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">dimension</span><span class="o">=</span><span class="n">dimension</span><span class="p">)</span></div>
-
-
-<span class="n">DOCSTRING_NOTE</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">    Note:</span>
-<span class="s2">        The Weingarten map is taken from [AMT2013]_.</span>
-<span class="s2">&quot;&quot;&quot;</span>
-<span class="n">Sphere</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">+=</span> <span class="n">DOCSTRING_NOTE</span>
 
 
 <span class="k">class</span> <span class="nc">_SphereSubspaceIntersectionManifold</span><span class="p">(</span><span class="n">_SphereBase</span><span class="p">):</span>
@@ -229,7 +230,8 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_normalize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_subspace_projector</span> <span class="o">@</span> <span class="n">vector</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="SphereSubspaceIntersection"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.sphere.SphereSubspaceIntersection">[docs]</a><span class="k">class</span> <span class="nc">SphereSubspaceIntersection</span><span class="p">(</span><span class="n">_SphereSubspaceIntersectionManifold</span><span class="p">):</span>
+<div class="viewcode-block" id="SphereSubspaceIntersection"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.sphere.SphereSubspaceIntersection">[docs]</a><span class="nd">@extend_docstring</span><span class="p">(</span><span class="n">DOCSTRING_NOTE</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">SphereSubspaceIntersection</span><span class="p">(</span><span class="n">_SphereSubspaceIntersectionManifold</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Sphere-subspace intersection manifold.</span>
 
 <span class="sd">    Manifold of :math:`n`-dimensional vectors with unit :math:`\ell_2`-norm</span>
@@ -255,10 +257,8 @@
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">projector</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">dimension</span><span class="p">)</span></div>
 
 
-<span class="n">SphereSubspaceIntersection</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">+=</span> <span class="n">DOCSTRING_NOTE</span>
-
-
-<div class="viewcode-block" id="SphereSubspaceComplementIntersection"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.sphere.SphereSubspaceComplementIntersection">[docs]</a><span class="k">class</span> <span class="nc">SphereSubspaceComplementIntersection</span><span class="p">(</span>
+<div class="viewcode-block" id="SphereSubspaceComplementIntersection"><a class="viewcode-back" href="../../../manifolds.html#pymanopt.manifolds.sphere.SphereSubspaceComplementIntersection">[docs]</a><span class="nd">@extend_docstring</span><span class="p">(</span><span class="n">DOCSTRING_NOTE</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">SphereSubspaceComplementIntersection</span><span class="p">(</span>
     <span class="n">_SphereSubspaceIntersectionManifold</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Sphere-subspace complement intersection manifold.</span>
@@ -284,9 +284,6 @@
         <span class="p">)</span>
         <span class="n">dimension</span> <span class="o">=</span> <span class="n">subspace_dimension</span> <span class="o">-</span> <span class="mi">1</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">projector</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">dimension</span><span class="p">)</span></div>
-
-
-<span class="n">SphereSubspaceComplementIntersection</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">+=</span> <span class="n">DOCSTRING_NOTE</span>
 </pre></div>
 
            </div>
@@ -296,8 +293,8 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2016-2023, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Sep 12, 2023.
+    <p>&#169; Copyright 2016-2024, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
+      <span class="lastupdated">Last updated on Mar 21, 2024.
       </span></p>
   </div>
 
