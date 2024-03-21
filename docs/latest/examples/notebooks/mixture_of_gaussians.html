@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Riemannian Optimization for Inference in MoG models &mdash; Pymanopt latest (2.1.2.dev154+g5314bab) documentation</title>
+  <title>Riemannian Optimization for Inference in MoG models &mdash; Pymanopt latest (2.2.1.dev10+g5e38c0f) documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/style.css" type="text/css" />
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" type="text/css" />
@@ -36,7 +36,7 @@
             <img src="../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                latest (2.1.2.dev154+g5314bab)
+                latest (2.2.1.dev10+g5e38c0f)
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -425,20 +425,11 @@ and mixture probability vector <span class="math">\(\boldsymbol{\pi}=\left[0.1, 
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-/opt/hostedtoolcache/Python/3.7.17/x64/lib/python3.7/site-packages/traitlets/traitlets.py:3443: FutureWarning: --rc={&#39;figure.dpi&#39;: 96} for dict-traits is deprecated in traitlets 5.0. You can pass --rc &lt;key=value&gt; ... multiple times to add items to a dict.
-  FutureWarning,
-</pre></div></div>
-</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/examples_notebooks_mixture_of_gaussians_2_1.svg" src="../../_images/examples_notebooks_mixture_of_gaussians_2_1.svg" /></div>
+<img alt="../../_images/examples_notebooks_mixture_of_gaussians_2_0.svg" src="../../_images/examples_notebooks_mixture_of_gaussians_2_0.svg" /></div>
 </div>
 <p>Given a data sample the de facto standard method to infer the parameters is the <a class="reference external" href="https://en.wikipedia.org/wiki/Expectation-maximization_algorithm">expectation maximisation</a> (EM) algorithm that, in alternating so-called E and M steps, maximises the log-likelihood of the data. In <a class="reference external" href="http://arxiv.org/pdf/1506.07677v1.pdf">arXiv:1506.07677</a> Hosseini and Sra propose Riemannian optimisation as a powerful counterpart to EM. Importantly, they introduce a reparameterisation that leaves local optima
 of the log-likelihood unchanged while resulting in a geodesically convex optimisation problem over a product manifold <span class="math">\(\prod_{m=1}^M\mathcal{PD}^{(d+1)\times(d+1)}\)</span> of manifolds of <span class="math">\((d+1)\times(d+1)\)</span> symmetric positive definite matrices. The proposed method is on par with EM and shows less variability in running times.</p>
@@ -518,9 +509,15 @@ q_\mathcal{N}(\mathbf{y}_n;\mathbf{S}_m)
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-2023-09-12 08:02:57.299580: W tensorflow/compiler/xla/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library &#39;libnvinfer.so.7&#39;; dlerror: libnvinfer.so.7: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.7.17/x64/lib
-2023-09-12 08:02:57.299672: W tensorflow/compiler/xla/stream_executor/platform/default/dso_loader.cc:64] Could not load dynamic library &#39;libnvinfer_plugin.so.7&#39;; dlerror: libnvinfer_plugin.so.7: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.7.17/x64/lib
-2023-09-12 08:02:57.299680: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Cannot dlopen some TensorRT libraries. If you would like to use Nvidia GPU with TensorRT, please make sure the missing libraries mentioned above are installed properly.
+2024-03-21 17:01:02.370472: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Optimizing...
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -528,8 +525,7 @@ q_\mathcal{N}(\mathbf{y}_n;\mathbf{S}_m)
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Optimizing...
-Terminated - min step_size reached after 116 iterations, 0.32 seconds.
+Terminated - min step_size reached after 235 iterations, 0.68 seconds.
 
 </pre></div></div>
 </div>
@@ -611,21 +607,21 @@ Terminated - min step_size reached after 116 iterations, 0.32 seconds.
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
+[[0.07]
+ [0.08]]
+[[0.99 0.92]
+ [0.92 3.09]]
+[[ 2.  ]
+ [-0.89]]
+[[0.42 0.03]
+ [0.03 0.47]]
 [[-3.91]
- [ 1.12]]
-[[3.68 0.34]
- [0.34 1.19]]
-[[-0.  ]
- [-0.06]]
-[[0.96 1.07]
- [1.07 3.09]]
-[[ 1.93]
- [-0.99]]
-[[ 0.57 -0.02]
- [-0.02  0.49]]
-0.10868505222635291
-0.6064424567775862
-0.2848724909960608
+ [ 1.08]]
+[[ 3.6  -0.17]
+ [-0.17  0.86]]
+0.6113953437348624
+0.28731188793104906
+0.10129276833408853
 </pre></div></div>
 </div>
 <p>Et voilà – this was a brief demonstration of how to do inference for MoG models by performing Manifold optimisation using Pymanopt.</p>
@@ -754,8 +750,8 @@ Terminated - min step_size reached after 116 iterations, 0.32 seconds.
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2016-2023, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Sep 12, 2023.
+    <p>&#169; Copyright 2016-2024, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
+      <span class="lastupdated">Last updated on Mar 21, 2024.
       </span></p>
   </div>
 
