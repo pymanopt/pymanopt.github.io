@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Riemannian Optimization for Inference in MoG models &mdash; Pymanopt latest (2.2.1.dev10+g5e38c0f) documentation</title>
+  <title>Riemannian Optimization for Inference in MoG models &mdash; Pymanopt latest (2.2.1.dev14+g1de3b6f) documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/style.css" type="text/css" />
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" type="text/css" />
@@ -36,7 +36,7 @@
             <img src="../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                latest (2.2.1.dev10+g5e38c0f)
+                latest (2.2.1.dev14+g1de3b6f)
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -509,15 +509,7 @@ q_\mathcal{N}(\mathbf{y}_n;\mathbf{S}_m)
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-2024-03-21 17:01:02.370472: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Optimizing...
+2024-06-10 13:37:38.451311: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -525,7 +517,8 @@ Optimizing...
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Terminated - min step_size reached after 235 iterations, 0.68 seconds.
+Optimizing...
+Terminated - min step_size reached after 223 iterations, 0.66 seconds.
 
 </pre></div></div>
 </div>
@@ -607,21 +600,21 @@ Terminated - min step_size reached after 235 iterations, 0.68 seconds.
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[[0.07]
- [0.08]]
-[[0.99 0.92]
- [0.92 3.09]]
-[[ 2.  ]
- [-0.89]]
-[[0.42 0.03]
- [0.03 0.47]]
-[[-3.91]
- [ 1.08]]
-[[ 3.6  -0.17]
- [-0.17  0.86]]
-0.6113953437348624
-0.28731188793104906
-0.10129276833408853
+[[0.04]
+ [0.05]]
+[[1.   1.07]
+ [1.07 3.1 ]]
+[[ 1.98]
+ [-0.97]]
+[[ 0.42 -0.04]
+ [-0.04  0.56]]
+[[-3.93]
+ [ 1.03]]
+[[ 2.78 -0.28]
+ [-0.28  1.13]]
+0.6129433615430934
+0.2953182618328715
+0.09173837662403496
 </pre></div></div>
 </div>
 <p>Et voilà – this was a brief demonstration of how to do inference for MoG models by performing Manifold optimisation using Pymanopt.</p>
@@ -751,7 +744,7 @@ Terminated - min step_size reached after 235 iterations, 0.68 seconds.
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2024, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Mar 21, 2024.
+      <span class="lastupdated">Last updated on Jun 10, 2024.
       </span></p>
   </div>
 
