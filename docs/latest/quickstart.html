@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Quickstart &mdash; Pymanopt latest (2.2.1.dev14+g1de3b6f) documentation</title>
+  <title>Quickstart &mdash; Pymanopt latest (2.2.1.dev21+gd66677f) documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/style.css" type="text/css" />
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" type="text/css" />
@@ -37,7 +37,7 @@
             <img src="_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                latest (2.2.1.dev14+g1de3b6f)
+                latest (2.2.1.dev21+gd66677f)
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -129,17 +129,21 @@ on the problem instance.</p></li>
 </ol>
 <div class="section" id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline"></a></h2>
-<p>Pymanopt is compatible with Python 3.6+, and depends on NumPy and SciPy.
+<p>Pymanopt is compatible with Python 3.8+, and depends on NumPy and SciPy.
 Additionally, to use Pymanopt’s built-in automatic differentiation, which we
 strongly recommend, you need to setup your cost functions using either
-<a class="reference external" href="https://github.com/HIPS/autograd">Autograd</a>, <cite>JAX
-&lt;https://jax.readthedocs.io/en/latest/&gt;_</cite>, <a class="reference external" href="https://www.tensorflow.org">TensorFlow</a> or <a class="reference external" href="http://www.pytorch.org/">PyTorch</a>.
+<a class="reference external" href="https://github.com/HIPS/autograd">Autograd</a>,
+<cite>JAX &lt;https://jax.readthedocs.io/en/latest/&gt;_</cite>,
+<a class="reference external" href="https://www.tensorflow.org">TensorFlow</a> or
+<a class="reference external" href="http://www.pytorch.org/">PyTorch</a>.
 If you are unfamiliar with these packages and you are unsure which to go for,
 we suggest to start with Autograd.
 Autograd wraps thinly around NumPy, and is very simple to use, particularly if
 you’re already familiar with NumPy.
-To get the latest version of Pymanopt, install it via pip:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>pymanopt
+To get the latest version of Pymanopt, install it via <cite>pip</cite> by specifying the
+backend(s) you want to use among <cite>autograd</cite>, <cite>jax</cite>, <cite>torch</cite> and <cite>tensorflow</cite>,
+separated by a comma. For example:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;pymanopt[autograd]&quot;</span><span class="w"> </span><span class="c1"># or [jax], [tensorflow], [torch]</span>
 </pre></div>
 </div>
 </div>
@@ -177,8 +181,6 @@ function, and run the minimization problem using one of the available
 optimizers.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">autograd.numpy</span> <span class="k">as</span> <span class="nn">anp</span>
 <span class="kn">import</span> <span class="nn">pymanopt</span>
-<span class="kn">import</span> <span class="nn">pymanopt.manifolds</span>
-<span class="kn">import</span> <span class="nn">pymanopt.optimizers</span>
 
 <span class="n">anp</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
 
@@ -268,7 +270,7 @@ Pymanopt in the context of inference in Gaussian mixture models.</p>
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2024, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Jun 10, 2024.
+      <span class="lastupdated">Last updated on Sep 19, 2024.
       </span></p>
   </div>
 
