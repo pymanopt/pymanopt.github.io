@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Contributing &mdash; Pymanopt stable (2.2.0) documentation</title>
+  <title>Contributing &mdash; Pymanopt stable (2.2.1) documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/style.css" type="text/css" />
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" type="text/css" />
@@ -37,7 +37,7 @@
             <img src="_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                stable (2.2.0)
+                stable (2.2.1)
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -114,17 +114,16 @@
 <h1>Contributing<a class="headerlink" href="#contributing" title="Permalink to this headline"></a></h1>
 <p><a class="reference external" href="https://help.github.com/articles/cloning-a-repository/">Fork and clone the repository</a> by going to
 https://github.com/pymanopt/pymanopt/fork, and cloning the repository with</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ git clone git@github.com:&lt;your-username&gt;/pymanopt.git
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>git clone git@github.com:&lt;your-username&gt;/pymanopt.git
 </pre></div>
 </div>
 <p>Set up a local development environment, installing both the runtime and
 development dependencies by running</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ pip install -e &quot;.[all]&quot;
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>pip install -e &quot;.[all]&quot;
 </pre></div>
 </div>
-<p>Verify that all existing tests pass by executing the test suite via
-<a class="reference external" href="https://docs.nose2.io/en/latest/">nose2</a>:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ nose2 tests
+<p>Verify that all existing tests pass by executing the test suite with:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>pytest -v --cov-report= --cov=src/pymanopt tests
 </pre></div>
 </div>
 <p>Note that we run the <a class="reference external" href="http://flake8.pycqa.org/en/latest/">flake8</a> utility on every python file in the
@@ -136,7 +135,7 @@ guidelines, we include a <a class="reference external" href="https://pre-commit.
 invokes flake8 on all files staged for commit when running <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">commit</span></code>.
 To enable the hook, simply run <code class="docutils literal notranslate"><span class="pre">pre-commit</span> <span class="pre">install</span></code> after installing
 <code class="docutils literal notranslate"><span class="pre">pre-commit</span></code> either manually via <code class="docutils literal notranslate"><span class="pre">pip</span></code> or as part of <code class="docutils literal notranslate"><span class="pre">dev</span></code> variant, e.g.</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ pip install -e &quot;.[dev]&quot;
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>pip install -e &quot;.[dev]&quot;
 </pre></div>
 </div>
 <p>Push a feature branch to your fork and <a class="reference external" href="https://github.com/pymanopt/pymanopt/compare">submit a pull request</a>.
@@ -180,7 +179,7 @@ Running the git-commit command with the -s option automatically adds this line.<
 
   <div role="contentinfo">
     <p>&#169; Copyright 2016-2024, Jamie Townsend, Niklas Koep, Sebastian Weichwald.
-      <span class="lastupdated">Last updated on Sep 19, 2024.
+      <span class="lastupdated">Last updated on Nov 15, 2024.
       </span></p>
   </div>
 
